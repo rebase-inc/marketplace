@@ -1,0 +1,117 @@
+@font-face {
+    font-family: GothamRounded;
+    src: url("/Users/andrewmillspaugh/Downloads/GothamRnd-Light.otf") format("opentype");
+}
+
+* { font-family: GothamRounded; }
+
+input:focus, select:focus, textarea:focus, button:focus {
+    outline: none;
+}
+
+
+html, body {
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    background-color: hsla(204, 45%, 98%, 1);
+}
+
+table {
+    display: block;
+    border-collapse: collapse;
+    height: calc(100% - 44px);
+    width: 100%;
+}
+
+.logo {
+    width: 38px;
+    display: block;
+    margin: 0 auto;
+    margin-top: 28px;
+    margin-bottom: 28px;
+}
+
+.findTalentPanel {
+    width: 80px;
+    font-size: 10px;
+}
+
+.skillsRequiredPanel {
+    color: hsla(215, 15%, 67%, 1);
+}
+
+.commentsPanel {
+    color: hsla(215, 15%, 67%, 1);
+}
+
+.findTalentPanel > object {
+    margin-top: 30px;
+    display: block;
+    margin: 0 auto;
+}
+
+tbody {
+    display: table;
+    overflow: auto;
+    height: 100%;
+    width: 100%;
+}
+
+#app {
+    width: 100%;
+    height: 100%;
+}
+
+#sidebar {
+    color: white;
+    display: block;
+    float: left;
+    width: 200px;
+    height: 100%;
+    background-color: hsla(212, 40%, 18%, 1);
+}
+
+#mainContent {
+    display: block;
+    float: left;
+    width: calc(100% - 200px);
+    height: 100%;
+}
+
+#newTicketList {
+    overflow: auto;
+    width: 100%;
+}
+
+.newTicket {
+    display: table-row;
+    width: 100%;
+    height: 80px;
+    border: 1px solid hsla(165, 5%, 83%, 1);
+}
+
+#newTicketSearchBar {
+    width: 100%;
+    padding: 9px;
+    box-sizing: border-box;
+    background-color: hsla(204, 45%, 98%, 1);
+}
+
+::-webkit-input-placeholder {
+    color: hsla(217, 18%, 81%, 1);
+}
+
+#newTicketSearchBar > input {
+    height: 26px;
+    font-size: 14px;
+    line-height: 20px;
+    padding: 8px;
+    box-sizing: border-box;
+    width: 100%;
+    border-radius: 4px;
+    border-width: 1px;
+    border-style: solid;
+    border-color: hsla(0, 0%, 80%, .6);
+    background-color: transparent;
+}
