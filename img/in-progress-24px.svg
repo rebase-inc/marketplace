@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="21px" height="18px" viewBox="0 0 30 26" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns">
+    <g id="UI" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" sketch:type="MSPage">
+        <g id="Mgr-New-Tickets" sketch:type="MSArtboardGroup" transform="translate(-40.000000, -319.000000)" stroke-linecap="round" stroke="#FFFFFF" stroke-linejoin="round">
+            <g id="Manager-Sidebar" sketch:type="MSLayerGroup" transform="translate(0.000000, -1.000000)">
+                <g id="cogs3-+-IN-PROGRESS" transform="translate(40.000000, 319.000000)" sketch:type="MSShapeGroup">
+                    <g id="Group" transform="translate(0.000000, 1.000000)">
+                        <path d="M14.5,15 L0.5,8.5 L0.5,19 L14.5,25.5 L14.5,15 L14.5,15 Z" id="Stroke-5475"></path>
+                        <path d="M29.5,8.5 L14.5,15 L14.5,25.5 L29.5,19 L29.5,8.5 L29.5,8.5 Z" id="Stroke-5476"></path>
+                        <path d="M18.7822,9.3262 C18.7822,10.3712 17.0892,11.2182 15.0002,11.2182 C12.9112,11.2182 11.2172,10.3712 11.2172,9.3262 C11.2172,8.2822 12.9112,7.4342 15.0002,7.4342 C17.0892,7.4342 18.7822,8.2822 18.7822,9.3262 L18.7822,9.3262 Z" id="Stroke-5477"></path>
+                        <path d="M18.7822,2.3916 C18.7822,3.4356 17.0892,4.2826 15.0002,4.2826 C12.9112,4.2826 11.2172,3.4356 11.2172,2.3916 C11.2172,1.3476 12.9112,0.4996 15.0002,0.4996 C17.0892,0.4996 18.7822,1.3476 18.7822,2.3916 L18.7822,2.3916 Z" id="Stroke-5478"></path>
+                        <path d="M27.6084,6.1738 C27.6084,7.2188 25.9154,8.0658 23.8264,8.0658 C21.7374,8.0658 20.0434,7.2188 20.0434,6.1738 C20.0434,5.1298 21.7374,4.2818 23.8264,4.2818 C25.9154,4.2818 27.6084,5.1298 27.6084,6.1738 L27.6084,6.1738 Z" id="Stroke-5479"></path>
+                        <path d="M10.5869,6.1738 C10.5869,7.2188 8.8939,8.0658 6.8049,8.0658 C4.7149,8.0658 3.0219,7.2188 3.0219,6.1738 C3.0219,5.1298 4.7149,4.2818 6.8049,4.2818 C8.8939,4.2818 10.5869,5.1298 10.5869,6.1738 L10.5869,6.1738 Z" id="Stroke-5480"></path>
+                        <path d="M3.7451,7.2842 L0.5001,8.5002" id="Stroke-5481"></path>
+                        <path d="M12.1475,3.6328 L9.4295,4.8138" id="Stroke-5482"></path>
+                        <path d="M20.9189,4.9644 L17.8509,3.6314" id="Stroke-5483"></path>
+                        <path d="M29.5,8.5 L26.6,7.436" id="Stroke-5484"></path>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>
