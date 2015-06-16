@@ -35,6 +35,20 @@ var CommentIcon = React.createClass({
     }
 });
 
+var DropbackIcon = React.createClass({
+    render: function() {
+        return (
+            <svg className='dropbackIcon' width="14px" height="24px" viewBox="0 0 14 23" version="1.1">
+            <g id="UI" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+            <g id="angle1-copy-3" transform="translate(6.500000, 11.727273) rotate(90.000000) translate(-6.500000, -11.727273) translate(-5.000000, 4.727273)" fill="#2F4B6B">
+            <path d="M21.874649,1.48404626 L20.7743234,0.34128673 C20.6276314,0.188656928 20.4587869,0.112622596 20.2677901,0.112622596 C20.0773335,0.112622596 19.9084891,0.188656928 19.761797,0.34128673 L11.1115578,9.32484123 L2.46158875,0.3415673 C2.31489669,0.188937497 2.14605223,0.112903166 1.95532553,0.112903166 C1.76459884,0.112903166 1.59575438,0.188937497 1.44906231,0.3415673 L0.34873676,1.48432683 C0.201774545,1.63667607 0.128563589,1.812032 0.128563589,2.01011406 C0.128563589,2.20819612 0.202044696,2.38355205 0.34873676,2.53590128 L10.6052946,13.1882831 C10.7519866,13.3406323 10.9208311,13.4166667 11.1115578,13.4166667 C11.3022845,13.4166667 11.4708588,13.3406323 11.6175509,13.1882831 L21.874649,2.53590128 C22.0213411,2.38355205 22.0942819,2.20819612 22.0942819,2.01011406 C22.0942819,1.812032 22.0213411,1.63667607 21.874649,1.48404626 L21.874649,1.48404626 Z" id="Shape"></path>
+            </g>
+            </g>
+            </svg>
+        );
+    }
+});
+
 var DropdownIcon = React.createClass({
     render: function() {
         return (
@@ -58,7 +72,7 @@ var SidebarViewSelector = React.createClass({
 });
 
 var NewTicketView = React.createClass({
-    getInitialState: function() { 
+    getInitialState: function() {
         return { filterText: '' };
     },
     handleUserInput: function(filterText) {
@@ -68,7 +82,7 @@ var NewTicketView = React.createClass({
         return (
             <div id='mainContent'>
             <SearchBar filterText={this.state.filterText} onUserInput={this.handleUserInput}/>
-            <NewTicketList tickets={this.props.tickets} filterText={this.state.filterText}/>
+            <NewTicketList tickets={this.props.tickets} filterText={this.state.filterText}/>;
             </div>);
     }
 });
@@ -77,7 +91,7 @@ var FindTalentPanel = React.createClass({
     handleClick: function() {
        console.log(this);
        //alert('Finding talent, motherfucker.');
-    }, 
+    },
     render: function() {
         return (
             <td onClick={this.handleClick} className='findTalentPanel'>
@@ -109,8 +123,8 @@ var NewTicketList = React.createClass({
     render: function() {
         var all_tickets = [];
         this.props.tickets.forEach(function(ticket) {
-            if ( ticket.title.indexOf(this.props.filterText) == -1 ) { 
-                return; 
+            if ( ticket.title.indexOf(this.props.filterText) == -1 ) {
+                return;
             }
             all_tickets.push(<NewTicket ticket={ticket} key={ticket.date} />);
         }.bind(this));
@@ -137,8 +151,8 @@ var SearchBar = React.createClass({
 
 
 var ViewSelection = React.createClass({
-    selectView: function() { 
-        this.props.changeView( this.props.view.name ); 
+    selectView: function() {
+        this.props.changeView( this.props.view.name );
     },
     render: function() {
         var className = 'viewSelection';
@@ -157,7 +171,7 @@ var ViewSelection = React.createClass({
 var ViewList = React.createClass({
     render: function() {
         all_views = [];
-        this.props.views.forEach(function(view) { 
+        this.props.views.forEach(function(view) {
             all_views.push(<ViewSelection changeView={this.props.changeView} currentViewName={this.props.currentViewName} view={view}/>);
         }.bind(this));
         return (
@@ -181,12 +195,12 @@ var SidebarNav = React.createClass({
 
 var SidebarProfile = React.createClass({
     render: function() {
-        return ( 
+        return (
                 <div id='sidebarProfile'>
                 <img src={this.props.user.photo}/>
                 <span>{this.props.user.name}</span>
                 <DropdownIcon/>
-                </div> 
+                </div>
                );
     }
 });
@@ -201,6 +215,66 @@ var Sidebar = React.createClass({
                     <SidebarProfile user={this.props.user}/>
                 </div>
                );
+    }
+});
+
+var TicketHeader = React.createClass({
+    render: function() {
+        return (
+            <div id='ticketHeader'>
+                <DropbackIcon />
+                <span>{this.props.title}</span>
+                <button>Find Talent</button>
+            </div>
+        );
+    }
+});
+
+var CommentList = React.createClass({
+    render: function() {
+        all_comments = [];
+        this.props.comments.forEach(function(comment) {
+            all_comments.push(
+                <div className='comment'>
+                    <div className='photo'>
+                        <img src='img/andrew.png'/>
+                    </div>
+                    <div className='content'>
+                        <div className='name'>{comment.name}</div>
+                        <div className='date'>{comment.date}</div>
+                        <div className='text'>{comment.text}</div>
+                    </div>
+                </div>
+            );
+        });
+        return ( <div id='commentList'> {all_comments} </div>);
+    }
+});
+
+var TicketInfo = React.createClass({
+    render: function() {
+        return (
+            <div>
+            <CommentList comments={this.props.comments} />
+            </div>
+        );
+    }
+});
+
+var SingleTicket = React.createClass({
+    getInitialState: function() {
+        return { view: 'viewingComments' }
+    },
+    render: function() {
+        return (
+            <div id='mainContent'>
+                <div id='singleTicket'>
+                    <TicketHeader title={this.props.ticket.title} view={this.state.view}/>
+                    <CommentList comments={this.props.ticket.comments}/>
+                    <div id='newCommentBox'><textarea type='text' placeholder='Leave a comment'/></div>
+                </div>
+            </div>
+        );
     }
 });
 
@@ -222,7 +296,7 @@ var App = React.createClass({
         };
     },
     changeProject: function(organization, project) {
-        this.setState({ 
+        this.setState({
             organization: organization,
             project: project
         });
@@ -230,26 +304,35 @@ var App = React.createClass({
     changeView: function(viewName) {
         this.setState({ currentViewName: viewName });
     },
+
     render: function() {
         currentView = this.state.views.filter(function(view) { return view.name == this.state.currentViewName; }.bind(this))[0];
-        return ( 
+        return (
                 <div id='app'>
-                <Sidebar 
-                    organization={this.state.organization} 
-                    project={this.state.project} 
-                    user={this.state.user} 
-                    views={this.state.views} 
+                <Sidebar
+                    organization={this.state.organization}
+                    project={this.state.project}
+                    user={this.state.user}
+                    views={this.state.views}
                     currentViewName={this.state.currentViewName}
                     changeView={this.changeView}
                 />
-                {currentView.element}
-                </div> 
+                <SingleTicket ticket={this.props.tickets[0]}/>
+                {/*currentView.element*/}
+                </div>
                );
     }
 });
 
+
+fakeComments = [
+    { name: 'Andrew Millspaugh', text: '@rapha, I\'m convinced that you were right regarding the composite primary keys being a better choice. However, in the few places where we are using composite primary keys right now, I don’t think the relationship is being properly referenced. See the SQLAlchemy documentation for proper reference of a composite foreign key.', date: 'June 12' },
+    { name: 'Raphael Goyran', text: 'What do you mean? Is this not correct (from job_fit model)? ```__table_args__ = ( DB.ForeignKeyConstraint( [contractor_id, ticket_set_id], [Nomination.contractor_id, Nomination.ticket_set_id], ondelete=\'CASCADE\'), {})```', date: 'June 12' },
+    { name: 'Andrew Millspaugh', text: 'Hmm, that does look correct. The one I was looking at is in the bid model. It indirectly references the auction and contractor ids through the nomination model, though it doesn’t specifically reference the nomination model. This should instead be switched to a reference like above. I guess I should\'ve actually looked into the places where this was happening.', date: 'June 12' },
+];
+
 var TICKETS = [
-    {title: 'Abstract out state machine event resource creation', date: '1', skillsRequired: 'Python | SQLAlchemy | Finite State Machine', comments: ['Foo','Bar']},
+    {title: 'Abstract out state machine event resource creation', date: '1', skillsRequired: 'Python | SQLAlchemy | Finite State Machine', comments: fakeComments},
     {title: 'For all ORM relationships that reference a table with composite foreign key, combine those keys into one relationship.', date: '2', skillsRequired: 'Python | SQLAlchemy | Finite State Machine', comments: ['Foo','Bar', 'Baz']},
     {title: 'Add permission checking to alveare REST object creation and update methods.', date: '3', skillsRequired: 'Python | SQLAlchemy | Finite State Machine', comments: ['Foo']},
     {title: 'Refactor auction ORM model to remove organization helper relationship.', date: '5', skillsRequired: 'Python | SQLAlchemy | Finite State Machine', comments: ['Foo','Bar','Baz','Qux']},

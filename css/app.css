@@ -14,6 +14,7 @@ html, body {
     width: 100%;
     margin: 0;
     background-color: hsla(204, 45%, 98%, 1);
+    color: hsla(215, 41%, 29%, 1);
 }
 
 table {
@@ -178,6 +179,124 @@ tbody {
 
 .newTicket:hover {
     background-color: hsla(200, 30%, 96%, 1);
+}
+
+#ticketHeader {
+    height: 50px;
+    width: 100%;
+    background-color: hsla(200, 30%, 96%, 1);
+    color: hsla(215, 41%, 29%, 1);
+    font-size: 16px;
+    line-height: 50px;
+}
+
+
+#ticketHeader > .dropbackIcon {
+    display: inline;
+    padding: 13px;
+    float: left;
+}
+
+#singleTicket {
+    height: 100%;
+    position: relative;
+}
+
+#newCommentBox {
+    width: 100%;
+    bottom: 0;
+    position: absolute;
+    height: 130px;
+    background-color: hsla(204, 45%, 98%, 1);
+}
+
+#newCommentBox > textarea {
+    margin: 20px;
+    margin-bottom: 15px;
+    height: calc(100% - 40px);
+    width: calc(100% - 40px);
+    resize: none;
+    border: 1px solid hsla(199, 19%, 78%, 1);
+    border-radius: 4px;
+    font-size: 14px;
+    padding: 14px;
+    box-sizing: border-box;
+    background-color: hsla(204, 45%, 99%, 1);
+}
+
+#commentList {
+    height: calc(100% - 130px - 50px);
+    overflow: auto;
+}
+
+.comment {
+    padding: 28px;
+    font-size: 18px;
+}
+
+.comment > .content {
+    display: inline;
+    float: left;
+    width: calc(100% - 50px);
+    padding-bottom: 25px;
+}
+
+.comment > .content > .name {
+    display: inline;
+    float: left;
+    margin: 7px;
+}
+
+.comment > .photo {
+    width: 50px;
+    float: left;
+    display: inline;
+    top: 0;
+    left: 0;
+    bottom: 0;
+}
+
+.comment > .photo > img {
+    padding: 7px;
+}
+
+.comment > .content > .date {
+    display: inline;
+    float: left;
+    color: hsla(211, 22%, 73%, 1);
+    margin: 7px;
+}
+
+.comment > .content > .text {
+    display: block;
+    float: left;
+    margin-left: 7px;
+    font-size: 14px;
+}
+
+
+#ticketHeader > span {
+    float: left;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+#ticketHeader > button {
+    float: right;
+    color: white;
+    background-color: hsla(166, 43%, 56%, 1);
+    border: none;
+    box-shadow: none;
+    padding-top: 7px;
+    padding-bottom: 7px;
+    padding-left: 14px;
+    padding-right: 14px;
+    font-size: 16px;
+    line-height: 16px;
+    border-radius: 3px;
+    vertical-align: middle;
+    margin: 10px;
 }
 
 #newTicketSearchBar {
