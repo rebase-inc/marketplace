@@ -175,7 +175,7 @@ var ViewSelection = React.createClass({
 
 var ViewList = React.createClass({
     render: function() {
-        all_views = [];
+        var all_views = [];
         this.props.views.forEach(function(view) {
             all_views.push(<ViewSelection changeView={this.props.changeView} currentViewName={this.props.currentViewName} view={view}/>);
         }.bind(this));
@@ -237,7 +237,7 @@ var TicketHeader = React.createClass({
 
 var CommentList = React.createClass({
     render: function() {
-        all_comments = [];
+        var all_comments = [];
         this.props.comments.forEach(function(comment) {
             all_comments.push(
                 <div className='comment'>
@@ -316,6 +316,7 @@ var AlveareApp = React.createClass({
         this.setState({ currentTicket: ticket });
     },
     render: function() {
+        var currentView;
         currentView = this.state.views.filter(function(view) { return view.name == this.state.currentViewName; }.bind(this))[0].element;
         if (this.state.currentTicket.title != undefined) { currentView = <SingleTicket ticket={this.state.currentTicket}/>; }
         return (
