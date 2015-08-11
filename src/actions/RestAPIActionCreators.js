@@ -1,5 +1,5 @@
-var AlveareAppDispatcher = require('../dispatcher/AlveareAppDispatcher');
-var AlveareConstants = require('../constants/AlveareConstants');
+var RebaseAppDispatcher = require('../dispatcher/RebaseAppDispatcher');
+var RebaseConstants = require('../constants/RebaseConstants');
 
 module.exports = {
     receiveAllNewTickets: function(newTickets) {

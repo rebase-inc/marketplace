@@ -69,7 +69,7 @@ var DropdownIcon = React.createClass({
 
 var SidebarViewSelector = React.createClass({
     render: function() {
-        return ( <div id='sidebarViewSelector'><span>alveare/api</span><DropdownIcon/></div>);
+        return ( <div id='sidebarViewSelector'><span>rebase/api</span><DropdownIcon/></div>);
     }
 });
 
@@ -215,7 +215,7 @@ var Sidebar = React.createClass({
     render: function() {
         return (
                 <div id='sidebar'>
-                    <img className='logo' src='img/logo.png' alt='Alveare Logo'></img>
+                    <img className='logo' src='img/logo.png' alt='Rebase Logo'></img>
                     <SidebarNav changeView={this.props.changeView} views={this.props.views} currentViewName={this.props.currentViewName}/>
                     <SidebarProfile user={this.props.user}/>
                 </div>
@@ -282,10 +282,10 @@ var SingleTicket = React.createClass({
         );
     }
 });
-var AlveareApp = React.createClass({
+var RebaseApp = React.createClass({
     getInitialState: function() {
         return {
-            organization: {name: 'alveare'},
+            organization: {name: 'rebase'},
             project: {name: 'api'},
             user: {
                 name: 'Andrew Millspaugh',
@@ -335,4 +335,4 @@ var AlveareApp = React.createClass({
     }
 });
 
-module.exports = AlveareApp;
+module.exports = RebaseApp;
