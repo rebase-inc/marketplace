@@ -1,8 +1,8 @@
 {
-  "name": "alveare-react",
+  "name": "rebase-react",
   "version": "0.0.1",
-  "description": "Web app for Alveare",
-  "repository": "https://github.com/alveare/app",
+  "description": "Web app for Rebase",
+  "repository": "https://github.com/rebase-inc/react-app",
   "main": "src/app.js",
   "dependencies": {
     "flux": "^2.0.1",

@@ -21,7 +21,7 @@ module.exports = {
                 comments: ['Foo','Bar', 'Baz']
             },
             {
-                title: 'Add permission checking to alveare REST object creation and up date methods.',
+                title: 'Add permission checking to rebase REST object creation and up date methods.',
                 date: '3',
                 skillsRequired: 'Python | SQLAlchemy | Finite State Machine',
                 comments: ['Foo']
