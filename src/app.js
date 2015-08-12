@@ -1,11 +1,14 @@
-
-var RebaseApp = require('./components/RebaseApp.react');
-var DemoData = require('./DemoData');
 var React = require('react');
 var keyMirror = require('keymirror');
+
+var MockData = require('./MockData');
+var RebaseApp = require('./components/RebaseApp.react');
+var TicketApi = require('./utils/TicketApi')
+
 window.React = React; // export for http://fb.me/react-devtools
 
-DemoData.init();
+MockData.init();
+TicketApi.getTicketData();
 
 var _developerViews = [
     { name: 'Offered', icon: 'img/new-waiting-24px.svg'},

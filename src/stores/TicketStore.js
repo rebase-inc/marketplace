@@ -9,12 +9,13 @@ var _tickets = JSON.parse(localStorage.getItem('newTickets'));
 var _selected = null;
 
 // Method to load ticket data from mock API
-function loadTicketData(data) { _tickets = data; }
+function loadNewTicketData(newTickets) { _tickets = newTickets; }
+
+// These are junk for now
 function setSelected(index) { _selected = _tickets[index]; }
 function newComment(text) { alert('new comment!: ' + text); }
 
 var TicketStore = _.extend({}, EventEmitter.prototype, {
-
     getTickets: function() { return _tickets; },
     getSelected: function() { return _selected; },
 

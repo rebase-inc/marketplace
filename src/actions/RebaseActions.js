@@ -2,7 +2,7 @@ var RebaseAppDispatcher = require('../dispatcher/RebaseAppDispatcher');
 var RebaseConstants = require('../constants/RebaseConstants');
 
 module.exports = {
-    receiveAllNewTickets: function(newTickets) {
+    receiveNewTickets: function(newTickets) {
         RebaseAppDispatcher.handleAction({
             type: RebaseConstants.RECEIVE_DATA,
             newTickets: newTickets
