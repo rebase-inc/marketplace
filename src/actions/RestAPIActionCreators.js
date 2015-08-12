@@ -3,9 +3,15 @@ var RebaseConstants = require('../constants/RebaseConstants');
 
 module.exports = {
     receiveAllNewTickets: function(newTickets) {
-        ChatAppDispatcher.dispatch({
-            type: ActionTypes.RECEIVE_NEW_TICKETS,
+        RebaseAppDispatcher.handleAction({
+            type: RebaseConstants.RECEIVE_DATA,
             newTickets: newTickets
+        });
+    },
+    commentOnIssue: function(commentText) {
+        RebaseAppDispatcher.handleAction({
+            type: RebaseConstants.NEW_COMMENT,
+            commentText: commentText
         });
     }
 };

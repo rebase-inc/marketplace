@@ -6,13 +6,14 @@
   "main": "src/app.js",
   "dependencies": {
     "flux": "^2.0.1",
-    "react": "^0.12.0",
+    "react": "",
+    "underscore": "",
     "keymirror": "~0.1.0"
   },
   "devDependencies": {
     "babelify": "^6.1.3",
     "browserify": "^6.2.0",
-    "react": "^0.12.2",
+    "react": "",
     "watchify": "^2.1.1"
   },
   "scripts": {

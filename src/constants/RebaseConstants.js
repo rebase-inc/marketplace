@@ -1,5 +1,7 @@
 var keyMirror = require('keymirror');
 
-module.exports = {
-    ActionTypes: keyMirror({ RECEIVE_NEW_MESSAGES: null })
-};
+module.exports = keyMirror({
+    NEW_COMMENT: null,     // Comment on a ticket 
+    SELECT_TICKET: null,   // Select a ticket 
+    RECEIVE_DATA: null,    // Loads our mock data
+});

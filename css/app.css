@@ -24,7 +24,7 @@ table {
     width: 100%;
 }
 
-#sidebarViewSelector {
+#roleSelector {
     width: 100%;
     height: 40px;
     background-color: hsla(212, 22%, 33%, 1);
@@ -41,16 +41,16 @@ table {
     margin-bottom: 28px;
 }
 
-#sidebarViewSelector .dropdownIcon {
+#roleSelector .dropdownIcon {
     margin-left: 6px;
 }
 
-#sidebarViewSelector {
+#roleSelector {
     opacity: .80;
     cursor: pointer;
 }
 
-#sidebarViewSelector:hover {
+#roleSelector:hover {
     opacity: 1;
 }
 
@@ -158,7 +158,7 @@ tbody {
     background-color: hsla(212, 40%, 18%, 1);
 }
 
-#mainContent {
+.mainContent {
     display: block;
     float: left;
     width: calc(100% - 200px);
