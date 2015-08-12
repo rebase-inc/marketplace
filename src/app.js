@@ -24,20 +24,15 @@ var _views = {
     manager: _managerViews
 }
 
+var _user = {
+    name: 'Andrew Millspaugh',
+    photo: 'img/andrew.png',
+    roles: [
+        { id: 4, type: 'developer' },
+        { id: 8, type: 'manager', organization: 'rebase', project: 'api' }
+    ],
+}
 
-var appState = {
-    user: {
-        name: 'Andrew Millspaugh',
-        photo: 'img/andrew.png',
-        roles: [
-            { id: 4, type: 'developer' },
-            { id: 8, type: 'manager', organization: 'rebase', project: 'api' }
-        ],
-    },
-    viewState: {
-        currentRole: 0,
-        currentView: 0,
-    }
-};
+var _viewState = { currentRole: 0, currentView: 0 }
 
-React.render(<RebaseApp appState={appState} views={_views}/>, document.body);
+React.render(<RebaseApp user={_user} views={_views} viewState={_viewState}/>, document.body);
