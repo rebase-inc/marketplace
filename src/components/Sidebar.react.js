@@ -6,7 +6,7 @@ var Sidebar = React.createClass({
         return (
             <div id='sidebar'>
             <img className='logo' src='img/logo.svg' alt='Rebase Logo'/>
-            <SidebarNav user={this.props.user} viewState={this.props.viewState} views={this.props.views}/>
+            <SidebarNav currentView={this.props.currentView} user={this.props.user} viewState={this.props.viewState} views={this.props.views} changeView={this.props.changeView}/>
             <SidebarProfile user={this.props.user} />
             </div>
         );
@@ -19,7 +19,7 @@ var SidebarNav = React.createClass({
         var roleDisplay, views;
         var selectedRole = this.props.user.roles[_selectedRoleIndex];
         if (selectedRole.type == 'developer') {
-            roleDisplay = 'Developer Role';
+            roleDisplay = 'Developer View';
             views = this.props.views.developer;
         }
         else if (selectedRole.type == 'manager') {
@@ -33,9 +33,7 @@ var SidebarNav = React.createClass({
             <div id='sidebarNav'>
             <RoleSelector user={this.props.user} role={roleDisplay} />
             <div id='viewList'>
-            {views.map(
-                function(data, i) { return (<ViewSelection view={data}/>); }
-            )}
+            {views.map( function(data, i) { return (<ViewSelection currentView={this.props.currentView} changeView={this.props.changeView} view={data}/>); }.bind(this))}
             </div>
             </div>
         );
@@ -73,7 +71,7 @@ var ViewSelection = React.createClass({
     },
     render: function() {
         var className = 'viewSelection';
-        if (this.props.view.name == this.props.currentViewName) { className = className + ' selected'; }
+        if (this.props.view.name == this.props.currentView) { className = className + ' selected'; }
         return (
             <div className={className} onClick={this.selectView}>
             <span className='viewIcon'>

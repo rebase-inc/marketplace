@@ -15,54 +15,63 @@ module.exports = {
             {
                 title: 'Abstract out state machine event resource creation',
                 date: '1',
+                id: '1',
                 skillsRequired: 'Python | SQLAlchemy | Finite State Machine',
                 comments: fakeComments
             },
             {
                 title: 'For all ORM relationships that reference a table with composite foreign key, combine those keys into one relationship.',
                 date: '2',
+                id: '2',
                 skillsRequired: 'Python | SQLAlchemy | Finite State Machine',
                 comments: fakeComments
             },
             {
                 title: 'Add permission checking to rebase REST object creation and up date methods.',
                 date: '3',
+                id: '3',
                 skillsRequired: 'Python | SQLAlchemy | Finite State Machine',
                 comments: fakeComments
             },
             {
                 title: 'Refactor auction ORM model to remove organization helper relationship.',
                 date: '5',
+                id: '5',
                 skillsRequired: 'Python | SQLAlchemy | Finite State Machine',
                 comments: fakeComments
             },
             {
                 title: 'Change bank account model initialization method to take a generic owner parameter.',
                 date: '4',
+                id: '4',
                 skillsRequired: 'Python | SQLAlchemy | Finite State Machine',
                 comments: fakeComments
             },
             {
                 title: 'Do this one thing and then the other thing so we have more things to do.',
                 date: '6',
+                id: '6',
                 skillsRequired: 'Python | SQLAlchemy | Finite State Machine',
                 comments: fakeComments
             },
             {
                 title: 'Delete every line of code from the codebase, destroy everybody\'s computers, and delete our github accounts.',
                 date: '7',
+                id: '7',
                 skillsRequired: 'Python | SQLAlchemy | Finite State Machine',
                 comments: fakeComments
             },
             {
                 title: 'Play with the quadcopter for 10-15 hours.',
                 date: '8',
+                id: '8',
                 skillsRequired: 'Python | SQLAlchemy | Finite State Machine',
                 comments: fakeComments
             },
             {
                 title: 'Build some really cool software, get a bunch of people to use it, and make a billion dollars.',
                 date: '9',
+                id: '9',
                 skillsRequired: 'Python | SQLAlchemy | Finite State Machine',
                 comments: fakeComments
             },

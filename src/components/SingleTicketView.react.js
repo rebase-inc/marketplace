@@ -1,16 +1,75 @@
+var React = require('react');
+var TicketStore = require('../stores/TicketStore');
 
-var SingleTicket = React.createClass({
+var RebaseActions = require('../actions/RebaseActions');
+var Icons = require('../components/RebaseIcons.react');
+
+var SingleTicketView = React.createClass({
     getInitialState: function() {
         return { view: 'viewingComments' }
     },
+
     render: function() {
         return (
             <div id='singleTicketView' className='mainContent'>
             <div id='singleTicket'>
-            <TicketHeader title={this.props.ticket.title} view={this.state.view}/>
+            <TicketHeader goBack={this.props.goBack} title={this.props.ticket.title} view={this.state.view}/>
             <CommentList comments={this.props.ticket.comments}/>
-            <div id='newCommentBox'><textarea type='text' placeholder='Leave a comment'/></div>
+            <CommentBox ticketId={this.props.ticket.id} />
             </div>
+            </div>
+        );
+    }
+});
+
+var CommentBox = React.createClass({
+    getInitialState: function() {
+        return {
+            inProgress: false,
+            commentText: '',
+        }
+    },
+
+    startComment: function() {
+        this.setState({inProgress: true});
+    },
+
+    exitComment: function() {
+        this.setState({inProgress: false});
+    },
+
+    cancelComment: function() {
+        this.setState({
+            inProgress: false,
+            commentText: ''
+        });
+    },
+
+    submitComment: function() {
+        RebaseActions.commentOnIssue(this.props.ticketId, this.state.commentText)
+        this.cancelComment();
+    },
+
+    handleInput: function() {
+        this.setState({ commentText: this.refs.commentText.getDOMNode().value });
+    },
+
+    render: function() {
+        var buttons;
+        var className;
+        if (this.state.inProgress || !!this.state.commentText) {
+            buttons = (
+                <div id='commentSubmissionButtons'>
+                <button onClick={this.submitComment}>Comment</button>
+                <button onClick={this.cancelComment}>Cancel</button>
+                </div>
+            );
+            className = 'inProgress';
+        }
+        return (
+            <div id='newCommentBox' className={className}>
+            <textarea value={this.state.commentText} ref='commentText' onFocus={this.startComment} onBlur={this.exitComment} onChange={this.handleInput} type='text' placeholder='Leave a comment' />
+            { buttons }
             </div>
         );
     }
@@ -27,6 +86,21 @@ var TicketInfo = React.createClass({
 });
 
 var CommentList = React.createClass({
+    componentWillUpdate: function() {
+        var node = this.getDOMNode();
+        this.shouldScrollBottom = node.scrollTop + node.offsetHeight === node.scrollHeight;
+    },
+    componentDidUpdate: function() {
+        if (this.shouldScrollBottom) {
+            var node = this.getDOMNode();
+            node.scrollTop = node.scrollHeight
+        }
+    },
+    componentDidMount: function() {
+        console.log('mounted');
+        var node = this.getDOMNode();
+        node.scrollTop = node.scrollHeight
+    },
     render: function() {
         var all_comments = [];
         this.props.comments.forEach(function(comment) {
@@ -47,3 +121,19 @@ var CommentList = React.createClass({
     }
 });
 
+var TicketHeader = React.createClass({
+    render: function() {
+        return (
+            <div id='ticketHeader'>
+                <div onClick={this.props.goBack} className='backButton'>
+                <Icons.Dropback/>
+                </div>
+                <span>{this.props.title}</span>
+                <button>Find Talent</button>
+            </div>
+        );
+    }
+});
+
+
+module.exports = SingleTicketView;

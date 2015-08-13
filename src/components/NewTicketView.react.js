@@ -51,18 +51,6 @@ var NewTicket = React.createClass({
     }
 });
 
-var TicketHeader = React.createClass({
-    render: function() {
-        return (
-            <div id='ticketHeader'>
-                <DropbackIcon />
-                <span>{this.props.title}</span>
-                <button>Find Talent</button>
-            </div>
-        );
-    }
-});
-
 var FindTalentPanel = React.createClass({
     handleClick: function() { alert('Finding talent, motherfucker.'); },
     render: function() {

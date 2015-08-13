@@ -5,13 +5,14 @@ module.exports = {
     receiveNewTickets: function(newTickets) {
         RebaseAppDispatcher.handleAction({
             type: RebaseConstants.RECEIVE_DATA,
-            newTickets: newTickets
+            data: newTickets
         });
     },
-    commentOnIssue: function(commentText) {
+    commentOnIssue: function(ticketId, text) {
         RebaseAppDispatcher.handleAction({
             type: RebaseConstants.NEW_COMMENT,
-            commentText: commentText
+            ticketId: ticketId,
+            text: text
         });
     }
 };

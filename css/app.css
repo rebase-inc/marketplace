@@ -93,19 +93,19 @@ table {
 }
 
 .findTalentPanel:hover svg path {
-    fill: hsla(167, 72%, 60%, 1);
+    fill: hsla(167, 54%, 53%, 1)
 }
 
 .findTalentPanel.darken svg path {
-    fill: hsla(167, 72%, 20%, 1);
+    fill: hsla(167, 54%, 53%, 1)
 }
 
 .findTalentPanel:hover {
-    color: hsla(167, 72%, 60%, 1);
+    color: hsla(167, 54%, 53%, 1)
 }
 
 .findTalentPanel.darken {
-    color: hsla(167, 72%, 20%, 1);
+    color: hsla(167, 54%, 53%, 1)
 }
 
 .commentsPanel:hover svg path {
@@ -191,9 +191,22 @@ tbody {
 }
 
 
-#ticketHeader > .dropbackIcon {
+#ticketHeader .dropbackIcon {
     display: inline;
     padding: 13px;
+    float: left;
+}
+
+#ticketHeader > .backButton {
+    cursor: pointer;
+}
+
+#ticketHeader > button {
+    cursor: pointer;
+}
+
+#ticketHeader > * {
+    display: inline;
     float: left;
 }
 
@@ -222,7 +235,44 @@ tbody {
     padding: 14px;
     box-sizing: border-box;
     background-color: hsla(204, 45%, 99%, 1);
+    float: left;
 }
+
+#newCommentBox.inProgress > textarea {
+    width: calc(100% - 160px);
+}
+
+#newCommentBox > #commentSubmissionButtons {
+    width: 100px;
+    height: calc(100% - 40px);
+    margin-top: 20px;
+    margin-bottom: 15px;
+    float: left;
+    display: inline-block;
+}
+
+#newCommentBox > #commentSubmissionButtons > button {
+    width: 100%;
+    height: calc(50% - 6px);
+    text-transform: uppercase;
+    border: none;
+    color: hsla(204, 45%, 98%, 1);
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+
+#newCommentBox > #commentSubmissionButtons > button:first-of-type {
+    margin-bottom: 6px;
+    background-color: hsla(166, 43%, 56%, 1);
+}
+
+#newCommentBox > #commentSubmissionButtons > button:last-of-type {
+    margin-top: 6px;
+    background-color: hsla(204, 8%, 88%, 1);
+}
+
+
 
 #commentList {
     height: calc(100% - 130px - 50px);
@@ -230,8 +280,14 @@ tbody {
 }
 
 .comment {
-    padding: 28px;
+    overflow: auto;
+    padding-left: 28px;
+    padding-right: 28px;
     font-size: 18px;
+}
+
+.comment:first-of-type {
+    padding-top: 28px;
 }
 
 .comment > .content {
@@ -281,6 +337,7 @@ tbody {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    width: calc(100% - 180px);
 }
 
 #ticketHeader > button {
