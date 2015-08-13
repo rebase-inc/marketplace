@@ -15,8 +15,6 @@ function loadNewTicketData(newTickets) {
 }
 
 function newComment(ticketId, text) {
-    console.log('we got a new comment on #' + ticketId + '!: ' + text);
-    console.log(_tickets);
     //var ticketInd = _tickets.findIndex(function(ind, el) { return el.id === ticketId });
 
     var ticketInd;

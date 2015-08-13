@@ -13,6 +13,7 @@ function getState() {
         newTickets: TicketStore.getTickets(),
         currentView: 'Offered',
         currentTicket: null,
+        currentRole: 0,
     }
 }
 
@@ -23,7 +24,6 @@ var RebaseApp = React.createClass({
 
     changeView: function(viewName) {
         this.setState({ currentView: viewName , currentTicket: null });
-        console.log('changing current view to ' + viewName);
     },
 
     _onChange: function() {
@@ -49,31 +49,45 @@ var RebaseApp = React.createClass({
     unselectTicket: function() {
         this.selectTicket(null);
     },
+    changeRole: function() {
+        //temp hack and a symptom of not storing the state in the correct place
+        var newRole = (this.state.currentRole + 1) % this.props.user.roles.length;
+        var startingView = {
+            developer: 'Offered',
+            manager: 'New/Waiting'
+        }
+        var roleType = this.props.user.roles[newRole].type;
+        this.setState({
+            currentRole: newRole,
+            currentView: startingView[roleType]
+        });
+    },
 
     render: function() {
-        var role = this.props.user.roles[this.props.viewState.currentRole].type;
         var currentViewElement;
-        switch (this.state.currentView) {
-            case 'Offered':
-                currentViewElement = <NewTicketView tickets={this.state.newTickets} selectTicket={this.selectTicket}/>;
-                currentViewElement = <OfferedTicketView tickets={this.state.newTickets} selectTicket={this.selectTicket}/>;
-            break;
-            case 'In Progress':
-                currentViewElement = <div>IN PROGRESS</div>;
-            break;
-            case 'Completed':
-                currentViewElement = <div>COMPLETED</div>;
-            break;
-            default:
-                currentViewElement = <div>ERROR!!!</div>;
-            break;
+        var currentRole = this.props.user.roles[this.state.currentRole].type;
+        var viewElements = {
+            developer: {
+                'Offered': (<OfferedTicketView tickets={this.state.newTickets} selectTicket={this.selectTicket}/>),
+                'In Progress': (<div>IN PROGRESS</div>),
+                'Completed': (<div>COMPLETED</div>),
+            },
+            manager: {
+                'New/Waiting': (<NewTicketView tickets={this.state.newTickets} selectTicket={this.selectTicket}/>),
+                'In Progress': (<div>IN PROGRESS</div>),
+                'Completed': (<div>COMPLETED</div>),
+            },
         }
         if (!!this.state.currentTicket) {
             currentViewElement = <SingleTicketView goBack={this.unselectTicket} ticket={this.state.currentTicket}/>;
         }
+        else {
+            currentViewElement = viewElements[currentRole][this.state.currentView];
+        }
+        // passing this.state through below into the viewState prop is a huge hack that needs to be fixed
         return (
             <div id='app'>
-            <Sidebar user={this.props.user} currentView={this.state.currentView} viewState={this.props.viewState} views={this.props.views} changeView={this.changeView}/>
+            <Sidebar user={this.props.user} currentView={this.state.currentView} viewState={this.state} changeRole={this.changeRole} views={this.props.views} changeView={this.changeView}/>
             { currentViewElement }
             </div>
         );

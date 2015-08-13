@@ -36,6 +36,5 @@ var _user = {
     ],
 }
 
-var _viewState = { currentRole: 0, currentView: 0 }
 
 React.render(<RebaseApp user={_user} views={_views} viewState={_viewState}/>, document.body);

@@ -4,9 +4,9 @@ var Icons = require('../components/RebaseIcons.react');
 var Sidebar = React.createClass({
     render: function() {
         return (
-            <div id='sidebar'>
+            <div id='sidebar' className='noselect'>
             <img className='logo' src='img/logo.svg' alt='Rebase Logo'/>
-            <SidebarNav currentView={this.props.currentView} user={this.props.user} viewState={this.props.viewState} views={this.props.views} changeView={this.props.changeView}/>
+            <SidebarNav changeRole={this.props.changeRole} currentView={this.props.currentView} user={this.props.user} viewState={this.props.viewState} views={this.props.views} changeView={this.props.changeView}/>
             <SidebarProfile user={this.props.user} />
             </div>
         );
@@ -17,7 +17,7 @@ var SidebarNav = React.createClass({
 
     render: function() {
         var roleDisplay, views;
-        var selectedRole = this.props.user.roles[_selectedRoleIndex];
+        var selectedRole = this.props.user.roles[this.props.viewState.currentRole];
         if (selectedRole.type == 'developer') {
             roleDisplay = 'Developer View';
             views = this.props.views.developer;
@@ -31,7 +31,7 @@ var SidebarNav = React.createClass({
         }
         return (
             <div id='sidebarNav'>
-            <RoleSelector user={this.props.user} role={roleDisplay} />
+            <RoleSelector changeRole={this.props.changeRole} user={this.props.user} role={roleDisplay} />
             <div id='viewList'>
             {views.map( function(data, i) { return (<ViewSelection currentView={this.props.currentView} changeView={this.props.changeView} view={data}/>); }.bind(this))}
             </div>
@@ -52,12 +52,10 @@ var SidebarProfile = React.createClass({
     }
 });
 
-var _selectedRoleIndex = 0;
-
 var RoleSelector = React.createClass({
     render: function() {
         return (
-            <div id='roleSelector'>
+            <div id='roleSelector' onClick={this.props.changeRole}>
             <span> {this.props.role} </span>
             <Icons.Dropdown />
             </div>
