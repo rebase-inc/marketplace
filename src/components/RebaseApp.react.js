@@ -46,9 +46,8 @@ var RebaseApp = React.createClass({
     unselectTicket: function() {
         this.selectTicket(null);
     },
-    changeRole: function() {
+    changeRole: function(newRole) {
         //temp hack and a symptom of not storing the state in the correct place
-        var newRole = (this.state.currentRole + 1) % this.props.user.roles.length;
         var startingView = {
             developer: 'Offered',
             manager: 'New/Waiting'

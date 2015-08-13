@@ -32,7 +32,9 @@ var _user = {
     photo: 'img/andrew.png',
     roles: [
         { id: 4, type: 'developer' },
-        { id: 8, type: 'manager', organization: 'rebase', project: 'api' }
+        { id: 8, type: 'manager', organization: 'rebase', project: 'api' },
+        { id: 8, type: 'manager', organization: 'rebase', project: 'react-app' },
+        { id: 8, type: 'manager', organization: 'rebase', project: 'marketing' },
     ],
 }
 
