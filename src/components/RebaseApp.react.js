@@ -4,6 +4,7 @@ var _ = require('underscore');
 var Icons = require('../components/RebaseIcons.react');
 var Sidebar = require('../components/Sidebar.react');
 var NewTicketView = require('../components/NewTicketView.react');
+var OfferedTicketView = require('../components/OfferedTicketView.react');
 var SingleTicketView = require('../components/SingleTicketView.react');
 var TicketStore = require('../stores/TicketStore');
 
@@ -55,6 +56,7 @@ var RebaseApp = React.createClass({
         switch (this.state.currentView) {
             case 'Offered':
                 currentViewElement = <NewTicketView tickets={this.state.newTickets} selectTicket={this.selectTicket}/>;
+                currentViewElement = <OfferedTicketView tickets={this.state.newTickets} selectTicket={this.selectTicket}/>;
             break;
             case 'In Progress':
                 currentViewElement = <div>IN PROGRESS</div>;

@@ -92,6 +92,17 @@ table {
     cursor: pointer;
 }
 
+.projectInfoPanel {
+    text-align: center;
+    cursor: pointer;
+    width: 150px;
+}
+
+.projectInfoPanel > span {
+    width: 100%;
+    display: block;
+}
+
 .findTalentPanel:hover svg path {
     fill: hsla(167, 54%, 53%, 1)
 }
@@ -165,19 +176,19 @@ tbody {
     height: 100%;
 }
 
-#newTicketList {
+#newTicketList, #offeredTicketList {
     overflow: auto;
     width: 100%;
 }
 
-.newTicket {
+.newTicket, .offeredTicket {
     display: table-row;
     width: 100%;
     height: 80px;
     border: 1px solid hsla(165, 5%, 83%, 1);
 }
 
-.newTicket:hover {
+.newTicket:hover, .offeredTicket:hover {
     background-color: hsla(200, 30%, 96%, 1);
 }
 
@@ -357,7 +368,7 @@ tbody {
     margin: 10px;
 }
 
-#newTicketSearchBar {
+#newTicketSearchBar, #offeredTicketSearchBar {
     width: 100%;
     padding: 9px;
     box-sizing: border-box;
@@ -368,7 +379,7 @@ tbody {
     color: hsla(217, 18%, 81%, 1);
 }
 
-#newTicketSearchBar > input {
+#newTicketSearchBar > input, #offeredTicketSearchBar > input {
     height: 26px;
     font-size: 14px;
     line-height: 20px;

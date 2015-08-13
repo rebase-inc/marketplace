@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="66px" height="10px" viewBox="0 0 66 10" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns">
+    <!-- Generator: Sketch 3.3.3 (12072) - http://www.bohemiancoding.com/sketch -->
+    <title>Group Copy</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="UI" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" sketch:type="MSPage">
+        <g id="Dev-Offered-Tickets" sketch:type="MSArtboardGroup" transform="translate(-405.000000, -156.000000)" fill="#47C8AB">
+            <g id="Dev-Offered-Ticket-Copy-3" sketch:type="MSLayerGroup" transform="translate(325.000000, 89.000000)">
+                <g id="Andy-Dwyer-+-Group-Copy" transform="translate(16.000000, 42.000000)" sketch:type="MSShapeGroup">
+                    <g id="Group-Copy" transform="translate(64.750000, 24.500000)">
+                        <g id="One-star-5" transform="translate(60.582524, 0.000000)">
+                            <ellipse cx="4.41747573" cy="5.68421053" rx="4.41747573" ry="4.42105263"></ellipse>
+                        </g>
+                        <ellipse id="One-star-4" cx="49.8543689" cy="5.68421053" rx="4.41747573" ry="4.42105263"></ellipse>
+                        <ellipse id="One-star-3" cx="34.7087379" cy="5.68421053" rx="4.41747573" ry="4.42105263"></ellipse>
+                        <ellipse id="One-star-2" cx="19.5631068" cy="5.68421053" rx="4.41747573" ry="4.42105263"></ellipse>
+                        <ellipse id="One-star-Copy" cx="4.41747573" cy="5.68421053" rx="4.41747573" ry="4.42105263"></ellipse>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>
