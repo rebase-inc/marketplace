@@ -18,9 +18,6 @@ function getState() {
 }
 
 var RebaseApp = React.createClass({
-    _onChange: function() { console.log('on change!'); },
-    componentDidMount: function() { TicketStore.addChangeListener(this._onChange); },
-    componentWillUnmount: function() { TicketStore.removeChangeListener(this._onChange); },
 
     changeView: function(viewName) {
         this.setState({ currentView: viewName , currentTicket: null });

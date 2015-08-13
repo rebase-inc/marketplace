@@ -37,4 +37,4 @@ var _user = {
 }
 
 
-React.render(<RebaseApp user={_user} views={_views} viewState={_viewState}/>, document.body);
+React.render(<RebaseApp user={_user} views={_views} />, document.body);
