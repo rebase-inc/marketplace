@@ -1,6 +1,6 @@
 var RebaseAppDispatcher = require('../dispatcher/RebaseAppDispatcher');
 var EventEmitter = require('events').EventEmitter;
-var RebaseConstants = require('../constants/RebaseConstants');
+var ActionConstants = require('../constants/ActionConstants');
 var _ = require('underscore');
 
 //Define initial data points
@@ -46,9 +46,9 @@ RebaseAppDispatcher.register(function(payload) {
     var action = payload.action;
 
     switch(action.type) {
-        case RebaseConstants.RECEIVE_DATA: loadNewTicketData(action.data); break;
-        case RebaseConstants.SELECT_TICKET: setSelected(action.data); break;
-        case RebaseConstants.NEW_COMMENT: newComment(action.ticketId, action.text); break;
+        case ActionConstants.RECEIVE_DATA: loadNewTicketData(action.data); break;
+        case ActionConstants.SELECT_TICKET: setSelected(action.data); break;
+        case ActionConstants.NEW_COMMENT: newComment(action.ticketId, action.text); break;
         default: return true;
     }
 

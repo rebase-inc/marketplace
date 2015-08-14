@@ -1,16 +1,16 @@
 var RebaseAppDispatcher = require('../dispatcher/RebaseAppDispatcher');
-var RebaseConstants = require('../constants/RebaseConstants');
+var ActionConstants = require('../constants/ActionConstants');
 
 module.exports = {
     receiveNewTickets: function(newTickets) {
         RebaseAppDispatcher.handleAction({
-            type: RebaseConstants.RECEIVE_DATA,
+            type: ActionConstants.RECEIVE_DATA,
             data: newTickets
         });
     },
     commentOnIssue: function(ticketId, text) {
         RebaseAppDispatcher.handleAction({
-            type: RebaseConstants.NEW_COMMENT,
+            type: ActionConstants.NEW_COMMENT,
             ticketId: ticketId,
             text: text
         });

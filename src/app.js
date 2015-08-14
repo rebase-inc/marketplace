@@ -10,33 +10,15 @@ window.React = React; // export for http://fb.me/react-devtools
 MockData.init();
 TicketApi.getTicketData();
 
-var _developerViews = [
-    { name: 'Offered', icon: 'img/new-waiting-24px.svg'},
-    { name: 'In Progress', icon: 'img/in-progress-24px.svg'},
-    { name: 'Completed', icon: 'img/completed-24px.svg'},
-]
-
-var _managerViews = [
-    { name: 'New/Waiting', icon: 'img/new-waiting-24px.svg'},
-    { name: 'In Progress', icon: 'img/in-progress-24px.svg'},
-    { name: 'Completed', icon: 'img/completed-24px.svg'},
-]
-
-var _views = {
-    developer: _developerViews,
-    manager: _managerViews
-}
-
 var _user = {
     name: 'Andrew Millspaugh',
     photo: 'img/andrew.png',
     roles: [
         { id: 4, type: 'developer' },
         { id: 8, type: 'manager', organization: 'rebase', project: 'api' },
-        { id: 8, type: 'manager', organization: 'rebase', project: 'react-app' },
-        { id: 8, type: 'manager', organization: 'rebase', project: 'marketing' },
-    ],
+        { id: 9, type: 'manager', organization: 'rebase', project: 'react-app' },
+        { id: 23, type: 'manager', organization: 'rebase', project: 'marketing' },
+    ]
 }
 
-
-React.render(<RebaseApp user={_user} views={_views} />, document.body);
+React.render(<RebaseApp user={_user} />, document.body);

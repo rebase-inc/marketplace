@@ -7,20 +7,19 @@ var NewTicketView = require('../components/NewTicketView.react');
 var OfferedTicketView = require('../components/OfferedTicketView.react');
 var SingleTicketView = require('../components/SingleTicketView.react');
 var TicketStore = require('../stores/TicketStore');
+var ViewsByRole = require('../constants/ViewConstants').ViewsByRole;
 
-function getState() {
+function getState(user) {
     return {
         newTickets: TicketStore.getTickets(),
-        currentView: 'Offered',
         currentTicket: null,
-        currentRole: 0,
     }
 }
 
 var RebaseApp = React.createClass({
 
-    changeView: function(viewName) {
-        this.setState({ currentView: viewName , currentTicket: null });
+    changeView: function(ind) {
+        this.setState({ currentView: ind , currentTicket: null });
     },
 
     _onChange: function() {
@@ -28,15 +27,14 @@ var RebaseApp = React.createClass({
     },
     componentDidMount: function() { TicketStore.addChangeListener(this._onChange); },
     componentWillUnmount: function() { TicketStore.removeChangeListener(this._onChange); },
-    //changeProject: function(organization, project) {
-        //this.setState({
-            //organization: organization,
-            //project: project
-        //});
-    //},
 
     getInitialState: function() {
-        return getState();
+        var currentRole = this.props.user.roles[0];
+        var currentView = ViewsByRole[currentRole.type][0];
+        return _.extend({
+            currentRole: currentRole, 
+            currentView: currentView,
+        }, getState(this.props.user));
     },
 
     selectTicket: function(ticket) {
@@ -47,43 +45,34 @@ var RebaseApp = React.createClass({
         this.selectTicket(null);
     },
     changeRole: function(newRole) {
-        //temp hack and a symptom of not storing the state in the correct place
-        var startingView = {
-            developer: 'Offered',
-            manager: 'New/Waiting'
-        }
-        var roleType = this.props.user.roles[newRole].type;
-        this.setState({
-            currentRole: newRole,
-            currentView: startingView[roleType]
-        });
+        this.setState({ currentRole: newRole });
     },
 
     render: function() {
         var currentViewElement;
-        var currentRole = this.props.user.roles[this.state.currentRole].type;
         var viewElements = {
-            developer: {
-                'Offered': (<OfferedTicketView tickets={this.state.newTickets} selectTicket={this.selectTicket}/>),
-                'In Progress': (<div>IN PROGRESS</div>),
-                'Completed': (<div>COMPLETED</div>),
-            },
-            manager: {
-                'New/Waiting': (<NewTicketView tickets={this.state.newTickets} selectTicket={this.selectTicket}/>),
-                'In Progress': (<div>IN PROGRESS</div>),
-                'Completed': (<div>COMPLETED</div>),
-            },
+            developer: [
+                (<OfferedTicketView tickets={this.state.newTickets} selectTicket={this.selectTicket}/>),
+                (<div>IN PROGRESS</div>),
+                (<div>COMPLETED</div>),
+            ],
+            manager: [
+                (<NewTicketView tickets={this.state.newTickets} selectTicket={this.selectTicket}/>),
+                (<div>IN PROGRESS</div>),
+                (<div>COMPLETED</div>),
+            ],
         }
         if (!!this.state.currentTicket) {
-            currentViewElement = <SingleTicketView goBack={this.unselectTicket} ticket={this.state.currentTicket}/>;
+            currentViewElement = <SingleTicketView unselectTicket={this.unselectTicket} ticket={this.state.currentTicket}/>;
         }
         else {
-            currentViewElement = viewElements[currentRole][this.state.currentView];
+            currentViewElement = viewElements[this.state.currentRole.type][this.state.currentView.id];
         }
-        // passing this.state through below into the viewState prop is a huge hack that needs to be fixed
         return (
             <div id='app'>
-            <Sidebar user={this.props.user} currentView={this.state.currentView} viewState={this.state} changeRole={this.changeRole} views={this.props.views} changeView={this.changeView}/>
+            <Sidebar user={this.props.user} 
+            currentRole={this.state.currentRole} changeRole={this.changeRole} 
+            currentView={this.state.currentView} changeView={this.changeView}/>
             { currentViewElement }
             </div>
         );

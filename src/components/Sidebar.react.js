@@ -1,12 +1,15 @@
 var React = require('react');
 var Icons = require('../components/RebaseIcons.react');
+var ViewsByRole = require('../constants/ViewConstants').ViewsByRole;
 
 var Sidebar = React.createClass({
     render: function() {
         return (
             <div id='sidebar' className='noselect'>
             <img className='logo' src='img/logo.svg' alt='Rebase Logo'/>
-            <SidebarNav changeRole={this.props.changeRole} currentView={this.props.currentView} user={this.props.user} viewState={this.props.viewState} views={this.props.views} changeView={this.props.changeView}/>
+            <SidebarNav user={this.props.user}
+            currentRole={this.props.currentRole} changeRole={this.props.changeRole} 
+            currentView={this.props.currentView} changeView={this.props.changeView} />
             <SidebarProfile user={this.props.user} />
             </div>
         );
@@ -16,24 +19,18 @@ var Sidebar = React.createClass({
 var SidebarNav = React.createClass({
 
     render: function() {
-        var roleDisplay, views;
-        var selectedRole = this.props.user.roles[this.props.viewState.currentRole];
-        if (selectedRole.type == 'developer') {
-            roleDisplay = 'Developer View';
-            views = this.props.views.developer;
-        }
-        else if (selectedRole.type == 'manager') {
-            roleDisplay = selectedRole.organization + '/' + selectedRole.project;
-            views = this.props.views.manager;
-        }
-        else {
-            roleDisplay = 'Unknown Role';
-        }
+        var allViews = ViewsByRole[this.props.currentRole.type].map( function(view) {
+            return (
+                <ViewSelection view={view} 
+                currentView={this.props.currentView} changeView={this.props.changeView} />
+            );
+        }.bind(this));
         return (
             <div id='sidebarNav'>
-            <RoleSelector viewState={this.props.viewState} changeRole={this.props.changeRole} user={this.props.user} role={roleDisplay} />
+            <RoleSelector user={this.props.user}
+            changeRole={this.props.changeRole} currentRole={this.props.currentRole} />
             <div id='viewList'>
-            {views.map( function(data, i) { return (<ViewSelection currentView={this.props.currentView} changeView={this.props.changeView} view={data}/>); }.bind(this))}
+            { allViews }
             </div>
             </div>
         );
@@ -63,13 +60,20 @@ var RoleSelector = React.createClass({
     render: function() {
         var dropdown;
         var className;
+        var roleDisplayName;
+        switch (this.props.currentRole.type) {
+            case 'developer': roleDisplayName = 'Developer View'; break;
+            case 'manager': roleDisplayName = this.props.currentRole.organization + '/' + this.props.currentRole.project; break;
+            default: roleDisplayName = 'Unknown Role'; break;
+        }
         if (this.state.dropdownOpen) {
-            dropdown = <RoleSelectorDropdown user={this.props.user} changeRole={this.props.changeRole} viewState={this.props.viewState} />;
+            dropdown = <RoleSelectorDropdown user={this.props.user} 
+            changeRole={this.props.changeRole} currentRole={this.props.currentRole} />;
             className = 'open';
         }
         return (
             <div id='roleSelector' className={className} onClick={this.toggleDropdown}>
-            <span> {this.props.role} </span>
+            <span> { roleDisplayName } </span>
             <Icons.Dropdown />
             { dropdown }
             </div>
@@ -82,16 +86,31 @@ var RoleSelectorDropdown = React.createClass({
        this.props.changeRole(2);
     },
     render: function() {
-        var developerRoles = this.props.user.roles.filter(function(el) { return el.type == 'developer'; });
         var managerRoles = this.props.user.roles.filter(function(el) { return el.type == 'manager'; });
-        var selectedRole = this.props.user.roles[this.props.viewState.currentRole];
+        var developerRoles = this.props.user.roles.filter(function(el) { return el.type == 'developer'; });
+        var managerRoleElements = managerRoles.map(function(role) {
+            return (
+                <li className={role == this.props.currentRole ? 'selected': ''}
+                onClick={function() { this.props.changeRole(role) }.bind(this)}>
+                {role.organization + '/' + role.project}
+                </li>
+            );
+        }.bind(this));
+        var developerRoleElements = developerRoles.map(function(role) {
+            return (
+                <li className={role == this.props.currentRole ? 'selected': ''}
+                onClick={function() { this.props.changeRole(role) }.bind(this)}>
+                {'Developer View'}
+                </li>
+            );
+        }.bind(this));
         return (
             <div id='roleSelectorDropdown'>
             <ul>
             <li className='header'>Manager</li>
-            { managerRoles.map(function(data, i) { return (<li onClick={this.selectRole} className={data == selectedRole ? 'selected': ''}>{data.organization + '/' + data.project}</li>) }.bind(this)) }
+            { managerRoleElements }
             <li className='header'>Developer</li>
-            { developerRoles.map(function(data, i) { return (<li onClick={this.selectRole} className={data == selectedRole ? 'selected': ''}>Developer View</li>) }.bind(this)) }
+            { developerRoleElements }
             </ul>
             </div>
         );
@@ -100,11 +119,11 @@ var RoleSelectorDropdown = React.createClass({
 
 var ViewSelection = React.createClass({
     selectView: function() {
-        this.props.changeView( this.props.view.name );
+        this.props.changeView( this.props.view );
     },
     render: function() {
         var className = 'viewSelection';
-        if (this.props.view.name == this.props.currentView) { className = className + ' selected'; }
+        if (this.props.view == this.props.currentView) { className = className + ' selected'; }
         return (
             <div className={className} onClick={this.selectView}>
             <span className='viewIcon'>

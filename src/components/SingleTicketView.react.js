@@ -13,7 +13,7 @@ var SingleTicketView = React.createClass({
         return (
             <div id='singleTicketView' className='mainContent'>
             <div id='singleTicket'>
-            <TicketHeader goBack={this.props.goBack} title={this.props.ticket.title} view={this.state.view}/>
+            <TicketHeader unselectTicket={this.props.unselectTicket} title={this.props.ticket.title} view={this.state.view}/>
             <CommentList comments={this.props.ticket.comments}/>
             <CommentBox ticketId={this.props.ticket.id} />
             </div>
@@ -97,7 +97,6 @@ var CommentList = React.createClass({
         }
     },
     componentDidMount: function() {
-        console.log('mounted');
         var node = this.getDOMNode();
         node.scrollTop = node.scrollHeight
     },
@@ -125,7 +124,7 @@ var TicketHeader = React.createClass({
     render: function() {
         return (
             <div id='ticketHeader'>
-                <div onClick={this.props.goBack} className='backButton'>
+                <div onClick={this.props.unselectTicket} className='backButton'>
                 <Icons.Dropback/>
                 </div>
                 <span>{this.props.title}</span>
