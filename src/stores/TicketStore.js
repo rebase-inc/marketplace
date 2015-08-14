@@ -11,18 +11,21 @@ function loadNewTicketData(newTickets) {
     _tickets = newTickets;
 }
 
-function newComment(ticketId, text) {
+function newComment(user, ticket, text) {
     //var ticketInd = _tickets.findIndex(function(ind, el) { return el.id === ticketId });
-
     var ticketInd;
     for(var i=0; i<_tickets.length; i++) {
-        if (_tickets[i].id == ticketId) { ticketInd = i };
+        if (_tickets[i].id == ticket.id) { ticketInd = i };
     }
+
+    var _months = [ 'January', 'February', 'March', 'April', 'May', 'June',
+        'July', 'August', 'September', 'October', 'November', 'December'];
+    var today = new Date();
 
     // hack until I actually bother creating a real comment
     var newComment = {
-        name: 'Andrew Millspaugh',
-        date: 'June 20',
+        user: user,
+        date: _months[today.getMonth()] + ' ' + today.getDate(),
         text: text,
     }
 
@@ -43,7 +46,7 @@ RebaseAppDispatcher.register(function(payload) {
 
     switch(action.type) {
         case ActionConstants.RECEIVE_DATA: loadNewTicketData(action.data); break;
-        case ActionConstants.NEW_COMMENT: newComment(action.ticketId, action.text); break;
+        case ActionConstants.NEW_COMMENT: newComment(action.user, action.ticket, action.text); break;
         default: return true;
     }
 

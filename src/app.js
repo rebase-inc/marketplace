@@ -11,8 +11,9 @@ MockData.init();
 TicketApi.getTicketData();
 
 var _user = {
-    name: 'Andrew Millspaugh',
-    photo: 'img/andrew.png',
+    first_name: 'Andrew',
+    last_name: 'Millspaugh',
+    photo: 'img/andrew.jpg',
     roles: [
         { id: 4, type: 'developer' },
         { id: 8, type: 'manager', organization: 'rebase', project: 'api' },

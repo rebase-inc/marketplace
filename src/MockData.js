@@ -1,11 +1,22 @@
+var fakeUsers = {
+    andrew: {
+        first_name: 'Andrew',
+        last_name: 'Millspaugh',
+        photo: 'img/andrew.jpg',
+        id: 1,
+    },
+    raphael: {
+        first_name: 'Raphael',
+        last_name: 'Goyran',
+        photo: 'img/raphael.jpg',
+        id: 2,
+    },
+}
+
 var fakeComments = [
-    { name: 'Andrew Millspaugh', text: '@rapha, I\'m convinced that you were right regarding the composite primary keys being a better choice. However, in the few places where we are using composite primary keys right now, I don’t think the relationship is being properly referenced. See the SQLAlchemy documentation for proper reference of a composite foreign key.', date: 'June 12' },
-    { name: 'Raphael Goyran', text: 'What do you mean? Is this not correct (from job_fit model)? ```__table_args__ = ( DB.ForeignKeyConstraint( [contractor_id, ticket_set_id], [Nomination.contractor_id, Nomination.ticket_set_id], ondelete=\'CASCADE\'), {})```', date: 'June 12' },
-    { name: 'Andrew Millspaugh', text: 'Hmm, that does look correct. The one I was looking at is in the bid model. It indirectly references the auction and contractor ids through the nomination model, though it doesn’t specifically reference the nomination model. This should instead be switched to a reference like above. I guess I should\'ve actually looked into the places where this was happening.', date: 'June 12' },
-    { name: 'Raphael Goyran', text: 'Now I\'m just going to keep responding so that we can make this view element overflow', date: 'June 12' },
-    { name: 'Andrew Millspaugh', text: 'Sounds like a reasonable idea. How much do you think we have to gab to get it to overflow?', date: 'June 13' },
-    { name: 'Raphael Goyran', text: 'I\'m not sure. One or two more messages ought to do it.', date: 'June 13' },
-    { name: 'Andrew Millspaugh', text: 'Okay. Let\'s call it quits here, then.', date: 'June 13' },
+    { user: fakeUsers.andrew, text: '@rapha, I\'m convinced that you were right regarding the composite primary keys being a better choice. However, in the few places where we are using composite primary keys right now, I don’t think the relationship is being properly referenced. See the SQLAlchemy documentation for proper reference of a composite foreign key.', date: 'June 12' },
+    { user: fakeUsers.raphael, text: 'What do you mean? Is this not correct (from job_fit model)? ```__table_args__ = ( DB.ForeignKeyConstraint( [contractor_id, ticket_set_id], [Nomination.contractor_id, Nomination.ticket_set_id], ondelete=\'CASCADE\'), {})```', date: 'June 12' },
+    { user: fakeUsers.andrew, text: 'Hmm, that does look correct. The one I was looking at is in the bid model. It indirectly references the auction and contractor ids through the nomination model, though it doesn’t specifically reference the nomination model. This should instead be switched to a reference like above. I guess I should\'ve actually looked into the places where this was happening.', date: 'June 12' },
 ];
 
 module.exports = {

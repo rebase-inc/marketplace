@@ -364,7 +364,6 @@ tbody {
 }
 
 .comment > .photo {
-    width: 50px;
     float: left;
     display: inline;
     top: 0;
@@ -374,6 +373,9 @@ tbody {
 
 .comment > .photo > img {
     padding: 7px;
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
 }
 
 .comment > .content > .date {

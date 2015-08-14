@@ -8,10 +8,11 @@ module.exports = {
             data: newTickets
         });
     },
-    commentOnIssue: function(ticketId, text) {
+    commentOnIssue: function(user, ticket, text) {
         RebaseAppDispatcher.handleAction({
             type: ActionConstants.NEW_COMMENT,
-            ticketId: ticketId,
+            user: user,
+            ticket: ticket,
             text: text
         });
     }

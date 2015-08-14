@@ -15,7 +15,7 @@ var SingleTicketView = React.createClass({
             <div id='singleTicket'>
             <TicketHeader unselectTicket={this.props.unselectTicket} title={this.props.ticket.title} view={this.state.view}/>
             <CommentList comments={this.props.ticket.comments}/>
-            <CommentBox ticketId={this.props.ticket.id} />
+            <CommentBox ticket={this.props.ticket} user={this.props.user} />
             </div>
             </div>
         );
@@ -46,7 +46,7 @@ var CommentBox = React.createClass({
     },
 
     submitComment: function() {
-        RebaseActions.commentOnIssue(this.props.ticketId, this.state.commentText)
+        RebaseActions.commentOnIssue(this.props.user, this.props.ticket, this.state.commentText)
         this.cancelComment();
     },
 
@@ -107,10 +107,10 @@ var CommentList = React.createClass({
             all_comments.push(
                 <div className='comment'>
                     <div className='photo'>
-                        <img src='img/andrew.png'/>
+                        <img src={comment.user.photo}/>
                     </div>
                     <div className='content'>
-                        <div className='name'>{comment.name}</div>
+                        <div className='name'>{comment.user.first_name + ' ' + comment.user.last_name}</div>
                         <div className='date'>{comment.date}</div>
                         <div className='text'>{comment.text}</div>
                     </div>

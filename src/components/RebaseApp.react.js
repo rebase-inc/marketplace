@@ -66,7 +66,7 @@ var RebaseApp = React.createClass({
             ],
         }
         if (!!this.state.currentTicket) {
-            currentViewElement = <SingleTicketView unselectTicket={this.unselectTicket} ticket={this.state.currentTicket}/>;
+            currentViewElement = <SingleTicketView unselectTicket={this.unselectTicket} user={this.props.user} ticket={this.state.currentTicket}/>;
         }
         else {
             currentViewElement = viewElements[this.state.currentRole.type][this.state.currentView.id];
