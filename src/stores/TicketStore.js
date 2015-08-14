@@ -4,8 +4,7 @@ var ActionConstants = require('../constants/ActionConstants');
 var _ = require('underscore');
 
 //Define initial data points
-var _tickets = {};
-var _selected = null;
+var _tickets = [];
 
 // Method to load ticket data from mock API
 function loadNewTicketData(newTickets) {
@@ -32,7 +31,6 @@ function newComment(ticketId, text) {
 
 var TicketStore = _.extend({}, EventEmitter.prototype, {
     getTickets: function() { return _tickets; },
-    getSelected: function() { return _selected; },
 
     emitChange: function() { this.emit('change'); },
     addChangeListener: function(callback) { this.on('change', callback); },
@@ -45,7 +43,6 @@ RebaseAppDispatcher.register(function(payload) {
 
     switch(action.type) {
         case ActionConstants.RECEIVE_DATA: loadNewTicketData(action.data); break;
-        case ActionConstants.SELECT_TICKET: setSelected(action.data); break;
         case ActionConstants.NEW_COMMENT: newComment(action.ticketId, action.text); break;
         default: return true;
     }

@@ -5,7 +5,7 @@ module.exports = {
     getTicketData: function() {
         // simulate retrieving data from a database
         var newTickets = JSON.parse(localStorage.getItem('newTickets'));
-        RebaseActions.receiveNewTickets(newTickets);
+        setTimeout(function() { RebaseActions.receiveNewTickets(newTickets);}, 800);
     }
 
 };
