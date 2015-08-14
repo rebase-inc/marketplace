@@ -32,7 +32,7 @@ var RebaseApp = React.createClass({
         var currentRole = this.props.user.roles[0];
         var currentView = ViewsByRole[currentRole.type][0];
         return _.extend({
-            currentRole: currentRole, 
+            currentRole: currentRole,
             currentView: currentView,
         }, getState(this.props.user));
     },
@@ -45,7 +45,10 @@ var RebaseApp = React.createClass({
         this.selectTicket(null);
     },
     changeRole: function(newRole) {
-        this.setState({ currentRole: newRole });
+        this.setState({
+            currentRole: newRole,
+            currentTicket: null,
+        });
     },
 
     render: function() {
@@ -70,8 +73,8 @@ var RebaseApp = React.createClass({
         }
         return (
             <div id='app'>
-            <Sidebar user={this.props.user} 
-            currentRole={this.state.currentRole} changeRole={this.changeRole} 
+            <Sidebar user={this.props.user}
+            currentRole={this.state.currentRole} changeRole={this.changeRole}
             currentView={this.state.currentView} changeView={this.changeView}/>
             { currentViewElement }
             </div>
