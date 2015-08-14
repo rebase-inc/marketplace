@@ -503,6 +503,19 @@ tbody {
     text-overflow: ellipsis;
 }
 
+
+/** tbody animation test **/
+.newComment-enter {
+    background-color: hsla(167, 54%, 53%, 0.7);
+}
+
+.newComment-enter.newComment-enter-active {
+    background-color: transparent;
+    transition: background 2.5s ease-out;
+}
+
+
+
 /** Animated spinner **/
 
 .spinner {

@@ -1,4 +1,4 @@
-var React = require('react');
+var React = require('react/addons');
 var Icons = require('../components/RebaseIcons.react');
 
 var OfferedTicketView = React.createClass({
@@ -30,23 +30,24 @@ var LoadingAnimation = React.createClass({
     }
 });
 
+var ReactCSSTransitionGroup = React.addons.CSSTransitionGroup;
 var OfferedTicketList = React.createClass({
     render: function() {
         var all_tickets = [];
         if (!this.props.tickets.length) {
             return <LoadingAnimation />
         }
-        this.props.tickets.forEach(function(ticket) {
+        this.props.tickets.forEach(function(ticket, ind) {
             if ( ticket.title.indexOf(this.props.filterText) == -1 ) {
                 return;
             }
-            all_tickets.push(<OfferedTicket ticket={ticket} key={ticket.date} selectTicket={this.props.selectTicket}/>);
+            all_tickets.push(<OfferedTicket key={ind} ticket={ticket} key={ticket.date} selectTicket={this.props.selectTicket}/>);
         }.bind(this));
         return (
             <table id='offeredTicketList'>
-            <tbody>
+            <ReactCSSTransitionGroup component='tbody' transitionName='example'>
             {all_tickets}
-            </tbody>
+            </ReactCSSTransitionGroup>
             </table>
         );
     }

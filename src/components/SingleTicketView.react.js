@@ -1,4 +1,4 @@
-var React = require('react');
+var React = require('react/addons');
 var TicketStore = require('../stores/TicketStore');
 
 var RebaseActions = require('../actions/RebaseActions');
@@ -85,6 +85,7 @@ var TicketInfo = React.createClass({
     }
 });
 
+var ReactCSSTransitionGroup = React.addons.CSSTransitionGroup;
 var CommentList = React.createClass({
     componentWillUpdate: function() {
         var node = this.getDOMNode();
@@ -116,7 +117,11 @@ var CommentList = React.createClass({
                 </div>
             );
         });
-        return ( <div id='commentList'> {all_comments} </div>);
+        return (
+                <ReactCSSTransitionGroup component='div' id='commentList' transitionName='newComment'>
+                {all_comments}
+                </ReactCSSTransitionGroup>
+               );
     }
 });
 
