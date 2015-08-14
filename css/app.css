@@ -342,6 +342,8 @@ tbody {
     overflow: auto;
     padding-left: 28px;
     padding-right: 28px;
+    padding-top: 10px;
+    padding-bottom: 10px;
     font-size: 18px;
 }
 
@@ -353,7 +355,6 @@ tbody {
     display: inline;
     float: left;
     width: calc(100% - 50px);
-    padding-bottom: 25px;
 }
 
 .comment > .content > .name {
