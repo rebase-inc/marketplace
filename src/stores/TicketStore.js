@@ -5,12 +5,10 @@ var _ = require('underscore');
 
 //Define initial data points
 var _tickets = {};
-var _tickets = JSON.parse(localStorage.getItem('newTickets'));
 var _selected = null;
 
 // Method to load ticket data from mock API
 function loadNewTicketData(newTickets) {
-    return true;
     _tickets = newTickets;
 }
 
