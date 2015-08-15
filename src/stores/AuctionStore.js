@@ -4,36 +4,35 @@ var ActionConstants = require('../constants/ActionConstants');
 var _ = require('underscore');
 
 //Define initial data points
-var _allTickets = [];
+var _availableAuctions = [];
 
-// Method to load ticket data from mock API
-function loadAllTickets(allTickets) {
-    _allTickets = allTickets;
+function loadAvailableAuctions(availableAuctions) {
+    _availableAuctions = availableAuctions;
 }
 
-function newComment(user, ticket, text) {
-    //var ticketInd = _tickets.findIndex(function(ind, el) { return el.id === ticketId });
-    var ticketInd;
-    for(var i=0; i<_allTickets.length; i++) {
-        if (_allTickets[i].id == ticket.id) { ticketInd = i };
+function newComment(user, auction, text) {
+
+    // hack until I actually bother creating a real comment
+    var auctionInd;
+    for(var i=0; i<_availableAuctions.length; i++) {
+        if (_availableAuctions[i].id == auction.id) { auctionInd = i };
     }
 
     var _months = [ 'January', 'February', 'March', 'April', 'May', 'June',
         'July', 'August', 'September', 'October', 'November', 'December'];
     var today = new Date();
 
-    // hack until I actually bother creating a real comment
     var newComment = {
         user: user,
         date: _months[today.getMonth()] + ' ' + today.getDate(),
         text: text,
     }
-    
-    _allTickets[ticketInd].comments.push(newComment);
+
+    _availableAuctions[auctionInd].ticket_set.bid_limits[0].ticket_snapshot.ticket.comments.push(newComment);
 }
 
-var TicketStore = _.extend({}, EventEmitter.prototype, {
-    getTickets: function() { return _allTickets; },
+var AuctionStore = _.extend({}, EventEmitter.prototype, {
+    getAvailableAuctions: function() { return _availableAuctions; },
 
     emitChange: function() { this.emit('change'); },
     addChangeListener: function(callback) { this.on('change', callback); },
@@ -45,14 +44,14 @@ RebaseAppDispatcher.register(function(payload) {
     var action = payload.action;
 
     switch(action.type) {
-        case ActionConstants.GET_ALL_TICKETS: loadAllTickets(action.allTickets); break;
-        case ActionConstants.NEW_COMMENT: newComment(action.user, action.ticket, action.text); break;
+        case ActionConstants.GET_AVAILABLE_AUCTIONS: loadAvailableAuctions(action.availableAuctions); break;
+        case ActionConstants.ADD_COMMENT_TO_AUCTION: newComment(action.user, action.auction, action.text); break;
         default: return true;
     }
 
     // If action was responded to, emit change event
-    TicketStore.emitChange();
+    AuctionStore.emitChange();
     return true;
 });
 
-module.exports = TicketStore;
+module.exports = AuctionStore;

@@ -4,11 +4,13 @@ var keyMirror = require('keymirror');
 var MockData = require('./MockData');
 var RebaseApp = require('./components/RebaseApp.react');
 var TicketApi = require('./utils/TicketApi')
+var AuctionApi = require('./utils/AuctionApi')
 
 window.React = React; // export for http://fb.me/react-devtools
 
 MockData.init();
 TicketApi.getTicketData();
+AuctionApi.getAvailableAuctions();
 
 var _user = {
     first_name: 'Andrew',

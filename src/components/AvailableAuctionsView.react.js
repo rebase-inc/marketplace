@@ -1,16 +1,16 @@
 var React = require('react/addons');
 var Icons = require('../components/RebaseIcons.react');
 
-var OfferedTicketView = React.createClass({
+var AvailableAuctionsView = React.createClass({
     getInitialState: function() {
         return { filterText: '' };
     },
     handleUserInput: function(filterText) { this.setState({ filterText: filterText }); },
     render: function() {
         return (
-            <div id='offeredTicketView' className='mainContent'>
+            <div id='availableAuctionsView' className='mainContent'>
             <SearchBar filterText={this.state.filterText} onUserInput={this.handleUserInput}/>
-            <OfferedTicketList selectTicket={this.props.selectTicket} tickets={this.props.tickets} filterText={this.state.filterText}/>
+            <AvailableAuctionsList selectTicket={this.props.selectTicket} availableAuctions={this.props.availableAuctions} filterText={this.state.filterText}/>
             </div>
         );
     }
@@ -31,33 +31,32 @@ var LoadingAnimation = React.createClass({
 });
 
 var ReactCSSTransitionGroup = React.addons.CSSTransitionGroup;
-var OfferedTicketList = React.createClass({
+var AvailableAuctionsList = React.createClass({
     render: function() {
-        var all_tickets = [];
-        if (!this.props.tickets.length) {
+        var availableAuctionElements = [];
+        if (!this.props.availableAuctions.length) {
             return <LoadingAnimation />
         }
-        this.props.tickets.forEach(function(ticket, ind) {
-            if ( ticket.title.indexOf(this.props.filterText) == -1 ) {
-                return;
-            }
-            all_tickets.push(<OfferedTicket key={ind} ticket={ticket} key={ticket.date} selectTicket={this.props.selectTicket}/>);
+        this.props.availableAuctions.forEach(function(auction, ind) {
+            var _ticket = auction.ticket_set.bid_limits[0].ticket_snapshot.ticket;
+            if ( _ticket.title.indexOf(this.props.filterText) == -1 ) { return; }
+            availableAuctionElements.push(<AvailableAuction key={ind} ticket={_ticket} key={_ticket.id} selectTicket={this.props.selectTicket}/>);
         }.bind(this));
         return (
-            <table id='offeredTicketList'>
+            <table id='availableAuctionList'>
             <ReactCSSTransitionGroup component='tbody' transitionName='example'>
-            {all_tickets}
+            {availableAuctionElements}
             </ReactCSSTransitionGroup>
             </table>
         );
     }
 });
 
-var OfferedTicket = React.createClass({
+var AvailableAuction = React.createClass({
     selectTicket: function() { this.props.selectTicket(this.props.ticket); },
     render: function() {
         return (
-            <tr className='offeredTicket'>
+            <tr className='availableAuction'>
                 <ProjectInfoPanel />
                 <td className='titlePanel'>{this.props.ticket.title}</td>
                 <td className='skillsRequiredPanel'>{this.props.ticket.skillsRequired}</td>
@@ -87,11 +86,11 @@ var SearchBar = React.createClass({
     },
     render: function() {
         return (
-                <form id='offeredTicketSearchBar'>
-                    <input type='text' placeholder='Search for tickets' value={this.props.filterText} onChange={this.handleChange} ref='filterTextInput'/>
-                </form>
-               );
+            <form id='availableAuctionSearchBar'>
+            <input type='text' placeholder='Search for tickets' value={this.props.filterText} onChange={this.handleChange} ref='filterTextInput'/>
+            </form>
+        );
     }
 });
 
-module.exports = OfferedTicketView;
+module.exports = AvailableAuctionsView;

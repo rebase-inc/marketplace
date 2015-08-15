@@ -3,10 +3,16 @@
     src: url("/Users/andrewmillspaugh/Downloads/GothamRnd-Light.otf") format("opentype");
 }
 
-* { font-family: GothamRounded; }
+* { font-family: GothamRounded; font-weight: lighter; }
 
 input:focus, select:focus, textarea:focus, button:focus {
     outline: none;
+}
+
+input[type=number]::-webkit-outer-spin-button,
+input[type=number]::-webkit-inner-spin-button,
+    -webkit-appearance: none;
+    margin: 0;
 }
 
 .noselect * {
@@ -224,19 +230,19 @@ tbody {
     height: 100%;
 }
 
-#newTicketList, #offeredTicketList {
+#newTicketList, #availableAuctionList {
     overflow: auto;
     width: 100%;
 }
 
-.newTicket, .offeredTicket {
+.newTicket, .availableAuction {
     display: table-row;
     width: 100%;
     height: 80px;
     border: 1px solid hsla(165, 5%, 83%, 1);
 }
 
-.newTicket:hover, .offeredTicket:hover {
+.newTicket:hover, .availableAuction:hover {
     background-color: hsla(200, 30%, 96%, 1);
 }
 
@@ -419,7 +425,7 @@ tbody {
     margin: 10px;
 }
 
-#newTicketSearchBar, #offeredTicketSearchBar {
+#newTicketSearchBar, #availableAuctionSearchBar {
     width: 100%;
     padding: 9px;
     box-sizing: border-box;
@@ -430,7 +436,7 @@ tbody {
     color: hsla(217, 18%, 81%, 1);
 }
 
-#newTicketSearchBar > input, #offeredTicketSearchBar > input {
+#newTicketSearchBar > input, #availableAuctionSearchBar > input {
     height: 26px;
     font-size: 14px;
     line-height: 20px;
@@ -506,6 +512,73 @@ tbody {
     text-overflow: ellipsis;
 }
 
+
+/** modal view test **/
+
+#modalView {
+    position: absolute;
+    right: 0;
+    width: calc(100% - 200px);
+    height: 100%;
+    background-color: hsla(213, 23%, 28%, 0.9);
+    z-index: 9998;
+}
+
+#modalDialog {
+    position: absolute;
+    background-color: hsla(216, 33%, 97%, 1);
+    padding: 25px;
+    top: 50%;
+    left: 50%;
+    transform: translateX(-50%) translateY(-60%);
+    border-radius: 6px;
+    z-index: 9999;
+    min-height: 80px;
+    min-width: 400px;
+    text-align: center;
+}
+
+#modalDialog h3 {
+    font-size: 24px;
+    padding: 0;
+    margin: 0;
+}
+
+#modalDialog h4 {
+    font-size: 14px;
+    padding: 0;
+    margin: 0;
+    opacity: .6;
+}
+
+#modalDialog input[type=number] {
+    height: 54px;
+    width: 180px;
+    border-radius: 6px;
+    font-size: 22px;
+    box-shadow: none;
+    background: none;
+    border: 1px solid hsla(213, 23%, 28%, 0.5);
+    text-align: center;
+    margin-top: 20px;
+}
+
+#modalDialog > #modalClose {
+    position: absolute;
+    height: 35px;
+    width: 35px;
+    top: 0;
+    left: 0;
+    cursor: pointer;
+}
+
+#modalDialog > #modalClose > img {
+    height: 14px;
+    width: 14px;
+    padding-top: 12px;
+    padding-left: 6px;
+    left: 0;
+}
 
 /** tbody animation test **/
 .newComment-enter {

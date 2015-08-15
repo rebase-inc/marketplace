@@ -2,10 +2,16 @@ var RebaseAppDispatcher = require('../dispatcher/RebaseAppDispatcher');
 var ActionConstants = require('../constants/ActionConstants');
 
 module.exports = {
-    receiveNewTickets: function(newTickets) {
+    receiveAllTickets: function(allTickets) {
         RebaseAppDispatcher.handleAction({
-            type: ActionConstants.RECEIVE_DATA,
-            data: newTickets
+            type: ActionConstants.GET_ALL_TICKETS,
+            allTickets: allTickets
+        });
+    },
+    receiveAvailableAuctions: function(availableAuctions) {
+        RebaseAppDispatcher.handleAction({
+            type: ActionConstants.GET_AVAILABLE_AUCTIONS,
+            availableAuctions: availableAuctions
         });
     },
     commentOnIssue: function(user, ticket, text) {

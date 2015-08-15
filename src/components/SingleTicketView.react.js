@@ -13,7 +13,12 @@ var SingleTicketView = React.createClass({
         return (
             <div id='singleTicketView' className='mainContent'>
             <div id='singleTicket'>
-            <TicketHeader unselectTicket={this.props.unselectTicket} title={this.props.ticket.title} view={this.state.view}/>
+            <TicketHeader user={this.props.user}
+            unselectTicket={this.props.unselectTicket}
+            currentRole={this.props.currentRole}
+            title={this.props.ticket.title}
+            view={this.state.view}
+            openModal={this.props.openModal} />
             <CommentList comments={this.props.ticket.comments}/>
             <CommentBox ticket={this.props.ticket} user={this.props.user} />
             </div>
@@ -127,13 +132,19 @@ var CommentList = React.createClass({
 
 var TicketHeader = React.createClass({
     render: function() {
+        var button;
+        switch (this.props.currentRole.type) {
+            case 'developer': button = <button onClick={this.props.openModal}>Bid Now</button>; break;
+            case 'manager': button = <button>Find Talent</button>; break;
+            default: button = <button>???</button>; break;
+        }
         return (
             <div id='ticketHeader'>
                 <div onClick={this.props.unselectTicket} className='backButton'>
                 <Icons.Dropback/>
                 </div>
                 <span>{this.props.title}</span>
-                <button>Find Talent</button>
+                { button }
             </div>
         );
     }
