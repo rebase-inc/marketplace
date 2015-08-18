@@ -4,24 +4,32 @@ var TicketStore = require('../stores/TicketStore');
 var RebaseActions = require('../actions/RebaseActions');
 var Icons = require('../components/RebaseIcons.react');
 
-var SingleTicketView = React.createClass({
+var SingleItemView = React.createClass({
     getInitialState: function() {
         return { view: 'viewingComments' }
     },
 
     render: function() {
+        var title;
+        var comments;
+        var { ticket, auction, ...other} = this.props;
+        if (!ticket == !auction) { throw "Must provide exactly one of ticket or auction!" }
+        else if (!!ticket) {
+            title = ticket.title;
+            comments = this.props.ticket.comments;
+        }
+        else if (!!auction) {
+            title = auction.ticket_set.bid_limits[0].ticket_snapshot.ticket.title;
+            comments = this.props.auction.ticket_set.bid_limits[0].ticket_snapshot.ticket.comments;
+        }
+        else { title = '...'; }
         return (
-            <div id='singleTicketView' className='mainContent'>
-            <div id='singleTicket'>
-            <TicketHeader user={this.props.user}
-            unselectTicket={this.props.unselectTicket}
-            currentRole={this.props.currentRole}
-            title={this.props.ticket.title}
-            view={this.state.view}
-            openModal={this.props.openModal} />
-            <CommentList comments={this.props.ticket.comments}/>
-            <CommentBox ticket={this.props.ticket} user={this.props.user} />
-            </div>
+            <div id='singleItemView' className='mainContent'>
+                <div id='singleItem'>
+                    <ItemHeader title={title} ticket={ticket} auction={auction} {...this.props} />
+                    <CommentList comments={comments}/>
+                    <CommentBox ticket={ticket} auction={auction} user={this.props.user} />
+                </div>
             </div>
         );
     }
@@ -42,16 +50,19 @@ var CommentBox = React.createClass({
     exitComment: function() {
         this.setState({inProgress: false});
     },
-
     cancelComment: function() {
         this.setState({
             inProgress: false,
             commentText: ''
         });
     },
-
     submitComment: function() {
-        RebaseActions.commentOnIssue(this.props.user, this.props.ticket, this.state.commentText)
+        if (!!this.props.ticket) {
+            RebaseActions.commentOnTicket(this.props.user, this.props.ticket, this.state.commentText);
+        }
+        else if (!!this.props.auction) {
+            RebaseActions.commentOnAuction(this.props.user, this.props.auction, this.state.commentText);
+        }
         this.cancelComment();
     },
 
@@ -130,25 +141,21 @@ var CommentList = React.createClass({
     }
 });
 
-var TicketHeader = React.createClass({
+var ItemHeader = React.createClass({
     render: function() {
-        var button;
-        switch (this.props.currentRole.type) {
-            case 'developer': button = <button onClick={this.props.openModal}>Bid Now</button>; break;
-            case 'manager': button = <button>Find Talent</button>; break;
-            default: button = <button>???</button>; break;
-        }
         return (
-            <div id='ticketHeader'>
-                <div onClick={this.props.unselectTicket} className='backButton'>
-                <Icons.Dropback/>
+            <div id='itemHeader'>
+                <div onClick={this.props.backAction} className='backButton'>
+                    <Icons.Dropback/>
                 </div>
                 <span>{this.props.title}</span>
-                { button }
+                <button onClick={this.props.buttonAction}>
+                    {this.props.currentRole.type == 'developer' ? 'Bid Now' : 'Find Talent'}
+                </button>
             </div>
         );
     }
 });
 
 
-module.exports = SingleTicketView;
+module.exports = SingleItemView;

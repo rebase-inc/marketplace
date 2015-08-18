@@ -246,7 +246,7 @@ tbody {
     background-color: hsla(200, 30%, 96%, 1);
 }
 
-#ticketHeader {
+#itemHeader {
     height: 50px;
     width: 100%;
     background-color: hsla(200, 30%, 96%, 1);
@@ -256,26 +256,26 @@ tbody {
 }
 
 
-#ticketHeader .dropbackIcon {
+#itemHeader .dropbackIcon {
     display: inline;
     padding: 13px;
     float: left;
 }
 
-#ticketHeader > .backButton {
+#itemHeader > .backButton {
     cursor: pointer;
 }
 
-#ticketHeader > button {
+#itemHeader > button {
     cursor: pointer;
 }
 
-#ticketHeader > * {
+#itemHeader > * {
     display: inline;
     float: left;
 }
 
-#singleTicket {
+#singleItem {
     height: 100%;
     position: relative;
 }
@@ -400,7 +400,7 @@ tbody {
 }
 
 
-#ticketHeader > span {
+#itemHeader > span {
     float: left;
     white-space: nowrap;
     overflow: hidden;
@@ -408,7 +408,7 @@ tbody {
     width: calc(100% - 180px);
 }
 
-#ticketHeader > button {
+#itemHeader > button {
     float: right;
     color: white;
     background-color: hsla(166, 43%, 56%, 1);

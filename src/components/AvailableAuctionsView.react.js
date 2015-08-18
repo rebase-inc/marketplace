@@ -10,7 +10,7 @@ var AvailableAuctionsView = React.createClass({
         return (
             <div id='availableAuctionsView' className='mainContent'>
             <SearchBar filterText={this.state.filterText} onUserInput={this.handleUserInput}/>
-            <AvailableAuctionsList selectTicket={this.props.selectTicket} availableAuctions={this.props.availableAuctions} filterText={this.state.filterText}/>
+            <AvailableAuctionsList selectAuction={this.props.selectAuction} availableAuctions={this.props.availableAuctions} filterText={this.state.filterText}/>
             </div>
         );
     }
@@ -40,7 +40,7 @@ var AvailableAuctionsList = React.createClass({
         this.props.availableAuctions.forEach(function(auction, ind) {
             var _ticket = auction.ticket_set.bid_limits[0].ticket_snapshot.ticket;
             if ( _ticket.title.indexOf(this.props.filterText) == -1 ) { return; }
-            availableAuctionElements.push(<AvailableAuction key={ind} ticket={_ticket} key={_ticket.id} selectTicket={this.props.selectTicket}/>);
+            availableAuctionElements.push(<AvailableAuction auction={auction} key={auction.id} selectAuction={this.props.selectAuction}/>);
         }.bind(this));
         return (
             <table id='availableAuctionList'>
@@ -53,16 +53,17 @@ var AvailableAuctionsList = React.createClass({
 });
 
 var AvailableAuction = React.createClass({
-    selectTicket: function() { this.props.selectTicket(this.props.ticket); },
+    selectAuction: function() { this.props.selectAuction(this.props.auction); },
     render: function() {
+        var _ticket = this.props.auction.ticket_set.bid_limits[0].ticket_snapshot.ticket;
         return (
             <tr className='availableAuction'>
                 <ProjectInfoPanel />
-                <td className='titlePanel'>{this.props.ticket.title}</td>
-                <td className='skillsRequiredPanel'>{this.props.ticket.skillsRequired}</td>
-                <td className='commentsPanel' onClick={this.selectTicket}>
+                <td className='titlePanel'>{_ticket.title}</td>
+                <td className='skillsRequiredPanel'>{_ticket.skillsRequired}</td>
+                <td className='commentsPanel' onClick={this.selectAuction}>
                     <Icons.Comment/>
-                    <span>{this.props.ticket.comments.length} Comments</span>
+                    <span>{_ticket.comments.length} Comments</span>
                 </td>
             </tr>
         );

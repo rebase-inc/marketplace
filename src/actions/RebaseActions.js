@@ -14,12 +14,20 @@ module.exports = {
             availableAuctions: availableAuctions
         });
     },
-    commentOnIssue: function(user, ticket, text) {
+    commentOnTicket: function(user, ticket, text) {
         RebaseAppDispatcher.handleAction({
-            type: ActionConstants.NEW_COMMENT,
+            type: ActionConstants.ADD_COMMENT_TO_TICKET,
             user: user,
             ticket: ticket,
             text: text
         });
-    }
+    },
+    commentOnAuction: function(user, auction, text) {
+        RebaseAppDispatcher.handleAction({
+            type: ActionConstants.ADD_COMMENT_TO_AUCTION,
+            user: user,
+            auction: auction,
+            text: text
+        });
+    },
 };

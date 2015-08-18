@@ -46,7 +46,7 @@ RebaseAppDispatcher.register(function(payload) {
 
     switch(action.type) {
         case ActionConstants.GET_ALL_TICKETS: loadAllTickets(action.allTickets); break;
-        case ActionConstants.NEW_COMMENT: newComment(action.user, action.ticket, action.text); break;
+        case ActionConstants.ADD_COMMENT_TO_TICKET: newComment(action.user, action.ticket, action.text); break;
         default: return true;
     }
 
