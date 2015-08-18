@@ -429,6 +429,10 @@ tbody {
     width: 100%;
     padding: 9px;
     box-sizing: border-box;
+    background-color: hsla(200, 30%, 96%, 1);
+}
+
+#newTicketSearchBar input, #availableAuctionSearchBar input {
     background-color: hsla(204, 45%, 98%, 1);
 }
 
@@ -579,6 +583,7 @@ tbody {
     padding-left: 6px;
     left: 0;
 }
+
 
 /** tbody animation test **/
 .newComment-enter {

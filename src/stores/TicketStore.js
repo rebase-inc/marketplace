@@ -28,7 +28,7 @@ function newComment(user, ticket, text) {
         date: _months[today.getMonth()] + ' ' + today.getDate(),
         text: text,
     }
-    
+
     _allTickets[ticketInd].comments.push(newComment);
 }
 
