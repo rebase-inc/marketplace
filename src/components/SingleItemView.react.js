@@ -3,6 +3,7 @@ var TicketStore = require('../stores/TicketStore');
 
 var RebaseActions = require('../actions/RebaseActions');
 var Icons = require('../components/RebaseIcons.react');
+var handleScrollShadows = require('../utils/Graphics').handleScrollShadows;
 
 var SingleItemView = React.createClass({
     getInitialState: function() {
@@ -103,6 +104,12 @@ var TicketInfo = React.createClass({
 
 var ReactCSSTransitionGroup = React.addons.CSSTransitionGroup;
 var CommentList = React.createClass({
+    handleScrollPosition: function() {
+        handleScrollShadows(this);
+    },
+    componentWillUnmount: function() {
+        this.getDOMNode().removeEventListener('scroll', this.handleScrollPosition, false);
+    },
     componentWillUpdate: function() {
         var node = this.getDOMNode();
         this.shouldScrollBottom = node.scrollTop + node.offsetHeight === node.scrollHeight;
@@ -112,10 +119,13 @@ var CommentList = React.createClass({
             var node = this.getDOMNode();
             node.scrollTop = node.scrollHeight
         }
+        this.handleScrollPosition();
     },
     componentDidMount: function() {
         var node = this.getDOMNode();
         node.scrollTop = node.scrollHeight
+        this.handleScrollPosition();
+        this.getDOMNode().addEventListener('scroll', this.handleScrollPosition, false);
     },
     render: function() {
         var all_comments = [];

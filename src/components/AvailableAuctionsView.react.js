@@ -1,5 +1,6 @@
 var React = require('react/addons');
 var Icons = require('../components/RebaseIcons.react');
+var handleScrollShadows = require('../utils/Graphics').handleScrollShadows;
 
 var AvailableAuctionsView = React.createClass({
     getInitialState: function() {
@@ -10,7 +11,12 @@ var AvailableAuctionsView = React.createClass({
         return (
             <div id='availableAuctionsView' className='mainContent'>
             <SearchBar filterText={this.state.filterText} onUserInput={this.handleUserInput}/>
-            <AvailableAuctionsList selectAuction={this.props.selectAuction} availableAuctions={this.props.availableAuctions} filterText={this.state.filterText}/>
+            { !this.props.availableAuctions.length ? <LoadingAnimation /> :
+                <AvailableAuctionsList
+                selectAuction={this.props.selectAuction}
+                availableAuctions={this.props.availableAuctions}
+                filterText={this.state.filterText}/>
+            }
             </div>
         );
     }
@@ -32,18 +38,29 @@ var LoadingAnimation = React.createClass({
 
 var ReactCSSTransitionGroup = React.addons.CSSTransitionGroup;
 var AvailableAuctionsList = React.createClass({
+    handleScrollPosition: function() {
+        handleScrollShadows(this);
+    },
+    componentDidUpdate: function() {
+        this.handleScrollPosition();
+    },
+    componentDidMount: function() {
+        this.handleScrollPosition();
+        this.getDOMNode().addEventListener('scroll', this.handleScrollPosition, false);
+    },
+    componentWillUnmount: function() {
+        this.getDOMNode().removeEventListener('scroll', this.handleScrollPosition, false);
+    },
     render: function() {
         var availableAuctionElements = [];
-        if (!this.props.availableAuctions.length) {
-            return <LoadingAnimation />
-        }
         this.props.availableAuctions.forEach(function(auction, ind) {
             var _ticket = auction.ticket_set.bid_limits[0].ticket_snapshot.ticket;
             if ( _ticket.title.indexOf(this.props.filterText) == -1 ) { return; }
             availableAuctionElements.push(<AvailableAuction auction={auction} key={auction.id} selectAuction={this.props.selectAuction}/>);
         }.bind(this));
+
         return (
-            <table id='availableAuctionList'>
+            <table id='availableAuctionList' ref='availableAuctionList'>
             <ReactCSSTransitionGroup component='tbody' transitionName='example'>
             {availableAuctionElements}
             </ReactCSSTransitionGroup>
