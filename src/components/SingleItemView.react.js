@@ -3,7 +3,7 @@ var TicketStore = require('../stores/TicketStore');
 
 var RebaseActions = require('../actions/RebaseActions');
 var Icons = require('../components/RebaseIcons.react');
-var handleScrollShadows = require('../utils/Graphics').handleScrollShadows;
+var handleScrollShadows = require('../utils/Style').handleScrollShadows;
 
 var SingleItemView = React.createClass({
     getInitialState: function() {

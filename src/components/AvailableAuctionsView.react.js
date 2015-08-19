@@ -1,6 +1,6 @@
 var React = require('react/addons');
 var Icons = require('../components/RebaseIcons.react');
-var handleScrollShadows = require('../utils/Graphics').handleScrollShadows;
+var handleScrollShadows = require('../utils/Style').handleScrollShadows;
 
 var AvailableAuctionsView = React.createClass({
     getInitialState: function() {
