@@ -24,6 +24,7 @@ var RebaseApp = React.createClass({
             currentView: ind ,
             currentTicket: null,
             currentAuction: null,
+            modalOpen: false,
         });
     },
 
@@ -58,19 +59,22 @@ var RebaseApp = React.createClass({
     selectTicket: function(ticket) {
         this.setState({
             currentAuction: null,
-            currentTicket: ticket
+            currentTicket: ticket,
+            modalOpen: false,
         });
     },
     selectAuction: function(auction) {
         this.setState({
             currentAuction: auction,
             currentTicket: null,
+            modalOpen: false,
         });
     },
     unselectItem: function() {
         this.setState({
             currentAuction: null,
             currentTicket: null,
+            modalOpen: false,
         });
     },
     changeRole: function(newRole) {
@@ -78,6 +82,7 @@ var RebaseApp = React.createClass({
             currentRole: newRole,
             currentTicket: null,
             currentAuction: null,
+            modalOpen: false,
         });
     },
     openModal: function() {
@@ -101,10 +106,9 @@ var RebaseApp = React.createClass({
             ],
         }
         if (!!this.state.currentTicket || !!this.state.currentAuction) {
-            var buttonAction = !!this.state.currentAuction ? this.openModal : function() { throw "Not implemented!"; };
             var props = {
                 backAction: this.unselectItem,
-                buttonAction: buttonAction,
+                buttonAction: this.openModal,
                 currentRole: this.state.currentRole,
                 ticket: this.state.currentTicket,
                 auction: this.state.currentAuction,
@@ -120,7 +124,7 @@ var RebaseApp = React.createClass({
             <Sidebar user={this.props.user}
             currentRole={this.state.currentRole} changeRole={this.changeRole}
             currentView={this.state.currentView} changeView={this.changeView}/>
-            { (this.state.modalOpen) ? <ModalView closeModal={this.closeModal} /> : null }
+            { (this.state.modalOpen) ? <ModalView ticket={this.state.currentTicket} auction={this.state.currentAuction} closeModal={this.closeModal} /> : null }
             { currentViewElement }
             </div>
         );
