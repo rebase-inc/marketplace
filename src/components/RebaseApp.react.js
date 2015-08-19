@@ -20,7 +20,11 @@ function getState(user) {
 var RebaseApp = React.createClass({
 
     changeView: function(ind) {
-        this.setState({ currentView: ind , currentTicket: null });
+        this.setState({
+            currentView: ind ,
+            currentTicket: null,
+            currentAuction: null,
+        });
     },
 
     _onChange: function() {
