@@ -11,36 +11,66 @@ var ModalView = React.createClass({
 });
 
 var ModalDialog = React.createClass({
+    getInitialState: function() {
+        return {
+            price: '',
+            priceSet: false,
+            priceConfirmed: false,
+        }
+    },
+    handleInput: function() {
+        this.setState({ price: this.refs.price.getDOMNode().value });
+    },
+    handleKeyPress: function(event) {
+        if (event.charCode == 13) {
+            this.setState({ priceSet: true });
+        }
+    },
+    submitPrice: function() {
+        alert('we are pretending to submit the price to the api!');
+        this.props.closeModal();
+    },
     render: function() {
         var modal;
-        if (!this.props.ticket == !this.props.auction) {
-            throw "Must provide exactly one of ticket or auction in props"
-        }
+        var h3;
+        var h4;
+        var inputOrButton;
+        if (!this.props.ticket == !this.props.auction) { throw "Must provide exactly one of ticket or auction in props" }
+        // nested if's are begging to be refactored
         else if (!!this.props.ticket) {
-            return (
-                <div id='modalDialog'>
-                    <div onClick={this.props.closeModal} id='modalClose'>
-                        <img src='img/modal-close.svg'/>
-                    </div>
-                    <h3>Set your budget</h3>
-                    <h4>to see recommended developers</h4>
-                    <input type='number' placeholder='Price in USD' />
-                </div>
-            );
+            if (!!this.state.priceSet) {
+                h3 = 'Is ' + this.state.price + 'USD Correct?';
+                h4 = 'This is just a maximum. Usually, you\'ll pay much less';
+                inputOrButton = <button onClick={this.submitPrice}>Submit Budget</button>;
+            }
+            else {
+                h3 = 'Set your budget';
+                h4 = 'to see recommended developers';
+                inputOrButton = <input type='number' ref='price' placeholder='Price in USD' />
+            }
         }
         else if (!!this.props.auction) {
-            return (
-                <div id='modalDialog'>
-                    <div onClick={this.props.closeModal} id='modalClose'>
-                        <img src='img/modal-close.svg'/>
-                    </div>
-                    <h3>Name your price</h3>
-                    <h4>to work on this task</h4>
-                    <input type='number' placeholder='Price in USD' />
-                </div>
-            );
+            if (!!this.state.priceSet) {
+                h3 = 'Is ' + this.state.price + 'USD Correct?';
+                h4 = 'If accepted, you\'ll start right away!';
+                inputOrButton = <button onClick={this.submitPrice}>Submit Bid</button>;
+            }
+            else {
+                h3 = 'Name your price';
+                h4 = 'to work on this task';
+                inputOrButton = <input type='number' ref='price' placeholder='Price in USD' />
+            }
         }
-        else { throw "WTF?"; }
+        return (
+            <div id='modalDialog' onChange={this.handleInput} onKeyPress={this.handleKeyPress}>
+                <div onClick={this.props.closeModal} id='modalClose'>
+                    <img src='img/modal-close.svg'/>
+                </div>
+                <h3>{h3}</h3>
+                <h4>{h4}</h4>
+                {inputOrButton}
+            </div>
+        );
     }
 });
 

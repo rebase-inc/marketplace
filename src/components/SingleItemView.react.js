@@ -6,10 +6,6 @@ var Icons = require('../components/RebaseIcons.react');
 var handleScrollShadows = require('../utils/Style').handleScrollShadows;
 
 var SingleItemView = React.createClass({
-    getInitialState: function() {
-        return { view: 'viewingComments' }
-    },
-
     render: function() {
         var title;
         var comments;

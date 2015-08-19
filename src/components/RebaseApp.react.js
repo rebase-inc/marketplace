@@ -59,7 +59,7 @@ var RebaseApp = React.createClass({
     selectTicket: function(ticket) {
         this.setState({
             currentAuction: null,
-            currentTicket: ticket,
+            currentTicket: ticket
             modalOpen: false,
         });
     },
