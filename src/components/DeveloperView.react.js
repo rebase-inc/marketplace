@@ -36,7 +36,7 @@ var DeveloperView = React.createClass({
         if (!!this.state.currentAuction) {
             var props = {
                 backAction: this.unselectAuction,
-                buttonAction: this.openModal,
+                buttonAction: this.props.openModal,
                 currentRole: this.props.currentRole,
                 auction: this.state.currentAuction,
                 user: this.props.user,

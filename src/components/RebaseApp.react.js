@@ -100,7 +100,7 @@ var RebaseApp = React.createClass({
             <Sidebar user={this.props.user}
             currentRole={this.state.currentRole} changeRole={this.changeRole}
             currentView={this.state.currentView} changeView={this.changeView}/>
-            { (this.state.modalOpen) ? <ModalView ticket={this.state.currentTicket} auction={this.state.currentAuction} closeModal={this.closeModal} /> : null }
+            { (this.state.modalOpen) ? <ModalView closeModal={this.closeModal} /> : null }
             { currentViewElement }
             </div>
         );

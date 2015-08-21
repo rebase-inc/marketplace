@@ -1,5 +1,8 @@
 var React = require('react');
 
+var TicketStore = require('../stores/TicketStore');
+var AuctionStore = require('../stores/AuctionStore');
+
 var ModalView = React.createClass({
     render: function() {
         return (
@@ -35,9 +38,11 @@ var ModalDialog = React.createClass({
         var h3;
         var h4;
         var inputOrButton;
-        if (!this.props.ticket == !this.props.auction) { throw "Must provide exactly one of ticket or auction in props" }
+        var ticket = TicketStore.getState().currentTicket;
+        var auction = AuctionStore.getState().currentAuction;
+        if (!ticket == !auction) { throw "Must provide exactly one of ticket or auction in props" }
         // nested if's are begging to be refactored
-        else if (!!this.props.ticket) {
+        else if (!!ticket) {
             if (!!this.state.priceSet) {
                 h3 = 'Is ' + this.state.price + 'USD Correct?';
                 h4 = 'This is just a maximum. Usually, you\'ll pay much less';
@@ -49,7 +54,7 @@ var ModalDialog = React.createClass({
                 inputOrButton = <input type='number' ref='price' placeholder='Price in USD' />
             }
         }
-        else if (!!this.props.auction) {
+        else if (!!auction) {
             if (!!this.state.priceSet) {
                 h3 = 'Is ' + this.state.price + 'USD Correct?';
                 h4 = 'If accepted, you\'ll start right away!';
