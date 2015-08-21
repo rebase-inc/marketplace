@@ -58,6 +58,10 @@ var fakeContracts = fakeTickets.map(_makeFakeContract);
 var fakeContractsWithReviews = fakeTickets.map(_makeFakeContractWithReview);
 
 module.exports = {
+    _tickets: fakeTickets,
+    _auctions: fakeAuctions,
+    _contracts: fakeContracts,
+    _contractsWithReviews: fakeContractsWithReviews,
     init: function() {
         localStorage.clear();
         localStorage.setItem('fakeTickets', JSON.stringify(fakeTickets));

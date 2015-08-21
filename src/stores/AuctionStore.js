@@ -6,35 +6,32 @@ var _ = require('underscore');
 
 //Define initial data points
 var _availableAuctions = [];
+var _currentAuction = null;
 
 function persistAvailableAuctions(availableAuctions) {
     if (availableAuctions) { _availableAuctions = availableAuctions; }
 }
 
-function newComment(user, auction, text) {
-
-    // hack until I actually bother creating a real comment
-    var auctionInd;
+function persistModifiedAuction(auction) {
     for(var i=0; i<_availableAuctions.length; i++) {
-        if (_availableAuctions[i].id == auction.id) { auctionInd = i };
+        if (_availableAuctions[i].id == auction.id) {
+            _availableAuctions[i] = auction;
+            if (_currentAuction.id == auction.id) { _currentAuction = auction }
+        };
     }
-
-    var _months = [ 'January', 'February', 'March', 'April', 'May', 'June',
-        'July', 'August', 'September', 'October', 'November', 'December'];
-    var today = new Date();
-
-    var newComment = {
-        user: user,
-        date: _months[today.getMonth()] + ' ' + today.getDate(),
-        text: text,
-    }
-
-    _availableAuctions[auctionInd].ticket_set.bid_limits[0].ticket_snapshot.ticket.comments.push(newComment);
 }
 
 var AuctionStore = _.extend({}, EventEmitter.prototype, {
     getState: function() {
-        return { availableAuctions: _availableAuctions };
+        return {
+            availableAuctions: _availableAuctions,
+            currentAuction: _currentAuction,
+        };
+    },
+    select: function(id) {
+        for(var i=0; i<_availableAuctions.length; i++) {
+            if (_availableAuctions[i].id == id) { _currentAuction = _availableAuctions[i]; };
+        }
     },
     emitChange: function() { this.emit('change'); },
     addChangeListener: function(callback) { this.on('change', callback); },
@@ -48,9 +45,13 @@ RebaseAppDispatcher.register(function(payload) {
         case ActionConstants.GET_AUCTION_DATA:
             switch(action.response) {
                 case RequestConstants.PENDING: console.log('Pending!'); break;
-                default: persistAvailableAuctions(action.response.data);
+                default: persistAvailableAuctions(action.response.data); break;
             } break;
-        case ActionConstants.ADD_COMMENT_TO_AUCTION: newComment(action.user, action.auction, action.text); break;
+        case ActionConstants.ADD_COMMENT_TO_AUCTION:
+            switch(action.response) {
+                case RequestConstants.PENDING: console.log('Pending new comment!'); break;
+                default: persistModifiedAuction(action.response.data); break;
+            } break;
         default: return true;
     }
 

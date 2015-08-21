@@ -58,13 +58,6 @@ var RebaseApp = React.createClass({
             modalOpen: false,
         });
     },
-    selectAuction: function(auction) {
-        this.setState({
-            currentAuction: auction,
-            currentTicket: null,
-            modalOpen: false,
-        });
-    },
     unselectItem: function() {
         this.setState({
             currentAuction: null,
@@ -88,20 +81,16 @@ var RebaseApp = React.createClass({
     },
     render: function() {
         var currentViewElement;
+        var props = {
+            currentRole: this.state.currentRole,
+            user: this.props.user,
+            openModal: this.openModal,
+        }
         var viewElements = {
-            developer: <DeveloperView selectAuction={this.selectAuction}/>,
+            developer: <DeveloperView {...props} />,
             manager: <ManagerView selectTicket={this.selectTicket}/>,
         }
         if (!!this.state.currentTicket || !!this.state.currentAuction) {
-            var props = {
-                backAction: this.unselectItem,
-                buttonAction: this.openModal,
-                currentRole: this.state.currentRole,
-                ticket: this.state.currentTicket,
-                auction: this.state.currentAuction,
-                user: this.props.user,
-            }
-            currentViewElement = <SingleItemView {...props} />
         }
         else {
             currentViewElement = viewElements[this.state.currentRole.type];

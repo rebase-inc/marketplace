@@ -4,6 +4,7 @@ var _ = require('underscore');
 var Icons = require('../components/RebaseIcons.react');
 var AuctionStore = require('../stores/AuctionStore');
 var RebaseActions = require('../actions/RebaseActions');
+var SingleItemView = require('../components/SingleItemView.react');
 var handleScrollShadows = require('../utils/Style').handleScrollShadows;
 
 var DeveloperView = React.createClass({
@@ -22,20 +23,44 @@ var DeveloperView = React.createClass({
     },
     _onChange: function() {
         this.setState(AuctionStore.getState());
+        console.log('getting state!');
+        //var comments = props.auction.ticket_set.bid_limits[0].ticket_snapshot.ticket.comments;
+        //console.log(comments);
     },
     handleUserInput: function(filterText) { this.setState({ filterText: filterText }); },
+    selectAuction: function(auction) {
+        AuctionStore.select(auction.id);
+        this._onChange();
+    },
+    unselectAuction: function() {
+        selectAuction(null);
+    },
     render: function() {
-        return (
-            <div id='availableAuctionsView' className='mainContent'>
-            <SearchBar filterText={this.state.filterText} onUserInput={this.handleUserInput}/>
-            { !this.state.availableAuctions.length ? <LoadingAnimation /> :
-                <AvailableAuctionsList
-                selectAuction={this.props.selectAuction}
-                availableAuctions={this.state.availableAuctions}
-                filterText={this.state.filterText}/>
+        if (!!this.state.currentAuction) {
+            var props = {
+                backAction: this.unselectAuction,
+                buttonAction: this.openModal,
+                currentRole: this.props.currentRole,
+                auction: this.state.currentAuction,
+                user: this.props.user,
             }
-            </div>
-        );
+            console.log('re rendering developer view');
+            var comments = props.auction.ticket_set.bid_limits[0].ticket_snapshot.ticket.comments;
+            console.log(comments);
+            return <SingleItemView {...props} />;
+        } else {
+            return (
+                <div id='availableAuctionsView' className='mainContent'>
+                <SearchBar filterText={this.state.filterText} onUserInput={this.handleUserInput}/>
+                { !this.state.availableAuctions.length ? <LoadingAnimation /> :
+                    <AvailableAuctionsList
+                    selectAuction={this.selectAuction}
+                    availableAuctions={this.state.availableAuctions}
+                    filterText={this.state.filterText}/>
+                }
+                </div>
+            );
+        }
     }
 });
 

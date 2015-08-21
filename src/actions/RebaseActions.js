@@ -34,20 +34,19 @@ module.exports = {
         };
         Api.getTicketData(responseAction, pendingAction);
     },
-    commentOnTicket: function(user, ticket, text) {
-        Dispatcher.handleAction({
-            type: ActionConstants.ADD_COMMENT_TO_TICKET,
-            user: user,
-            ticket: ticket,
-            text: text
-        });
-    },
     commentOnAuction: function(user, auction, text) {
-        Dispatcher.handleAction({
-            type: ActionConstants.ADD_COMMENT_TO_AUCTION,
-            user: user,
-            auction: auction,
-            text: text
-        });
+        var responseAction = function(response) {
+            Dispatcher.handleRequestAction({
+                type: ActionConstants.ADD_COMMENT_TO_AUCTION,
+                response: response
+            });
+        };
+        var pendingAction = function(response) {
+            Dispatcher.handleRequestAction({
+                type: ActionConstants.ADD_COMMENT_TO_AUCTION,
+                response: RequestConstants.PENDING,
+            });
+        };
+        Api.commentOnAuction(user, auction, text, responseAction, pendingAction);
     },
 };
