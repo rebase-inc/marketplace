@@ -31,6 +31,20 @@ var fakeTickets = [
     { title: 'Build some really cool software, get a bunch of people to use it, and make a billion dollars.', date: '9', id: '9', skillsRequired: 'Python | SQLAlchemy | Finite State Machine', comments: fakeComments },
 ]
 
+var _makeFakeContract = function(fakeTicket, index) {
+    var _fakeContract = {
+        id: index,
+        bid: { work_offers: [{ ticket_snapshot: { ticket: fakeTicket } }]}
+    }
+    return _fakeContract
+}
+
+var _makeFakeContractWithReview = function(fakeTicket, index) {
+    var _fakeContractWithReview = _makeFakeContract(fakeTicket, index);
+    _fakeContractWithReview.bid.work_offers[0].work = { state: null, review: { rating: 1 } };
+    return _fakeContractWithReview;
+}
+
 var _makeFakeAuction = function(fakeTicket, index) {
     var _fakeAuction = {
         id: index,
@@ -40,11 +54,15 @@ var _makeFakeAuction = function(fakeTicket, index) {
 }
 
 var fakeAuctions = fakeTickets.map(_makeFakeAuction);
+var fakeContracts = fakeTickets.map(_makeFakeContract);
+var fakeContractsWithReviews = fakeTickets.map(_makeFakeContractWithReview);
 
 module.exports = {
     init: function() {
         localStorage.clear();
         localStorage.setItem('fakeTickets', JSON.stringify(fakeTickets));
         localStorage.setItem('fakeAuctions', JSON.stringify(fakeAuctions));
+        localStorage.setItem('fakeContracts', JSON.stringify(fakeContracts));
+        localStorage.setItem('fakeContractsWithReviews', JSON.stringify(fakeContractsWithReviews));
     }
 }
