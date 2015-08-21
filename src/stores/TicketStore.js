@@ -6,6 +6,7 @@ var _ = require('underscore');
 
 //Define initial data points
 var _tickets = [];
+var _currentTicket = null;
 
 function persistTickets(tickets) {
     if (tickets) { _tickets = tickets; }
@@ -34,7 +35,16 @@ function newComment(user, ticket, text) {
 
 var TicketStore = _.extend({}, EventEmitter.prototype, {
     getState: function() {
-        return { tickets: _tickets };
+        return {
+            tickets: _tickets,
+            currentTicket: _currentTicket,
+        };
+    },
+    select: function(ticket) {
+        if (!ticket) { _currentTicket = null; return; }
+        for(var i=0; i<_tickets.length; i++) {
+            if (_tickets[i].id == ticket.id) { _currentTicket = _tickets[i]; };
+        }
     },
     emitChange: function() { this.emit('change'); },
     addChangeListener: function(callback) { this.on('change', callback); },

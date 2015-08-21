@@ -4,6 +4,8 @@ var _ = require('underscore');
 var Icons = require('../components/RebaseIcons.react');
 var TicketStore = require('../stores/TicketStore');
 var RebaseActions = require('../actions/RebaseActions');
+var SingleItemView = require('../components/SingleItemView.react');
+var LoadingAnimation = require('../components/LoadingAnimation.react');
 
 var ManagerView = React.createClass({
     getInitialState: function() {
@@ -22,15 +24,38 @@ var ManagerView = React.createClass({
     _onChange: function() {
         this.setState(TicketStore.getState());
     },
+    selectTicket: function(ticket) {
+        TicketStore.select(ticket);
+        this._onChange();
+    },
+    unselectTicket: function() {
+        this.selectTicket(null);
+    },
     // this is probably not how we should be handling the filterText
     handleUserInput: function(filterText) { this.setState({ filterText: filterText }); },
     render: function() {
-        return (
-            <div id='newTicketView' className='mainContent'>
-            <SearchBar filterText={this.state.filterText} onUserInput={this.handleUserInput}/>
-            <NewTicketList selectTicket={this.props.selectTicket} tickets={this.state.tickets} filterText={this.state.filterText}/>
-            </div>
-        );
+        if (!!this.state.currentTicket) {
+            var props = {
+                backAction: this.unselectTicket,
+                buttonAction: this.props.openModal,
+                currentRole: this.props.currentRole,
+                ticket: this.state.currentTicket,
+                user: this.props.user,
+            }
+            return <SingleItemView {...props} />;
+        } else {
+            return (
+                <div id='managerView' className='mainContent'>
+                <SearchBar filterText={this.state.filterText} onUserInput={this.handleUserInput}/>
+                { !this.state.tickets.length ? <LoadingAnimation /> :
+                    <NewTicketList
+                    selectTicket={this.selectTicket}
+                    tickets={this.state.tickets}
+                    filterText={this.state.filterText}/>
+                }
+                </div>
+            );
+        }
     }
 });
 

@@ -6,6 +6,7 @@ var AuctionStore = require('../stores/AuctionStore');
 var RebaseActions = require('../actions/RebaseActions');
 var SingleItemView = require('../components/SingleItemView.react');
 var handleScrollShadows = require('../utils/Style').handleScrollShadows;
+var LoadingAnimation = require('../components/LoadingAnimation.react');
 
 var DeveloperView = React.createClass({
     getInitialState: function() {
@@ -58,19 +59,6 @@ var DeveloperView = React.createClass({
     }
 });
 
-var LoadingAnimation = React.createClass({
-    render: function() {
-        return (
-            <div className="spinner">
-            <div className="rect1"></div>
-            <div className="rect2"></div>
-            <div className="rect3"></div>
-            <div className="rect4"></div>
-            <div className="rect5"></div>
-            </div>
-        );
-    }
-});
 
 var ReactCSSTransitionGroup = React.addons.CSSTransitionGroup;
 var AvailableAuctionsList = React.createClass({

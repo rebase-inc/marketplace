@@ -7,7 +7,6 @@ var _ = require('underscore');
 //Define initial data points
 var _availableAuctions = [];
 var _currentAuction = null;
-var _lastKnownCurrentAuction = _currentAuction;
 
 function persistAvailableAuctions(availableAuctions) {
     if (availableAuctions) { _availableAuctions = availableAuctions; }

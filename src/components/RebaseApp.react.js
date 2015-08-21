@@ -51,25 +51,9 @@ var RebaseApp = React.createClass({
             currentAuction: null,
         }
     },
-    selectTicket: function(ticket) {
-        this.setState({
-            currentAuction: null,
-            currentTicket: ticket,
-            modalOpen: false,
-        });
-    },
-    unselectItem: function() {
-        this.setState({
-            currentAuction: null,
-            currentTicket: null,
-            modalOpen: false,
-        });
-    },
     changeRole: function(newRole) {
         this.setState({
             currentRole: newRole,
-            currentTicket: null,
-            currentAuction: null,
             modalOpen: false,
         });
     },
@@ -88,13 +72,9 @@ var RebaseApp = React.createClass({
         }
         var viewElements = {
             developer: <DeveloperView {...props} />,
-            manager: <ManagerView selectTicket={this.selectTicket}/>,
+            manager: <ManagerView {...props}/>,
         }
-        if (!!this.state.currentTicket || !!this.state.currentAuction) {
-        }
-        else {
-            currentViewElement = viewElements[this.state.currentRole.type];
-        }
+        currentViewElement = viewElements[this.state.currentRole.type];
         return (
             <div id='app'>
             <Sidebar user={this.props.user}
