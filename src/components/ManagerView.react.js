@@ -1,9 +1,26 @@
 var React = require('react');
-var Icons = require('../components/RebaseIcons.react');
+var _ = require('underscore');
 
-var NewTicketView = React.createClass({
+var Icons = require('../components/RebaseIcons.react');
+var TicketStore = require('../stores/TicketStore');
+var RebaseActions = require('../actions/RebaseActions');
+
+var ManagerView = React.createClass({
     getInitialState: function() {
-        return { filterText: '' };
+        return _.extend({ filterText: '' }, TicketStore.getState());
+    },
+    getDataIfNeeded: function() {
+        RebaseActions.getTicketData();
+    },
+    componentDidMount: function() {
+        TicketStore.addChangeListener(this._onChange);
+        this.getDataIfNeeded();
+    },
+    componentWillUnmount: function() {
+        TicketStore.removeChangeListener(this._onChange);
+    },
+    _onChange: function() {
+        this.setState(TicketStore.getState());
     },
     // this is probably not how we should be handling the filterText
     handleUserInput: function(filterText) { this.setState({ filterText: filterText }); },
@@ -11,7 +28,7 @@ var NewTicketView = React.createClass({
         return (
             <div id='newTicketView' className='mainContent'>
             <SearchBar filterText={this.state.filterText} onUserInput={this.handleUserInput}/>
-            <NewTicketList selectTicket={this.props.selectTicket} tickets={this.props.tickets} filterText={this.state.filterText}/>
+            <NewTicketList selectTicket={this.props.selectTicket} tickets={this.state.tickets} filterText={this.state.filterText}/>
             </div>
         );
     }
@@ -76,4 +93,4 @@ var SearchBar = React.createClass({
     }
 });
 
-module.exports = NewTicketView;
+module.exports = ManagerView;

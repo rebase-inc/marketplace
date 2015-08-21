@@ -3,7 +3,7 @@ var _ = require('underscore');
 
 var Icons = require('../components/RebaseIcons.react');
 var Sidebar = require('../components/Sidebar.react');
-var NewTicketView = require('../components/NewTicketView.react');
+var ManagerView = require('../components/ManagerView.react');
 var DeveloperView = require('../components/DeveloperView.react');
 var SingleItemView = require('../components/SingleItemView.react');
 var ModalView = require('../components/ModalView.react');
@@ -49,7 +49,6 @@ var RebaseApp = React.createClass({
             modalOpen: false,
             currentTicket: null,
             currentAuction: null,
-            allTickets: TicketStore.getTickets(),
         }
     },
     selectTicket: function(ticket) {
@@ -91,7 +90,7 @@ var RebaseApp = React.createClass({
         var currentViewElement;
         var viewElements = {
             developer: <DeveloperView selectAuction={this.selectAuction}/>,
-            manager: <NewTicketView tickets={this.state.allTickets} selectTicket={this.selectTicket}/>,
+            manager: <ManagerView selectTicket={this.selectTicket}/>,
         }
         if (!!this.state.currentTicket || !!this.state.currentAuction) {
             var props = {

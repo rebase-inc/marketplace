@@ -19,17 +19,20 @@ module.exports = {
         };
         Api.getAuctionData(responseAction, pendingAction);
     },
-    receiveAllTickets: function(allTickets) {
-        Dispatcher.handleAction({
-            type: ActionConstants.GET_ALL_TICKETS,
-            allTickets: allTickets
-        });
-    },
-    receiveAvailableAuctions: function(availableAuctions) {
-        Dispatcher.handleAction({
-            type: ActionConstants.GET_AVAILABLE_AUCTIONS,
-            availableAuctions: availableAuctions
-        });
+    getTicketData: function() {
+        var responseAction = function(response) {
+            Dispatcher.handleRequestAction({
+                type: ActionConstants.GET_TICKET_DATA,
+                response: response
+            });
+        };
+        var pendingAction = function(response) {
+            Dispatcher.handleRequestAction({
+                type: ActionConstants.GET_TICKET_DATA,
+                response: RequestConstants.PENDING,
+            });
+        };
+        Api.getTicketData(responseAction, pendingAction);
     },
     commentOnTicket: function(user, ticket, text) {
         Dispatcher.handleAction({

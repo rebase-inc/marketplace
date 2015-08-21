@@ -55,6 +55,16 @@ function fakeAuctionGet(responseHandler) {
     setTimeout(function() { responseHandler(error, response); }, 800);
 }
 
+function fakeTicketGet(responseHandler) {
+    // simulate retrieving data from a database
+    var tickets = JSON.parse(localStorage.getItem('fakeTickets'));
+    var response = { status: 200, ok: true, data: tickets }
+    var error = {};
+    setTimeout(function() { responseHandler(error, response); }, 800);
+}
+
+// This looks like an anti-DRY situation...Maybe the action creators
+// could just call Api.getData(url, params, responseHandler, pendingHandling)
 var Api = {
     getAuctionData: function(responseHandler, pendingHandler) {
         var url = makeUrl("/auctions");
@@ -62,6 +72,16 @@ var Api = {
         var responseFunction = makeResponseFunc(responseHandler);
         if (pendingHandler) { pendingHandler(); }
         fakeAuctionGet(responseFunction);
+        //_pendingRequests[actionType] = get(url).end(
+            //makeResponseFunc(actionType, params)
+        //);
+    },
+    getTicketData: function(responseHandler, pendingHandler) {
+        var url = makeUrl("/tickets");
+        var params = {};
+        var responseFunction = makeResponseFunc(responseHandler);
+        if (pendingHandler) { pendingHandler(); }
+        fakeTicketGet(responseFunction);
         //_pendingRequests[actionType] = get(url).end(
             //makeResponseFunc(actionType, params)
         //);

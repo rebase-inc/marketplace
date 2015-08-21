@@ -1,21 +1,21 @@
 var RebaseAppDispatcher = require('../dispatcher/RebaseAppDispatcher');
 var EventEmitter = require('events').EventEmitter;
 var ActionConstants = require('../constants/ActionConstants');
+var RequestConstants = require('../constants/RequestConstants');
 var _ = require('underscore');
 
 //Define initial data points
-var _allTickets = [];
+var _tickets = [];
 
-// Method to load ticket data from mock API
-function loadAllTickets(allTickets) {
-    _allTickets = allTickets;
+function persistTickets(tickets) {
+    if (tickets) { _tickets = tickets; }
 }
 
 function newComment(user, ticket, text) {
     //var ticketInd = _tickets.findIndex(function(ind, el) { return el.id === ticketId });
     var ticketInd;
-    for(var i=0; i<_allTickets.length; i++) {
-        if (_allTickets[i].id == ticket.id) { ticketInd = i };
+    for(var i=0; i<_tickets.length; i++) {
+        if (_tickets[i].id == ticket.id) { ticketInd = i };
     }
 
     var _months = [ 'January', 'February', 'March', 'April', 'May', 'June',
@@ -29,12 +29,13 @@ function newComment(user, ticket, text) {
         text: text,
     }
 
-    _allTickets[ticketInd].comments.push(newComment);
+    _tickets[ticketInd].comments.push(newComment);
 }
 
 var TicketStore = _.extend({}, EventEmitter.prototype, {
-    getTickets: function() { return _allTickets; },
-
+    getState: function() {
+        return { tickets: _tickets };
+    },
     emitChange: function() { this.emit('change'); },
     addChangeListener: function(callback) { this.on('change', callback); },
     removeChangeListener: function(callback) { this.removeListener('change', callback); }
@@ -45,7 +46,11 @@ RebaseAppDispatcher.register(function(payload) {
     var action = payload.action;
 
     switch(action.type) {
-        case ActionConstants.GET_ALL_TICKETS: loadAllTickets(action.allTickets); break;
+        case ActionConstants.GET_TICKET_DATA:
+            switch(action.response) {
+                case RequestConstants.PENDING: console.log('Get ticket data pending!'); break;
+                default: persistTickets(action.response.data);
+            } break;
         case ActionConstants.ADD_COMMENT_TO_TICKET: newComment(action.user, action.ticket, action.text); break;
         default: return true;
     }
