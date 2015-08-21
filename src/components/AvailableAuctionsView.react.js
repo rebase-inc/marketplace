@@ -1,20 +1,34 @@
 var React = require('react/addons');
+var _ = require('underscore');
+
 var Icons = require('../components/RebaseIcons.react');
+var AuctionStore = require('../stores/AuctionStore');
+var RebaseActions = require('../actions/RebaseActions');
 var handleScrollShadows = require('../utils/Style').handleScrollShadows;
 
 var AvailableAuctionsView = React.createClass({
     getInitialState: function() {
-        return { filterText: '' };
+        return _.extend({ filterText: '' }, AuctionStore.getState());
+    },
+    getDataIfNeeded: function() {
+        RebaseActions.getAuctionData();
+    },
+    componentDidMount: function() {
+        AuctionStore.addChangeListener(this._onChange);
+        this.getDataIfNeeded();
+    },
+    _onChange: function() {
+        this.setState(AuctionStore.getState());
     },
     handleUserInput: function(filterText) { this.setState({ filterText: filterText }); },
     render: function() {
         return (
             <div id='availableAuctionsView' className='mainContent'>
             <SearchBar filterText={this.state.filterText} onUserInput={this.handleUserInput}/>
-            { !this.props.availableAuctions.length ? <LoadingAnimation /> :
+            { !this.state.availableAuctions.length ? <LoadingAnimation /> :
                 <AvailableAuctionsList
                 selectAuction={this.props.selectAuction}
-                availableAuctions={this.props.availableAuctions}
+                availableAuctions={this.state.availableAuctions}
                 filterText={this.state.filterText}/>
             }
             </div>

@@ -1,13 +1,14 @@
 var RebaseAppDispatcher = require('../dispatcher/RebaseAppDispatcher');
 var EventEmitter = require('events').EventEmitter;
 var ActionConstants = require('../constants/ActionConstants');
+var RequestConstants = require('../constants/RequestConstants');
 var _ = require('underscore');
 
 //Define initial data points
 var _availableAuctions = [];
 
-function loadAvailableAuctions(availableAuctions) {
-    _availableAuctions = availableAuctions;
+function persistAvailableAuctions(availableAuctions) {
+    if (availableAuctions) { _availableAuctions = availableAuctions; }
 }
 
 function newComment(user, auction, text) {
@@ -32,8 +33,9 @@ function newComment(user, auction, text) {
 }
 
 var AuctionStore = _.extend({}, EventEmitter.prototype, {
-    getAvailableAuctions: function() { return _availableAuctions; },
-
+    getState: function() {
+        return { availableAuctions: _availableAuctions };
+    },
     emitChange: function() { this.emit('change'); },
     addChangeListener: function(callback) { this.on('change', callback); },
     removeChangeListener: function(callback) { this.removeListener('change', callback); }
@@ -42,9 +44,12 @@ var AuctionStore = _.extend({}, EventEmitter.prototype, {
 // Register callback with Dispatcher
 RebaseAppDispatcher.register(function(payload) {
     var action = payload.action;
-
     switch(action.type) {
-        case ActionConstants.GET_AVAILABLE_AUCTIONS: loadAvailableAuctions(action.availableAuctions); break;
+        case ActionConstants.GET_AUCTION_DATA:
+            switch(action.response) {
+                case RequestConstants.PENDING: console.log('Pending!'); break;
+                default: persistAvailableAuctions(action.response.data);
+            } break;
         case ActionConstants.ADD_COMMENT_TO_AUCTION: newComment(action.user, action.auction, action.text); break;
         default: return true;
     }

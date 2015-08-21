@@ -29,10 +29,7 @@ var RebaseApp = React.createClass({
     },
 
     _onChange: function() {
-        this.setState({
-            allTickets: TicketStore.getTickets(),
-            availableAuctions: AuctionStore.getAvailableAuctions(),
-        });
+        this.setState({ });
     },
     componentDidMount: function() {
         TicketStore.addChangeListener(this._onChange);
@@ -53,13 +50,12 @@ var RebaseApp = React.createClass({
             currentTicket: null,
             currentAuction: null,
             allTickets: TicketStore.getTickets(),
-            availableAuctions: AuctionStore.getAvailableAuctions(),
         }
     },
     selectTicket: function(ticket) {
         this.setState({
             currentAuction: null,
-            currentTicket: ticket
+            currentTicket: ticket,
             modalOpen: false,
         });
     },
@@ -95,7 +91,7 @@ var RebaseApp = React.createClass({
         var currentViewElement;
         var viewElements = {
             developer: [
-                (<AvailableAuctionsView availableAuctions={this.state.availableAuctions} selectAuction={this.selectAuction}/>),
+                (<AvailableAuctionsView selectAuction={this.selectAuction}/>),
                 (<div>IN PROGRESS</div>),
                 (<div>COMPLETED</div>),
             ],
