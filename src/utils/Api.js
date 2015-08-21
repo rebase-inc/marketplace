@@ -87,6 +87,27 @@ function fakeAuctionPost(user, auction, text, responseHandler) {
     setTimeout(function() { responseHandler(error, response); }, 800);
 }
 
+function fakeTicketPost(user, ticket, text, responseHandler) {
+    var ticketInd;
+    for(var i=0; i<MockData._tickets.length; i++) {
+        if (MockData._tickets[i].id == ticket.id) { ticketInd = i };
+    }
+    var _months = [ 'January', 'February', 'March', 'April', 'May', 'June',
+        'July', 'August', 'September', 'October', 'November', 'December'];
+    var today = new Date();
+    var newComment = {
+        user: user,
+        date: _months[today.getMonth()] + ' ' + today.getDate(),
+        text: text,
+    }
+    MockData._tickets = JSON.parse(JSON.stringify(MockData._tickets));
+    MockData._tickets[ticketInd].comments.push(newComment);
+    var ticket = _.extend({}, MockData._tickets[ticketInd]);
+    var response = { status: 200, ok: true, data: ticket }
+    var error = {};
+    setTimeout(function() { responseHandler(error, response); }, 800);
+}
+
 // This looks like an anti-DRY situation...Maybe the action creators
 // could just call Api.getData(url, params, responseHandler, pendingHandling)
 var Api = {
@@ -101,11 +122,21 @@ var Api = {
         //);
     },
     commentOnAuction: function(user, auction, text, responseHandler, pendingHandler) {
-        var url = makeUrl("/auctions");
+        var url = makeUrl("/auctions/" + auction.id);
         var params = {text: text};
         var responseFunction = makeResponseFunc(responseHandler);
         if (pendingHandler) { pendingHandler(); }
         fakeAuctionPost(user, auction, text, responseFunction);
+        //_pendingRequests[actionType] = get(url).end(
+            //makeResponseFunc(actionType, params)
+        //);
+    },
+    commentOnTicket: function(user, ticket, text, responseHandler, pendingHandler) {
+        var url = makeUrl("/tickets" + ticket.id);
+        var params = {text: text};
+        var responseFunction = makeResponseFunc(responseHandler);
+        if (pendingHandler) { pendingHandler(); }
+        fakeTicketPost(user, ticket, text, responseFunction);
         //_pendingRequests[actionType] = get(url).end(
             //makeResponseFunc(actionType, params)
         //);

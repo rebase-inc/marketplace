@@ -12,6 +12,15 @@ function persistTickets(tickets) {
     if (tickets) { _tickets = tickets; }
 }
 
+function persistModifiedTicket(ticket) {
+    for(var i=0; i<_tickets.length; i++) {
+        if (_tickets[i].id == ticket.id) {
+            _tickets[i] = _.extend({}, ticket);
+            if (_currentTicket.id == ticket.id) { _currentTicket = ticket }
+        };
+    }
+}
+
 function newComment(user, ticket, text) {
     //var ticketInd = _tickets.findIndex(function(ind, el) { return el.id === ticketId });
     var ticketInd;
@@ -58,12 +67,17 @@ RebaseAppDispatcher.register(function(payload) {
     switch(action.type) {
         case ActionConstants.GET_TICKET_DATA:
             switch(action.response) {
-                case RequestConstants.PENDING: console.log('Get ticket data pending!'); break;
-                default: persistTickets(action.response.data);
+                case RequestConstants.PENDING: console.log('Pending!'); break;
+                default: persistTickets(action.response.data); break;
             } break;
-        case ActionConstants.ADD_COMMENT_TO_TICKET: newComment(action.user, action.ticket, action.text); break;
+        case ActionConstants.ADD_COMMENT_TO_TICKET:
+            switch(action.response) {
+                case RequestConstants.PENDING: console.log('Pending new comment!'); break;
+                default: persistModifiedTicket(action.response.data); break;
+            } break;
         default: return true;
     }
+
 
     // If action was responded to, emit change event
     TicketStore.emitChange();
