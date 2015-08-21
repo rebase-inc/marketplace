@@ -56,10 +56,11 @@ function fakeAuctionGet(responseHandler) {
 }
 
 var Api = {
-    getAuctionData: function(responseHandler) {
+    getAuctionData: function(responseHandler, pendingHandler) {
         var url = makeUrl("/auctions");
         var params = {};
         var responseFunction = makeResponseFunc(responseHandler);
+        if (pendingHandler) { pendingHandler(); }
         fakeAuctionGet(responseFunction);
         //_pendingRequests[actionType] = get(url).end(
             //makeResponseFunc(actionType, params)

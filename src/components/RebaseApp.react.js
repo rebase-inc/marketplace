@@ -4,7 +4,7 @@ var _ = require('underscore');
 var Icons = require('../components/RebaseIcons.react');
 var Sidebar = require('../components/Sidebar.react');
 var NewTicketView = require('../components/NewTicketView.react');
-var AvailableAuctionsView = require('../components/AvailableAuctionsView.react');
+var DeveloperView = require('../components/DeveloperView.react');
 var SingleItemView = require('../components/SingleItemView.react');
 var ModalView = require('../components/ModalView.react');
 var TicketStore = require('../stores/TicketStore');
@@ -90,16 +90,8 @@ var RebaseApp = React.createClass({
     render: function() {
         var currentViewElement;
         var viewElements = {
-            developer: [
-                (<AvailableAuctionsView selectAuction={this.selectAuction}/>),
-                (<div>IN PROGRESS</div>),
-                (<div>COMPLETED</div>),
-            ],
-            manager: [
-                (<NewTicketView tickets={this.state.allTickets} selectTicket={this.selectTicket}/>),
-                (<div>IN PROGRESS</div>),
-                (<div>COMPLETED</div>),
-            ],
+            developer: <DeveloperView selectAuction={this.selectAuction}/>,
+            manager: <NewTicketView tickets={this.state.allTickets} selectTicket={this.selectTicket}/>,
         }
         if (!!this.state.currentTicket || !!this.state.currentAuction) {
             var props = {
@@ -113,7 +105,7 @@ var RebaseApp = React.createClass({
             currentViewElement = <SingleItemView {...props} />
         }
         else {
-            currentViewElement = viewElements[this.state.currentRole.type][this.state.currentView.id];
+            currentViewElement = viewElements[this.state.currentRole.type];
         }
         return (
             <div id='app'>

@@ -1,15 +1,23 @@
 var Dispatcher = require('../dispatcher/RebaseAppDispatcher');
 var ActionConstants = require('../constants/ActionConstants');
+var RequestConstants = require('../constants/RequestConstants');
 var Api = require('../utils/Api');
 
 module.exports = {
     getAuctionData: function() {
-        Api.getAuctionData(function(response) {
+        var responseAction = function(response) {
             Dispatcher.handleRequestAction({
                 type: ActionConstants.GET_AUCTION_DATA,
                 response: response
             });
-        });
+        };
+        var pendingAction = function(response) {
+            Dispatcher.handleRequestAction({
+                type: ActionConstants.GET_AUCTION_DATA,
+                response: RequestConstants.PENDING,
+            });
+        };
+        Api.getAuctionData(responseAction, pendingAction);
     },
     receiveAllTickets: function(allTickets) {
         Dispatcher.handleAction({

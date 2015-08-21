@@ -6,7 +6,7 @@ var AuctionStore = require('../stores/AuctionStore');
 var RebaseActions = require('../actions/RebaseActions');
 var handleScrollShadows = require('../utils/Style').handleScrollShadows;
 
-var AvailableAuctionsView = React.createClass({
+var DeveloperView = React.createClass({
     getInitialState: function() {
         return _.extend({ filterText: '' }, AuctionStore.getState());
     },
@@ -16,6 +16,9 @@ var AvailableAuctionsView = React.createClass({
     componentDidMount: function() {
         AuctionStore.addChangeListener(this._onChange);
         this.getDataIfNeeded();
+    },
+    componentWillUnmount: function() {
+        AuctionStore.removeChangeListener(this._onChange);
     },
     _onChange: function() {
         this.setState(AuctionStore.getState());
@@ -125,4 +128,4 @@ var SearchBar = React.createClass({
     }
 });
 
-module.exports = AvailableAuctionsView;
+module.exports = DeveloperView;
