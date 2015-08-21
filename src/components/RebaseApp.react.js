@@ -55,6 +55,7 @@ var RebaseApp = React.createClass({
         this.setState({
             currentRole: newRole,
             modalOpen: false,
+            currentView: ViewsByRole[newRole.type][0],
         });
     },
     openModal: function() {
