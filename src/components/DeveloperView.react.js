@@ -34,7 +34,6 @@ var DeveloperView = React.createClass({
     },
     render: function() {
         if (!!this.state.currentAuction) {
-            alert('re rending with ' + comments); 
             var props = {
                 backAction: this.unselectAuction,
                 buttonAction: this.openModal,

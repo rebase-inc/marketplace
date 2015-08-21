@@ -7,6 +7,7 @@ var _ = require('underscore');
 //Define initial data points
 var _availableAuctions = [];
 var _currentAuction = null;
+var _lastKnownCurrentAuction = _currentAuction;
 
 function persistAvailableAuctions(availableAuctions) {
     if (availableAuctions) { _availableAuctions = availableAuctions; }
@@ -15,13 +16,14 @@ function persistAvailableAuctions(availableAuctions) {
 function persistModifiedAuction(auction) {
     for(var i=0; i<_availableAuctions.length; i++) {
         if (_availableAuctions[i].id == auction.id) {
-            _availableAuctions[i] = auction;
+            _availableAuctions[i] = _.extend({}, auction);
             if (_currentAuction.id == auction.id) { _currentAuction = auction }
         };
     }
 }
 
 var AuctionStore = _.extend({}, EventEmitter.prototype, {
+    secret: function() { return _currentAuction.ticket_set.bid_limits[0].ticket_snapshot.ticket.comments.length },
     getState: function() {
         return {
             availableAuctions: _availableAuctions,
@@ -54,7 +56,7 @@ RebaseAppDispatcher.register(function(payload) {
             } break;
         default: return true;
     }
-    
+
     // If action was responded to, emit change event
     AuctionStore.emitChange();
     return true;

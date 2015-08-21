@@ -1,7 +1,9 @@
 var ActionConstants = require('../constants/ActionConstants');
+var AuctionStore = require('../stores/AuctionStore');
 var RequestConstants = require('../constants/ActionConstants');
 var AppDispatcher = require('../dispatcher/RebaseAppDispatcher');
 var MockData = require('../MockData');
+var _ = require('underscore');
 
 var API_URL = '/api/v2';
 var TIMEOUT = 10000;
@@ -77,9 +79,9 @@ function fakeAuctionPost(user, auction, text, responseHandler) {
         date: _months[today.getMonth()] + ' ' + today.getDate(),
         text: text,
     }
+    MockData._auctions = JSON.parse(JSON.stringify(MockData._auctions));
     MockData._auctions[auctionInd].ticket_set.bid_limits[0].ticket_snapshot.ticket.comments.push(newComment);
-    MockData.saveToDisk();
-    var auction = MockData._auctions[auctionInd];
+    var auction = _.extend({}, MockData._auctions[auctionInd]);
     var response = { status: 200, ok: true, data: auction }
     var error = {};
     setTimeout(function() { responseHandler(error, response); }, 800);
