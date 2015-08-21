@@ -23,16 +23,17 @@ function persistModifiedAuction(auction) {
 }
 
 var AuctionStore = _.extend({}, EventEmitter.prototype, {
-    secret: function() { return _currentAuction.ticket_set.bid_limits[0].ticket_snapshot.ticket.comments.length },
+    _secret: function() { return _currentAuction.ticket_set.bid_limits[0].ticket_snapshot.ticket.comments.length },
     getState: function() {
         return {
             availableAuctions: _availableAuctions,
             currentAuction: _currentAuction,
         };
     },
-    select: function(id) {
+    select: function(auction) {
+        if (!auction) { _currentAuction = null; return; }
         for(var i=0; i<_availableAuctions.length; i++) {
-            if (_availableAuctions[i].id == id) { _currentAuction = _availableAuctions[i]; };
+            if (_availableAuctions[i].id == auction.id) { _currentAuction = _availableAuctions[i]; };
         }
     },
     emitChange: function() { this.emit('change'); },

@@ -26,11 +26,11 @@ var DeveloperView = React.createClass({
     },
     handleUserInput: function(filterText) { this.setState({ filterText: filterText }); },
     selectAuction: function(auction) {
-        AuctionStore.select(auction.id);
+        AuctionStore.select(auction);
         this._onChange();
     },
     unselectAuction: function() {
-        selectAuction(null);
+        this.selectAuction(null);
     },
     render: function() {
         if (!!this.state.currentAuction) {
