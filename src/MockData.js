@@ -62,7 +62,7 @@ module.exports = {
     _auctions: fakeAuctions,
     _contracts: fakeContracts,
     _contractsWithReviews: fakeContractsWithReviews,
-    init: function() {
+    saveToDisk: function() {
         localStorage.clear();
         localStorage.setItem('fakeTickets', JSON.stringify(fakeTickets));
         localStorage.setItem('fakeAuctions', JSON.stringify(fakeAuctions));

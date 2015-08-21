@@ -54,7 +54,7 @@ RebaseAppDispatcher.register(function(payload) {
             } break;
         default: return true;
     }
-
+    
     // If action was responded to, emit change event
     AuctionStore.emitChange();
     return true;

@@ -7,7 +7,7 @@ var TicketApi = require('./utils/TicketApi')
 
 window.React = React; // export for http://fb.me/react-devtools
 
-MockData.init();
+MockData.saveToDisk();
 
 var _user = {
     first_name: 'Andrew',

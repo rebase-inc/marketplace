@@ -6,15 +6,15 @@ var MockData = require('../MockData');
 var API_URL = '/api/v2';
 var TIMEOUT = 10000;
 
-//var _pendingRequests = {};
+var _pendingRequests = {};
 
-//function abortPendingRequests(key) {
-    //if (_pendingRequests[key]) {
-        //_pendingRequests[key]._callback = function(){};
-        //_pendingRequests[key].abort();
-        //_pendingRequests[key] = null;
-    //}
-//}
+function abortPendingRequests(key) {
+    if (_pendingRequests[key]) {
+        _pendingRequests[key]._callback = function(){};
+        _pendingRequests[key].abort();
+        _pendingRequests[key] = null;
+    }
+}
 
 //function token() {
     //return UserStore.getState().token;
@@ -78,7 +78,7 @@ function fakeAuctionPost(user, auction, text, responseHandler) {
         text: text,
     }
     MockData._auctions[auctionInd].ticket_set.bid_limits[0].ticket_snapshot.ticket.comments.push(newComment);
-    MockData.init();
+    MockData.saveToDisk();
     var auction = MockData._auctions[auctionInd];
     var response = { status: 200, ok: true, data: auction }
     var error = {};

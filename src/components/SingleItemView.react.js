@@ -62,7 +62,6 @@ var CommentBox = React.createClass({
         }
         this.cancelComment();
     },
-
     handleInput: function() {
         this.setState({ commentText: this.refs.commentText.getDOMNode().value });
     },

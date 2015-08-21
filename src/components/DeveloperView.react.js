@@ -23,9 +23,6 @@ var DeveloperView = React.createClass({
     },
     _onChange: function() {
         this.setState(AuctionStore.getState());
-        console.log('getting state!');
-        //var comments = props.auction.ticket_set.bid_limits[0].ticket_snapshot.ticket.comments;
-        //console.log(comments);
     },
     handleUserInput: function(filterText) { this.setState({ filterText: filterText }); },
     selectAuction: function(auction) {
@@ -37,6 +34,7 @@ var DeveloperView = React.createClass({
     },
     render: function() {
         if (!!this.state.currentAuction) {
+            alert('re rending with ' + comments); 
             var props = {
                 backAction: this.unselectAuction,
                 buttonAction: this.openModal,
@@ -44,9 +42,6 @@ var DeveloperView = React.createClass({
                 auction: this.state.currentAuction,
                 user: this.props.user,
             }
-            console.log('re rendering developer view');
-            var comments = props.auction.ticket_set.bid_limits[0].ticket_snapshot.ticket.comments;
-            console.log(comments);
             return <SingleItemView {...props} />;
         } else {
             return (
