@@ -63,17 +63,21 @@ var MainView = React.createClass({
 
 var TicketList = React.createClass({
     render: function() {
+        var props = {
+            selectTicket: this.props.selectTicket,
+            currentRole: this.props.currentRole,
+        }
         var ticketMatchesText = function(ticket) {
             return ticket.title.indexOf(this.props.filterText) != -1;
         }.bind(this);
         var makeTicketElement = function(ticket) {
-            return <Ticket ticket={ticket} key={ticket.id} selectTicket={this.props.selectTicket} />;
-        }.bind(this);
+            return <Ticket ticket={ticket} key={ticket.id} {...props} />;
+        }.bind(props);
         return (
-            <table id='newTicketList'>
-            <tbody>
-            { this.props.tickets.filter(ticketMatchesText).map(makeTicketElement) }
-            </tbody>
+            <table id='ticketList'>
+                <tbody>
+                    { this.props.tickets.filter(ticketMatchesText).map(makeTicketElement) }
+                </tbody>
             </table>
         );
     }
@@ -82,9 +86,10 @@ var TicketList = React.createClass({
 var Ticket = React.createClass({
     selectTicket: function() { this.props.selectTicket(this.props.ticket); },
     render: function() {
+        var role = this.props.currentRole;
         return (
-            <tr className='newTicket'>
-                <FindTalentPanel />
+            <tr className='ticket'>
+                { role.type == 'manager' ? <FindTalentPanel /> : <ProjectInfoPanel /> }
                 <td className='titlePanel'>{this.props.ticket.title}</td>
                 <td className='skillsRequiredPanel'>{this.props.ticket.skillsRequired}</td>
                 <td className='commentsPanel' onClick={this.selectTicket}>
@@ -92,6 +97,17 @@ var Ticket = React.createClass({
                     <span>{this.props.ticket.comments.length} Comments</span>
                 </td>
             </tr>
+        );
+    }
+});
+
+var ProjectInfoPanel = React.createClass({
+    render: function() {
+        return (
+            <td onClick={this.handleClick} className='projectInfoPanel'>
+            <span>foobar/baz</span>
+            <img src='img/rating-dots.svg'/>
+            </td>
         );
     }
 });
@@ -114,7 +130,7 @@ var SearchBar = React.createClass({
     },
     render: function() {
         return (
-                <form id='newTicketSearchBar'>
+                <form id='ticketSearchBar'>
                     <input type='text' placeholder='Search for tickets' value={this.props.filterText} onChange={this.handleChange} ref='filterTextInput'/>
                 </form>
                );

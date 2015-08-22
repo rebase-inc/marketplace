@@ -78,10 +78,7 @@ var RebaseApp = React.createClass({
             <div id='app'>
             <Sidebar {...props} />
             { this.state.modalIsOpen ? <ModalView closeModal={props.closeModal} /> : null }
-            { this.state.currentRole.type == 'developer' ?
-                <DeveloperView {...props} /> :
-                <MainView {...props} />
-            }
+            <MainView {...props} />
             </div>
         );
     },
