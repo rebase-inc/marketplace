@@ -34,7 +34,6 @@ var ManagerView = React.createClass({
     // this is probably not how we should be handling the filterText
     handleUserInput: function(filterText) { this.setState({ filterText: filterText }); },
     render: function() {
-        console.log(this.state.allTickets);
         if (!!this.state.currentTicket) {
             var props = {
                 backAction: this.unselectTicket,
