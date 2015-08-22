@@ -31,7 +31,10 @@ var fakeTitles = [
     'Delete every line of code from the codebase, destroy everybody\'s computers, and delete our github accounts.',
     'Play with the quadcopter for 10-15 hours.',
     'Build some really cool software, get a bunch of people to use it, and make a billion dollars.',
-]
+];
+
+var fakeOrganizations = [ 'prestige', 'piedpiper', 'veridian', 'vandelay', 'initech' ];
+var fakeProjects = ['marketing', 'stream4k', 'matchmaker', 'import', 'accounting' ];
 
 function _makeFakeTicket(fakeTitle, index) {
     var _fakeTicket = {};
@@ -41,6 +44,10 @@ function _makeFakeTicket(fakeTitle, index) {
     _fakeTicket.ticket_snapshots = [];
     _fakeTicket.skillsRequired = 'Python | SQLAlchemy | Finite State Machines';
     _fakeTicket.comments = JSON.parse(JSON.stringify(fakeComments));
+    _fakeTicket.project = {};
+    _fakeTicket.project.title = _.sample(fakeProjects);
+    _fakeTicket.project.organization = {};
+    _fakeTicket.project.organization.title = _.sample(fakeOrganizations);
     return _fakeTicket;
 }
 
