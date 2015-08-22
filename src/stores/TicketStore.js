@@ -2,15 +2,12 @@ var RebaseAppDispatcher = require('../dispatcher/RebaseAppDispatcher');
 var EventEmitter = require('events').EventEmitter;
 var ActionConstants = require('../constants/ActionConstants');
 var RequestConstants = require('../constants/RequestConstants');
+var keyMirror = require('keymirror');
 var _ = require('underscore');
 
 //Define initial data points
 var _tickets = [];
 var _currentTicket = null;
-
-function persistTickets(tickets) {
-    if (tickets) { _tickets = tickets; }
-}
 
 function persistModifiedTicket(ticket) {
     for(var i=0; i<_tickets.length; i++) {
@@ -42,17 +39,54 @@ function newComment(user, ticket, text) {
     _tickets[ticketInd].comments.push(newComment);
 }
 
+
+function isNewTicket(ticket) {
+    return ticket.ticket_snapshots.every(snap => !snap.bid_limit.ticket_set.auction);
+}
+
+function isOfferedTicket(ticket) {
+    return ticket.ticket_snapshots.every(snap => snap.bid_limit.ticket_set.auction.state == 'waiting_for_bids');
+}
+
+function isInProgressTicket(ticket) {
+    return (
+        ticket.ticket_snapshots.every(snap => snap.bid_limit.ticket_set.auction == 'closed') &&
+        ticket.ticket_snapshots.every(snap => snap.bid_limit.ticket_set.auction.bids.filter(bid => !!bid.contract).work_offers.every(offer => !!offer.work.review))
+    );
+}
+
+var ticketTypes = keyMirror({ NEW: null, OFFERED: null, IN_PROGRESS: null, COMPLETED: null });
+function labelTicket(ticket) {
+    if ( isNewTicket(ticket) ) { ticket.type = ticketTypes.NEW }
+    else if ( isOfferedTicket(ticket) ) { ticket.type = ticketTypes.OFFERED }
+    else if ( isInProgressTicket(ticket) ) { ticket.type = ticketTypes.IN_PROGRESS }
+    else { ticket.type = ticketTypes.COMPLETED } // really should actually check, but this just for mock data for now
+    return ticket;
+}
+
+function persistTickets(tickets) {
+    _allTickets = tickets.map(labelTicket);
+}
+
+var _role = null;
+var _allTickets = [];
+var _currentTicket = null;
+
 var TicketStore = _.extend({}, EventEmitter.prototype, {
-    getState: function() {
+    initialize: function(role) {
+        _role = role;
+        _allTickets = null;
+    },
+    getState: function(role) {
         return {
-            tickets: _tickets,
+            allTickets: _allTickets,
             currentTicket: _currentTicket,
-        };
+        }
     },
     select: function(ticket) {
         if (!ticket) { _currentTicket = null; return; }
-        for(var i=0; i<_tickets.length; i++) {
-            if (_tickets[i].id == ticket.id) { _currentTicket = _tickets[i]; };
+        for(var i=0; i<_allTickets.length; i++) {
+            if (_allTickets[i].id == ticket.id) { _currentTicket = _allTickets[i]; };
         }
     },
     emitChange: function() { this.emit('change'); },
@@ -77,7 +111,6 @@ RebaseAppDispatcher.register(function(payload) {
             } break;
         default: return true;
     }
-
 
     // If action was responded to, emit change event
     TicketStore.emitChange();

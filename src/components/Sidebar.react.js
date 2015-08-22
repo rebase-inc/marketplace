@@ -8,7 +8,7 @@ var Sidebar = React.createClass({
             <div id='sidebar' className='noselect'>
             <img className='logo' src='img/logo.svg' alt='Rebase Logo'/>
             <SidebarNav user={this.props.user}
-            currentRole={this.props.currentRole} changeRole={this.props.changeRole} 
+            currentRole={this.props.currentRole} changeRole={this.props.changeRole}
             currentView={this.props.currentView} changeView={this.props.changeView} />
             <SidebarProfile user={this.props.user} />
             </div>
@@ -21,7 +21,7 @@ var SidebarNav = React.createClass({
     render: function() {
         var allViews = ViewsByRole[this.props.currentRole.type].map( function(view) {
             return (
-                <ViewSelection view={view} 
+                <ViewSelection view={view}
                 currentView={this.props.currentView} changeView={this.props.changeView} />
             );
         }.bind(this));
@@ -67,7 +67,7 @@ var RoleSelector = React.createClass({
             default: roleDisplayName = 'Unknown Role'; break;
         }
         if (this.state.dropdownOpen) {
-            dropdown = <RoleSelectorDropdown user={this.props.user} 
+            dropdown = <RoleSelectorDropdown user={this.props.user}
             changeRole={this.props.changeRole} currentRole={this.props.currentRole} />;
             className = 'open';
         }
