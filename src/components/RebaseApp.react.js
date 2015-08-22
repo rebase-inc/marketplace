@@ -24,7 +24,7 @@ var RebaseApp = React.createClass({
             currentView: ind ,
             currentTicket: null,
             currentAuction: null,
-            modalOpen: false,
+            modalIsOpen: false,
         });
     },
 
@@ -46,7 +46,7 @@ var RebaseApp = React.createClass({
         return {
             currentRole: currentRole,
             currentView: currentView,
-            modalOpen: false,
+            modalIsOpen: false,
             currentTicket: null,
             currentAuction: null,
         }
@@ -54,36 +54,34 @@ var RebaseApp = React.createClass({
     changeRole: function(newRole) {
         this.setState({
             currentRole: newRole,
-            modalOpen: false,
+            modalIsOpen: false,
             currentView: ViewsByRole[newRole.type][0],
         });
     },
     openModal: function() {
-        this.setState({ modalOpen: true });
+        this.setState({ modalIsOpen: true });
     },
     closeModal: function() {
-        this.setState({ modalOpen: false });
+        this.setState({ modalIsOpen: false });
     },
     render: function() {
-        var currentViewElement;
         var props = {
+            user: this.props.user,
             currentView: this.state.currentView,
             currentRole: this.state.currentRole,
-            user: this.props.user,
+            changeView: this.changeView,
+            changeRole: this.changeRole,
             openModal: this.openModal,
+            modalIsOpen: this.state.modalIsOpen,
         }
-        var viewElements = {
-            developer: <DeveloperView {...props} />,
-            manager: <ManagerView {...props}/>,
-        }
-        currentViewElement = viewElements[this.state.currentRole.type];
         return (
             <div id='app'>
-            <Sidebar user={this.props.user}
-            currentRole={this.state.currentRole} changeRole={this.changeRole}
-            currentView={this.state.currentView} changeView={this.changeView}/>
-            { (this.state.modalOpen) ? <ModalView closeModal={this.closeModal} /> : null }
-            { currentViewElement }
+            <Sidebar {...props} />
+            { this.state.modalIsOpen ? <ModalView closeModal={props.closeModal} /> : null }
+            { this.state.currentRole.type == 'developer' ?
+                <DeveloperView {...props} /> :
+                <ManagerView {...props} />
+            }
             </div>
         );
     },

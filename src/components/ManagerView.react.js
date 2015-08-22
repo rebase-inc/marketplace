@@ -6,6 +6,7 @@ var TicketStore = require('../stores/TicketStore');
 var RebaseActions = require('../actions/RebaseActions');
 var SingleItemView = require('../components/SingleItemView.react');
 var LoadingAnimation = require('../components/LoadingAnimation.react');
+var ModalView = require('../components/ModalView.react');
 
 var ManagerView = React.createClass({
     getInitialState: function() {
