@@ -50,7 +50,8 @@ var _makeFakeContractWithReview = function(fakeTicket, index) {
 var _makeFakeAuction = function(fakeTicket, index) {
     var _fakeAuction = {
         id: index,
-        ticket_set: { bid_limits: [{ ticket_snapshot: { ticket: fakeTicket } }] }
+        state: 'waiting_for_bids',
+        ticket_set: { bid_limits: [{ ticket_snapshot: { ticket: fakeTicket } }] },
     }
     return _fakeAuction;
 }

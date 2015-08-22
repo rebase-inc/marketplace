@@ -108,6 +108,29 @@ function fakeTicketPost(user, ticket, text, responseHandler) {
     setTimeout(function() { responseHandler(error, response); }, 800);
 }
 
+var _failedOneAuction = false;
+function fakeAuctionBid(user, auction, price, responseHandler) {
+    var auctionInd;
+    for(var i=0; i<MockData._auctions.length; i++) {
+        if (MockData._auctions[i].id == auction.id) { auctionInd = i };
+    }
+    var auction = JSON.parse(JSON.stringify(MockData._auctions[auctionInd]));
+    var response;
+    var error;
+    // hack to make the user see what a failed auction looks like
+    if (!_failedOneAuction) {
+        _failedOneAuction = true;
+        auction.state = 'waiting_for_bids';
+        response = { status: 201, ok: true, data: auction };
+        error = {};
+    } else {
+        auction.state = 'closed';
+        response = { status: 201, ok: true, data: auction }
+        error = {};
+    }
+    setTimeout(function() { responseHandler(error, response); }, 800);
+}
+
 // This looks like an anti-DRY situation...Maybe the action creators
 // could just call Api.getData(url, params, responseHandler, pendingHandling)
 var Api = {
@@ -147,6 +170,16 @@ var Api = {
         var responseFunction = makeResponseFunc(responseHandler);
         if (pendingHandler) { pendingHandler(); }
         fakeTicketGet(responseFunction);
+        //_pendingRequests[actionType] = get(url).end(
+            //makeResponseFunc(actionType, params)
+        //);
+    },
+    bidOnAuction: function(user, auction, price, responseHandler, pendingHandler) {
+        var url = makeUrl("/auction/");
+        var params = {};
+        var responseFunction = makeResponseFunc(responseHandler);
+        if (pendingHandler) { pendingHandler(); }
+        fakeAuctionBid(user, auction, price, responseFunction);
         //_pendingRequests[actionType] = get(url).end(
             //makeResponseFunc(actionType, params)
         //);

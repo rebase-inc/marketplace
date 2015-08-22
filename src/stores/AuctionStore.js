@@ -7,6 +7,7 @@ var _ = require('underscore');
 //Define initial data points
 var _availableAuctions = [];
 var _currentAuction = null;
+var _bidPending = false;
 
 function persistAvailableAuctions(availableAuctions) {
     if (availableAuctions) { _availableAuctions = availableAuctions; }
@@ -21,12 +22,22 @@ function persistModifiedAuction(auction) {
     }
 }
 
+function handleBidResponse(auction) {
+    _bidPending = false;
+    persistModifiedAuction(auction);
+}
+
+function markBidPending(auction) {
+    _bidPending = true;
+}
+
 var AuctionStore = _.extend({}, EventEmitter.prototype, {
-    _secret: function() { return _currentAuction.ticket_set.bid_limits[0].ticket_snapshot.ticket.comments.length },
+    _secret: function() { return _currentAuction.state },
     getState: function() {
         return {
             availableAuctions: _availableAuctions,
             currentAuction: _currentAuction,
+            bidPending: _bidPending,
         };
     },
     select: function(auction) {
@@ -53,6 +64,11 @@ RebaseAppDispatcher.register(function(payload) {
             switch(action.response) {
                 case RequestConstants.PENDING: console.log('Pending new comment!'); break;
                 default: persistModifiedAuction(action.response.data); break;
+            } break;
+        case ActionConstants.BID_ON_AUCTION:
+            switch(action.response) {
+                case RequestConstants.PENDING: markBidPending(action.response.data); break;
+                default: handleBidResponse(action.response.data); break;
             } break;
         default: return true;
     }

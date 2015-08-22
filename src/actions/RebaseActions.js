@@ -64,4 +64,19 @@ module.exports = {
         };
         Api.commentOnTicket(user, ticket, text, responseAction, pendingAction);
     },
+    bidOnAuction: function(user, auction, price) {
+        var responseAction = function(response) {
+            Dispatcher.handleRequestAction({
+                type: ActionConstants.BID_ON_AUCTION,
+                response: response
+            });
+        };
+        var pendingAction = function(response) {
+            Dispatcher.handleRequestAction({
+                type: ActionConstants.BID_ON_AUCTION,
+                response: RequestConstants.PENDING,
+            });
+        };
+        Api.bidOnAuction(user, auction, price, responseAction, pendingAction);
+    },
 };
