@@ -8,7 +8,7 @@ var SingleItemView = require('../components/SingleItemView.react');
 var LoadingAnimation = require('../components/LoadingAnimation.react');
 var ModalView = require('../components/ModalView.react');
 
-var ManagerView = React.createClass({
+var MainView = React.createClass({
     getInitialState: function() {
         return _.extend({ filterText: '' }, TicketStore.getState());
     },
@@ -45,39 +45,41 @@ var ManagerView = React.createClass({
             }
             return <SingleItemView {...props} />;
         } else {
+            var props = {
+                filterText: this.state.filterText,
+                tickets: this.state.allTickets.filter(ticket => ticket.type == this.props.currentView.type),
+                selectTicket: this.selectTicket,
+                currentRole: this.props.currentRole,
+            }
             return (
-                <div id='managerView' className='mainContent'>
+                <div className='mainContent'>
                 <SearchBar filterText={this.state.filterText} onUserInput={this.handleUserInput}/>
-                { this.state.loading ? <LoadingAnimation /> :
-                    <NewTicketList
-                    selectTicket={this.selectTicket}
-                    tickets={this.state.allTickets.filter(ticket => ticket.type == this.props.currentView.type)}
-                    filterText={this.state.filterText}/>
-                }
+                { this.state.loading ? <LoadingAnimation /> : <TicketList {...props} /> }
                 </div>
             );
         }
     }
 });
 
-var NewTicketList = React.createClass({
+var TicketList = React.createClass({
     render: function() {
-        var all_tickets = [];
-        this.props.tickets.forEach(function(ticket) {
-            if ( ticket.title.indexOf(this.props.filterText) == -1 ) {
-                return;
-            }
-            all_tickets.push(<NewTicket ticket={ticket} key={ticket.date} selectTicket={this.props.selectTicket}/>);
-        }.bind(this));
+        var ticketMatchesText = function(ticket) {
+            return ticket.title.indexOf(this.props.filterText) != -1;
+        }.bind(this);
+        var makeTicketElement = function(ticket) {
+            return <Ticket ticket={ticket} key={ticket.id} selectTicket={this.props.selectTicket} />;
+        }.bind(this);
         return (
             <table id='newTicketList'>
-            <tbody>{all_tickets}</tbody>
+            <tbody>
+            { this.props.tickets.filter(ticketMatchesText).map(makeTicketElement) }
+            </tbody>
             </table>
         );
     }
 });
 
-var NewTicket = React.createClass({
+var Ticket = React.createClass({
     selectTicket: function() { this.props.selectTicket(this.props.ticket); },
     render: function() {
         return (
@@ -119,4 +121,4 @@ var SearchBar = React.createClass({
     }
 });
 
-module.exports = ManagerView;
+module.exports = MainView;
