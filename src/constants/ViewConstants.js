@@ -8,7 +8,7 @@ var ViewsByRole = {
         { id: 1, type: ticketTypes.IN_PROGRESS, name: 'In Progress', icon: 'img/in-progress-24px.svg'},
         { id: 2, type: ticketTypes.COMPLETED, name: 'Completed', icon: 'img/completed-24px.svg'},
     ],
-    manager: [    
+    manager: [
         { id: 0, type: ticketTypes.NEW, role: 'manager', name: 'New', icon: 'img/new-24px.svg'},
         { id: 0, type: ticketTypes.OFFERED, role: 'manager', name: 'Waiting', icon: 'img/waiting-24px.svg'},
         { id: 1, type: ticketTypes.IN_PROGRESS, role: 'manager', name: 'In Progress', icon: 'img/in-progress-24px.svg'},
@@ -17,7 +17,7 @@ var ViewsByRole = {
 }
 
 
-module.exports = { 
+module.exports = {
     ViewsByRole: ViewsByRole,
     ticketTypes: ticketTypes,
 }

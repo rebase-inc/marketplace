@@ -50,8 +50,10 @@ function isOfferedTicket(ticket) {
 
 function isInProgressTicket(ticket) {
     return (
-        ticket.ticket_snapshots.every(snap => snap.bid_limit.ticket_set.auction == 'closed') &&
-        ticket.ticket_snapshots.every(snap => snap.bid_limit.ticket_set.auction.bids.filter(bid => !!bid.contract).work_offers.every(offer => !!offer.work.review))
+        ticket.ticket_snapshots.every(snap => snap.bid_limit.ticket_set.auction.state == 'closed') &&
+        ticket.ticket_snapshots
+            .every(snap => snap.bid_limit.ticket_set.auction.bids.filter(bid => !!bid.contract)
+                   .every(bid => bid.work_offers.some(offer => !offer.work.review)))
     );
 }
 

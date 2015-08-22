@@ -44,6 +44,40 @@ function _makeFakeTicket(fakeTitle, index) {
     return _fakeTicket;
 }
 
+function _makeFakeOfferedTicket(fakeTicket, index) {
+    var _fakeTicket = JSON.parse(JSON.stringify(fakeTicket));
+    _fakeTicket.title = _fakeTicket.title + ' (OFFERED)';
+    _fakeTicket.ticket_snapshots = [];
+    _fakeTicket.ticket_snapshots.push({});
+    _fakeTicket.ticket_snapshots[0].bid_limit = {};
+    _fakeTicket.ticket_snapshots[0].bid_limit.ticket_set = {};
+    _fakeTicket.ticket_snapshots[0].bid_limit.ticket_set.auction = {};
+    _fakeTicket.ticket_snapshots[0].bid_limit.ticket_set.auction.id = index;
+    _fakeTicket.ticket_snapshots[0].bid_limit.ticket_set.auction.state = 'waiting_for_bids';
+    return _fakeTicket;
+}
+
+function _makeFakeInProgressTicket(fakeTicket, index) {
+    var _fakeTicket = JSON.parse(JSON.stringify(fakeTicket));
+    _fakeTicket.title = _fakeTicket.title + ' (IN PROGRESS)';
+    _fakeTicket.ticket_snapshots = [];
+    _fakeTicket.ticket_snapshots.push({});
+    _fakeTicket.ticket_snapshots[0].bid_limit = {};
+    _fakeTicket.ticket_snapshots[0].bid_limit.ticket_set = {};
+    _fakeTicket.ticket_snapshots[0].bid_limit.ticket_set.auction = {};
+    _fakeTicket.ticket_snapshots[0].bid_limit.ticket_set.auction.id = index;
+    _fakeTicket.ticket_snapshots[0].bid_limit.ticket_set.auction.state = 'closed';
+    _fakeTicket.ticket_snapshots[0].bid_limit.ticket_set.auction.bids = [];
+    _fakeTicket.ticket_snapshots[0].bid_limit.ticket_set.auction.bids.push({});
+    _fakeTicket.ticket_snapshots[0].bid_limit.ticket_set.auction.bids[0].contract = {foo:'bar'};
+    _fakeTicket.ticket_snapshots[0].bid_limit.ticket_set.auction.bids[0].work_offers = [];
+    _fakeTicket.ticket_snapshots[0].bid_limit.ticket_set.auction.bids[0].work_offers.push({});
+    _fakeTicket.ticket_snapshots[0].bid_limit.ticket_set.auction.bids[0].work_offers[0] = {};
+    _fakeTicket.ticket_snapshots[0].bid_limit.ticket_set.auction.bids[0].work_offers[0].work = {};
+    _fakeTicket.ticket_snapshots[0].bid_limit.ticket_set.auction.bids[0].work_offers[0].work.state = 'in_progress';
+    return _fakeTicket;
+}
+
 var _makeFakeContract = function(fakeTicket, index) {
     var _fakeContract = {};
     _fakeContract.id = index;
@@ -77,12 +111,16 @@ var _makeFakeAuction = function(fakeTicket, index) {
 }
 
 var fakeTickets = fakeTitles.map(_makeFakeTicket);
+var fakeOfferedTickets = fakeTickets.map(_makeFakeOfferedTicket);
+var fakeInProgressTickets = fakeTickets.map(_makeFakeInProgressTicket);
 var fakeAuctions = fakeTickets.map(_makeFakeAuction);
 var fakeContracts = fakeTickets.map(_makeFakeContract);
 var fakeContractsWithReviews = fakeContracts.map(_makeFakeContractWithReview);
 
+var allFakeTickets = fakeTickets.concat(fakeOfferedTickets).concat(fakeInProgressTickets);
+
 module.exports = {
-    _tickets: fakeTickets,
+    _tickets: allFakeTickets,
     _auctions: fakeAuctions,
     _contracts: fakeContracts,
     _contractsWithReviews: fakeContractsWithReviews,
@@ -91,7 +129,7 @@ module.exports = {
     },
     saveToDisk: function() {
         localStorage.clear();
-        localStorage.setItem('fakeTickets', JSON.stringify(fakeTickets));
+        localStorage.setItem('fakeTickets', JSON.stringify(allFakeTickets));
         localStorage.setItem('fakeAuctions', JSON.stringify(fakeAuctions));
         localStorage.setItem('fakeContracts', JSON.stringify(fakeContracts));
         localStorage.setItem('fakeContractsWithReviews', JSON.stringify(fakeContractsWithReviews));
