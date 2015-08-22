@@ -67,6 +67,7 @@ var RebaseApp = React.createClass({
     render: function() {
         var currentViewElement;
         var props = {
+            currentView: this.state.currentView,
             currentRole: this.state.currentRole,
             user: this.props.user,
             openModal: this.openModal,

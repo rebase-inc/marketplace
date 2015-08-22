@@ -2,6 +2,7 @@ var RebaseAppDispatcher = require('../dispatcher/RebaseAppDispatcher');
 var EventEmitter = require('events').EventEmitter;
 var ActionConstants = require('../constants/ActionConstants');
 var RequestConstants = require('../constants/RequestConstants');
+var ViewConstants = require('../constants/ViewConstants');
 var keyMirror = require('keymirror');
 var _ = require('underscore');
 
@@ -39,7 +40,6 @@ function newComment(user, ticket, text) {
     _tickets[ticketInd].comments.push(newComment);
 }
 
-
 function isNewTicket(ticket) {
     return ticket.ticket_snapshots.every(snap => !snap.bid_limit.ticket_set.auction);
 }
@@ -55,22 +55,27 @@ function isInProgressTicket(ticket) {
     );
 }
 
-var ticketTypes = keyMirror({ NEW: null, OFFERED: null, IN_PROGRESS: null, COMPLETED: null });
 function labelTicket(ticket) {
-    if ( isNewTicket(ticket) ) { ticket.type = ticketTypes.NEW }
-    else if ( isOfferedTicket(ticket) ) { ticket.type = ticketTypes.OFFERED }
-    else if ( isInProgressTicket(ticket) ) { ticket.type = ticketTypes.IN_PROGRESS }
-    else { ticket.type = ticketTypes.COMPLETED } // really should actually check, but this just for mock data for now
+    if ( isNewTicket(ticket) ) { ticket.type = ViewConstants.ticketTypes.NEW }
+    else if ( isOfferedTicket(ticket) ) { ticket.type = ViewConstants.ticketTypes.OFFERED }
+    else if ( isInProgressTicket(ticket) ) { ticket.type = ViewConstants.ticketTypes.IN_PROGRESS }
+    else { ticket.type = ViewConstants.ticketTypes.COMPLETED } // really should actually check, but this just for mock data for now
     return ticket;
 }
 
 function persistTickets(tickets) {
+    _loading = false;
     _allTickets = tickets.map(labelTicket);
+}
+
+function markLoading(tickets) {
+    _loading = true;
 }
 
 var _role = null;
 var _allTickets = [];
 var _currentTicket = null;
+var _loading = false;
 
 var TicketStore = _.extend({}, EventEmitter.prototype, {
     initialize: function(role) {
@@ -81,6 +86,7 @@ var TicketStore = _.extend({}, EventEmitter.prototype, {
         return {
             allTickets: _allTickets,
             currentTicket: _currentTicket,
+            loading: _loading,
         }
     },
     select: function(ticket) {
@@ -101,7 +107,7 @@ RebaseAppDispatcher.register(function(payload) {
     switch(action.type) {
         case ActionConstants.GET_TICKET_DATA:
             switch(action.response) {
-                case RequestConstants.PENDING: console.log('Pending!'); break;
+                case RequestConstants.PENDING: markLoading(); break;
                 default: persistTickets(action.response.data); break;
             } break;
         case ActionConstants.ADD_COMMENT_TO_TICKET:

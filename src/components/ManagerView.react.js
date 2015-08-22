@@ -47,10 +47,10 @@ var ManagerView = React.createClass({
             return (
                 <div id='managerView' className='mainContent'>
                 <SearchBar filterText={this.state.filterText} onUserInput={this.handleUserInput}/>
-                { !this.state.allTickets.length ? <LoadingAnimation /> :
+                { this.state.loading ? <LoadingAnimation /> :
                     <NewTicketList
                     selectTicket={this.selectTicket}
-                    tickets={this.state.allTickets}
+                    tickets={this.state.allTickets.filter(ticket => ticket.type == this.props.currentView.type)}
                     filterText={this.state.filterText}/>
                 }
                 </div>
