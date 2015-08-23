@@ -33,13 +33,19 @@ var fakeTitles = [
     'Build some really cool software, get a bunch of people to use it, and make a billion dollars.',
 ];
 
+var _nextAvailableId = 0
+var nextAvailableId = function() {
+    _nextAvailableId++;
+    return _nextAvailableId;
+}
+
 var fakeOrganizations = [ 'prestige', 'piedpiper', 'veridian', 'vandelay', 'initech' ];
 var fakeProjects = ['marketing', 'stream4k', 'matchmaker', 'import', 'accounting' ];
 
 function _makeFakeTicket(fakeTitle, index) {
     var _fakeTicket = {};
     _fakeTicket.title = fakeTitle;
-    _fakeTicket.id = index;
+    _fakeTicket.id = nextAvailableId();
     _fakeTicket.date = index;
     _fakeTicket.ticket_snapshots = [];
     _fakeTicket.skillsRequired = 'Python | SQLAlchemy | Finite State Machines';
@@ -60,20 +66,21 @@ function _makeFakeOfferedTicket(fakeTicket, index) {
     _fakeTicket.ticket_snapshots[0].bid_limit = {};
     _fakeTicket.ticket_snapshots[0].bid_limit.ticket_set = {};
     _fakeTicket.ticket_snapshots[0].bid_limit.ticket_set.auction = {};
-    _fakeTicket.ticket_snapshots[0].bid_limit.ticket_set.auction.id = index;
+    _fakeTicket.ticket_snapshots[0].bid_limit.ticket_set.auction.id = nextAvailableId();
     _fakeTicket.ticket_snapshots[0].bid_limit.ticket_set.auction.state = 'waiting_for_bids';
     return _fakeTicket;
 }
 
 function _makeFakeInProgressTicket(fakeTicket, index) {
     var _fakeTicket = JSON.parse(JSON.stringify(fakeTicket));
+    _fakeTicket.id = nextAvailableId();
     _fakeTicket.title = _fakeTicket.title + ' (IN PROGRESS)';
     _fakeTicket.ticket_snapshots = [];
     _fakeTicket.ticket_snapshots.push({});
     _fakeTicket.ticket_snapshots[0].bid_limit = {};
     _fakeTicket.ticket_snapshots[0].bid_limit.ticket_set = {};
     _fakeTicket.ticket_snapshots[0].bid_limit.ticket_set.auction = {};
-    _fakeTicket.ticket_snapshots[0].bid_limit.ticket_set.auction.id = index;
+    _fakeTicket.ticket_snapshots[0].bid_limit.ticket_set.auction.id = nextAvailableId();
     _fakeTicket.ticket_snapshots[0].bid_limit.ticket_set.auction.state = 'closed';
     _fakeTicket.ticket_snapshots[0].bid_limit.ticket_set.auction.bids = [];
     _fakeTicket.ticket_snapshots[0].bid_limit.ticket_set.auction.bids.push({});
@@ -88,13 +95,14 @@ function _makeFakeInProgressTicket(fakeTicket, index) {
 
 function _makeFakeCompletedTicket(fakeTicket, index) {
     var _fakeTicket = JSON.parse(JSON.stringify(fakeTicket));
+    _fakeTicket.id = nextAvailableId();
     _fakeTicket.title = _fakeTicket.title + ' (COMPLETED)';
     _fakeTicket.ticket_snapshots = [];
     _fakeTicket.ticket_snapshots.push({});
     _fakeTicket.ticket_snapshots[0].bid_limit = {};
     _fakeTicket.ticket_snapshots[0].bid_limit.ticket_set = {};
     _fakeTicket.ticket_snapshots[0].bid_limit.ticket_set.auction = {};
-    _fakeTicket.ticket_snapshots[0].bid_limit.ticket_set.auction.id = index;
+    _fakeTicket.ticket_snapshots[0].bid_limit.ticket_set.auction.id = nextAvailableId();
     _fakeTicket.ticket_snapshots[0].bid_limit.ticket_set.auction.state = 'closed';
     _fakeTicket.ticket_snapshots[0].bid_limit.ticket_set.auction.bids = [];
     _fakeTicket.ticket_snapshots[0].bid_limit.ticket_set.auction.bids.push({});
@@ -111,12 +119,13 @@ function _makeFakeCompletedTicket(fakeTicket, index) {
 
 var _makeFakeContract = function(fakeTicket, index) {
     var _fakeContract = {};
-    _fakeContract.id = index;
+    _fakeContract.id = nextAvailableId();
     _fakeContract.bid = {}
     _fakeContract.bid.work_offers = [];
     _fakeContract.bid.work_offers.push({});
     _fakeContract.bid.work_offers[0].ticket_snapshot = {};
     _fakeContract.bid.work_offers[0].ticket_snapshot.ticket = JSON.parse(JSON.stringify(fakeTicket));
+    _fakeContract.bid.work_offers[0].ticket_snapshot.ticket.id = nextAvailableId();
     return _fakeContract
 }
 
@@ -131,13 +140,14 @@ var _makeFakeContractWithReview = function(fakeContract, index) {
 
 var _makeFakeAuction = function(fakeTicket, index) {
     var _fakeAuction = {};
-    _fakeAuction.id = index;
+    _fakeAuction.id = nextAvailableId();
     _fakeAuction.state = 'waiting_for_bids';
     _fakeAuction.ticket_set = {};
     _fakeAuction.ticket_set.bid_limits = [];
     _fakeAuction.ticket_set.bid_limits.push({});
     _fakeAuction.ticket_set.bid_limits[0].ticket_snapshot = {};
     _fakeAuction.ticket_set.bid_limits[0].ticket_snapshot.ticket = JSON.parse(JSON.stringify(fakeTicket));
+    _fakeAuction.ticket_set.bid_limits[0].ticket_snapshot.ticket.id = nextAvailableId();
     return _fakeAuction;
 }
 
