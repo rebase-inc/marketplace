@@ -4,7 +4,6 @@ var _ = require('underscore');
 var Icons = require('../components/RebaseIcons.react');
 var Sidebar = require('../components/Sidebar.react');
 var MainView = require('../components/MainView.react');
-var DeveloperView = require('../components/DeveloperView.react');
 var SingleItemView = require('../components/SingleItemView.react');
 var ModalView = require('../components/ModalView.react');
 var TicketStore = require('../stores/TicketStore');
@@ -72,6 +71,7 @@ var RebaseApp = React.createClass({
             changeView: this.changeView,
             changeRole: this.changeRole,
             openModal: this.openModal,
+            closeModal: this.closeModal,
             modalIsOpen: this.state.modalIsOpen,
         }
         return (
