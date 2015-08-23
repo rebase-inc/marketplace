@@ -109,8 +109,23 @@ var ProjectInfoPanel = React.createClass({
         return (
             <td onClick={this.handleClick} className='projectInfoPanel'>
             <span>{projectName}</span>
-            <img src='img/rating-dots.svg'/>
+            <RatingStars rating={this.props.ticket.project.rating} />
             </td>
+        );
+    }
+});
+
+var RatingStars = React.createClass({
+    render: function() {
+        var nearestHalf = Math.round(this.props.rating*2)/2;
+        var fullStars = Math.round(nearestHalf);
+        var showHalfStar = (nearestHalf != fullStars);
+        return (
+            <div className='rating'>
+                { _.range(fullStars).map(function() { return <img src='img/star-10px.svg' /> }) }
+                { showHalfStar ? <img src='img/half-star-10px.svg' /> : null }
+                { _.range(5 - fullStars - showHalfStar).map(function() { return <img src='img/empty-star-10px.svg' /> }) }
+            </div>
         );
     }
 });

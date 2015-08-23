@@ -46,6 +46,7 @@ function _makeFakeTicket(fakeTitle, index) {
     _fakeTicket.comments = JSON.parse(JSON.stringify(fakeComments));
     _fakeTicket.project = {};
     _fakeTicket.project.title = _.sample(fakeProjects);
+    _fakeTicket.project.rating = Math.random() * 3 + 2;
     _fakeTicket.project.organization = {};
     _fakeTicket.project.organization.title = _.sample(fakeOrganizations);
     return _fakeTicket;

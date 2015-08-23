@@ -157,6 +157,14 @@ table {
     display: block;
 }
 
+.projectInfoPanel .rating {
+    padding-top: 4px;
+}
+
+.projectInfoPanel .rating > img {
+    padding: 2px;
+}
+
 .findTalentPanel:hover svg path {
     fill: hsla(167, 54%, 53%, 1)
 }
