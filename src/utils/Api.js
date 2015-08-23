@@ -66,10 +66,13 @@ function fakeTicketGet(responseHandler) {
     setTimeout(function() { responseHandler(error, response); }, 800);
 }
 
-function fakeAuctionPost(user, auction, text, responseHandler) {
-    var auctionInd;
-    for(var i=0; i<MockData._auctions.length; i++) {
-        if (MockData._auctions[i].id == auction.id) { auctionInd = i };
+function fakeAuctionPost(user, ticket, text, responseHandler) {
+    // temp hack
+    var auction = ticket.ticket_snapshots[0].bid_limit.ticket_set.auction;
+
+    var ticketInd;
+    for(var i=0; i<MockData._tickets.length; i++) {
+        if (MockData._tickets[i].id == ticket.id) { ticketInd = i };
     }
     var _months = [ 'January', 'February', 'March', 'April', 'May', 'June',
         'July', 'August', 'September', 'October', 'November', 'December'];
@@ -79,9 +82,9 @@ function fakeAuctionPost(user, auction, text, responseHandler) {
         date: _months[today.getMonth()] + ' ' + today.getDate(),
         text: text,
     }
-    MockData._auctions = JSON.parse(JSON.stringify(MockData._auctions));
-    MockData._auctions[auctionInd].ticket_set.bid_limits[0].ticket_snapshot.ticket.comments.push(newComment);
-    var auction = _.extend({}, MockData._auctions[auctionInd]);
+    MockData._tickets = JSON.parse(JSON.stringify(MockData._tickets));
+    MockData._tickets[ticketInd].ticket_snapshots[0].bid_limit.ticket_set.auction.comments.push(newComment);
+    var auction = JSON.parse(JSON.stringify(MockData._tickets[ticketInd].ticket_snapshots[0].bid_limit.ticket_set.auction));
     var response = { status: 200, ok: true, data: auction }
     var error = {};
     setTimeout(function() { responseHandler(error, response); }, 800);
@@ -109,14 +112,21 @@ function fakeTicketPost(user, ticket, text, responseHandler) {
 }
 
 var _failedOneAuction = false;
-function fakeAuctionBid(user, auction, price, responseHandler) {
-    var auctionInd;
-    for(var i=0; i<MockData._auctions.length; i++) {
-        if (MockData._auctions[i].id == auction.id) { auctionInd = i };
+function fakeAuctionBid(user, ticket, price, responseHandler) {
+    // temp hack
+    var auction = ticket.ticket_snapshots[0].bid_limit.ticket_set.auction;
+
+    var ticketInd;
+    for(var i=0; i<MockData._tickets.length; i++) {
+        if (MockData._tickets[i].id == ticket.id) { ticketInd = i };
     }
-    var auction = JSON.parse(JSON.stringify(MockData._auctions[auctionInd]));
+    var auction = JSON.parse(JSON.stringify(auction));
+    auction.bids = [];
+    auction.bids.push({});
+    auction.bids[0].price = price;
     var response;
     var error;
+
     // hack to make the user see what a failed auction looks like
     if (!_failedOneAuction) {
         _failedOneAuction = true;

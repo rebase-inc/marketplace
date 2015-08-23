@@ -7,23 +7,20 @@ var keyMirror = require('keymirror');
 var _ = require('underscore');
 
 //Define initial data points
-var _tickets = [];
-var _currentTicket = null;
 
 function persistModifiedTicket(ticket) {
-    for(var i=0; i<_tickets.length; i++) {
-        if (_tickets[i].id == ticket.id) {
-            _tickets[i] = _.extend({}, ticket);
-            if (_currentTicket.id == ticket.id) { _currentTicket = ticket }
+    for(var i=0; i<_allTickets.length; i++) {
+        if (_allTickets[i].id == ticket.id) {
+            _allTickets[i] = labelTicket(JSON.parse(JSON.stringify(ticket)));
+            if (_currentTicket.id == ticket.id) { _currentTicket = _allTickets[i]; }
         };
     }
 }
 
 function newComment(user, ticket, text) {
-    //var ticketInd = _tickets.findIndex(function(ind, el) { return el.id === ticketId });
     var ticketInd;
-    for(var i=0; i<_tickets.length; i++) {
-        if (_tickets[i].id == ticket.id) { ticketInd = i };
+    for(var i=0; i<_allTickets.length; i++) {
+        if (_allTickets[i].id == ticket.id) { ticketInd = i };
     }
 
     var _months = [ 'January', 'February', 'March', 'April', 'May', 'June',
@@ -37,7 +34,18 @@ function newComment(user, ticket, text) {
         text: text,
     }
 
-    _tickets[ticketInd].comments.push(newComment);
+    _allTickets[ticketInd].comments.push(newComment);
+}
+
+function markBidPending(auction) {
+    _bidPending = true;
+}
+
+function handleBidResponse(auction) {
+    _bidPending = false;
+    var ticket = JSON.parse(JSON.stringify(_currentTicket));
+    ticket.ticket_snapshots[0].bid_limit.ticket_set.auction = auction;
+    persistModifiedTicket(ticket);
 }
 
 function isNewTicket(ticket) {
@@ -78,6 +86,7 @@ var _role = null;
 var _allTickets = [];
 var _currentTicket = null;
 var _loading = false;
+var _bidPending = false;
 
 var TicketStore = _.extend({}, EventEmitter.prototype, {
     initialize: function(role) {
@@ -89,6 +98,7 @@ var TicketStore = _.extend({}, EventEmitter.prototype, {
             allTickets: _allTickets,
             currentTicket: _currentTicket,
             loading: _loading,
+            bidPending: _bidPending,
         }
     },
     select: function(ticket) {
@@ -119,6 +129,11 @@ RebaseAppDispatcher.register(function(payload) {
             switch(action.response) {
                 case RequestConstants.PENDING: console.log('Pending new comment!'); break;
                 default: persistModifiedTicket(action.response.data); break;
+            } break;
+        case ActionConstants.BID_ON_AUCTION:
+            switch(action.response) {
+                case RequestConstants.PENDING: markBidPending(action.response.data); break;
+                default: handleBidResponse(action.response.data); break;
             } break;
         default: return true;
     }
