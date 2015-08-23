@@ -6,7 +6,6 @@ var TicketStore = require('../stores/TicketStore');
 var RebaseActions = require('../actions/RebaseActions');
 var SingleItemView = require('../components/SingleItemView.react');
 var LoadingAnimation = require('../components/LoadingAnimation.react');
-var ModalView = require('../components/ModalView.react');
 
 var MainView = React.createClass({
     getInitialState: function() {
@@ -118,7 +117,7 @@ var ProjectInfoPanel = React.createClass({
 var RatingStars = React.createClass({
     render: function() {
         var nearestHalf = Math.round(this.props.rating*2)/2;
-        var fullStars = Math.round(nearestHalf);
+        var fullStars = Math.floor(nearestHalf);
         var showHalfStar = (nearestHalf != fullStars);
         return (
             <div className='rating'>
