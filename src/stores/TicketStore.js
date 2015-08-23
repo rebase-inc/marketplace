@@ -92,10 +92,13 @@ var TicketStore = _.extend({}, EventEmitter.prototype, {
         }
     },
     select: function(ticket) {
-        if (!ticket) { _currentTicket = null; return; }
-        for(var i=0; i<_allTickets.length; i++) {
-            if (_allTickets[i].id == ticket.id) { _currentTicket = _allTickets[i]; };
+        if (!ticket) { _currentTicket = null; }
+        else {
+            for(var i=0; i<_allTickets.length; i++) {
+                if (_allTickets[i].id == ticket.id) { _currentTicket = _allTickets[i]; };
+            }
         }
+        this.emitChange();
     },
     emitChange: function() { this.emit('change'); },
     addChangeListener: function(callback) { this.on('change', callback); },

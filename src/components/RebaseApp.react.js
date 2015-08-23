@@ -18,13 +18,12 @@ function getState(user) {
 
 var RebaseApp = React.createClass({
 
-    changeView: function(ind) {
+    changeView: function(view) {
         this.setState({
-            currentView: ind ,
-            currentTicket: null,
-            currentAuction: null,
+            currentView: view,
             modalIsOpen: false,
         });
+        TicketStore.select(null);
     },
 
     _onChange: function() {
@@ -32,11 +31,9 @@ var RebaseApp = React.createClass({
     },
     componentDidMount: function() {
         TicketStore.addChangeListener(this._onChange);
-        AuctionStore.addChangeListener(this._onChange);
     },
     componentWillUnmount: function() {
         TicketStore.removeChangeListener(this._onChange);
-        AuctionStore.removeChangeListener(this._onChange);
     },
 
     getInitialState: function() {
@@ -56,6 +53,7 @@ var RebaseApp = React.createClass({
             modalIsOpen: false,
             currentView: ViewsByRole[newRole.type][0],
         });
+        TicketStore.select(null);
     },
     openModal: function() {
         this.setState({ modalIsOpen: true });

@@ -10,16 +10,8 @@ var SingleItemView = React.createClass({
         var title;
         var comments;
         var { ticket, auction, ...other} = this.props;
-        if (!ticket == !auction) { throw "Must provide exactly one of ticket or auction!" }
-        else if (!!ticket) {
-            title = ticket.title;
-            comments = this.props.ticket.comments;
-        }
-        else if (!!auction) {
-            title = auction.ticket_set.bid_limits[0].ticket_snapshot.ticket.title;
-            comments = this.props.auction.ticket_set.bid_limits[0].ticket_snapshot.ticket.comments;
-        }
-        else { title = '...'; }
+        title = ticket.title;
+        comments = this.props.ticket.comments;
         return (
             <div id='singleItemView' className='mainContent'>
                 <div id='singleItem'>

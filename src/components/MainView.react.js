@@ -23,10 +23,12 @@ var MainView = React.createClass({
     },
     _onChange: function() {
         this.setState(TicketStore.getState());
+        console.log("the ticket store said it changed! so we're setting current ticket to: ", this.state.currentTicket);
     },
     selectTicket: function(ticket) {
         TicketStore.select(ticket);
         this._onChange();
+        console.log('selecting a ticket of ', ticket);
     },
     unselectTicket: function() {
         this.selectTicket(null);
