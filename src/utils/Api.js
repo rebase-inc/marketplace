@@ -130,6 +130,9 @@ function fakeAuctionBid(user, ticket, price, responseHandler) {
     // hack to make the user see what a failed auction looks like
     if (!_failedOneAuction) {
         _failedOneAuction = true;
+        var tickets = JSON.parse(JSON.stringify(MockData._tickets));
+        var removed = tickets.splice(ticketInd, 1);
+        MockData._tickets = tickets;
         auction.state = 'waiting_for_bids';
         response = { status: 201, ok: true, data: auction };
         error = {};
