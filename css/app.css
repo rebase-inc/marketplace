@@ -278,9 +278,8 @@ tbody {
     cursor: pointer;
 }
 
-#itemHeader > * {
-    display: inline;
-    float: left;
+#itemHeader > button.danger {
+    background-color: hsla(351, 51%, 59%, 1);
 }
 
 #singleItem {
@@ -409,11 +408,10 @@ tbody {
 
 
 #itemHeader > span {
-    float: left;
+    display: block;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    width: calc(100% - 180px);
 }
 
 #itemHeader > button {
