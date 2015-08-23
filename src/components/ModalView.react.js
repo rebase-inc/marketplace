@@ -73,6 +73,7 @@ var ModalDialog = React.createClass({
                 case ticketTypes.IN_PROGRESS:
                     mainHeading = 'Your bid was accepted!';
                     subHeading = 'Get started by cloning and running the tests';
+                    infoOrInput = <div className='infoOrInput cloneInstructions'> $ git clone git@github.com:airpool/ios <br/> $ cd api && python tests/run.py </div>;
                     inputOrButton = <button onClick={this.props.closeModal}>Get to work!</button>;
                     break;
                 case ticketTypes.COMPLETED: break;

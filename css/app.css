@@ -569,18 +569,39 @@ tbody {
 }
 
 #modalDialog input, #modalDialog button {
-    height: 54px;
-    width: 180px;
-    border-radius: 6px;
     box-shadow: none;
     text-align: center;
     margin-top: 20px;
 }
 
+#modalDialog button {
+    min-width: 120px;
+    font-size: 12px;
+    border-radius: 4px;
+    padding-left: 22px;
+    padding-right: 22px;
+    padding-top: 12px;
+    padding-bottom: 12px;
+}
+
 #modalDialog input {
+    height: 54px;
+    width: 180px;
+    border-radius: 6px;
     background: none;
     border: 1px solid hsla(213, 23%, 28%, 0.5);
     font-size: 22px;
+}
+
+#modalDialog .infoOrInput {
+    background-color: hsla(212, 22%, 33%, 1);
+    color: hsla(210, 29%, 97%, 1);
+    text-align: left;
+    font-family: "Courier New", Courier, monospace;
+    border-radius: 4px;
+    padding: 12px;
+    font-size: 14px;
+    margin-top: 10px;
 }
 
 #modalDialog button {
