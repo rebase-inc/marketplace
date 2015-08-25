@@ -19,6 +19,21 @@ module.exports = {
         };
         Api.login(email, password, responseAction, pendingAction);
     },
+    getContractData: function() {
+        var responseAction = function(response) {
+            Dispatcher.handleRequestAction({
+                type: ActionConstants.GET_CONTRACT_DATA,
+                response: response
+            });
+        };
+        var pendingAction = function(response) {
+            Dispatcher.handleRequestAction({
+                type: ActionConstants.GET_CONTRACT_DATA,
+                response: RequestConstants.PENDING,
+            });
+        };
+        Api.getContractData(responseAction, pendingAction);
+    },
     getAuctionData: function() {
         var responseAction = function(response) {
             Dispatcher.handleRequestAction({

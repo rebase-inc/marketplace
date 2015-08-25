@@ -50,107 +50,13 @@ function ajax(method, url, data, responseHandler) {
         data: data || null,
         contentType: 'application/json; charset=utf-8',
     }).done(responseHandler).fail(function(requestObj, textStatus) {
-            console.log('we failed with this info: ', requestObj, textStatus); 
+            console.log('we failed with this info: ', requestObj, textStatus);
             switch (textStatus) {
                 case 'error': responseHandler(RequestConstants.ERROR); break;
                 case 'timeout' : responseHandler(RequestConstants.TIMEOUT); break;
                 default: responseHandler(RequestConstants.ERROR); break
             }
         });
-}
-
-function fakeAuctionGet(responseHandler) {
-    // simulate retrieving data from a database
-    var availableAuctions = JSON.parse(localStorage.getItem('fakeAuctions'));
-    var response = { status: 200, ok: true, data: availableAuctions }
-    var error = {};
-    setTimeout(function() { responseHandler(error, response); }, 800);
-}
-
-function fakeTicketGet(responseHandler) {
-    // simulate retrieving data from a database
-    var tickets = JSON.parse(localStorage.getItem('fakeTickets'));
-    var response = { status: 200, ok: true, data: tickets };
-    var error = {};
-    setTimeout(function() { responseHandler(error, response); }, 800);
-}
-
-function fakeAuctionPost(user, ticket, text, responseHandler) {
-    // temp hack
-    var auction = ticket.ticket_snapshots[0].bid_limit.ticket_set.auction;
-
-    var ticketInd;
-    for(var i=0; i<MockData._tickets.length; i++) {
-        if (MockData._tickets[i].id == ticket.id) { ticketInd = i };
-    }
-    var _months = [ 'January', 'February', 'March', 'April', 'May', 'June',
-        'July', 'August', 'September', 'October', 'November', 'December'];
-    var today = new Date();
-    var newComment = {
-        user: user,
-        date: _months[today.getMonth()] + ' ' + today.getDate(),
-        text: text,
-    }
-    MockData._tickets = JSON.parse(JSON.stringify(MockData._tickets));
-    MockData._tickets[ticketInd].ticket_snapshots[0].bid_limit.ticket_set.auction.comments.push(newComment);
-    var auction = JSON.parse(JSON.stringify(MockData._tickets[ticketInd].ticket_snapshots[0].bid_limit.ticket_set.auction));
-    var response = { status: 200, ok: true, data: auction }
-    var error = {};
-    setTimeout(function() { responseHandler(error, response); }, 800);
-}
-
-function fakeTicketPost(user, ticket, text, responseHandler) {
-    var ticketInd;
-    for(var i=0; i<MockData._tickets.length; i++) {
-        if (MockData._tickets[i].id == ticket.id) { ticketInd = i };
-    }
-    var _months = [ 'January', 'February', 'March', 'April', 'May', 'June',
-        'July', 'August', 'September', 'October', 'November', 'December'];
-    var today = new Date();
-    var newComment = {
-        user: user,
-        date: _months[today.getMonth()] + ' ' + today.getDate(),
-        text: text,
-    }
-    MockData._tickets = JSON.parse(JSON.stringify(MockData._tickets));
-    MockData._tickets[ticketInd].comments.push(newComment);
-    var ticket = _.extend({}, MockData._tickets[ticketInd]);
-    var response = { status: 200, ok: true, data: ticket }
-    var error = {};
-    setTimeout(function() { responseHandler(error, response); }, 800);
-}
-
-var _failedOneAuction = false;
-function fakeAuctionBid(user, ticket, price, responseHandler) {
-    // temp hack
-    var auction = ticket.ticket_snapshots[0].bid_limit.ticket_set.auction;
-
-    var ticketInd;
-    for(var i=0; i<MockData._tickets.length; i++) {
-        if (MockData._tickets[i].id == ticket.id) { ticketInd = i };
-    }
-    var auction = JSON.parse(JSON.stringify(auction));
-    auction.bids = [];
-    auction.bids.push({});
-    auction.bids[0].price = price;
-    var response;
-    var error;
-
-    // hack to make the user see what a failed auction looks like
-    if (!_failedOneAuction) {
-        _failedOneAuction = true;
-        var tickets = JSON.parse(JSON.stringify(MockData._tickets));
-        var removed = tickets.splice(ticketInd, 1);
-        MockData._tickets = tickets;
-        auction.state = 'waiting_for_bids';
-        response = { status: 201, ok: true, data: auction };
-        error = {};
-    } else {
-        auction.state = 'closed';
-        response = { status: 201, ok: true, data: auction }
-        error = {};
-    }
-    setTimeout(function() { responseHandler(error, response); }, 800);
 }
 
 // This looks like an anti-DRY situation...Maybe the action creators
@@ -161,6 +67,13 @@ var Api = {
         var data = JSON.stringify({ user: { email: email }, password: password, });
         pendingHandler();
         ajax('POST', url, data, responseHandler);
+    },
+    getContractData: function(responseHandler, pendingHandler) {
+        var url = makeUrl("/contracts");
+        var params = {};
+        var responseFunction = makeResponseFunc(responseHandler);
+        pendingHandler();
+        ajax('GET', url, null, responseHandler);
     },
     getAuctionData: function(responseHandler, pendingHandler) {
         var url = makeUrl("/auctions");
@@ -193,10 +106,6 @@ var Api = {
         var params = {};
         var responseFunction = makeResponseFunc(responseHandler);
         if (pendingHandler) { pendingHandler(); }
-        fakeAuctionBid(user, auction, price, responseFunction);
-        //_pendingRequests[actionType] = get(url).end(
-            //makeResponseFunc(actionType, params)
-        //);
     }
 };
 

@@ -6,6 +6,7 @@ module.exports = keyMirror({
     ADD_COMMENT_TO_AUCTION: null,
     ADD_COMMENT_TO_TICKET: null,
     GET_AUCTION_DATA: null,
+    GET_CONTRACT_DATA: null,
     GET_TICKET_DATA: null,
     BID_ON_AUCTION: null,
     LOGIN: null,

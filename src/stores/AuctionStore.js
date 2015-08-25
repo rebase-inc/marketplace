@@ -2,6 +2,7 @@ var RebaseAppDispatcher = require('../dispatcher/RebaseAppDispatcher');
 var EventEmitter = require('events').EventEmitter;
 var ActionConstants = require('../constants/ActionConstants');
 var RequestConstants = require('../constants/RequestConstants');
+var ViewConstants = require('../constants/ViewConstants');
 var _ = require('underscore');
 
 //Define initial data points
@@ -10,7 +11,7 @@ var _currentAuction = null;
 var _bidPending = false;
 
 function persistAuctionData(data) {
-    if (data) { _allAuctions = data.auctions; }
+    if (data) { _allAuctions = data.auctions.map(labelAuction); }
 }
 
 function persistCommentDetail(data) {
@@ -39,6 +40,13 @@ function handleBidResponse(auction) {
 
 function markBidPending(auction) {
     _bidPending = true;
+}
+
+function labelAuction(auction) {
+    if (auction.state == 'waiting_for_bids' || auction.state == 'created') {
+        auction.type = ViewConstants.ticketTypes.OFFERED;
+    }
+    return auction
 }
 
 var AuctionStore = _.extend({}, EventEmitter.prototype, {

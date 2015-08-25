@@ -4,6 +4,7 @@ var _ = require('underscore');
 var Icons = require('../components/RebaseIcons.react');
 var TicketStore = require('../stores/TicketStore');
 var AuctionStore = require('../stores/AuctionStore');
+var ContractStore = require('../stores/ContractStore');
 var RebaseActions = require('../actions/RebaseActions');
 var SingleItemView = require('../components/SingleItemView.react');
 var LoadingAnimation = require('../components/LoadingAnimation.react');
@@ -12,24 +13,31 @@ var ticketTypes = ViewConstants.ticketTypes;
 
 var MainView = React.createClass({
     getInitialState: function() {
-        return _.extend({ filterText: '' }, TicketStore.getState(), AuctionStore.getState());
+        return _.extend({ filterText: '' },
+                        TicketStore.getState(),
+                        AuctionStore.getState(),
+                        ContractStore.getState());
     },
     getDataIfNeeded: function() {
         setTimeout(RebaseActions.getTicketData, 0);
         setTimeout(RebaseActions.getAuctionData, 0);
+        setTimeout(RebaseActions.getContractData, 0);
     },
     componentDidMount: function() {
         TicketStore.addChangeListener(this._onChange);
         AuctionStore.addChangeListener(this._onChange);
+        ContractStore.addChangeListener(this._onChange);
         this.getDataIfNeeded();
     },
     componentWillUnmount: function() {
         TicketStore.removeChangeListener(this._onChange);
         AuctionStore.removeChangeListener(this._onChange);
+        ContractStore.removeChangeListener(this._onChange);
     },
     _onChange: function() {
         this.setState(TicketStore.getState());
         this.setState(AuctionStore.getState());
+        this.setState(ContractStore.getState());
     },
     selectTicket: function(ticket) {
         TicketStore.select(ticket);
@@ -55,14 +63,13 @@ var MainView = React.createClass({
             switch (this.props.currentView.type) {
                 case ticketTypes.NEW: tickets = this.state.allTickets.filter(ticket => ticket.type == ticketTypes.NEW); break;
                 case ticketTypes.OFFERED:
-                    var auctions = this.state.allAuctions.filter(auction => auction.state == 'waiting_for_bids' || auction.state == 'created');
-                    tickets = auctions.map(function(auction) {
-                        var ticket = auction.ticket_set.bid_limits[0].ticket_snapshot.ticket;
-                        ticket.type = ticketTypes.OFFERED;
-                        return ticket;
-                    })
-                    break;
-                case ticketTypes.IN_PROGRESS: tickets = []; break;
+                    var auctions = this.state.allAuctions.filter(auction => auction.type == ticketTypes.OFFERED);
+                    tickets = auctions.map(auction => auction.ticket_set.bid_limits[0].ticket_snapshot.ticket);
+                break;
+                case ticketTypes.IN_PROGRESS:
+                    var contracts = this.state.allContracts.filter(contract => contract.type == ticketTypes.IN_PROGRESS);
+                    tickets = contracts.map(contract => contract.bid.work_offers[0].ticket_snapshot.ticket);
+                break;
                 case ticketTypes.COMPLETED: tickets = []; break;
                 default: throw 'Invalid view type'; break;
             }
