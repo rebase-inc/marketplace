@@ -47,7 +47,7 @@ function _makeFakeTicket(fakeTitle, index) {
     _fakeTicket.title = fakeTitle;
     _fakeTicket.id = nextAvailableId();
     _fakeTicket.date = index;
-    _fakeTicket.ticket_snapshots = [];
+    _fakeTicket.snapshots = [];
     _fakeTicket.skillsRequired = 'Python | SQLAlchemy | Finite State Machines';
     _fakeTicket.comments = JSON.parse(JSON.stringify(fakeComments));
     _fakeTicket.project = {};
@@ -61,13 +61,13 @@ function _makeFakeTicket(fakeTitle, index) {
 function _makeFakeOfferedTicket(fakeTicket, index) {
     var _fakeTicket = JSON.parse(JSON.stringify(fakeTicket));
     _fakeTicket.title = _fakeTicket.title + ' (OFFERED)';
-    _fakeTicket.ticket_snapshots = [];
-    _fakeTicket.ticket_snapshots.push({});
-    _fakeTicket.ticket_snapshots[0].bid_limit = {};
-    _fakeTicket.ticket_snapshots[0].bid_limit.ticket_set = {};
-    _fakeTicket.ticket_snapshots[0].bid_limit.ticket_set.auction = {};
-    _fakeTicket.ticket_snapshots[0].bid_limit.ticket_set.auction.id = nextAvailableId();
-    _fakeTicket.ticket_snapshots[0].bid_limit.ticket_set.auction.state = 'waiting_for_bids';
+    _fakeTicket.snapshots = [];
+    _fakeTicket.snapshots.push({});
+    _fakeTicket.snapshots[0].bid_limit = {};
+    _fakeTicket.snapshots[0].bid_limit.ticket_set = {};
+    _fakeTicket.snapshots[0].bid_limit.ticket_set.auction = {};
+    _fakeTicket.snapshots[0].bid_limit.ticket_set.auction.id = nextAvailableId();
+    _fakeTicket.snapshots[0].bid_limit.ticket_set.auction.state = 'waiting_for_bids';
     return _fakeTicket;
 }
 
@@ -75,21 +75,21 @@ function _makeFakeInProgressTicket(fakeTicket, index) {
     var _fakeTicket = JSON.parse(JSON.stringify(fakeTicket));
     _fakeTicket.id = nextAvailableId();
     _fakeTicket.title = _fakeTicket.title + ' (IN PROGRESS)';
-    _fakeTicket.ticket_snapshots = [];
-    _fakeTicket.ticket_snapshots.push({});
-    _fakeTicket.ticket_snapshots[0].bid_limit = {};
-    _fakeTicket.ticket_snapshots[0].bid_limit.ticket_set = {};
-    _fakeTicket.ticket_snapshots[0].bid_limit.ticket_set.auction = {};
-    _fakeTicket.ticket_snapshots[0].bid_limit.ticket_set.auction.id = nextAvailableId();
-    _fakeTicket.ticket_snapshots[0].bid_limit.ticket_set.auction.state = 'closed';
-    _fakeTicket.ticket_snapshots[0].bid_limit.ticket_set.auction.bids = [];
-    _fakeTicket.ticket_snapshots[0].bid_limit.ticket_set.auction.bids.push({});
-    _fakeTicket.ticket_snapshots[0].bid_limit.ticket_set.auction.bids[0].contract = {foo:'bar'};
-    _fakeTicket.ticket_snapshots[0].bid_limit.ticket_set.auction.bids[0].work_offers = [];
-    _fakeTicket.ticket_snapshots[0].bid_limit.ticket_set.auction.bids[0].work_offers.push({});
-    _fakeTicket.ticket_snapshots[0].bid_limit.ticket_set.auction.bids[0].work_offers[0] = {};
-    _fakeTicket.ticket_snapshots[0].bid_limit.ticket_set.auction.bids[0].work_offers[0].work = {};
-    _fakeTicket.ticket_snapshots[0].bid_limit.ticket_set.auction.bids[0].work_offers[0].work.state = 'in_progress';
+    _fakeTicket.snapshots = [];
+    _fakeTicket.snapshots.push({});
+    _fakeTicket.snapshots[0].bid_limit = {};
+    _fakeTicket.snapshots[0].bid_limit.ticket_set = {};
+    _fakeTicket.snapshots[0].bid_limit.ticket_set.auction = {};
+    _fakeTicket.snapshots[0].bid_limit.ticket_set.auction.id = nextAvailableId();
+    _fakeTicket.snapshots[0].bid_limit.ticket_set.auction.state = 'closed';
+    _fakeTicket.snapshots[0].bid_limit.ticket_set.auction.bids = [];
+    _fakeTicket.snapshots[0].bid_limit.ticket_set.auction.bids.push({});
+    _fakeTicket.snapshots[0].bid_limit.ticket_set.auction.bids[0].contract = {foo:'bar'};
+    _fakeTicket.snapshots[0].bid_limit.ticket_set.auction.bids[0].work_offers = [];
+    _fakeTicket.snapshots[0].bid_limit.ticket_set.auction.bids[0].work_offers.push({});
+    _fakeTicket.snapshots[0].bid_limit.ticket_set.auction.bids[0].work_offers[0] = {};
+    _fakeTicket.snapshots[0].bid_limit.ticket_set.auction.bids[0].work_offers[0].work = {};
+    _fakeTicket.snapshots[0].bid_limit.ticket_set.auction.bids[0].work_offers[0].work.state = 'in_progress';
     return _fakeTicket;
 }
 
@@ -97,23 +97,23 @@ function _makeFakeCompletedTicket(fakeTicket, index) {
     var _fakeTicket = JSON.parse(JSON.stringify(fakeTicket));
     _fakeTicket.id = nextAvailableId();
     _fakeTicket.title = _fakeTicket.title + ' (COMPLETED)';
-    _fakeTicket.ticket_snapshots = [];
-    _fakeTicket.ticket_snapshots.push({});
-    _fakeTicket.ticket_snapshots[0].bid_limit = {};
-    _fakeTicket.ticket_snapshots[0].bid_limit.ticket_set = {};
-    _fakeTicket.ticket_snapshots[0].bid_limit.ticket_set.auction = {};
-    _fakeTicket.ticket_snapshots[0].bid_limit.ticket_set.auction.id = nextAvailableId();
-    _fakeTicket.ticket_snapshots[0].bid_limit.ticket_set.auction.state = 'closed';
-    _fakeTicket.ticket_snapshots[0].bid_limit.ticket_set.auction.bids = [];
-    _fakeTicket.ticket_snapshots[0].bid_limit.ticket_set.auction.bids.push({});
-    _fakeTicket.ticket_snapshots[0].bid_limit.ticket_set.auction.bids[0].contract = {foo:'bar'};
-    _fakeTicket.ticket_snapshots[0].bid_limit.ticket_set.auction.bids[0].work_offers = [];
-    _fakeTicket.ticket_snapshots[0].bid_limit.ticket_set.auction.bids[0].work_offers.push({});
-    _fakeTicket.ticket_snapshots[0].bid_limit.ticket_set.auction.bids[0].work_offers[0] = {};
-    _fakeTicket.ticket_snapshots[0].bid_limit.ticket_set.auction.bids[0].work_offers[0].work = {};
-    _fakeTicket.ticket_snapshots[0].bid_limit.ticket_set.auction.bids[0].work_offers[0].work.state = 'completed';
-    _fakeTicket.ticket_snapshots[0].bid_limit.ticket_set.auction.bids[0].work_offers[0].work.review = {};
-    _fakeTicket.ticket_snapshots[0].bid_limit.ticket_set.auction.bids[0].work_offers[0].work.review.rating = 3;
+    _fakeTicket.snapshots = [];
+    _fakeTicket.snapshots.push({});
+    _fakeTicket.snapshots[0].bid_limit = {};
+    _fakeTicket.snapshots[0].bid_limit.ticket_set = {};
+    _fakeTicket.snapshots[0].bid_limit.ticket_set.auction = {};
+    _fakeTicket.snapshots[0].bid_limit.ticket_set.auction.id = nextAvailableId();
+    _fakeTicket.snapshots[0].bid_limit.ticket_set.auction.state = 'closed';
+    _fakeTicket.snapshots[0].bid_limit.ticket_set.auction.bids = [];
+    _fakeTicket.snapshots[0].bid_limit.ticket_set.auction.bids.push({});
+    _fakeTicket.snapshots[0].bid_limit.ticket_set.auction.bids[0].contract = {foo:'bar'};
+    _fakeTicket.snapshots[0].bid_limit.ticket_set.auction.bids[0].work_offers = [];
+    _fakeTicket.snapshots[0].bid_limit.ticket_set.auction.bids[0].work_offers.push({});
+    _fakeTicket.snapshots[0].bid_limit.ticket_set.auction.bids[0].work_offers[0] = {};
+    _fakeTicket.snapshots[0].bid_limit.ticket_set.auction.bids[0].work_offers[0].work = {};
+    _fakeTicket.snapshots[0].bid_limit.ticket_set.auction.bids[0].work_offers[0].work.state = 'completed';
+    _fakeTicket.snapshots[0].bid_limit.ticket_set.auction.bids[0].work_offers[0].work.review = {};
+    _fakeTicket.snapshots[0].bid_limit.ticket_set.auction.bids[0].work_offers[0].work.review.rating = 3;
     return _fakeTicket;
 }
 

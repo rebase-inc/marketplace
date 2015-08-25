@@ -17,6 +17,20 @@ function persistModifiedTicket(ticket) {
     }
 }
 
+function persistCommentDetail(data) {
+    data.comment.user = { first_name: 'Andrew', last_name: 'Millspaugh', photo: 'img/andrew.jpg' }; // hack because the api is missing data
+    for(var i=0; i<_allTickets.length; i++) {
+        var ticket = _allTickets[i];
+        for ( var j=0; j < ticket.comments.length; j++) {
+            if (ticket.comments[j].id == data.comment.id) { 
+                _allTickets[i].comments[j] = data.comment; 
+                if (_currentTicket.id == _allTickets[i].id) { _currentTicket = _allTickets[i]; }
+            }
+        }
+    }
+}
+
+
 function newComment(user, ticket, text) {
     var ticketInd;
     for(var i=0; i<_allTickets.length; i++) {
@@ -44,22 +58,22 @@ function markBidPending(auction) {
 function handleBidResponse(auction) {
     _bidPending = false;
     var ticket = JSON.parse(JSON.stringify(_currentTicket));
-    ticket.ticket_snapshots[0].bid_limit.ticket_set.auction = auction;
+    ticket.snapshots[0].bid_limit.ticket_set.auction = auction;
     persistModifiedTicket(ticket);
 }
 
 function isNewTicket(ticket) {
-    return ticket.ticket_snapshots.every(snap => !snap.bid_limit.ticket_set.auction);
+    return ticket.snapshots.every(snap => !snap.bid_limit || !snap.bid_limit.ticket_set.auction);
 }
 
 function isOfferedTicket(ticket) {
-    return ticket.ticket_snapshots.every(snap => snap.bid_limit.ticket_set.auction.state == 'waiting_for_bids');
+    return ticket.snapshots.every(snap => snap.bid_limit.ticket_set.auction.state == 'waiting_for_bids');
 }
 
 function isInProgressTicket(ticket) {
     return (
-        ticket.ticket_snapshots.every(snap => snap.bid_limit.ticket_set.auction.state == 'closed') &&
-        ticket.ticket_snapshots
+        ticket.snapshots.every(snap => snap.bid_limit.ticket_set.auction.state == 'closed') &&
+        ticket.snapshots
             .every(snap => snap.bid_limit.ticket_set.auction.bids.filter(bid => !!bid.contract)
                    .every(bid => bid.work_offers.some(offer => !offer.work.review)))
     );
@@ -73,9 +87,9 @@ function labelTicket(ticket) {
     return ticket;
 }
 
-function persistTickets(tickets) {
+function persistTickets(data) {
     _loading = false;
-    _allTickets = tickets.map(labelTicket);
+    _allTickets = data.tickets.map(labelTicket);
 }
 
 function markLoading(tickets) {
@@ -92,6 +106,9 @@ var TicketStore = _.extend({}, EventEmitter.prototype, {
     initialize: function(role) {
         _role = role;
         _allTickets = null;
+    },
+    getDetailedCurrent: function() {
+        return _currentTicket;
     },
     getState: function(role) {
         return {
@@ -123,7 +140,7 @@ RebaseAppDispatcher.register(function(payload) {
         case ActionConstants.GET_TICKET_DATA:
             switch(action.response) {
                 case RequestConstants.PENDING: markLoading(); break;
-                default: persistTickets(action.response.data); break;
+                default: persistTickets(action.response); break;
             } break;
         case ActionConstants.ADD_COMMENT_TO_TICKET:
             switch(action.response) {
@@ -134,6 +151,11 @@ RebaseAppDispatcher.register(function(payload) {
             switch(action.response) {
                 case RequestConstants.PENDING: markBidPending(action.response.data); break;
                 default: handleBidResponse(action.response.data); break;
+            } break;
+        case ActionConstants.GET_COMMENT_DETAIL:
+            switch(action.response) {
+                case RequestConstants.PENDING: console.log('Pending comment detail!'); break;
+                default: persistCommentDetail(action.response); break;
             } break;
         default: return true;
     }

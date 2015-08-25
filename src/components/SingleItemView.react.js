@@ -1,5 +1,6 @@
 var React = require('react/addons');
 var TicketStore = require('../stores/TicketStore');
+var AuctionStore = require('../stores/AuctionStore');
 
 var RebaseActions = require('../actions/RebaseActions');
 var Icons = require('../components/RebaseIcons.react');
@@ -103,6 +104,9 @@ var CommentList = React.createClass({
         var node = this.getDOMNode();
         this.shouldScrollBottom = node.scrollTop + node.offsetHeight === node.scrollHeight;
     },
+    componentWillUnmount: function() {
+        AuctionStore.removeChangeListener(this._onChange);
+    },
     componentDidUpdate: function() {
         if (this.shouldScrollBottom) {
             var node = this.getDOMNode();
@@ -115,6 +119,7 @@ var CommentList = React.createClass({
         node.scrollTop = node.scrollHeight
         this.handleScrollPosition();
         this.getDOMNode().addEventListener('scroll', this.handleScrollPosition, false);
+        this.props.comments.map(RebaseActions.getCommentDetail);
     },
     render: function() {
         var all_comments = [];
@@ -122,12 +127,12 @@ var CommentList = React.createClass({
             all_comments.push(
                 <div className='comment'>
                     <div className='photo'>
-                        <img src={comment.user.photo}/>
+                        <img src={!!comment.user ? comment.user.photo : ''}/>
                     </div>
                     <div className='content'>
-                        <div className='name'>{comment.user.first_name + ' ' + comment.user.last_name}</div>
+                        <div className='name'>{!!comment.user ? comment.user.first_name + ' ' + comment.user.last_name : ''}</div>
                         <div className='date'>{comment.date}</div>
-                        <div className='text'>{comment.text}</div>
+                        <div className='text'>{comment.content}</div>
                     </div>
                 </div>
             );
@@ -154,7 +159,7 @@ var ItemHeader = React.createClass({
                 buttons = this.props.currentRole.type == 'developer' ?  [{ onClick: this.props.buttonAction, text: 'Bid Now' }] : [];
             break;
             case ticketTypes.IN_PROGRESS:
-                buttons = this.props.currentRole.type == 'developer' ? 
+                buttons = this.props.currentRole.type == 'developer' ?
                     [{onClick: this.props.buttonAction, text: 'Finish' },
                         { onClick: this.props.buttonAction, text: 'Mark Blocked', className: 'danger' }] : [];
             break;

@@ -628,6 +628,54 @@ tbody {
     left: 0;
 }
 
+/** login box tests **/
+#login-background { width: 100%; height: 100%; background-color: hsla(213, 23%, 28%, 1); }
+#login-box {
+    top: 50%;
+    width: 35%;
+    min-width: 360px;
+    position: relative;
+    margin: 0 auto;
+    transform: translateY(-50%); -webkit-transform: translateY(-50%);
+    border-radius: 4px;
+    background-color: #F6F8FA;
+    text-align: center;
+    box-sizing: border-box;
+    padding: 24px;
+}
+#login-box img {
+    height: 50px;
+    padding-bottom: 10px;
+}
+#login-box input, #login-box button {
+    width: 85%;
+    height: 40px;
+    display: block;
+    margin: 14px auto;
+    border-radius: 3px;
+}
+#buttons { padding-bottom: 28px; }
+#login-box button {
+    background-color: hsla(166, 43%, 56%, 1);
+    box-shadow: none;
+    outline: none;
+    border: none;
+    font-size: 18px;
+    cursor: pointer;
+    color: hsla(210, 29%, 97%, 1);
+}
+#login-box input {
+    line-height: 24px;
+    font-size: 14px;
+    border: 1px solid #cbcbd2;
+    color: #4A4A4A;
+    padding-left: 12px;
+    box-sizing: border-box;
+    background-color: transparent;
+}
+#login-box button:active { opacity: 0.75; transition-duration: 0.2s; }
+#login-box input:focus { border: 1px solid #47C8AB; box-shadow: inset 0 1px 2px rgba(203,203,210,0.2),0 0 4px rgba(80,227,194,0.35); outline: none; }
+
 /** scroll shadow tests **/
 .top-scroll-shadow {
     box-shadow: inset 0 6px 4px -6px rgba(0,0,0,.22);

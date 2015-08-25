@@ -3,26 +3,33 @@ var _ = require('underscore');
 
 var Icons = require('../components/RebaseIcons.react');
 var TicketStore = require('../stores/TicketStore');
+var AuctionStore = require('../stores/AuctionStore');
 var RebaseActions = require('../actions/RebaseActions');
 var SingleItemView = require('../components/SingleItemView.react');
 var LoadingAnimation = require('../components/LoadingAnimation.react');
+var ViewConstants = require('../constants/ViewConstants');
+var ticketTypes = ViewConstants.ticketTypes;
 
 var MainView = React.createClass({
     getInitialState: function() {
-        return _.extend({ filterText: '' }, TicketStore.getState());
+        return _.extend({ filterText: '' }, TicketStore.getState(), AuctionStore.getState());
     },
     getDataIfNeeded: function() {
-        RebaseActions.getTicketData();
+        setTimeout(RebaseActions.getTicketData, 0);
+        setTimeout(RebaseActions.getAuctionData, 0);
     },
     componentDidMount: function() {
         TicketStore.addChangeListener(this._onChange);
+        AuctionStore.addChangeListener(this._onChange);
         this.getDataIfNeeded();
     },
     componentWillUnmount: function() {
         TicketStore.removeChangeListener(this._onChange);
+        AuctionStore.removeChangeListener(this._onChange);
     },
     _onChange: function() {
         this.setState(TicketStore.getState());
+        this.setState(AuctionStore.getState());
     },
     selectTicket: function(ticket) {
         TicketStore.select(ticket);
@@ -44,11 +51,22 @@ var MainView = React.createClass({
             }
             return <SingleItemView {...props} />;
         } else {
+            var tickets;
+            switch (this.props.currentView.type) {
+                case ticketTypes.NEW: tickets = this.state.allTickets.filter(ticket => ticket.type == ticketTypes.NEW); break;
+                case ticketTypes.OFFERED:
+                    var auctions = this.state.allAuctions.filter(auction => auction.state == 'waiting_for_bids' || auction.state == 'created');
+                    tickets = auctions.map(function(auction) { return auction.ticket_set.bid_limits[0].ticket_snapshot.ticket; });
+                    break;
+                case ticketTypes.IN_PROGRESS: tickets = this.state.allContracts.filter(contract => !contract.review); break;
+                case ticketTypes.COMPLETED: tickets = this.state.allReviews; break;
+                default: throw 'Invalid view type'; break;
+            }
             var props = {
                 filterText: this.state.filterText,
-                tickets: this.state.allTickets.filter(ticket => ticket.type == this.props.currentView.type),
                 selectTicket: this.selectTicket,
                 currentRole: this.props.currentRole,
+                tickets: tickets,
             }
             return (
                 <div className='mainContent'>
@@ -104,7 +122,7 @@ var Ticket = React.createClass({
 
 var ProjectInfoPanel = React.createClass({
     render: function() {
-        var projectName = this.props.ticket.project.organization.title + '/' + this.props.ticket.project.title;
+        var projectName = this.props.ticket.project.organization.name + '/' + this.props.ticket.project.name;
         return (
             <td onClick={this.handleClick} className='projectInfoPanel'>
             <span>{projectName}</span>

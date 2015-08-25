@@ -7,14 +7,9 @@ var MainView = require('../components/MainView.react');
 var SingleItemView = require('../components/SingleItemView.react');
 var ModalView = require('../components/ModalView.react');
 var TicketStore = require('../stores/TicketStore');
-var AuctionStore = require('../stores/AuctionStore');
+var UserStore = require('../stores/UserStore');
 var ViewsByRole = require('../constants/ViewConstants').ViewsByRole;
-
-function getState(user) {
-    return {
-        currentTicket: null,
-    }
-}
+var RebaseActions = require('../actions/RebaseActions');
 
 var RebaseApp = React.createClass({
 
@@ -27,13 +22,15 @@ var RebaseApp = React.createClass({
     },
 
     _onChange: function() {
-        this.setState({ });
+        this.setState({ loggedIn: UserStore.getState().loggedIn });
     },
     componentDidMount: function() {
         TicketStore.addChangeListener(this._onChange);
+        UserStore.addChangeListener(this._onChange);
     },
     componentWillUnmount: function() {
         TicketStore.removeChangeListener(this._onChange);
+        UserStore.removeChangeListener(this._onChange);
     },
 
     getInitialState: function() {
@@ -45,6 +42,7 @@ var RebaseApp = React.createClass({
             modalIsOpen: false,
             currentTicket: null,
             currentAuction: null,
+            loggedIn: UserStore.getState().loggedIn,
         }
     },
     changeRole: function(newRole) {
@@ -72,6 +70,9 @@ var RebaseApp = React.createClass({
             closeModal: this.closeModal,
             modalIsOpen: this.state.modalIsOpen,
         }
+        if (!this.state.loggedIn) {
+            return <LoginDialog />;
+        }
         return (
             <div id='app'>
             <Sidebar {...props} />
@@ -81,6 +82,42 @@ var RebaseApp = React.createClass({
         );
     },
 
+});
+
+var LoginDialog = React.createClass({
+    handleKeyPress: function(event) {
+        if (event.charCode == 13) { this.attemptLogin(); }
+        else { this.handleInput(); }
+    },
+    attemptLogin: function() {
+        var email = this.refs.email.getDOMNode().value;
+        var password = this.refs.password.getDOMNode().value;
+        RebaseActions.login(email, password);
+    },
+    attemptSignup: function() {
+        alert('not implemented!');
+        return;
+        RebaseActions.login(this.state.email, this.state.password);
+    },
+    handleInput: function() {
+        this.setState({
+            email: this.refs.email.getDOMNode().value,
+            password: this.refs.password.getDOMNode().value,
+        });
+    },
+    render: function() {
+        return (
+            <div id='login-background'>
+                <div id='login-box' onKeyPress={this.handleKeyPress}>
+                    <img src='img/logo.svg' alt='Rebase Logo' />
+                    <input id='email' type='email' ref='email' className='required email' placeholder='Email' />
+                    <input id='password' type='password' ref='password' placeholder='Password' />
+                    <button id='log-in' onClick={this.attemptLogin}>Log in</button>
+                    <div id='error-message'></div>
+                </div>
+            </div>
+        );
+    }
 });
 
 module.exports = RebaseApp;

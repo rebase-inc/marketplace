@@ -4,6 +4,21 @@ var RequestConstants = require('../constants/RequestConstants');
 var Api = require('../utils/Api');
 
 module.exports = {
+    login: function(email, password) {
+        var responseAction = function(response) {
+            Dispatcher.handleRequestAction({
+                type: ActionConstants.LOGIN,
+                response: response
+            });
+        };
+        var pendingAction = function(response) {
+            Dispatcher.handleRequestAction({
+                type: ActionConstants.LOGIN,
+                response: RequestConstants.PENDING,
+            });
+        };
+        Api.login(email, password, responseAction, pendingAction);
+    },
     getAuctionData: function() {
         var responseAction = function(response) {
             Dispatcher.handleRequestAction({
@@ -33,6 +48,21 @@ module.exports = {
             });
         };
         Api.getTicketData(responseAction, pendingAction);
+    },
+    getCommentDetail: function(comment) {
+        var responseAction = function(response) {
+            Dispatcher.handleRequestAction({
+                type: ActionConstants.GET_COMMENT_DETAIL,
+                response: response
+            });
+        };
+        var pendingAction = function(response) {
+            Dispatcher.handleRequestAction({
+                type: ActionConstants.GET_COMMENT_DETAIL,
+                response: RequestConstants.PENDING,
+            });
+        };
+        Api.getCommentDetail(comment, responseAction, pendingAction);
     },
     commentOnAuction: function(user, auction, text) {
         var responseAction = function(response) {

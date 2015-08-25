@@ -3,7 +3,6 @@ var React = require('react');
 var TicketStore = require('../stores/TicketStore');
 var RebaseActions = require('../actions/RebaseActions');
 var ViewConstants = require('../constants/ViewConstants');
-
 var ticketTypes = ViewConstants.ticketTypes;
 
 var ModalView = React.createClass({
@@ -24,7 +23,7 @@ var ModalDialog = React.createClass({
             priceSubmitted: false,
         }
     },
-    handleInput: function() {
+   handleInput: function() {
         this.setState({ price: this.refs.price.getDOMNode().value });
     },
     handleKeyPress: function(event) {
