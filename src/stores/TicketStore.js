@@ -32,6 +32,7 @@ function persistCommentDetail(data) {
 
 function persistNewComment(data) {
     data.comment.user = { first_name: 'Andrew', last_name: 'Millspaugh', photo: 'img/andrew.jpg' }; // hack because the api is missing data
+    data.comment.marker = 'created by persist new comment';
     for(var i=0; i<_allTickets.length; i++) {
         if (_allTickets[i].id == data.comment.ticket.id) {
             _allTickets[i].comments.push(data.comment);
@@ -98,6 +99,7 @@ function labelTicket(ticket) {
 
 function persistTickets(data) {
     _loading = false;
+    console.log('we got new data so were gonna label all tickets');
     _allTickets = data.tickets.map(labelTicket);
 }
 
@@ -163,7 +165,7 @@ RebaseAppDispatcher.register(function(payload) {
             } break;
         case ActionConstants.GET_COMMENT_DETAIL:
             switch(action.response) {
-                case RequestConstants.PENDING: console.log('Pending comment detail!'); break;
+                case RequestConstants.PENDING: break;
                 default: persistCommentDetail(action.response); break;
             } break;
         default: return true;

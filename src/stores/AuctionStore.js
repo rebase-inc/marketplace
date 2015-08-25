@@ -81,7 +81,7 @@ RebaseAppDispatcher.register(function(payload) {
             } break;
         case ActionConstants.GET_COMMENT_DETAIL:
             switch(action.response) {
-                case RequestConstants.PENDING: console.log('Pending comment detail!'); break;
+                case RequestConstants.PENDING: break;
                 default: persistCommentDetail(action.response); break;
             } break;
         default: return true;

@@ -56,7 +56,11 @@ var MainView = React.createClass({
                 case ticketTypes.NEW: tickets = this.state.allTickets.filter(ticket => ticket.type == ticketTypes.NEW); break;
                 case ticketTypes.OFFERED:
                     var auctions = this.state.allAuctions.filter(auction => auction.state == 'waiting_for_bids' || auction.state == 'created');
-                    tickets = auctions.map(function(auction) { return auction.ticket_set.bid_limits[0].ticket_snapshot.ticket; });
+                    tickets = auctions.map(function(auction) {
+                        var ticket = auction.ticket_set.bid_limits[0].ticket_snapshot.ticket;
+                        ticket.type = ticketTypes.OFFERED;
+                        return ticket;
+                    })
                     break;
                 case ticketTypes.IN_PROGRESS: tickets = this.state.allContracts.filter(contract => !contract.review); break;
                 case ticketTypes.COMPLETED: tickets = this.state.allReviews; break;
@@ -126,7 +130,7 @@ var ProjectInfoPanel = React.createClass({
         return (
             <td onClick={this.handleClick} className='projectInfoPanel'>
             <span>{projectName}</span>
-            <RatingStars rating={this.props.ticket.project.rating} />
+            <RatingStars rating={this.props.ticket.project.rating || 3} />
             </td>
         );
     }
