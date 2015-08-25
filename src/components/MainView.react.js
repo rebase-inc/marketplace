@@ -62,8 +62,8 @@ var MainView = React.createClass({
                         return ticket;
                     })
                     break;
-                case ticketTypes.IN_PROGRESS: tickets = this.state.allContracts.filter(contract => !contract.review); break;
-                case ticketTypes.COMPLETED: tickets = this.state.allReviews; break;
+                case ticketTypes.IN_PROGRESS: tickets = []; break;
+                case ticketTypes.COMPLETED: tickets = []; break;
                 default: throw 'Invalid view type'; break;
             }
             var props = {
