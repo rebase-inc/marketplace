@@ -155,7 +155,7 @@ RebaseAppDispatcher.register(function(payload) {
             } break;
         case ActionConstants.ADD_COMMENT_TO_TICKET:
             switch(action.response) {
-                case RequestConstants.PENDING: console.log('Pending new comment!'); break;
+                case RequestConstants.PENDING: break;
                 default: persistNewComment(action.response); break;
             } break;
         case ActionConstants.BID_ON_AUCTION:

@@ -66,12 +66,12 @@ RebaseAppDispatcher.register(function(payload) {
     switch(action.type) {
         case ActionConstants.GET_AUCTION_DATA:
             switch(action.response) {
-                case RequestConstants.PENDING: console.log('Pending!'); break;
+                case RequestConstants.PENDING: break;
                 default: persistAuctionData(action.response); break;
             } break;
         case ActionConstants.ADD_COMMENT_TO_AUCTION:
             switch(action.response) {
-                case RequestConstants.PENDING: console.log('Pending new comment!'); break;
+                case RequestConstants.PENDING: break;
                 default: persistModifiedAuction(action.response.data); break;
             } break;
         case ActionConstants.BID_ON_AUCTION:
