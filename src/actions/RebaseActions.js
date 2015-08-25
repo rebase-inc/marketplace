@@ -64,21 +64,6 @@ module.exports = {
         };
         Api.getCommentDetail(comment, responseAction, pendingAction);
     },
-    commentOnAuction: function(user, auction, text) {
-        var responseAction = function(response) {
-            Dispatcher.handleRequestAction({
-                type: ActionConstants.ADD_COMMENT_TO_AUCTION,
-                response: response
-            });
-        };
-        var pendingAction = function(response) {
-            Dispatcher.handleRequestAction({
-                type: ActionConstants.ADD_COMMENT_TO_AUCTION,
-                response: RequestConstants.PENDING,
-            });
-        };
-        Api.commentOnAuction(user, auction, text, responseAction, pendingAction);
-    },
     commentOnTicket: function(user, ticket, text) {
         var responseAction = function(response) {
             Dispatcher.handleRequestAction({

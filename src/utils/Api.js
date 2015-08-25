@@ -170,7 +170,7 @@ var Api = {
         ajax('GET', url, null, responseHandler);
     },
     commentOnTicket: function(user, ticket, text, responseHandler, pendingHandler) {
-        var url = makeUrl("/ticket/" + ticket.id);
+        var url = makeUrl("/comments");
         var data = JSON.stringify({ticket: ticket, content: text});
         pendingHandler();
         ajax('POST', url, data, responseHandler);

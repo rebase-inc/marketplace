@@ -49,12 +49,13 @@ var CommentBox = React.createClass({
         });
     },
     submitComment: function() {
-        if (!!this.props.ticket) {
-            RebaseActions.commentOnTicket(this.props.user, this.props.ticket, this.state.commentText);
-        }
-        else if (!!this.props.auction) {
-            RebaseActions.commentOnAuction(this.props.user, this.props.auction, this.state.commentText);
-        }
+        RebaseActions.commentOnTicket(this.props.user, this.props.ticket, this.state.commentText);
+        //if (!!this.props.ticket) {
+            //RebaseActions.commentOnTicket(this.props.user, this.props.ticket, this.state.commentText);
+        //}
+        //else if (!!this.props.auction) {
+            //RebaseActions.commentOnAuction(this.props.user, this.props.auction, this.state.commentText);
+        //}
         this.cancelComment();
     },
     handleInput: function() {
@@ -105,7 +106,6 @@ var CommentList = React.createClass({
         this.shouldScrollBottom = node.scrollTop + node.offsetHeight === node.scrollHeight;
     },
     componentWillUnmount: function() {
-        AuctionStore.removeChangeListener(this._onChange);
     },
     componentDidUpdate: function() {
         if (this.shouldScrollBottom) {
@@ -127,7 +127,7 @@ var CommentList = React.createClass({
             all_comments.push(
                 <div className='comment'>
                     <div className='photo'>
-                        <img src={!!comment.user ? comment.user.photo : ''}/>
+                        <img src={!!comment.user ? comment.user.photo : 'img/placeholder-user-60px.png'}/>
                     </div>
                     <div className='content'>
                         <div className='name'>{!!comment.user ? comment.user.first_name + ' ' + comment.user.last_name : ''}</div>

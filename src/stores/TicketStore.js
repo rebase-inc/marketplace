@@ -22,10 +22,19 @@ function persistCommentDetail(data) {
     for(var i=0; i<_allTickets.length; i++) {
         var ticket = _allTickets[i];
         for ( var j=0; j < ticket.comments.length; j++) {
-            if (ticket.comments[j].id == data.comment.id) { 
-                _allTickets[i].comments[j] = data.comment; 
+            if (ticket.comments[j].id == data.comment.id) {
+                _allTickets[i].comments[j] = data.comment;
                 if (_currentTicket.id == _allTickets[i].id) { _currentTicket = _allTickets[i]; }
             }
+        }
+    }
+}
+
+function persistNewComment(data) {
+    data.comment.user = { first_name: 'Andrew', last_name: 'Millspaugh', photo: 'img/andrew.jpg' }; // hack because the api is missing data
+    for(var i=0; i<_allTickets.length; i++) {
+        if (_allTickets[i].id == data.comment.ticket.id) {
+            _allTickets[i].comments.push(data.comment);
         }
     }
 }
@@ -145,7 +154,7 @@ RebaseAppDispatcher.register(function(payload) {
         case ActionConstants.ADD_COMMENT_TO_TICKET:
             switch(action.response) {
                 case RequestConstants.PENDING: console.log('Pending new comment!'); break;
-                default: persistModifiedTicket(action.response.data); break;
+                default: persistNewComment(action.response); break;
             } break;
         case ActionConstants.BID_ON_AUCTION:
             switch(action.response) {
