@@ -27,6 +27,7 @@ var _currentRole = null;
 function persistLoginState(data) {
     _currentUser = data.user;
     _currentRole = _currentUser.roles[0];
+    _currentRole.display_name = _currentRole.organization + '/' + _currentRole.project;
     switch (_currentRole.type) {
         case 'contractor': _currentView = ContractorViews[ViewTypes.OFFERED]; break;
         case 'manager': _currentView = ManagerViews[ViewTypes.NEW]; break;

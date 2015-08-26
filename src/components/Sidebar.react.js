@@ -76,32 +76,17 @@ var SidebarProfile = React.createClass({
 
 var RoleSelector = React.createClass({
     getInitialState: function() {
-        return { dropdownOpen: false }
+        return { open: false }
     },
     toggleDropdown: function() {
-        //this.props.changeRole();
-        this.setState({ dropdownOpen: !this.state.dropdownOpen });
+        this.setState({ open: !this.state.open });
     },
     render: function() {
-        var dropdown;
-        var className;
-        var roleDisplayName;
-        console.log('current role is ', this.props.currentRole);
-        switch (this.props.currentRole.type) {
-            case 'contractor': roleDisplayName = 'Contractor View'; break;
-            case 'manager': roleDisplayName = this.props.currentRole.organization + '/' + this.props.currentRole.project; break;
-            default: roleDisplayName = 'Unknown Role'; break;
-        }
-        if (this.state.dropdownOpen) {
-            dropdown = <RoleSelectorDropdown user={this.props.currentUser}
-            changeRole={this.props.changeRole} currentRole={this.props.currentRole} />;
-            className = 'open';
-        }
         return (
-            <div id='roleSelector' className={className} onClick={this.toggleDropdown}>
-            <span> { roleDisplayName } </span>
+            <div id='roleSelector' className={this.state.open ? 'open' : ''} onClick={this.toggleDropdown}>
+            <span> { this.props.currentRole.type == 'contractor' ? 'Contractor View' : this.props.currentRole.organization } </span>
             <Icons.Dropdown />
-            { dropdown }
+            { this.state.open ? <RoleSelectorDropdown {...this.props} /> : null }
             </div>
         );
     }
@@ -130,14 +115,11 @@ var RoleSelectorDropdown = React.createClass({
                 </li>
             );
         }.bind(this));
+        !!managerRoleElements.length ? managerRoleElements.unshift(<li className='header'>Manager</li>) : null;
+        !!contractorRoleElements.length ? contractorRoleElements.unshift(<li className='header'>Contractor</li>) : null;
         return (
             <div id='roleSelectorDropdown'>
-            <ul>
-            <li className='header'>Manager</li>
-            { managerRoleElements }
-            <li className='header'>Contractor</li>
-            { contractorRoleElements }
-            </ul>
+                <ul> { managerRoleElements } { contractorRoleElements } </ul>
             </div>
         );
     }
