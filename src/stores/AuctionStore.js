@@ -65,8 +65,8 @@ Dispatcher.register(function(payload) {
             } break;
         case ActionConstants.GET_COMMENT_DETAIL:
             switch(action.response) {
-                //case RequestConstants.PENDING: break;
-                //default: persistCommentDetail(action.response); break;
+                case RequestConstants.PENDING: break;
+                default: persistCommentDetail(action.response); break;
             } break;
         default: return true;
     }
@@ -75,6 +75,16 @@ Dispatcher.register(function(payload) {
     AuctionStore.emitChange();
     return true;
 });
+
+function persistCommentDetail(data) {
+    data.comment.user = { first_name: 'Andrew', last_name: 'Millspaugh', photo: 'img/andrew.jpg' }; // hack because the api is missing data
+    for(var i=0; i<_allAuctions.length; i++) {
+        var comments = _allAuctions[i].ticket_set.bid_limits[0].ticket_snapshot.ticket.comments;
+        for ( var j=0; j < comments.length; j++) {
+            if (comments[j].id == data.comment.id) { _allAuctions[i].ticket_set.bid_limits[0].ticket_snapshot.ticket.comments[j] = data.comment; }
+        }
+    }
+}
 
 function labelAuctionType(auction) {
     if (auction.state == 'waiting_for_bids' || auction.state == 'created') {

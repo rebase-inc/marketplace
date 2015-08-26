@@ -10,6 +10,10 @@ var AuctionActions = require('../actions/AuctionActions');
 
 // Components
 var SearchBar = require('../components/SearchBar.react');
+var SingleTicketView = require('../components/SingleTicketView.react');
+var TicketHeader = require('../components/TicketHeader.react');
+var CommentList = require('../components/CommentList.react');
+var CommentBox = require('../components/CommentBox.react');
 
 // Constants
 var viewConstants = require('../constants/viewConstants');
@@ -45,8 +49,7 @@ var AuctionView = React.createClass({
     //handleUserInput: function(searchText) { this.setState({ searchText: searchText }); },
     render: function() {
         if (!!this.state.currentAuction) {
-            var props = _.extend({ goBack: this.unselectAuction, auction: this.state.currentAuction}, this.state, this.props);
-            return <SingleItemView {...props} />;
+            return <SingleAuctionView {...this.props} {...this.state} goBack={this.unselectAuction} />;
         } else {
             var props = _.extend({ selectAuction: this.selectAuction }, this.state, this.props);
             return (
@@ -56,6 +59,24 @@ var AuctionView = React.createClass({
                 </div>
             );
         }
+    }
+});
+
+var SingleAuctionView = React.createClass({
+    propTypes: {
+        currentRole: React.PropTypes.object.isRequired,
+        currentUser: React.PropTypes.object.isRequired,
+        auction: React.PropTypes.object.isRequired,
+    },
+    render: function() {
+        var ticket = this.props.currentAuction.ticket_set.bid_limits[0].ticket_snapshot.ticket;
+        return (
+            <SingleTicketView {...this.props}>
+                <TicketHeader title={ticket.title} />
+                <CommentList comments={ticket.comments}/>
+                <CommentBox ticket={ticket} user={this.props.currentUser} />
+            </SingleTicketView>
+        );
     }
 });
 

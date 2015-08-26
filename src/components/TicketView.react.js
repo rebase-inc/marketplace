@@ -48,7 +48,7 @@ var TicketView = React.createClass({
                 //ticket: this.state.currentTicket,
                 //user: this.props.user,
             //}
-            //return <SingleItemView {...props} />;
+            //return <SingleTicketView {...props} />;
         //} else {
             //// make sure we only display new tickets - this is really only important if the user is logged in as admin
             //var props = {

@@ -63,8 +63,8 @@ Dispatcher.register(function(payload) {
             } break;
         case ActionConstants.GET_COMMENT_DETAIL:
             switch(action.response) {
-                //case RequestConstants.PENDING: break;
-                //default: persistCommentDetail(action.response); break;
+                case RequestConstants.PENDING: break;
+                default: persistCommentDetail(action.response); break;
             } break;
         default: return true;
     }
@@ -89,5 +89,19 @@ function labelTicketType(ticket) {
        //ticket.type = ViewConstants.ticketTypes.COMPLETED;
    //}
 }
+
+function persistCommentDetail(data) {
+    data.comment.user = { first_name: 'Andrew', last_name: 'Millspaugh', photo: 'img/andrew.jpg' }; // hack because the api is missing data
+    for(var i=0; i<_allTickets.length; i++) {
+        var ticket = _allTickets[i];
+        for ( var j=0; j < ticket.comments.length; j++) {
+            if (ticket.comments[j].id == data.comment.id) {
+                _allTickets[i].comments[j] = data.comment;
+                if (_currentTicket.id == _allTickets[i].id) { _currentTicket = _allTickets[i]; }
+            }
+        }
+    }
+}
+
 
 module.exports = TicketStore;

@@ -4,19 +4,19 @@ var RequestConstants = require('../constants/RequestConstants');
 var Api = require('../utils/Api');
 
 module.exports = {
-    getContractData: function() {
+    getCommentDetail: function(comment) {
         var responseAction = function(response) {
             Dispatcher.handleRequestAction({
-                type: ActionConstants.GET_CONTRACT_DATA,
+                type: ActionConstants.GET_COMMENT_DETAIL,
                 response: response
             });
         };
         var pendingAction = function(response) {
             Dispatcher.handleRequestAction({
-                type: ActionConstants.GET_CONTRACT_DATA,
+                type: ActionConstants.GET_COMMENT_DETAIL,
                 response: RequestConstants.PENDING,
             });
         };
-        Api.getContractData(responseAction, pendingAction);
+        Api.getCommentDetail(comment, responseAction, pendingAction);
     },
 };
