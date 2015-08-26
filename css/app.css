@@ -251,6 +251,11 @@ tbody {
     border: 1px solid hsla(165, 5%, 83%, 1);
 }
 
+.ticket > td {
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
 .ticket:hover {
     background-color: hsla(200, 30%, 96%, 1);
 }
