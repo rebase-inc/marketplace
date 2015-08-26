@@ -21,6 +21,6 @@ var MainView = React.createClass({
     }
 });
 
-var ErrorPage = React.createClass({ render: function() { return <div>Error! Please refresh page!</div>; } });
+var ErrorPage = React.createClass({ render: function() { return <div>Error! Please restart app!</div>; } });
 
 module.exports = MainView;

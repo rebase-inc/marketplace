@@ -4,34 +4,34 @@ var RequestConstants = require('../constants/RequestConstants');
 var Api = require('../utils/Api');
 
 module.exports = {
-    getContractData: function() {
+    getAuctionData: function() {
         var responseAction = function(response) {
             Dispatcher.handleRequestAction({
-                type: ActionConstants.GET_CONTRACT_DATA,
+                type: ActionConstants.GET_AUCTION_DATA,
                 response: response
             });
         };
         var pendingAction = function(response) {
             Dispatcher.handleRequestAction({
-                type: ActionConstants.GET_CONTRACT_DATA,
+                type: ActionConstants.GET_AUCTION_DATA,
                 response: RequestConstants.PENDING,
             });
         };
-        Api.getContractData(responseAction, pendingAction);
+        Api.getAuctionData(responseAction, pendingAction);
     },
-    getCommentDetail: function(comment) {
+    bidOnAuction: function(user, ticket, price) {
         var responseAction = function(response) {
             Dispatcher.handleRequestAction({
-                type: ActionConstants.GET_COMMENT_DETAIL,
+                type: ActionConstants.BID_ON_AUCTION,
                 response: response
             });
         };
         var pendingAction = function(response) {
             Dispatcher.handleRequestAction({
-                type: ActionConstants.GET_COMMENT_DETAIL,
+                type: ActionConstants.BID_ON_AUCTION,
                 response: RequestConstants.PENDING,
             });
         };
-        Api.getCommentDetail(comment, responseAction, pendingAction);
+        Api.bidOnAuction(user, ticket, price, responseAction, pendingAction);
     },
 };

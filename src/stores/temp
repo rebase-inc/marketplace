@@ -1,4 +1,35 @@
 
+function persistAuctionData(data) {
+    if (data) { _allAuctions = data.auctions.map(labelAuction); }
+}
+
+function persistCommentDetail(data) {
+    data.comment.user = { first_name: 'Andrew', last_name: 'Millspaugh', photo: 'img/andrew.jpg' }; // hack because the api is missing data
+    for(var i=0; i<_allAuctions.length; i++) {
+        var comments = _allAuctions[i].ticket_set.bid_limits[0].ticket_snapshot.ticket.comments;
+        for ( var j=0; j < comments.length; j++) {
+            if (comments[j].id == data.comment.id) { _allAuctions[i].ticket_set.bid_limits[0].ticket_snapshot.ticket.comments[j] = data.comment; }
+        }
+    }
+}
+
+function persistModifiedAuction(auction) {
+    for(var i=0; i<_allAuctions.length; i++) {
+        if (_allAuctions[i].id == auction.id) {
+            _allAuctions[i] = _.extend({}, auction);
+            if (_currentAuction.id == auction.id) { _currentAuction = auction }
+        };
+    }
+}
+
+function handleBidResponse(auction) {
+    _bidPending = false;
+    persistModifiedAuction(auction);
+}
+
+function markBidPending(auction) {
+    _bidPending = true;
+}
 
 function persistModifiedTicket(ticket) {
     for(var i=0; i<_allTickets.length; i++) {

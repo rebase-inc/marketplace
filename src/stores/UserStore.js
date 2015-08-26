@@ -65,6 +65,9 @@ Dispatcher.register(function(payload) {
                 case 'contractor': _currentView = ContractorViews[ViewTypes.OFFERED]; break;
                 case 'manager': _currentView = ManagerView[ViewTypes.NEW]; break;
             } break;
+        case ActionConstants.SELECT_ROLE:
+            _currentRole = _currentUser.roles.filter(role => role.id == action.roleID)[0];
+            break;
         case ActionConstants.GET_USER_DETAIL:
             switch(action.response) {
                 case RequestConstants.PENDING: console.log('Pending user details!'); break;

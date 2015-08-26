@@ -18,13 +18,20 @@ var Sidebar = React.createClass({
             <div id='sidebar' className='noselect'>
                 <img className='logo' src='img/logo.svg' alt='Rebase Logo'/>
                 <SidebarNav {...this.props} />
-                <SidebarProfile user={this.props.currentUser} />
+                <SidebarProfile currentUser={this.props.currentUser} />
             </div>
         );
     }
 });
 
 var SidebarNav = React.createClass({
+    propTypes: {
+        currentUser: React.PropTypes.object.isRequired,
+        currentRole: React.PropTypes.object.isRequired,
+        currentView: React.PropTypes.object.isRequired,
+        selectRole: React.PropTypes.func.isRequired,
+        selectView: React.PropTypes.func.isRequired,
+    },
     render: function() {
         var viewProps = {
             selectView: this.props.selectView,
@@ -33,22 +40,23 @@ var SidebarNav = React.createClass({
         var roleProps = {
             currentUser: this.props.currentUser,
             currentRole: this.props.currentRole,
-            changeRole: this.props.changeRole,
+            selectRole: this.props.selectRole,
         }
         var allViews = [];
         // the views are pushed explicitly, because javascript implementations don't guarantee object key order
         // so a map or similar operation cannot be used. Probably should switch to storing the data in array, then.
+        // That would also allow for dynamic generation of the keys (dev0, man0, etc).
         switch (this.props.currentRole.type) {
             case 'contractor':
-                allViews.push(<ViewSelection view={ContractorViews[ViewTypes.OFFERED]} {...viewProps} />);
-                allViews.push(<ViewSelection view={ContractorViews[ViewTypes.IN_PROGRESS]} {...viewProps} />);
-                allViews.push(<ViewSelection view={ContractorViews[ViewTypes.COMPLETED]} {...viewProps} />);
+                allViews.push(<ViewSelection view={ContractorViews[ViewTypes.OFFERED]} {...viewProps} key='dev0'/>);
+                allViews.push(<ViewSelection view={ContractorViews[ViewTypes.IN_PROGRESS]} {...viewProps} key='dev1'/>);
+                allViews.push(<ViewSelection view={ContractorViews[ViewTypes.COMPLETED]} {...viewProps} key='dev2' />);
             break;
             case 'manager':
-                allViews.push(<ViewSelection view={ManagerViews[ViewTypes.NEW]} {...viewProps} />);
-                allViews.push(<ViewSelection view={ManagerViews[ViewTypes.OFFERED]} {...viewProps} />);
-                allViews.push(<ViewSelection view={ManagerViews[ViewTypes.IN_PROGRESS]} {...viewProps} />);
-                allViews.push(<ViewSelection view={ManagerViews[ViewTypes.COMPLETED]} {...viewProps} />);
+                allViews.push(<ViewSelection view={ManagerViews[ViewTypes.NEW]} {...viewProps} key='man0' />);
+                allViews.push(<ViewSelection view={ManagerViews[ViewTypes.OFFERED]} {...viewProps} key='man1' />);
+                allViews.push(<ViewSelection view={ManagerViews[ViewTypes.IN_PROGRESS]} {...viewProps} key='man2' />);
+                allViews.push(<ViewSelection view={ManagerViews[ViewTypes.COMPLETED]} {...viewProps} key='man3' />);
             break;
         }
         return (
@@ -63,18 +71,26 @@ var SidebarNav = React.createClass({
 });
 
 var SidebarProfile = React.createClass({
+    propTypes: {
+        currentUser: React.PropTypes.object.isRequired,
+    },
     render: function() {
         return (
-                <div id='sidebarProfile'>
-                <img src={this.props.user.photo}/>
-                <span>{this.props.user.name}</span>
+            <div id='sidebarProfile'>
+                <img src={this.props.currentUser.photo}/>
+                    <span>{this.props.currentUser.first_name + ' ' + this.props.currentUser.last_name}</span>
                 <Icons.Dropdown/>
-                </div>
-               );
+            </div>
+       );
     }
 });
 
 var RoleSelector = React.createClass({
+    propTypes: {
+        currentUser: React.PropTypes.object.isRequired,
+        currentRole: React.PropTypes.object.isRequired,
+        selectRole: React.PropTypes.func.isRequired,
+    },
     getInitialState: function() {
         return { open: false }
     },
@@ -93,25 +109,20 @@ var RoleSelector = React.createClass({
 });
 
 var RoleSelectorDropdown = React.createClass({
-    selectRole: function() {
-       this.props.changeRole(2);
-    },
     render: function() {
         var managerRoles = this.props.currentUser.roles.filter(function(el) { return el.type == 'manager'; });
         var contractorRoles = this.props.currentUser.roles.filter(function(el) { return el.type == 'contractor'; });
         var managerRoleElements = managerRoles.map(function(role) {
             return (
-                <li className={role == this.props.currentRole ? 'selected': ''}
-                onClick={function() { this.props.changeRole(role) }.bind(this)}>
-                {role.organization + '/' + role.project}
+                <li className={role == this.props.currentRole ? 'selected': ''} onClick={this.props.selectRole.bind(null, role.id)} key={role.id}>
+                    {role.organization}
                 </li>
             );
         }.bind(this));
         var contractorRoleElements = contractorRoles.map(function(role) {
             return (
-                <li className={role == this.props.currentRole ? 'selected': ''}
-                onClick={function() { this.props.changeRole(role) }.bind(this)}>
-                {'Contractor View'}
+                <li className={role == this.props.currentRole ? 'selected': ''} onClick={this.props.selectRole.bind(null, role.id)} key={role.id}>
+                    {'Contractor View'}
                 </li>
             );
         }.bind(this));

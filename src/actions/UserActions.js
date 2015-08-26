@@ -34,4 +34,10 @@ module.exports = {
         };
         Api.getUserDetail(userID, responseAction, pendingAction);
     },
+    selectRole: function(roleID) {
+        Dispatcher.handleRequestAction({
+            type: ActionConstants.SELECT_ROLE,
+            roleID: roleID,
+        });
+    },
 };

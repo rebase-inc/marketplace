@@ -6,7 +6,7 @@ var _ = require('underscore');
 var AuctionStore = require('../stores/AuctionStore');
 
 // Actions
-var TicketActions = require('../actions/TicketActions');
+var AuctionActions = require('../actions/AuctionActions');
 
 // Components
 var SearchBar = require('../components/SearchBar.react');
@@ -16,21 +16,18 @@ var viewConstants = require('../constants/viewConstants');
 
 var AuctionView = React.createClass({
     getInitialState: function() {
-        return _.extend({ filterText: '' }, AuctionStore.getState());
+        return _.extend({ searchText: '' }, AuctionStore.getState());
     },
-    //getDataIfNeeded: function() {
-        //setTimeout(RebaseActions.getAuctionData, 0);
-    //},
-    //componentDidMount: function() {
-        //AuctionStore.addChangeListener(this._onChange);
-        //this.getDataIfNeeded();
-    //},
-    //componentWillUnmount: function() {
-        //AuctionStore.removeChangeListener(this._onChange);
-    //},
-    //_onChange: function() {
-        //this.setState(AuctionStore.getState());
-    //},
+    componentDidMount: function() {
+        AuctionStore.addChangeListener(this._onChange);
+        setTimeout(AuctionActions.getAuctionData, 0);
+    },
+    componentWillUnmount: function() {
+        AuctionStore.removeChangeListener(this._onChange);
+    },
+    _onChange: function() {
+        this.setState(AuctionStore.getState());
+    },
     //selectAuction: function(ticket) {
         //AuctionStore.select(ticket);
         //this._onChange();
@@ -38,28 +35,17 @@ var AuctionView = React.createClass({
     //unselectAuction: function() {
         //this.selectAuction(null);
     //},
-    // this is probably not how we should be handling the filterText
-    //handleUserInput: function(filterText) { this.setState({ filterText: filterText }); },
+    // this is probably not how we should be handling the searchText
+    //handleUserInput: function(searchText) { this.setState({ searchText: searchText }); },
     render: function() {
         if (!!this.state.currentAuction) {
-            var props = {
-                backAction: this.unselectAuction,
-                buttonAction: this.props.openModal,
-                currentRole: this.props.currentRole,
-                ticket: this.state.currentAuction,
-                user: this.props.user,
-            }
+            var props = _.extend({ goBack: this.unselectAuction, auction: this.state.currentAuction}, this.state);
             return <SingleItemView {...props} />;
         } else {
-            // make sure we only display new tickets - this is really only important if the user is logged in as admin
-            var props = { filterText: this.state.filterText,
-                selectAuction: this.selectAuction,
-                currentRole: this.props.currentRole,
-                tickets: this.state.allAuctions.filter(ticket => ticket.type = ticketType.NEW),
-            }
+            var props = _.extend({ selectAuction: this.selectAuction }, this.state);
             return (
                 <div className='mainContent'>
-                <SearchBar filterText={this.state.filterText} onUserInput={this.handleUserInput}/>
+                <SearchBar searchText={this.state.searchText} onUserInput={this.handleSearchInput}/>
                 { this.state.loading ? <LoadingAnimation /> : <AuctionList {...props} /> }
                 </div>
             );
@@ -73,16 +59,18 @@ var AuctionList = React.createClass({
             selectTicket: this.props.selectTicket,
             currentRole: this.props.currentRole,
         }
-        var ticketMatchesText = function(ticket) {
-            return ticket.title.indexOf(this.props.searchText) != -1;
+        var titleMatchesText = function(auction) {
+            return true; // until we make this actually work
+            return auction.title.indexOf(this.props.searchText) != -1;
         }.bind(this);
         var makeTicketElement = function(ticket) {
             return <Auction ticket={ticket} key={ticket.id} {...props} />;
         }.bind(props);
+        if (!this.props.allAuctions) { return  <div>There doesn't seem to be any tickets available!</div>; }
         return (
             <table id='ticketList'>
                 <tbody>
-                    { this.props.tickets.filter(ticketMatchesText).map(makeTicketElement) }
+                    { this.props.allAuctions.filter(titleMatchesText).map(makeTicketElement) }
                 </tbody>
             </table>
         );

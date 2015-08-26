@@ -35,7 +35,6 @@ var RebaseApp = React.createClass({
     },
     _onChange: function() {
         this.setState(UserStore.getState());
-        console.log(this.state);
     },
     render: function() {
         var sidebarProps = {
@@ -54,7 +53,6 @@ var RebaseApp = React.createClass({
             currentUser: this.state.currentUser,
             currentView: this.state.currentView,
         };
-        console.log('main props are ', mainProps);
         var App = (
             <div id='app'>
                 <Sidebar {...sidebarProps} />
