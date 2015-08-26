@@ -22,6 +22,7 @@ var AuctionStore = _.extend({}, EventEmitter.prototype, {
             allAuctions: _allAuctions,
             currentAuction: _currentAuction,
             bidPending: _bidPending,
+            loadingAuctionData: _loading,
         };
     },
     emitChange: function() { this.emit('change'); },

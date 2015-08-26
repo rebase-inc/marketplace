@@ -14,6 +14,8 @@ var SingleTicketView = require('../components/SingleTicketView.react');
 var TicketHeader = require('../components/TicketHeader.react');
 var CommentList = require('../components/CommentList.react');
 var CommentBox = require('../components/CommentBox.react');
+var NothingHere = require('../components/NothingHere.react');
+var LoadingAnimation = require('../components/LoadingAnimation.react');
 
 // Constants
 var viewConstants = require('../constants/viewConstants');
@@ -54,8 +56,8 @@ var AuctionView = React.createClass({
             var props = _.extend({ selectAuction: this.selectAuction }, this.state, this.props);
             return (
                 <div className='mainContent'>
-                <SearchBar searchText={this.state.searchText} onUserInput={this.handleSearchInput}/>
-                { this.state.loading ? <LoadingAnimation /> : <AuctionList {...props} /> }
+                    <SearchBar searchText={this.state.searchText} onUserInput={this.handleSearchInput}/>
+                    <AuctionList {...props} />
                 </div>
             );
         }
@@ -98,20 +100,19 @@ var AuctionList = React.createClass({
         var makeTicketElement = function(auction) {
             return <Auction auction={auction} key={auction.id} {...props} />;
         }.bind(props);
-        if (!this.props.allAuctions.length) {
+        if (this.props.loadingAuctionData) {
+            return <LoadingAnimation />;
+        } else if (!this.props.allAuctions.length) {
+            return <NothingHere text={'We\'re working to find some great auctions for you!'}/>
+        } else {
             return (
-                <div>
-                    There doesn't seem to be any tickets available!
-                </div>
+                <table id='ticketList'>
+                    <tbody>
+                        { this.props.allAuctions.filter(titleMatchesText).map(makeTicketElement) }
+                    </tbody>
+                </table>
             );
         }
-        return (
-            <table id='ticketList'>
-                <tbody>
-                    { this.props.allAuctions.filter(titleMatchesText).map(makeTicketElement) }
-                </tbody>
-            </table>
-        );
     }
 });
 

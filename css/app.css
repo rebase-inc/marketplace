@@ -232,6 +232,7 @@ tbody {
 }
 
 .mainContent {
+    position: relative;
     display: block;
     float: left;
     width: calc(100% - 200px);
@@ -701,11 +702,36 @@ tbody {
 }
 
 
+/** nothing here **/
+
+#nothingHere {
+    opacity: 0.5;
+    top: 50%;
+    width: 100%;
+    position: absolute;
+    transform: translateY(-50%);
+}
+
+#nothingHere > img {
+    display: block;
+    margin: 0 auto;
+}
+
+#nothingHere > span {
+    display: block;
+    text-align: center;
+    margin: 0 auto;
+    font-size: 24px;
+}
 
 /** Animated spinner **/
 
 .spinner {
-    margin: 200px auto;
+    opacity: 0.5;
+    top: 50%;
+    left: 50%;
+    position: absolute;
+    transform: translateX(-50%) translateY(-50%);
     width: 50px;
     height: 40px;
     text-align: center;
