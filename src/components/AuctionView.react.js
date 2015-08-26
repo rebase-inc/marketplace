@@ -14,7 +14,14 @@ var SearchBar = require('../components/SearchBar.react');
 // Constants
 var viewConstants = require('../constants/viewConstants');
 
+// Icons
+var Icons = require('../components/RebaseIcons.react');
+
 var AuctionView = React.createClass({
+    propTypes: {
+        currentUser: React.PropTypes.object.isRequired,
+        currentRole: React.PropTypes.object.isRequired,
+    },
     getInitialState: function() {
         return _.extend({ searchText: '' }, AuctionStore.getState());
     },
@@ -39,10 +46,10 @@ var AuctionView = React.createClass({
     //handleUserInput: function(searchText) { this.setState({ searchText: searchText }); },
     render: function() {
         if (!!this.state.currentAuction) {
-            var props = _.extend({ goBack: this.unselectAuction, auction: this.state.currentAuction}, this.state);
+            var props = _.extend({ goBack: this.unselectAuction, auction: this.state.currentAuction}, this.state, this.props);
             return <SingleItemView {...props} />;
         } else {
-            var props = _.extend({ selectAuction: this.selectAuction }, this.state);
+            var props = _.extend({ selectAuction: this.selectAuction }, this.state, this.props);
             return (
                 <div className='mainContent'>
                 <SearchBar searchText={this.state.searchText} onUserInput={this.handleSearchInput}/>
@@ -54,6 +61,10 @@ var AuctionView = React.createClass({
 });
 
 var AuctionList = React.createClass({
+    propTypes: {
+        currentUser: React.PropTypes.object.isRequired,
+        currentRole: React.PropTypes.object.isRequired,
+    },
     render: function() {
         var props = {
             selectTicket: this.props.selectTicket,
@@ -63,8 +74,8 @@ var AuctionList = React.createClass({
             return true; // until we make this actually work
             return auction.title.indexOf(this.props.searchText) != -1;
         }.bind(this);
-        var makeTicketElement = function(ticket) {
-            return <Auction ticket={ticket} key={ticket.id} {...props} />;
+        var makeTicketElement = function(auction) {
+            return <Auction auction={auction} key={auction.id} {...props} />;
         }.bind(props);
         if (!this.props.allAuctions) { return  <div>There doesn't seem to be any tickets available!</div>; }
         return (
@@ -78,19 +89,23 @@ var AuctionList = React.createClass({
 });
 
 var Auction = React.createClass({
+    propTypes: {
+        currentRole: React.PropTypes.object.isRequired,
+        auction: React.PropTypes.object.isRequired,
+    },
     selectTicket: function() { this.props.selectTicket(this.props.ticket); },
     render: function() {
-        var role = this.props.currentRole;
+        var ticket = this.props.auction.ticket_set.bid_limits[0].ticket_snapshot.ticket;
         return (
             <tr className='ticket'>
-                { role.type == 'manager' ?
-                    <FindTalentPanel ticket={this.props.ticket} /> :
-                    <ProjectInfoPanel ticket={this.props.ticket} /> }
-                <td className='titlePanel'>{this.props.ticket.title}</td>
-                <td className='skillsRequiredPanel'>{this.props.ticket.skillsRequired}</td>
+                { this.props.currentRole.type == 'manager' ?
+                    <FindTalentPanel ticket={ticket} /> :
+                    <ProjectInfoPanel ticket={ticket} /> }
+                <td className='titlePanel'>{ticket.title}</td>
+                <td className='skillsRequiredPanel'>{ticket.skillsRequired}</td>
                 <td className='commentsPanel' onClick={this.selectTicket}>
                     <Icons.Comment/>
-                    <span>{this.props.ticket.comments.length} Comments</span>
+                    <span>{ticket.comments.length} Comments</span>
                 </td>
             </tr>
         );
@@ -116,9 +131,9 @@ var RatingStars = React.createClass({
         var showHalfStar = (nearestHalf != fullStars);
         return (
             <div className='rating'>
-                { _.range(fullStars).map(function() { return <img src='img/star-10px.svg' /> }) }
-                { showHalfStar ? <img src='img/half-star-10px.svg' /> : null }
-                { _.range(5 - fullStars - showHalfStar).map(function() { return <img src='img/empty-star-10px.svg' /> }) }
+                { _.range(fullStars).map(function(el, ind) { return <img key={'full-' + ind} src='img/star-10px.svg' /> }) }
+                { showHalfStar ? <img key='half' src='img/half-star-10px.svg' /> : null }
+                { _.range(5 - fullStars - showHalfStar).map(function(el, ind) { return <img key={'empty-' + ind} src='img/empty-star-10px.svg' /> }) }
             </div>
         );
     }

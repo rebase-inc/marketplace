@@ -47,11 +47,13 @@ var RebaseApp = React.createClass({
         var modalProps = {
             currentUser: this.state.currentUser,
             currentView: this.state.currentView,
+            currentRole: this.state.currentRole,
             closeModal: this.closeModal,
         }
         var mainProps = {
             currentUser: this.state.currentUser,
             currentView: this.state.currentView,
+            currentRole: this.state.currentRole,
         };
         var App = (
             <div id='app'>

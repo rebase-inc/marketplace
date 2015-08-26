@@ -9,11 +9,12 @@ var MainView = React.createClass({
     propTypes: {
         currentView: React.PropTypes.object.isRequired,
         currentUser: React.PropTypes.object.isRequired,
+        currentRole: React.PropTypes.object.isRequired,
     },
     render: function() {
         switch (this.props.currentView.type) {
-            case viewConstants.ViewTypes.NEW: return <TicketView {...props} />; break;
-            case viewConstants.ViewTypes.OFFERED: return <AuctionView />; break;
+            case viewConstants.ViewTypes.NEW: return <TicketView {...this.props} />; break;
+            case viewConstants.ViewTypes.OFFERED: return <AuctionView {...this.props} />; break;
             //case ViewConstants.VIEW_TYPES.IN_PROGRESS: return <ContractView />; break;
             //case ViewConstants.VIEW_TYPES.COMPLETED: return <ReviewView />; break;
             default: return <ErrorPage />; break;

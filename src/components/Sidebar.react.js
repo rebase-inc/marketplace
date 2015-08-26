@@ -126,8 +126,8 @@ var RoleSelectorDropdown = React.createClass({
                 </li>
             );
         }.bind(this));
-        !!managerRoleElements.length ? managerRoleElements.unshift(<li className='header'>Manager</li>) : null;
-        !!contractorRoleElements.length ? contractorRoleElements.unshift(<li className='header'>Contractor</li>) : null;
+        !!managerRoleElements.length ? managerRoleElements.unshift(<li className='header' key='manager-header'>Manager</li>) : null;
+        !!contractorRoleElements.length ? contractorRoleElements.unshift(<li className='header' key='contractor-header'>Contractor</li>) : null;
         return (
             <div id='roleSelectorDropdown'>
                 <ul> { managerRoleElements } { contractorRoleElements } </ul>
