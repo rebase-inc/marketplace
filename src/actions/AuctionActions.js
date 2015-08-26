@@ -34,4 +34,10 @@ module.exports = {
         };
         Api.bidOnAuction(user, ticket, price, responseAction, pendingAction);
     },
+    selectAuction: function(auctionID) {
+        Dispatcher.handleRequestAction({
+            type: ActionConstants.SELECT_AUCTION,
+            auctionID: auctionID,
+        });
+    },
 };

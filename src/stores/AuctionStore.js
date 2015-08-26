@@ -24,12 +24,6 @@ var AuctionStore = _.extend({}, EventEmitter.prototype, {
             bidPending: _bidPending,
         };
     },
-    select: function(auction) {
-        if (!auction) { _currentAuction = null; return; }
-        for(var i=0; i<_allAuctions.length; i++) {
-            if (_allAuctions[i].id == auction.id) { _currentAuction = _allAuctions[i]; };
-        }
-    },
     emitChange: function() { this.emit('change'); },
     addChangeListener: function(callback) { this.on('change', callback); },
     removeChangeListener: function(callback) { this.removeListener('change', callback); }
@@ -49,6 +43,16 @@ Dispatcher.register(function(payload) {
                     _allAuctions = action.response.auctions.map(labelAuctionType);
                 break;
             } break;
+        case ActionConstants.SELECT_AUCTION:
+            if (!action.auctionID) { _currentAuction = null; }
+            else {
+                var found = false;
+                for(var i=0; i<_allAuctions.length; i++) {
+                    if (_allAuctions[i].id == action.auctionID) { _currentAuction = _allAuctions[i]; found=true; };
+                }
+                if (!found) { console.warn('Unknown or invalid auction ID provided to select auction action! : ', action.auctionID); }
+            }
+            break;
         case ActionConstants.ADD_COMMENT_TO_AUCTION:
             switch(action.response) {
                 //case RequestConstants.PENDING: break;

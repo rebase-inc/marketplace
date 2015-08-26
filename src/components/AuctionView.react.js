@@ -35,10 +35,9 @@ var AuctionView = React.createClass({
     _onChange: function() {
         this.setState(AuctionStore.getState());
     },
-    //selectAuction: function(ticket) {
-        //AuctionStore.select(ticket);
-        //this._onChange();
-    //},
+    selectAuction: function(auctionID) {
+        AuctionActions.selectAuction(auctionID);
+    },
     //unselectAuction: function() {
         //this.selectAuction(null);
     //},
@@ -64,10 +63,11 @@ var AuctionList = React.createClass({
     propTypes: {
         currentUser: React.PropTypes.object.isRequired,
         currentRole: React.PropTypes.object.isRequired,
+        selectAuction: React.PropTypes.func.isRequired,
     },
     render: function() {
         var props = {
-            selectTicket: this.props.selectTicket,
+            selectAuction: this.props.selectAuction,
             currentRole: this.props.currentRole,
         }
         var titleMatchesText = function(auction) {
@@ -77,7 +77,13 @@ var AuctionList = React.createClass({
         var makeTicketElement = function(auction) {
             return <Auction auction={auction} key={auction.id} {...props} />;
         }.bind(props);
-        if (!this.props.allAuctions) { return  <div>There doesn't seem to be any tickets available!</div>; }
+        if (!this.props.allAuctions.length) {
+            return (
+                <div>
+                    There doesn't seem to be any tickets available!
+                </div>
+            );
+        }
         return (
             <table id='ticketList'>
                 <tbody>
@@ -92,8 +98,8 @@ var Auction = React.createClass({
     propTypes: {
         currentRole: React.PropTypes.object.isRequired,
         auction: React.PropTypes.object.isRequired,
+        selectAuction: React.PropTypes.func.isRequired,
     },
-    selectTicket: function() { this.props.selectTicket(this.props.ticket); },
     render: function() {
         var ticket = this.props.auction.ticket_set.bid_limits[0].ticket_snapshot.ticket;
         return (
@@ -103,7 +109,7 @@ var Auction = React.createClass({
                     <ProjectInfoPanel ticket={ticket} /> }
                 <td className='titlePanel'>{ticket.title}</td>
                 <td className='skillsRequiredPanel'>{ticket.skillsRequired}</td>
-                <td className='commentsPanel' onClick={this.selectTicket}>
+                <td className='commentsPanel' onClick={this.props.selectAuction.bind(null, this.props.auction.id)}>
                     <Icons.Comment/>
                     <span>{ticket.comments.length} Comments</span>
                 </td>
