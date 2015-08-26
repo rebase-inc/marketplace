@@ -1,21 +1,47 @@
-var RebaseAppDispatcher = require('../dispatcher/RebaseAppDispatcher');
-var ActionConstants = require('../constants/ActionConstants');
-var RequestConstants = require('../constants/RequestConstants');
+// External
 var EventEmitter = require('events').EventEmitter;
 var _ = require('underscore');
 
-var _email = null;
-var _loggedIn = true;
+// Dispatcher
+var Dispatcher = require('../dispatcher/RebaseAppDispatcher');
 
-function persistLoginState(userData) {
+// Utils
+var Cookies = require('../utils/Cookies');
+
+// Constants
+var ActionConstants = require('../constants/ActionConstants');
+var RequestConstants = require('../constants/RequestConstants');
+var ViewTypes = require('../constants/viewconstants').ViewTypes;
+var ContractorViews = require('../constants/viewconstants').ContractorViews;
+var ManagerViews = require('../constants/viewconstants').ManagerViews;
+
+// Actions
+var UserActions = require('../actions/UserActions');
+
+var _userCookie = Cookies.get('user');
+var _currentUser = !!_userCookie ? JSON.parse(_userCookie) : null;
+var _loggedIn = false;
+var _currentView = null;
+var _currentRole = null;
+
+function persistLoginState(data) {
+    _currentUser = data.user;
+    _currentRole = _currentUser.roles[0];
+    switch (_currentRole.type) {
+        case 'contractor': _currentView = ContractorViews[ViewTypes.OFFERED]; break;
+        case 'manager': _currentView = ManagerViews[ViewTypes.NEW]; break;
+    }
     _loggedIn = true;
+    Cookies.set('user', JSON.stringify(_currentUser), 1);
 }
 
 var UserStore = _.extend({}, EventEmitter.prototype, {
     getState: function() {
         return {
-            email: _email,
+            currentUser: _currentUser,
             loggedIn: _loggedIn,
+            currentView: _currentView,
+            currentRole: _currentRole,
         };
     },
     emitChange: function() { this.emit('change'); },
@@ -23,7 +49,7 @@ var UserStore = _.extend({}, EventEmitter.prototype, {
     removeChangeListener: function(callback) { this.removeListener('change', callback); }
 });
 
-RebaseAppDispatcher.register(function(payload) {
+Dispatcher.register(function(payload) {
     var action = payload.action;
     switch(action.type) {
         case ActionConstants.LOGIN:
@@ -31,6 +57,16 @@ RebaseAppDispatcher.register(function(payload) {
                 case RequestConstants.PENDING: console.log('Pending login!'); break;
                 case RequestConstants.ERROR: console.log('Error logging in!'); break;
                 case RequestConstants.NOT_LOGGED_IN: console.log('Not authorized!'); break;
+                default: persistLoginState(action.response); break;
+            } break;
+        case ActionConstants.SELECT_VIEW:
+            switch(action.role.type) {
+                case 'contractor': _currentView = ContractorViews[ViewTypes.OFFERED]; break;
+                case 'manager': _currentView = ManagerView[ViewTypes.NEW]; break;
+            } break;
+        case ActionConstants.GET_USER_DETAIL:
+            switch(action.response) {
+                case RequestConstants.PENDING: console.log('Pending user details!'); break;
                 default: persistLoginState(action.response); break;
             } break;
         default: return true;

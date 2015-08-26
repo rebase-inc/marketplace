@@ -62,7 +62,6 @@ RebaseAppDispatcher.register(function(payload) {
     var action = payload.action;
     switch(action.type) {
         case ActionConstants.GET_CONTRACT_DATA:
-            console.log('responding to contract data ', action.response);
             switch(action.response) {
                 case RequestConstants.PENDING: break;
                 default: persistContracts(action.response); break;

@@ -101,6 +101,12 @@ var Api = {
         pendingHandler();
         ajax('GET', url, null, responseHandler);
     },
+    getUserDetail: function(userID, responseHandler, pendingHandler) {
+        var url = makeUrl("/users/" + userID);
+        var responseFunction = makeResponseFunc(responseHandler);
+        pendingHandler();
+        ajax('GET', url, null, responseHandler);
+    },
     bidOnAuction: function(user, auction, price, responseHandler, pendingHandler) {
         var url = makeUrl("/auction/");
         var params = {};

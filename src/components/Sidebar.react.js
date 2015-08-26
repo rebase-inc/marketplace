@@ -1,37 +1,62 @@
 var React = require('react');
 var Icons = require('../components/RebaseIcons.react');
-var ViewsByRole = require('../constants/ViewConstants').ViewsByRole;
+
+var ViewTypes = require('../constants/viewconstants').ViewTypes;
+var ContractorViews = require('../constants/viewconstants').ContractorViews;
+var ManagerViews = require('../constants/viewconstants').ManagerViews;
 
 var Sidebar = React.createClass({
+    propTypes: {
+        currentUser: React.PropTypes.object.isRequired,
+        currentRole: React.PropTypes.object.isRequired,
+        currentView: React.PropTypes.object.isRequired,
+        selectRole: React.PropTypes.func.isRequired,
+        selectView: React.PropTypes.func.isRequired,
+    },
     render: function() {
         return (
             <div id='sidebar' className='noselect'>
-            <img className='logo' src='img/logo.svg' alt='Rebase Logo'/>
-            <SidebarNav user={this.props.user}
-            currentRole={this.props.currentRole} changeRole={this.props.changeRole}
-            currentView={this.props.currentView} changeView={this.props.changeView} />
-            <SidebarProfile user={this.props.user} />
+                <img className='logo' src='img/logo.svg' alt='Rebase Logo'/>
+                <SidebarNav {...this.props} />
+                <SidebarProfile user={this.props.currentUser} />
             </div>
         );
     }
 });
 
 var SidebarNav = React.createClass({
-
     render: function() {
-        var allViews = ViewsByRole[this.props.currentRole.type].map( function(view) {
-            return (
-                <ViewSelection view={view}
-                currentView={this.props.currentView} changeView={this.props.changeView} />
-            );
-        }.bind(this));
+        var viewProps = {
+            selectView: this.props.selectView,
+            currentView: this.props.currentView,
+        }
+        var roleProps = {
+            currentUser: this.props.currentUser,
+            currentRole: this.props.currentRole,
+            changeRole: this.props.changeRole,
+        }
+        var allViews = [];
+        // the views are pushed explicitly, because javascript implementations don't guarantee object key order
+        // so a map or similar operation cannot be used. Probably should switch to storing the data in array, then.
+        switch (this.props.currentRole.type) {
+            case 'contractor':
+                allViews.push(<ViewSelection view={ContractorViews[ViewTypes.OFFERED]} {...viewProps} />);
+                allViews.push(<ViewSelection view={ContractorViews[ViewTypes.IN_PROGRESS]} {...viewProps} />);
+                allViews.push(<ViewSelection view={ContractorViews[ViewTypes.COMPLETED]} {...viewProps} />);
+            break;
+            case 'manager':
+                allViews.push(<ViewSelection view={ManagerViews[ViewTypes.NEW]} {...viewProps} />);
+                allViews.push(<ViewSelection view={ManagerViews[ViewTypes.OFFERED]} {...viewProps} />);
+                allViews.push(<ViewSelection view={ManagerViews[ViewTypes.IN_PROGRESS]} {...viewProps} />);
+                allViews.push(<ViewSelection view={ManagerViews[ViewTypes.COMPLETED]} {...viewProps} />);
+            break;
+        }
         return (
             <div id='sidebarNav'>
-            <RoleSelector user={this.props.user}
-            changeRole={this.props.changeRole} currentRole={this.props.currentRole} />
-            <div id='viewList'>
-            { allViews }
-            </div>
+                <RoleSelector {...roleProps} />
+                <div id='viewList'>
+                    { allViews }
+                </div>
             </div>
         );
     }
@@ -61,13 +86,14 @@ var RoleSelector = React.createClass({
         var dropdown;
         var className;
         var roleDisplayName;
+        console.log('current role is ', this.props.currentRole);
         switch (this.props.currentRole.type) {
-            case 'developer': roleDisplayName = 'Developer View'; break;
+            case 'contractor': roleDisplayName = 'Contractor View'; break;
             case 'manager': roleDisplayName = this.props.currentRole.organization + '/' + this.props.currentRole.project; break;
             default: roleDisplayName = 'Unknown Role'; break;
         }
         if (this.state.dropdownOpen) {
-            dropdown = <RoleSelectorDropdown user={this.props.user}
+            dropdown = <RoleSelectorDropdown user={this.props.currentUser}
             changeRole={this.props.changeRole} currentRole={this.props.currentRole} />;
             className = 'open';
         }
@@ -86,8 +112,8 @@ var RoleSelectorDropdown = React.createClass({
        this.props.changeRole(2);
     },
     render: function() {
-        var managerRoles = this.props.user.roles.filter(function(el) { return el.type == 'manager'; });
-        var developerRoles = this.props.user.roles.filter(function(el) { return el.type == 'developer'; });
+        var managerRoles = this.props.currentUser.roles.filter(function(el) { return el.type == 'manager'; });
+        var contractorRoles = this.props.currentUser.roles.filter(function(el) { return el.type == 'contractor'; });
         var managerRoleElements = managerRoles.map(function(role) {
             return (
                 <li className={role == this.props.currentRole ? 'selected': ''}
@@ -96,11 +122,11 @@ var RoleSelectorDropdown = React.createClass({
                 </li>
             );
         }.bind(this));
-        var developerRoleElements = developerRoles.map(function(role) {
+        var contractorRoleElements = contractorRoles.map(function(role) {
             return (
                 <li className={role == this.props.currentRole ? 'selected': ''}
                 onClick={function() { this.props.changeRole(role) }.bind(this)}>
-                {'Developer View'}
+                {'Contractor View'}
                 </li>
             );
         }.bind(this));
@@ -109,8 +135,8 @@ var RoleSelectorDropdown = React.createClass({
             <ul>
             <li className='header'>Manager</li>
             { managerRoleElements }
-            <li className='header'>Developer</li>
-            { developerRoleElements }
+            <li className='header'>Contractor</li>
+            { contractorRoleElements }
             </ul>
             </div>
         );
