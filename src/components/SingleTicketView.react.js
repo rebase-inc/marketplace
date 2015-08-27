@@ -2,9 +2,6 @@
 var React = require('react/addons');
 
 var SingleTicketView = React.createClass({
-    propTypes: {
-        children: React.PropTypes.object.isRequired,
-    },
     render: function() {
         return (
             <div id='singleItemView' className='mainContent'>

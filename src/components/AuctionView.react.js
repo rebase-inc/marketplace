@@ -44,14 +44,11 @@ var AuctionView = React.createClass({
     selectAuction: function(auctionID) {
         AuctionActions.selectAuction(auctionID);
     },
-    //unselectAuction: function() {
-        //this.selectAuction(null);
-    //},
     // this is probably not how we should be handling the searchText
     //handleUserInput: function(searchText) { this.setState({ searchText: searchText }); },
     render: function() {
         if (!!this.state.currentAuction) {
-            return <SingleAuctionView {...this.props} {...this.state} goBack={this.unselectAuction} />;
+            return <SingleAuctionView {...this.props} {...this.state} unselectAuction={this.selectAuction.bind(null, null)} />;
         } else {
             var props = _.extend({ selectAuction: this.selectAuction }, this.state, this.props);
             return (
@@ -68,13 +65,14 @@ var SingleAuctionView = React.createClass({
     propTypes: {
         currentRole: React.PropTypes.object.isRequired,
         currentUser: React.PropTypes.object.isRequired,
-        auction: React.PropTypes.object.isRequired,
+        currentAuction: React.PropTypes.object.isRequired,
+        unselectAuction: React.PropTypes.func.isRequired,
     },
     render: function() {
         var ticket = this.props.currentAuction.ticket_set.bid_limits[0].ticket_snapshot.ticket;
         return (
             <SingleTicketView {...this.props}>
-                <TicketHeader title={ticket.title} />
+                <TicketHeader goBack={this.props.unselectAuction} title={ticket.title} />
                 <CommentList comments={ticket.comments}/>
                 <CommentBox ticket={ticket} user={this.props.currentUser} />
             </SingleTicketView>

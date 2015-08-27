@@ -39,7 +39,7 @@ var CommentList = React.createClass({
         var all_comments = [];
         this.props.comments.forEach(function(comment) {
             all_comments.push(
-                <div className='comment'>
+                <div className='comment' key={comment.id}>
                     <div className='photo'>
                         <img src={!!comment.user ? comment.user.photo : 'img/placeholder-user-60px.png'}/>
                     </div>

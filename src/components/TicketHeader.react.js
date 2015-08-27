@@ -10,8 +10,8 @@ var ticketTypes = ViewConstants.ticketTypes;
 
 var TicketHeader = React.createClass({
     propTypes: {
-        ticket: React.PropTypes.object.isRequired,
-        unselectTicket: React.PropTypes.func.isRequired,
+        title: React.PropTypes.string.isRequired,
+        goBack: React.PropTypes.func.isRequired,
     },
     render: function() {
         var buttons = [];
@@ -34,7 +34,7 @@ var TicketHeader = React.createClass({
         //}
         return (
             <div id='itemHeader'>
-                <div onClick={this.props.backAction} className='backButton'>
+                <div onClick={this.props.goBack} className='backButton'>
                     <Icons.Dropback/>
                 </div>
                 { buttons.map(makeButton) }

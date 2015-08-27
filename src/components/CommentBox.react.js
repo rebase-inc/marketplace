@@ -1,6 +1,9 @@
 // External
 var React = require('react/addons');
 
+// Actions
+var CommentActions = require('../actions/CommentActions');
+
 var CommentBox = React.createClass({
     getInitialState: function() {
         return {
@@ -23,13 +26,7 @@ var CommentBox = React.createClass({
         });
     },
     submitComment: function() {
-        RebaseActions.commentOnTicket(this.props.user, this.props.ticket, this.state.commentText);
-        //if (!!this.props.ticket) {
-            //RebaseActions.commentOnTicket(this.props.user, this.props.ticket, this.state.commentText);
-        //}
-        //else if (!!this.props.auction) {
-            //RebaseActions.commentOnAuction(this.props.user, this.props.auction, this.state.commentText);
-        //}
+        CommentActions.commentOnTicket(this.props.user, this.props.ticket, this.state.commentText);
         this.cancelComment();
     },
     handleInput: function() {
