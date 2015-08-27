@@ -33,6 +33,7 @@ var ContractStore = _.extend({}, EventEmitter.prototype, {
 RebaseAppDispatcher.register(function(payload) {
     var action = payload.action;
     switch(action.type) {
+        case ActionConstants.SELECT_VIEW: _currentContract = null; break;
         case ActionConstants.GET_CONTRACT_DATA:
             switch(action.response) {
                 case RequestConstants.PENDING: 

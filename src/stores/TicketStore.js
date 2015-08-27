@@ -41,6 +41,7 @@ Dispatcher.register(function(payload) {
     var action = payload.action;
 
     switch(action.type) {
+        case ActionConstants.SELECT_VIEW: _currentTicket = null; break;
         case ActionConstants.GET_TICKET_DATA:
             switch(action.response) {
                 case RequestConstants.PENDING:

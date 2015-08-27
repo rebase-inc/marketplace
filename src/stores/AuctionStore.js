@@ -34,6 +34,7 @@ var AuctionStore = _.extend({}, EventEmitter.prototype, {
 Dispatcher.register(function(payload) {
     var action = payload.action;
     switch(action.type) {
+        case ActionConstants.SELECT_VIEW: _currentAuction = null; break;
         case ActionConstants.GET_AUCTION_DATA:
             switch(action.response) {
                 case RequestConstants.PENDING:

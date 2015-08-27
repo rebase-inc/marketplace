@@ -75,6 +75,13 @@ var Api = {
         pendingHandler();
         ajax('GET', url, null, responseHandler);
     },
+    getReviewData: function(responseHandler, pendingHandler) {
+        var url = makeUrl("/reviews");
+        var params = {};
+        var responseFunction = makeResponseFunc(responseHandler);
+        pendingHandler();
+        ajax('GET', url, null, responseHandler);
+    },
     getAuctionData: function(responseHandler, pendingHandler) {
         var url = makeUrl("/auctions");
         var params = {};

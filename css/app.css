@@ -260,6 +260,25 @@ tbody {
     background-color: hsla(200, 30%, 96%, 1);
 }
 
+#statusBar {
+    height: 50px;
+    width: 100%;
+    font-size: 16px;
+    line-height: 50px;
+    background-color: hsla(166, 43%, 56%, 1);
+    color: hsla(210, 29%, 97%, 1);
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+#statusBar.notification {
+    text-align: center;
+}
+
+#statusBar.requiresResponse {
+    text-align: left;
+}
+
 #itemHeader {
     height: 50px;
     width: 100%;
