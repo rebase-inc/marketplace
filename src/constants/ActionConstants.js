@@ -4,6 +4,7 @@ module.exports = keyMirror({
     SELECT_VIEW: null,
     SELECT_ROLE: null,
     SELECT_AUCTION: null,
+    SELECT_CONTRACT: null,
     COMMENT_ON_TICKET: null,
     GET_COMMENT_DETAIL: null,
     GET_USER_DETAIL: null,

@@ -19,4 +19,10 @@ module.exports = {
         };
         Api.getContractData(responseAction, pendingAction);
     },
+    selectContract: function(contractID) {
+        Dispatcher.handleRequestAction({
+            type: ActionConstants.SELECT_CONTRACT,
+            contractID: contractID,
+        });
+    },
 };

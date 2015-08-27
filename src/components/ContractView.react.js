@@ -69,13 +69,16 @@ var SingleContractView = React.createClass({
         unselectContract: React.PropTypes.func.isRequired,
     },
     render: function() {
-        var ticket = this.props.currentContract.ticket_set.bid_limits[0].ticket_snapshot.ticket;
+        var ticket = this.props.currentContract.bid.work_offers[0].ticket_snapshot.ticket;
         var makeButton = function(props) {
             return <button onClick={props.onClick} className={props.className}>{props.text}</button>;
         }
         var buttons = [];
         switch (this.props.currentRole.type) {
-            case 'contractor': buttons.push(<button onClick={this.props.bidNow}>Bid Now</button>); break;
+            case 'contractor': 
+                buttons.push(<button onClick={this.props.markFinished}>Finished</button>); 
+                buttons.push(<button onClick={this.props.markBlocked} className='warning'>Blocked</button>); 
+                break;
             case 'manager': buttons.push(<button onClick={this.props.bidNow}>Find More Talent</button>); break;
         }
         return (

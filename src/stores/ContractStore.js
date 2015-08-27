@@ -8,14 +8,14 @@ var _ = require('underscore');
 //Define initial data points
 var _allContracts = [];
 var _currentContract = null;
-var _loading = false;
+var _loadingContractData = false;
 
 var ContractStore = _.extend({}, EventEmitter.prototype, {
     getState: function() {
         return {
             allContracts: _allContracts,
             currentContract: _currentContract,
-            loadingContractData: _loading,
+            loadingContractData: _loadingContractData,
         };
     },
     select: function(contract) {
@@ -36,13 +36,23 @@ RebaseAppDispatcher.register(function(payload) {
         case ActionConstants.GET_CONTRACT_DATA:
             switch(action.response) {
                 case RequestConstants.PENDING: 
-                    _loading = true; 
+                    _loadingContractData = true; 
                     break;
                 default: 
                     _allContracts = action.response.contracts.map(labelContractType); 
-                    _loading = false; 
+                    _loadingContractData = false; 
                     break; 
             } break;
+        case ActionConstants.SELECT_CONTRACT:
+            if (!action.contractID) { _currentContract = null; }
+            else {
+                var found = false;
+                for(var i=0; i<_allContracts.length; i++) {
+                    if (_allContracts[i].id == action.contractID) { _currentContract = _allContracts[i]; found=true; };
+                }
+                if (!found) { console.warn('Unknown or invalid contract ID provided to select contract action! : ', action.contractID); }
+            }
+            break;
         case ActionConstants.ADD_COMMENT_TO_CONTRACT:
             switch(action.response) {
                 case RequestConstants.PENDING: break;

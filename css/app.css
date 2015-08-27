@@ -10,7 +10,7 @@ input:focus, select:focus, textarea:focus, button:focus {
 }
 
 input[type=number]::-webkit-outer-spin-button,
-input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-inner-spin-button {
     -webkit-appearance: none;
     margin: 0;
 }
@@ -284,7 +284,7 @@ tbody {
     cursor: pointer;
 }
 
-#itemHeader > button.danger {
+#itemHeader > button.warning {
     background-color: hsla(351, 51%, 59%, 1);
 }
 
