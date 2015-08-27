@@ -91,7 +91,7 @@ function labelTicketType(ticket) {
 }
 
 function persistCommentDetail(data) {
-    data.comment.user = { first_name: 'Andrew', last_name: 'Millspaugh', photo: 'img/andrew.jpg' }; // hack because the api is missing data
+    //data.comment.user = { first_name: 'Andrew', last_name: 'Millspaugh', photo: 'img/andrew.jpg' }; // hack because the api is missing data
     for(var i=0; i<_allTickets.length; i++) {
         var ticket = _allTickets[i];
         for ( var j=0; j < ticket.comments.length; j++) {
@@ -104,7 +104,7 @@ function persistCommentDetail(data) {
 }
 
 function persistNewComment(data) {
-    data.comment.user = { first_name: 'Andrew', last_name: 'Millspaugh', photo: 'img/andrew.jpg' }; // hack because the api is missing data
+    //data.comment.user = { first_name: 'Andrew', last_name: 'Millspaugh', photo: 'img/andrew.jpg' }; // hack because the api is missing data
     for(var i=0; i<_allTickets.length; i++) {
         if (_allTickets[i].id == data.comment.ticket.id) {
             _allTickets[i].comments.push(data.comment);

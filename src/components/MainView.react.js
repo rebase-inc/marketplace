@@ -3,6 +3,8 @@ var _ = require('underscore');
 
 var TicketView = require('../components/TicketView.react');
 var AuctionView = require('../components/AuctionView.react');
+var ContractView = require('../components/ContractView.react');
+
 var viewConstants = require('../constants/viewConstants');
 
 var MainView = React.createClass({
@@ -15,7 +17,7 @@ var MainView = React.createClass({
         switch (this.props.currentView.type) {
             case viewConstants.ViewTypes.NEW: return <TicketView {...this.props} />; break;
             case viewConstants.ViewTypes.OFFERED: return <AuctionView {...this.props} />; break;
-            //case ViewConstants.VIEW_TYPES.IN_PROGRESS: return <ContractView />; break;
+            case viewConstants.ViewTypes.IN_PROGRESS: return <ContractView {...this.props} />; break;
             //case ViewConstants.VIEW_TYPES.COMPLETED: return <ReviewView />; break;
             default: return <ErrorPage />; break;
         }

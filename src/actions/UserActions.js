@@ -40,4 +40,10 @@ module.exports = {
             roleID: roleID,
         });
     },
+    selectView: function(viewType) {
+        Dispatcher.handleRequestAction({
+            type: ActionConstants.SELECT_VIEW,
+            viewType: viewType,
+        });
+    },
 };

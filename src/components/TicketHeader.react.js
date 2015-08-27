@@ -34,10 +34,8 @@ var TicketHeader = React.createClass({
         //}
         return (
             <div id='itemHeader'>
-                <div onClick={this.props.goBack} className='backButton'>
-                    <Icons.Dropback/>
-                </div>
-                { buttons.map(makeButton) }
+                <div onClick={this.props.goBack} className='backButton'> <Icons.Dropback/> </div>
+                { this.props.children }
                 <span>{this.props.title}</span>
             </div>
         );

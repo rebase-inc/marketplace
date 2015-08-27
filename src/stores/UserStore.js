@@ -61,12 +61,14 @@ Dispatcher.register(function(payload) {
                 default: persistLoginState(action.response); break;
             } break;
         case ActionConstants.SELECT_VIEW:
-            switch(action.role.type) {
-                case 'contractor': _currentView = ContractorViews[ViewTypes.OFFERED]; break;
-                case 'manager': _currentView = ManagerView[ViewTypes.NEW]; break;
+            switch(_currentRole.type) {
+                case 'contractor': _currentView = ContractorViews[action.viewType]; break;
+                case 'manager': _currentView = ManagerView[action.viewType]; break;
             } break;
         case ActionConstants.SELECT_ROLE:
-            _currentRole = _currentUser.roles.filter(role => role.id == action.roleID)[0];
+            var newRole = _currentUser.roles.filter(role => role.id == action.roleID)[0];
+            if (newRole) { _currentRole = newRole; }
+            else { console.warn('Invalid roleID given: ', action.roleID); }
             break;
         case ActionConstants.GET_USER_DETAIL:
             switch(action.response) {

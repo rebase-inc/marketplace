@@ -1,6 +1,13 @@
+// External
 var React = require('react');
+
+// Components
 var Icons = require('../components/RebaseIcons.react');
 
+// Actions
+var UserActions = require('../actions/UserActions');
+
+// Constants
 var ViewTypes = require('../constants/viewconstants').ViewTypes;
 var ContractorViews = require('../constants/viewconstants').ContractorViews;
 var ManagerViews = require('../constants/viewconstants').ManagerViews;
@@ -11,7 +18,6 @@ var Sidebar = React.createClass({
         currentRole: React.PropTypes.object.isRequired,
         currentView: React.PropTypes.object.isRequired,
         selectRole: React.PropTypes.func.isRequired,
-        selectView: React.PropTypes.func.isRequired,
     },
     render: function() {
         return (
@@ -30,11 +36,9 @@ var SidebarNav = React.createClass({
         currentRole: React.PropTypes.object.isRequired,
         currentView: React.PropTypes.object.isRequired,
         selectRole: React.PropTypes.func.isRequired,
-        selectView: React.PropTypes.func.isRequired,
     },
     render: function() {
         var viewProps = {
-            selectView: this.props.selectView,
             currentView: this.props.currentView,
         }
         var roleProps = {
@@ -137,14 +141,11 @@ var RoleSelectorDropdown = React.createClass({
 });
 
 var ViewSelection = React.createClass({
-    selectView: function() {
-        this.props.changeView( this.props.view );
-    },
     render: function() {
         var className = 'viewSelection';
         if (this.props.view == this.props.currentView) { className = className + ' selected'; }
         return (
-            <div className={className} onClick={this.selectView}>
+            <div className={className} onClick={UserActions.selectView.bind(null, this.props.view.type)}>
             <span className='viewIcon'>
             <img src={this.props.view.icon}/>
             </span>

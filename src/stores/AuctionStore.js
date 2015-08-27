@@ -40,8 +40,8 @@ Dispatcher.register(function(payload) {
                     _loading = true;
                 break;
                 default:
-                    _loading = false;
                     _allAuctions = action.response.auctions.map(labelAuctionType);
+                    _loading = false;
                 break;
             } break;
         case ActionConstants.SELECT_AUCTION:
@@ -78,7 +78,7 @@ Dispatcher.register(function(payload) {
 });
 
 function persistCommentDetail(data) {
-    data.comment.user = { first_name: 'Andrew', last_name: 'Millspaugh', photo: 'img/andrew.jpg' }; // hack because the api is missing data
+    //data.comment.user = { first_name: 'Andrew', last_name: 'Millspaugh', photo: 'img/andrew.jpg' }; // hack because the api is missing data
     for(var i=0; i<_allAuctions.length; i++) {
         var comments = _allAuctions[i].ticket_set.bid_limits[0].ticket_snapshot.ticket.comments;
         for ( var j=0; j < comments.length; j++) {
@@ -88,7 +88,7 @@ function persistCommentDetail(data) {
 }
 
 function persistNewComment(data) {
-    data.comment.user = { first_name: 'Andrew', last_name: 'Millspaugh', photo: 'img/andrew.jpg' }; // hack because the api is missing data
+    //data.comment.user = { first_name: 'Andrew', last_name: 'Millspaugh', photo: 'img/andrew.jpg' }; // hack because the api is missing data
     for(var i=0; i<_allAuctions.length; i++) {
         var ticket = _allAuctions[i].ticket_set.bid_limits[0].ticket_snapshot.ticket;
         if (ticket.id == data.comment.ticket.id) {

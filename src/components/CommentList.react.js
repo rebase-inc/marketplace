@@ -44,7 +44,7 @@ var CommentList = React.createClass({
                         <img src={!!comment.user ? comment.user.photo : 'img/placeholder-user-60px.png'}/>
                     </div>
                     <div className='content'>
-                        <div className='name'>{!!comment.user ? comment.user.first_name + ' ' + comment.user.last_name : ''}</div>
+                        <div className='name'>{!!comment.user ? comment.user.first_name + ' ' + comment.user.last_name : 'Unknown User'}</div>
                         <div className='date'>{comment.date}</div>
                         <div className='text'>{comment.content}</div>
                     </div>

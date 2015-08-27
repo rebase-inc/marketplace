@@ -3,10 +3,10 @@ var React = require('react');
 var _ = require('underscore');
 
 // Stores
-var AuctionStore = require('../stores/AuctionStore');
+var ContractStore = require('../stores/ContractStore');
 
 // Actions
-var AuctionActions = require('../actions/AuctionActions');
+var ContractActions = require('../actions/ContractActions');
 
 // Components
 var SearchBar = require('../components/SearchBar.react');
@@ -23,53 +23,53 @@ var viewConstants = require('../constants/viewConstants');
 // Icons
 var Icons = require('../components/RebaseIcons.react');
 
-var AuctionView = React.createClass({
+var ContractView = React.createClass({
     propTypes: {
         currentUser: React.PropTypes.object.isRequired,
         currentRole: React.PropTypes.object.isRequired,
     },
     getInitialState: function() {
-        return _.extend({ searchText: '' }, AuctionStore.getState());
+        return _.extend({ searchText: '' }, ContractStore.getState());
     },
     componentDidMount: function() {
-        AuctionStore.addChangeListener(this._onChange);
-        setTimeout(AuctionActions.getAuctionData, 0);
+        ContractStore.addChangeListener(this._onChange);
+        setTimeout(ContractActions.getContractData, 0);
     },
     componentWillUnmount: function() {
-        AuctionStore.removeChangeListener(this._onChange);
+        ContractStore.removeChangeListener(this._onChange);
     },
     _onChange: function() {
-        this.setState(AuctionStore.getState());
+        this.setState(ContractStore.getState());
     },
-    selectAuction: function(auctionID) {
-        AuctionActions.selectAuction(auctionID);
+    selectContract: function(contractID) {
+        ContractActions.selectContract(contractID);
     },
     // this is probably not how we should be handling the searchText
     //handleUserInput: function(searchText) { this.setState({ searchText: searchText }); },
     render: function() {
-        if (!!this.state.currentAuction) {
-            return <SingleAuctionView {...this.props} {...this.state} unselectAuction={this.selectAuction.bind(null, null)} />;
+        if (!!this.state.currentContract) {
+            return <SingleContractView {...this.props} {...this.state} unselectContract={this.selectContract.bind(null, null)} />;
         } else {
-            var props = _.extend({ selectAuction: this.selectAuction }, this.state, this.props);
+            var props = _.extend({ selectContract: this.selectContract }, this.state, this.props);
             return (
                 <div className='mainContent'>
                     <SearchBar searchText={this.state.searchText} onUserInput={this.handleSearchInput}/>
-                    <AuctionList {...props} />
+                    <ContractList {...props} />
                 </div>
             );
         }
     }
 });
 
-var SingleAuctionView = React.createClass({
+var SingleContractView = React.createClass({
     propTypes: {
         currentRole: React.PropTypes.object.isRequired,
         currentUser: React.PropTypes.object.isRequired,
-        currentAuction: React.PropTypes.object.isRequired,
-        unselectAuction: React.PropTypes.func.isRequired,
+        currentContract: React.PropTypes.object.isRequired,
+        unselectContract: React.PropTypes.func.isRequired,
     },
     render: function() {
-        var ticket = this.props.currentAuction.ticket_set.bid_limits[0].ticket_snapshot.ticket;
+        var ticket = this.props.currentContract.ticket_set.bid_limits[0].ticket_snapshot.ticket;
         var makeButton = function(props) {
             return <button onClick={props.onClick} className={props.className}>{props.text}</button>;
         }
@@ -80,7 +80,7 @@ var SingleAuctionView = React.createClass({
         }
         return (
             <SingleTicketView {...this.props}>
-                <TicketHeader goBack={this.props.unselectAuction} title={ticket.title}>
+                <TicketHeader goBack={this.props.unselectContract} title={ticket.title}>
                     {buttons}
                 </TicketHeader>
                 <CommentList comments={ticket.comments}/>
@@ -90,33 +90,33 @@ var SingleAuctionView = React.createClass({
     }
 });
 
-var AuctionList = React.createClass({
+var ContractList = React.createClass({
     propTypes: {
         currentUser: React.PropTypes.object.isRequired,
         currentRole: React.PropTypes.object.isRequired,
-        selectAuction: React.PropTypes.func.isRequired,
+        selectContract: React.PropTypes.func.isRequired,
     },
     render: function() {
         var props = {
-            selectAuction: this.props.selectAuction,
+            selectContract: this.props.selectContract,
             currentRole: this.props.currentRole,
         }
-        var titleMatchesText = function(auction) {
+        var titleMatchesText = function(contract) {
             return true; // until we make this actually work
-            return auction.title.indexOf(this.props.searchText) != -1;
+            return contract.title.indexOf(this.props.searchText) != -1;
         }.bind(this);
-        var makeTicketElement = function(auction) {
-            return <Auction auction={auction} key={auction.id} {...props} />;
+        var makeTicketElement = function(contract) {
+            return <Contract contract={contract} key={contract.id} {...props} />;
         }.bind(props);
-        if (this.props.loadingAuctionData) {
+        if (this.props.loadingContractData) {
             return <LoadingAnimation />;
-        } else if (!this.props.allAuctions.length) {
-            return <NothingHere text={'We\'re working to find some great auctions for you!'}/>
+        } else if (!this.props.allContracts.length) {
+            return <NothingHere text={'You don\'t have any in progress work right now. Check out offered tickets to find some!'}/>
         } else {
             return (
                 <table id='ticketList'>
                     <tbody>
-                        { this.props.allAuctions.filter(titleMatchesText).map(makeTicketElement) }
+                        { this.props.allContracts.filter(titleMatchesText).map(makeTicketElement) }
                     </tbody>
                 </table>
             );
@@ -124,14 +124,14 @@ var AuctionList = React.createClass({
     }
 });
 
-var Auction = React.createClass({
+var Contract = React.createClass({
     propTypes: {
         currentRole: React.PropTypes.object.isRequired,
-        auction: React.PropTypes.object.isRequired,
-        selectAuction: React.PropTypes.func.isRequired,
+        contract: React.PropTypes.object.isRequired,
+        selectContract: React.PropTypes.func.isRequired,
     },
     render: function() {
-        var ticket = this.props.auction.ticket_set.bid_limits[0].ticket_snapshot.ticket;
+        var ticket = this.props.contract.bid.work_offers[0].ticket_snapshot.ticket;
         return (
             <tr className='ticket'>
                 { this.props.currentRole.type == 'manager' ?
@@ -139,7 +139,7 @@ var Auction = React.createClass({
                     <ProjectInfoPanel ticket={ticket} /> }
                 <td className='titlePanel'>{ticket.title}</td>
                 <td className='skillsRequiredPanel'>{ticket.skillsRequired}</td>
-                <td className='commentsPanel' onClick={this.props.selectAuction.bind(null, this.props.auction.id)}>
+                <td className='commentsPanel' onClick={this.props.selectContract.bind(null, this.props.contract.id)}>
                     <Icons.Comment/>
                     <span>{ticket.comments.length} Comments</span>
                 </td>
@@ -175,4 +175,5 @@ var RatingStars = React.createClass({
     }
 });
 
-module.exports = AuctionView;
+module.exports = ContractView;
+

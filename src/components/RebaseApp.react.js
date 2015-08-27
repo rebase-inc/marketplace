@@ -14,9 +14,6 @@ var RebaseApp = React.createClass({
     selectRole: function(roleID) {
         UserActions.selectRole(roleID);
     },
-    selectView: function() {
-        alert('selecting view');
-    },
     getInitialState: function() {
         return _.extend({ modalIsOpen: false }, UserStore.getState());
     },
@@ -41,7 +38,6 @@ var RebaseApp = React.createClass({
             currentView: this.state.currentView,
             currentRole: this.state.currentRole,
             selectRole: this.selectRole,
-            selectView: this.selectView,
         };
         var modalProps = {
             currentUser: this.state.currentUser,

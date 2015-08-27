@@ -1,6 +1,7 @@
 var keyMirror = require('keymirror');
 
 module.exports = keyMirror({
+    SELECT_VIEW: null,
     SELECT_ROLE: null,
     SELECT_AUCTION: null,
     COMMENT_ON_TICKET: null,
