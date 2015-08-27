@@ -54,10 +54,10 @@ Dispatcher.register(function(payload) {
                 if (!found) { console.warn('Unknown or invalid auction ID provided to select auction action! : ', action.auctionID); }
             }
             break;
-        case ActionConstants.ADD_COMMENT_TO_AUCTION:
+        case ActionConstants.ADD_COMMENT_TO_TICKET:
             switch(action.response) {
-                //case RequestConstants.PENDING: break;
-                //default: persistModifiedAuction(action.response.data); break;
+                case RequestConstants.PENDING: break;
+                default: persistNewComment(action.response); break;
             } break;
         case ActionConstants.BID_ON_AUCTION:
             switch(action.response) {
@@ -83,6 +83,16 @@ function persistCommentDetail(data) {
         var comments = _allAuctions[i].ticket_set.bid_limits[0].ticket_snapshot.ticket.comments;
         for ( var j=0; j < comments.length; j++) {
             if (comments[j].id == data.comment.id) { _allAuctions[i].ticket_set.bid_limits[0].ticket_snapshot.ticket.comments[j] = data.comment; }
+        }
+    }
+}
+
+function persistNewComment(data) {
+    data.comment.user = { first_name: 'Andrew', last_name: 'Millspaugh', photo: 'img/andrew.jpg' }; // hack because the api is missing data
+    for(var i=0; i<_allAuctions.length; i++) {
+        var ticket = _allAuctions[i].ticket_set.bid_limits[0].ticket_snapshot.ticket;
+        if (ticket.id == data.comment.ticket.id) {
+            _allAuctions[i].ticket_set.bid_limits[0].ticket_snapshot.ticket.comments.push(data.comment);
         }
     }
 }

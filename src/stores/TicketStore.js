@@ -53,8 +53,8 @@ Dispatcher.register(function(payload) {
             } break;
         case ActionConstants.ADD_COMMENT_TO_TICKET:
             switch(action.response) {
-                //case RequestConstants.PENDING: break;
-                //default: persistNewComment(action.response); break;
+                case RequestConstants.PENDING: break;
+                default: persistNewComment(action.response); break;
             } break;
         case ActionConstants.BID_ON_AUCTION:
             switch(action.response) {
@@ -103,5 +103,13 @@ function persistCommentDetail(data) {
     }
 }
 
+function persistNewComment(data) {
+    data.comment.user = { first_name: 'Andrew', last_name: 'Millspaugh', photo: 'img/andrew.jpg' }; // hack because the api is missing data
+    for(var i=0; i<_allTickets.length; i++) {
+        if (_allTickets[i].id == data.comment.ticket.id) {
+            _allTickets[i].comments.push(data.comment);
+        }
+    }
+}
 
 module.exports = TicketStore;

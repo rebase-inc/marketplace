@@ -3,15 +3,6 @@ function persistAuctionData(data) {
     if (data) { _allAuctions = data.auctions.map(labelAuction); }
 }
 
-function persistModifiedAuction(auction) {
-    for(var i=0; i<_allAuctions.length; i++) {
-        if (_allAuctions[i].id == auction.id) {
-            _allAuctions[i] = _.extend({}, auction);
-            if (_currentAuction.id == auction.id) { _currentAuction = auction }
-        };
-    }
-}
-
 function handleBidResponse(auction) {
     _bidPending = false;
     persistModifiedAuction(auction);
@@ -38,27 +29,6 @@ function persistNewComment(data) {
             _allTickets[i].comments.push(data.comment);
         }
     }
-}
-
-
-function newComment(user, ticket, text) {
-    var ticketInd;
-    for(var i=0; i<_allTickets.length; i++) {
-        if (_allTickets[i].id == ticket.id) { ticketInd = i };
-    }
-
-    var _months = [ 'January', 'February', 'March', 'April', 'May', 'June',
-        'July', 'August', 'September', 'October', 'November', 'December'];
-    var today = new Date();
-
-    // hack until I actually bother creating a real comment
-    var newComment = {
-        user: user,
-        date: _months[today.getMonth()] + ' ' + today.getDate(),
-        text: text,
-    }
-
-    _allTickets[ticketInd].comments.push(newComment);
 }
 
 function markBidPending(auction) {
