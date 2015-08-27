@@ -108,11 +108,7 @@ var AuctionList = React.createClass({
         var makeTicketElement = function(auction) {
             return <Auction auction={auction} key={auction.id} {...props} />;
         }.bind(props);
-        if (this.props.loadingAuctionData) {
-            return <LoadingAnimation />;
-        } else if (!this.props.allAuctions.length) {
-            return <NothingHere text={'We\'re working to find some great auctions for you!'}/>
-        } else {
+        if (!!this.props.allAuctions.length) {
             return (
                 <table id='ticketList'>
                     <tbody>
@@ -120,6 +116,10 @@ var AuctionList = React.createClass({
                     </tbody>
                 </table>
             );
+        } else if (this.props.loadingAuctionData) {
+            return <LoadingAnimation />;
+        } else {
+            return <NothingHere text={'We\'re working to find some great auctions for you!'}/>;
         }
     }
 });

@@ -75,9 +75,9 @@ var SingleContractView = React.createClass({
         }
         var buttons = [];
         switch (this.props.currentRole.type) {
-            case 'contractor': 
-                buttons.push(<button onClick={this.props.markFinished}>Finished</button>); 
-                buttons.push(<button onClick={this.props.markBlocked} className='warning'>Blocked</button>); 
+            case 'contractor':
+                buttons.push(<button onClick={this.props.markFinished}>Finished</button>);
+                buttons.push(<button onClick={this.props.markBlocked} className='warning'>Blocked</button>);
                 break;
             case 'manager': buttons.push(<button onClick={this.props.bidNow}>Find More Talent</button>); break;
         }
@@ -111,11 +111,7 @@ var ContractList = React.createClass({
         var makeTicketElement = function(contract) {
             return <Contract contract={contract} key={contract.id} {...props} />;
         }.bind(props);
-        if (this.props.loadingContractData) {
-            return <LoadingAnimation />;
-        } else if (!this.props.allContracts.length) {
-            return <NothingHere text={'You don\'t have any in progress work right now. Check out offered tickets to find some!'}/>
-        } else {
+        if (!!this.props.allContracts.length) {
             return (
                 <table id='ticketList'>
                     <tbody>
@@ -123,6 +119,10 @@ var ContractList = React.createClass({
                     </tbody>
                 </table>
             );
+        } else if (this.props.loadingContractData) {
+            return <LoadingAnimation />;
+        } else {
+            return <NothingHere text={'You don\'t have any in progress work right now. Check out offered tickets to find some!'}/>;
         }
     }
 });
