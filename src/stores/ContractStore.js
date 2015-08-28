@@ -73,11 +73,11 @@ RebaseAppDispatcher.register(function(payload) {
 });
 
 function persistCommentDetail(data) {
-    data.comment.user = { first_name: 'Andrew', last_name: 'Millspaugh', photo: 'img/andrew.jpg' }; // hack because the api is missing data
+    //data.comment.user = { first_name: 'Andrew', last_name: 'Millspaugh', photo: 'img/andrew.jpg' }; // hack because the api is missing data
     for(var i=0; i<_allContracts.length; i++) {
-        var comments = _allContracts[i].bid.auction.ticket_set.bid_limits[0].ticket_snapshot.ticket.comments;
+        var comments = _allContracts[i].bid.work_offers[0].ticket_snapshot.ticket.comments;
         for ( var j=0; j < comments.length; j++) {
-            if (comments[j].id == data.comment.id) { _allContracts[i].bid.auction.ticket_set.bid_limits[0].ticket_snapshot.ticket.comments[j] = data.comment; }
+            if (comments[j].id == data.comment.id) { _allContracts[i].bid.work_offers[0].ticket_snapshot.ticket.comments = data.comment; }
         }
     }
 }

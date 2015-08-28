@@ -4,7 +4,6 @@ var _ = require('underscore');
 var Icons = require('../components/RebaseIcons.react');
 var Sidebar = require('../components/Sidebar.react');
 var MainView = require('../components/MainView.react');
-var ModalView = require('../components/ModalView.react');
 var TicketStore = require('../stores/TicketStore');
 var UserStore = require('../stores/UserStore');
 var viewConstants = require('../constants/viewConstants');
@@ -16,12 +15,6 @@ var RebaseApp = React.createClass({
     },
     getInitialState: function() {
         return _.extend({ modalIsOpen: false }, UserStore.getState());
-    },
-    openModal: function() {
-        this.setState({ modalIsOpen: true });
-    },
-    closeModal: function() {
-        this.setState({ modalIsOpen: false });
     },
     componentDidMount: function() {
         UserStore.addChangeListener(this._onChange);
@@ -43,7 +36,6 @@ var RebaseApp = React.createClass({
             currentUser: this.state.currentUser,
             currentView: this.state.currentView,
             currentRole: this.state.currentRole,
-            closeModal: this.closeModal,
         }
         var mainProps = {
             currentUser: this.state.currentUser,
@@ -53,7 +45,6 @@ var RebaseApp = React.createClass({
         var App = (
             <div id='app'>
                 <Sidebar {...sidebarProps} />
-                { this.state.modalIsOpen ? <ModalView {...modalProps} /> : null }
                 <MainView {...mainProps} />
             </div>
         );

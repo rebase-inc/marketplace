@@ -19,7 +19,7 @@ module.exports = {
         };
         Api.getAuctionData(responseAction, pendingAction);
     },
-    bidOnAuction: function(user, ticket, price) {
+    bidOnAuction: function(user, auction, price) {
         var responseAction = function(response) {
             Dispatcher.handleRequestAction({
                 type: ActionConstants.BID_ON_AUCTION,
@@ -32,7 +32,7 @@ module.exports = {
                 response: RequestConstants.PENDING,
             });
         };
-        Api.bidOnAuction(user, ticket, price, responseAction, pendingAction);
+        Api.bidOnAuction(user, auction, price, responseAction, pendingAction);
     },
     selectAuction: function(auctionID) {
         Dispatcher.handleRequestAction({

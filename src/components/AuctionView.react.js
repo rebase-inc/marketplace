@@ -23,6 +23,9 @@ var viewConstants = require('../constants/viewConstants');
 // Icons
 var Icons = require('../components/RebaseIcons.react');
 
+// Utils
+var Fuse = require('../utils/fuse');
+
 var AuctionView = React.createClass({
     propTypes: {
         currentUser: React.PropTypes.object.isRequired,
@@ -44,8 +47,7 @@ var AuctionView = React.createClass({
     selectAuction: function(auctionID) {
         AuctionActions.selectAuction(auctionID);
     },
-    // this is probably not how we should be handling the searchText
-    //handleUserInput: function(searchText) { this.setState({ searchText: searchText }); },
+    handleUserInput: function(searchText) { this.setState({ searchText: searchText }); },
     render: function() {
         if (!!this.state.currentAuction) {
             return <SingleAuctionView {...this.props} {...this.state} unselectAuction={this.selectAuction.bind(null, null)} />;
@@ -53,7 +55,7 @@ var AuctionView = React.createClass({
             var props = _.extend({ selectAuction: this.selectAuction }, this.state, this.props);
             return (
                 <div className='mainContent'>
-                    <SearchBar searchText={this.state.searchText} onUserInput={this.handleSearchInput}/>
+                    <SearchBar searchText={this.state.searchText} onUserInput={this.handleUserInput}/>
                     <AuctionList {...props} />
                 </div>
             );
@@ -68,18 +70,29 @@ var SingleAuctionView = React.createClass({
         currentAuction: React.PropTypes.object.isRequired,
         unselectAuction: React.PropTypes.func.isRequired,
     },
+    getInitialState: function() { return { modalOpen: false }; },
+    openModal: function() { this.setState({ modalOpen: true }); console.log('opening modal'); },
+    closeModal: function() { this.setState({ modalOpen: false }); },
     render: function() {
         var ticket = this.props.currentAuction.ticket_set.bid_limits[0].ticket_snapshot.ticket;
         var makeButton = function(props) {
             return <button onClick={props.onClick} className={props.className}>{props.text}</button>;
         }
         var buttons = [];
+        var modal;
         switch (this.props.currentRole.type) {
-            case 'contractor': buttons.push(<button onClick={this.props.bidNow}>Bid Now</button>); break;
-            case 'manager': buttons.push(<button onClick={this.props.bidNow}>Find More Talent</button>); break;
+            case 'contractor':
+                buttons.push(<button onClick={this.openModal}>Bid Now</button>);
+                modal = <BidModal {...this.props} />
+                break;
+            case 'manager':
+                buttons.push(<button onClick={this.openModal}>Find More Talent</button>);
+                modal = null;
+                break;
         }
         return (
             <SingleTicketView {...this.props}>
+                { this.state.modalOpen ? modal : null }
                 <TicketHeader goBack={this.props.unselectAuction} title={ticket.title}>
                     {buttons}
                 </TicketHeader>
@@ -101,10 +114,16 @@ var AuctionList = React.createClass({
             selectAuction: this.props.selectAuction,
             currentRole: this.props.currentRole,
         }
-        var titleMatchesText = function(auction) {
-            return true; // until we make this actually work
-            return auction.title.indexOf(this.props.searchText) != -1;
+        var allTickets = this.props.allAuctions.map(function(auction) {
+            var _ticket = auction.ticket_set.bid_limits[0].ticket_snapshot.ticket;
+            _ticket.auctionID = auction.id;
+            return _ticket;
+        });
+        var searchTickets = function() {
+            var fuseSearch = new Fuse(allTickets, {threshold: 0.35, keys: ['title', 'description', 'project.name', 'project.organization.name'], id: 'auctionID'});
+            return fuseSearch.search(this.props.searchText.substring(0, 32));
         }.bind(this);
+        var auctionIDs = this.props.searchText ? searchTickets() : allTickets.map(t => t.auctionID);
         var makeTicketElement = function(auction) {
             return <Auction auction={auction} key={auction.id} {...props} />;
         }.bind(props);
@@ -112,7 +131,7 @@ var AuctionList = React.createClass({
             return (
                 <table id='ticketList'>
                     <tbody>
-                        { this.props.allAuctions.filter(titleMatchesText).map(makeTicketElement) }
+                        { auctionIDs.map(auctionID => this.props.allAuctions.filter(auction => auction.id == auctionID)[0]).map(makeTicketElement) }
                     </tbody>
                 </table>
             );
@@ -170,6 +189,82 @@ var RatingStars = React.createClass({
                 { _.range(fullStars).map(function(el, ind) { return <img key={'full-' + ind} src='img/star-10px.svg' /> }) }
                 { showHalfStar ? <img key='half' src='img/half-star-10px.svg' /> : null }
                 { _.range(5 - fullStars - showHalfStar).map(function(el, ind) { return <img key={'empty-' + ind} src='img/empty-star-10px.svg' /> }) }
+            </div>
+        );
+    }
+});
+
+var BidModal = React.createClass({
+    getInitialState: function() {
+        return {
+            price: '',
+            priceSubmitted: false,
+        }
+    },
+    handleKeyPress: function(event) {
+        if (event.charCode == 13) {
+            this.setState({ price: this.refs.price.getDOMNode().value });
+        }
+    },
+    submitPrice: function() {
+        AuctionActions.bidOnAuction(this.props.currentUser, this.props.currentAuction, this.state.price);
+        this.setState({ priceSubmitted: true });
+    },
+    render: function() {
+        if (!this.state.price) {
+            return (
+                <ModalContainer>
+                    <div onClick={this.closeModal} id='modalClose'>
+                        <img src='img/modal-close.svg'/>
+                    </div>
+                    <h3>Name your price</h3>
+                    <h4>to work on this task</h4>
+                    <input type='number' ref='price' placeholder='Price in USD' onKeyPress={this.handleKeyPress}/>
+                </ModalContainer>
+            );
+        } else if (!this.state.priceSubmitted) {
+            return (
+                <ModalContainer>
+                    <div onClick={this.closeModal} id='modalClose'>
+                        <img src='img/modal-close.svg'/>
+                    </div>
+                    <h3>{'Is ' + this.state.price + ' USD Correct?'}</h3>
+                    <h4>If accepted, you'll start right away!</h4>
+                    <button onClick={this.submitPrice}>Submit Bid</button>
+                </ModalContainer>
+            );
+        } else if (true) {
+            return (
+                <ModalContainer>
+                    <LoadingAnimation />
+                </ModalContainer>
+            );
+        } else {
+            throw 'fuck';
+            var remainingTickets = TicketStore.getState().allTickets.filter(function(ticket) { return ticket.type == ticketTypes.OFFERED; });
+            mainHeading = 'Your bid was not accepted.';
+            subHeading = 'But there are ' + remainingTickets.length + ' more tasks waiting for you!';
+            inputOrButton = <button onClick={this.props.closeModal}>Show Tasks</button>;
+        }
+                    //break;
+                //case ticketTypes.IN_PROGRESS:
+                    //mainHeading = 'Your bid was accepted!';
+                    //subHeading = 'Get started by cloning and running the tests';
+                    //infoOrInput = <div className='infoOrInput cloneInstructions'> $ git clone git@github.com:airpool/ios <br/> $ cd api && python tests/run.py </div>;
+                    //inputOrButton = <button onClick={this.props.closeModal}>Get to work!</button>;
+                    //break;
+                //case ticketTypes.COMPLETED: break;
+            //}
+    }
+});
+
+var ModalContainer = React.createClass({
+    render: function() {
+        return (
+            <div id='modalView'>
+                <div id='modalDialog' onChange={this.handleInput} onKeyPress={this.handleKeyPress}>
+                    {this.props.children}
+                </div>
             </div>
         );
     }

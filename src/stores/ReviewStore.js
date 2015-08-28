@@ -73,12 +73,11 @@ RebaseAppDispatcher.register(function(payload) {
 });
 
 function persistCommentDetail(data) {
-    console.warn('NOT IMPLEMENTED!');
-    data.comment.user = { first_name: 'Andrew', last_name: 'Millspaugh', photo: 'img/andrew.jpg' }; // hack because the api is missing data
+    //data.comment.user = { first_name: 'Andrew', last_name: 'Millspaugh', photo: 'img/andrew.jpg' }; // hack because the api is missing data
     for(var i=0; i<_allReviews.length; i++) {
-        var comments = _allReviews[i].bid.auction.ticket_set.bid_limits[0].ticket_snapshot.ticket.comments;
+        var comments = _allReviews[i].work.offer.ticket_snapshot.ticket;
         for ( var j=0; j < comments.length; j++) {
-            if (comments[j].id == data.comment.id) { _allReviews[i].bid.auction.ticket_set.bid_limits[0].ticket_snapshot.ticket.comments[j] = data.comment; }
+            if (comments[j].id == data.comment.id) { _allReviews[i].work.offer.ticket_snapshot.ticket = data.comment; }
         }
     }
 }

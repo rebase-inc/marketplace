@@ -558,7 +558,7 @@ tbody {
 #modalView {
     position: absolute;
     right: 0;
-    width: calc(100% - 200px);
+    width: 100%;
     height: 100%;
     background-color: hsla(213, 23%, 28%, 0.9);
     z-index: 9998;
@@ -568,9 +568,9 @@ tbody {
     position: absolute;
     background-color: hsla(216, 33%, 97%, 1);
     padding: 25px;
-    top: 50%;
+    top: 40%;
     left: 50%;
-    transform: translateX(-50%) translateY(-60%);
+    transform: translateX(-50%) translateY(-50%);
     border-radius: 6px;
     z-index: 9999;
     min-height: 80px;
