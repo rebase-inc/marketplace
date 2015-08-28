@@ -25,4 +25,34 @@ module.exports = {
             contractID: contractID,
         });
     },
+    markComplete: function(user, contract) {
+        var responseAction = function(response) {
+            Dispatcher.handleRequestAction({
+                type: ActionConstants.MARK_CONTRACT_COMPLETE,
+                response: response
+            });
+        };
+        var pendingAction = function(response) {
+            Dispatcher.handleRequestAction({
+                type: ActionConstants.MARK_CONTRACT_COMPLETE,
+                response: RequestConstants.PENDING,
+            });
+        };
+        Api.markContractComplete(user, contract, responseAction, pendingAction);
+    },
+    markBlocked: function(user, contract) {
+        var responseAction = function(response) {
+            Dispatcher.handleRequestAction({
+                type: ActionConstants.MARK_CONTRACT_BLOCKED,
+                response: response
+            });
+        };
+        var pendingAction = function(response) {
+            Dispatcher.handleRequestAction({
+                type: ActionConstants.MARK_CONTRACT_BLOCKED,
+                response: RequestConstants.PENDING,
+            });
+        };
+        Api.markContractBlocked(user, contract, responseAction, pendingAction);
+    },
 };

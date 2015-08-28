@@ -2,10 +2,10 @@ React = require('react');
 
 var StatusBar = React.createClass({
     render: function() {
-        this.props.review.date = !!this.props.review.date ? this.props.review.date : 'August 12, 2015';
+        var className = this.props.className ? 'notification ' + this.props.className : 'notification';
         return (
-            <div id='statusBar' className='notification'>
-                { 'Completed on ' + this.props.review.date + ' for $' + this.props.review.work.credit } 
+            <div id='statusBar' className={className}>
+                { this.props.text } 
             </div>
         );
     }

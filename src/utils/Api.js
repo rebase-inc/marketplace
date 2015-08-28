@@ -47,7 +47,7 @@ function ajax(method, url, data, responseHandler) {
         type: method || 'GET',
         xhrFields: { withCredentials: true },
         url: url,
-        data: JSON.stringify(data) || null,
+        data: JSON.stringify(data) || '',
         contentType: 'application/json; charset=utf-8',
     }).done(responseHandler).fail(function(requestObj, textStatus) {
             console.log('we failed with this info: ', requestObj, textStatus);
@@ -129,6 +129,18 @@ var Api = {
         var responseFunction = makeResponseFunc(responseHandler);
         if (pendingHandler) { pendingHandler(); }
         ajax('POST', url, data, responseHandler);
+    },
+    markContractComplete: function(user, contract, responseHandler, pendingHandler) {
+        var url = makeUrl('/work/' + contract.bid.work_offers[0].work.id + '/review_events');
+        var responseFunction = makeResponseFunc(responseHandler);
+        if (pendingHandler) { pendingHandler(); }
+        ajax('POST', url, null, responseHandler)
+    },
+    markContractBlocked: function(user, contract, responseHandler, pendingHandler) {
+        var url = makeUrl('/work/' + contract.bid.work_offers[0].work.id + '/halt_events');
+        var responseFunction = makeResponseFunc(responseHandler);
+        if (pendingHandler) { pendingHandler(); }
+        ajax('POST', url, { reason: 'because i fucking said so' }, responseHandler)
     }
 };
 

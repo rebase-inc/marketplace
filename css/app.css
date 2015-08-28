@@ -271,6 +271,20 @@ tbody {
     padding-right: 10px;
 }
 
+#statusBar.neutral {
+    background-color: hsla(212, 22%, 43%, 1);
+}
+
+#statusBar.issue {
+    background-color: hsla(37, 89%, 64%, 1);
+    text-align: left;
+}
+
+#statusBar.issue > button {
+    background-color: hsla(37, 84%, 55%, 1);
+    float: right;
+}
+
 #statusBar.notification {
     text-align: center;
 }
@@ -656,12 +670,12 @@ tbody {
 /** login box tests **/
 #login-background { width: 100%; height: 100%; background-color: hsla(213, 23%, 28%, 1); }
 #login-box {
-    top: 50%;
+    top: 40%;
     width: 35%;
     min-width: 360px;
     position: relative;
     margin: 0 auto;
-    transform: translateY(-60%); -webkit-transform: translateY(-60%);
+    transform: translateY(-40%); -webkit-transform: translateY(-40%);
     border-radius: 4px;
     background-color: #F6F8FA;
     text-align: center;

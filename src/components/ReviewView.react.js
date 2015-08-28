@@ -74,11 +74,12 @@ var SingleReviewView = React.createClass({
         var makeButton = function(props) {
             return <button onClick={props.onClick} className={props.className}>{props.text}</button>;
         }
+        this.props.currentReview.date = !!this.props.currentReview.date ? this.props.currentReview.date : 'August 12, 2015'; // temp hack
         return (
             <SingleTicketView {...this.props}>
-                <StatusBar review={this.props.currentReview} />
                 <TicketHeader goBack={this.props.unselectReview} title={ticket.title} />
-                <CommentList comments={ticket.comments}/>
+                <StatusBar text={ 'Completed on ' + this.props.currentReview.date + ' for $' + this.props.currentReview.work.credit } />
+                <CommentList style={{height: 'calc(100% - 230px)'}} comments={ticket.comments}/>
                 <CommentBox ticket={ticket} user={this.props.currentUser} />
             </SingleTicketView>
         );

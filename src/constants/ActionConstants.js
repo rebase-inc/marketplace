@@ -18,4 +18,6 @@ module.exports = keyMirror({
     ADD_COMMENT_TO_AUCTION: null,
     ADD_COMMENT_TO_TICKET: null,
     ADD_COMMENT_TO_REVIEW: null,
+    MARK_CONTRACT_COMPLETE: null,
+    MARK_CONTRACT_BLOCKED: null,
 });

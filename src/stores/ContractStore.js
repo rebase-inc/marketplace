@@ -54,15 +54,20 @@ RebaseAppDispatcher.register(function(payload) {
                 if (!found) { console.warn('Unknown or invalid contract ID provided to select contract action! : ', action.contractID); }
             }
             break;
-        case ActionConstants.ADD_COMMENT_TO_CONTRACT:
+        case ActionConstants.ADD_COMMENT_TO_TICKET:
             switch(action.response) {
                 case RequestConstants.PENDING: break;
-                default: persistModifiedContract(action.response.data); break;
+                default: persistNewComment(action.response); break;
             } break;
         case ActionConstants.GET_COMMENT_DETAIL:
             switch(action.response) {
                 case RequestConstants.PENDING: break;
                 default: persistCommentDetail(action.response); break;
+            } break;
+        case ActionConstants.MARK_CONTRACT_COMPLETE:
+            switch (action.response) {
+                case RequestConstants.PENDING: break;
+                default: persistWorkDetail(action.response); break;
             } break;
         default: return true;
     }
@@ -72,12 +77,33 @@ RebaseAppDispatcher.register(function(payload) {
     return true;
 });
 
+function persistNewComment(data) {
+    for(var i=0; i<_allContracts.length; i++) {
+        var ticket = _allContracts[i].bid.work_offers[0].ticket_snapshot.ticket;
+        if (ticket.id == data.comment.ticket.id) {
+            _allContracts[i].bid.work_offers[0].ticket_snapshot.ticket.comments.push(data.comment);
+        }
+    }
+}
+
+function persistWorkDetail(data) {
+    var found = false;
+    for(var i=0; i<_allContracts.length; i++) {
+        var work = _allContracts[i].bid.work_offers[0].work;
+        if (work.id == data.work.id) {
+            found = true;
+            _allContracts[i].bid.work_offers[0].work = data.work;
+        }
+    }
+    if (!found) { console.warn('unknown work detail returned: ', data) }
+}
+
 function persistCommentDetail(data) {
     //data.comment.user = { first_name: 'Andrew', last_name: 'Millspaugh', photo: 'img/andrew.jpg' }; // hack because the api is missing data
     for(var i=0; i<_allContracts.length; i++) {
         var comments = _allContracts[i].bid.work_offers[0].ticket_snapshot.ticket.comments;
         for ( var j=0; j < comments.length; j++) {
-            if (comments[j].id == data.comment.id) { _allContracts[i].bid.work_offers[0].ticket_snapshot.ticket.comments = data.comment; }
+            if (comments[j].id == data.comment.id) { _allContracts[i].bid.work_offers[0].ticket_snapshot.ticket.comments[j] = data.comment; }
         }
     }
 }

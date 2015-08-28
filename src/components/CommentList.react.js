@@ -52,7 +52,7 @@ var CommentList = React.createClass({
             );
         });
         return (
-                <ReactCSSTransitionGroup component='div' id='commentList' transitionName='newComment'>
+                <ReactCSSTransitionGroup component='div' style={this.props.style} id='commentList' transitionName='newComment'>
                 {all_comments}
                 </ReactCSSTransitionGroup>
                );

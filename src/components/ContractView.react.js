@@ -16,6 +16,7 @@ var CommentList = require('../components/CommentList.react');
 var CommentBox = require('../components/CommentBox.react');
 var NothingHere = require('../components/NothingHere.react');
 var LoadingAnimation = require('../components/LoadingAnimation.react');
+var StatusBar = require('../components/StatusBar.react');
 
 // Constants
 var viewConstants = require('../constants/viewConstants');
@@ -68,16 +69,40 @@ var SingleContractView = React.createClass({
         currentContract: React.PropTypes.object.isRequired,
         unselectContract: React.PropTypes.func.isRequired,
     },
+    markComplete: function() {
+        ContractActions.markComplete(this.props.currentUser, this.props.currentContract);
+    },
+    markBlocked: function() {
+        ContractActions.markBlocked(this.props.currentUser, this.props.currentContract);
+    },
     render: function() {
         var ticket = this.props.currentContract.bid.work_offers[0].ticket_snapshot.ticket;
         var makeButton = function(props) {
             return <button onClick={props.onClick} className={props.className}>{props.text}</button>;
         }
         var buttons = [];
+        var statusbar;
         switch (this.props.currentRole.type) {
             case 'contractor':
-                buttons.push(<button onClick={this.props.markFinished}>Finished</button>);
-                buttons.push(<button onClick={this.props.markBlocked} className='warning'>Blocked</button>);
+                switch (this.props.currentContract.bid.work_offers[0].work.state) {
+                    case 'in_progress':
+                        buttons.push(<button onClick={this.markComplete}>Finished</button>);
+                        buttons.push(<button onClick={this.markBlocked} className='warning'>Blocked</button>);
+                        break;
+                    case 'in_review':
+                        var deadline = 'September 12 2PM PST';
+                        statusbar = <StatusBar className='neutral' text={'Waiting for client approval before ' + deadline + ' deadline.'} />;
+                        break;
+                    case 'blocked':
+                        var deadline = 'September 12 2PM PST';
+                        statusbar = (
+                            <StatusBar className='issue' text={'Waiting for client to resolve task blocked state before ' + deadline}>
+                                <button>Unblock</button>
+                            </StatusBar>
+                        );
+                        break;
+                    default: break;
+                } 
                 break;
             case 'manager': buttons.push(<button onClick={this.props.bidNow}>Find More Talent</button>); break;
         }
@@ -86,7 +111,8 @@ var SingleContractView = React.createClass({
                 <TicketHeader goBack={this.props.unselectContract} title={ticket.title}>
                     {buttons}
                 </TicketHeader>
-                <CommentList comments={ticket.comments}/>
+                { statusbar }
+                <CommentList style={ !!statusbar ? {height: 'calc(100% - 230px)'} : null} comments={ticket.comments}/>
                 <CommentBox ticket={ticket} user={this.props.currentUser} />
             </SingleTicketView>
         );
