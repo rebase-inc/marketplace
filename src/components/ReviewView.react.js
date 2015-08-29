@@ -16,7 +16,6 @@ var CommentList = require('../components/CommentList.react');
 var CommentBox = require('../components/CommentBox.react');
 var NothingHere = require('../components/NothingHere.react');
 var LoadingAnimation = require('../components/LoadingAnimation.react');
-var StatusBar = require('../components/StatusBar.react');
 
 // Constants
 var viewConstants = require('../constants/viewConstants');
@@ -77,8 +76,7 @@ var SingleReviewView = React.createClass({
         this.props.currentReview.date = !!this.props.currentReview.date ? this.props.currentReview.date : 'August 12, 2015'; // temp hack
         return (
             <SingleTicketView {...this.props}>
-                <TicketHeader goBack={this.props.unselectReview} title={ticket.title} />
-                <StatusBar text={ 'Completed on ' + this.props.currentReview.date + ' for $' + this.props.currentReview.work.credit } />
+                <TicketHeader goBack={this.props.unselectReview} title={ticket.title} className='completed' />
                 <CommentList style={{height: 'calc(100% - 230px)'}} comments={ticket.comments}/>
                 <CommentBox ticket={ticket} user={this.props.currentUser} />
             </SingleTicketView>

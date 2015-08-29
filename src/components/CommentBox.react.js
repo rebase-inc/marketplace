@@ -39,8 +39,8 @@ var CommentBox = React.createClass({
         if (this.state.inProgress || !!this.state.commentText) {
             buttons = (
                 <div id='commentSubmissionButtons'>
-                    <button onClick={this.submitComment}>Comment</button>
-                    <button onClick={this.cancelComment}>Cancel</button>
+                    <button className='small' onClick={this.submitComment}>Comment</button>
+                    <button className='small' onClick={this.cancelComment}>Cancel</button>
                 </div>
             );
             className = 'inProgress';

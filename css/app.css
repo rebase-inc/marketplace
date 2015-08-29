@@ -260,37 +260,37 @@ tbody {
     background-color: hsla(200, 30%, 96%, 1);
 }
 
-#statusBar {
-    height: 50px;
-    width: 100%;
-    font-size: 16px;
-    line-height: 50px;
+#itemHeader.notification {
+    background-color: hsla(212, 22%, 43%, 1);
+    color: hsla(210, 29%, 97%, 1);
+}
+
+#itemHeader.notification svg path {
+    fill: hsla(210, 29%, 97%, 1);
+}
+
+#itemHeader.completed {
     background-color: hsla(166, 43%, 56%, 1);
     color: hsla(210, 29%, 97%, 1);
-    padding-left: 10px;
-    padding-right: 10px;
 }
 
-#statusBar.neutral {
-    background-color: hsla(212, 22%, 43%, 1);
+#itemHeader.completed svg path {
+    fill: hsla(210, 29%, 97%, 1);
 }
 
-#statusBar.issue {
+#itemHeader.needsResolution {
     background-color: hsla(37, 89%, 64%, 1);
     text-align: left;
+    color: hsla(210, 29%, 97%, 1);
 }
 
-#statusBar.issue > button {
+#itemHeader.needsResolution svg path {
+    fill: hsla(210, 29%, 97%, 1);
+}
+
+#itemHeader.needsResolution > button {
     background-color: hsla(37, 84%, 55%, 1);
     float: right;
-}
-
-#statusBar.notification {
-    text-align: center;
-}
-
-#statusBar.requiresResponse {
-    text-align: left;
 }
 
 #itemHeader {
@@ -370,6 +370,7 @@ tbody {
     color: hsla(204, 45%, 98%, 1);
     border-radius: 4px;
     cursor: pointer;
+    margin: 0;
 }
 
 
@@ -453,9 +454,7 @@ tbody {
     text-overflow: ellipsis;
 }
 
-#itemHeader > button {
-    float: right;
-    color: white;
+button {
     background-color: hsla(166, 43%, 56%, 1);
     border: none;
     box-shadow: none;
@@ -463,11 +462,21 @@ tbody {
     padding-bottom: 7px;
     padding-left: 14px;
     padding-right: 14px;
-    font-size: 16px;
     line-height: 16px;
     border-radius: 3px;
     vertical-align: middle;
     margin: 10px;
+    font-size: 16px;
+    color: hsla(210, 29%, 97%, 1);
+    cursor: pointer;
+}
+
+button.small {
+    font-size: 11px;
+}
+
+#itemHeader > button {
+    float: right;
 }
 
 #ticketSearchBar {

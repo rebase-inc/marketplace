@@ -14,26 +14,8 @@ var TicketHeader = React.createClass({
         goBack: React.PropTypes.func.isRequired,
     },
     render: function() {
-        var buttons = [];
-        var makeButton = function(props) {
-            return <button onClick={props.onClick} className={props.className}>{props.text}</button>;
-        }
-        //switch (this.props.ticket.type) {
-            //case ticketTypes.NEW:
-                //buttons = this.props.currentRole.type == 'developer' ?  [] : [{ onClick: this.props.buttonAction, text: 'Find Talent' }];
-            //break;
-            //case ticketTypes.OFFERED:
-                //buttons = this.props.currentRole.type == 'developer' ?  [{ onClick: this.props.buttonAction, text: 'Bid Now' }] : [];
-            //break;
-            //case ticketTypes.IN_PROGRESS:
-                //buttons = this.props.currentRole.type == 'developer' ?
-                    //[{onClick: this.props.buttonAction, text: 'Finish' },
-                        //{ onClick: this.props.buttonAction, text: 'Mark Blocked', className: 'danger' }] : [];
-            //break;
-            //case ticketTypes.COMPLETED: break;
-        //}
         return (
-            <div id='itemHeader'>
+            <div id='itemHeader' className={this.props.className || 'neutral'}>
                 <div onClick={this.props.goBack} className='backButton'> <Icons.Dropback/> </div>
                 { this.props.children }
                 <span>{this.props.title}</span>

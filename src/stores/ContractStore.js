@@ -69,6 +69,16 @@ RebaseAppDispatcher.register(function(payload) {
                 case RequestConstants.PENDING: break;
                 default: persistWorkDetail(action.response); break;
             } break;
+        case ActionConstants.MARK_CONTRACT_BLOCKED:
+            switch (action.response) {
+                case RequestConstants.PENDING: break;
+                default: persistWorkDetail(action.response); break;
+            } break;
+        case ActionConstants.MARK_CONTRACT_UNBLOCKED:
+            switch (action.response) {
+                case RequestConstants.PENDING: break;
+                default: persistWorkDetail(action.response); break;
+            } break;
         default: return true;
     }
 

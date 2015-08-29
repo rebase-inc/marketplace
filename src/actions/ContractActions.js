@@ -55,4 +55,19 @@ module.exports = {
         };
         Api.markContractBlocked(user, contract, responseAction, pendingAction);
     },
+    markUnblocked: function(user, contract) {
+        var responseAction = function(response) {
+            Dispatcher.handleRequestAction({
+                type: ActionConstants.MARK_CONTRACT_UNBLOCKED,
+                response: response
+            });
+        };
+        var pendingAction = function(response) {
+            Dispatcher.handleRequestAction({
+                type: ActionConstants.MARK_CONTRACT_UNBLOCKED,
+                response: RequestConstants.PENDING,
+            });
+        };
+        Api.markContractUnblocked(user, contract, responseAction, pendingAction);
+    },
 };

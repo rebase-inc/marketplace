@@ -75,13 +75,16 @@ var SingleContractView = React.createClass({
     markBlocked: function() {
         ContractActions.markBlocked(this.props.currentUser, this.props.currentContract);
     },
+    markUnblocked: function() {
+        ContractActions.markUnblocked(this.props.currentUser, this.props.currentContract);
+    },
     render: function() {
         var ticket = this.props.currentContract.bid.work_offers[0].ticket_snapshot.ticket;
         var makeButton = function(props) {
             return <button onClick={props.onClick} className={props.className}>{props.text}</button>;
         }
         var buttons = [];
-        var statusbar;
+        var headerClass;
         switch (this.props.currentRole.type) {
             case 'contractor':
                 switch (this.props.currentContract.bid.work_offers[0].work.state) {
@@ -90,16 +93,11 @@ var SingleContractView = React.createClass({
                         buttons.push(<button onClick={this.markBlocked} className='warning'>Blocked</button>);
                         break;
                     case 'in_review':
-                        var deadline = 'September 12 2PM PST';
-                        statusbar = <StatusBar className='neutral' text={'Waiting for client approval before ' + deadline + ' deadline.'} />;
+                        headerClass = 'notification';
                         break;
                     case 'blocked':
-                        var deadline = 'September 12 2PM PST';
-                        statusbar = (
-                            <StatusBar className='issue' text={'Waiting for client to resolve task blocked state before ' + deadline}>
-                                <button>Unblock</button>
-                            </StatusBar>
-                        );
+                        headerClass = 'needsResolution';
+                        buttons.push(<button onClick={this.markUnblocked}>Unblock</button>);
                         break;
                     default: break;
                 } 
@@ -108,11 +106,10 @@ var SingleContractView = React.createClass({
         }
         return (
             <SingleTicketView {...this.props}>
-                <TicketHeader goBack={this.props.unselectContract} title={ticket.title}>
+                <TicketHeader className={headerClass} goBack={this.props.unselectContract} title={ticket.title}>
                     {buttons}
                 </TicketHeader>
-                { statusbar }
-                <CommentList style={ !!statusbar ? {height: 'calc(100% - 230px)'} : null} comments={ticket.comments}/>
+                <CommentList comments={ticket.comments}/>
                 <CommentBox ticket={ticket} user={this.props.currentUser} />
             </SingleTicketView>
         );

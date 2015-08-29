@@ -20,4 +20,5 @@ module.exports = keyMirror({
     ADD_COMMENT_TO_REVIEW: null,
     MARK_CONTRACT_COMPLETE: null,
     MARK_CONTRACT_BLOCKED: null,
+    MARK_CONTRACT_UNBLOCKED: null,
 });

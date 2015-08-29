@@ -141,7 +141,13 @@ var Api = {
         var responseFunction = makeResponseFunc(responseHandler);
         if (pendingHandler) { pendingHandler(); }
         ajax('POST', url, { reason: 'because i fucking said so' }, responseHandler)
-    }
+    },
+    markContractUnblocked: function(user, contract, responseHandler, pendingHandler) {
+        var url = makeUrl('/work/' + contract.bid.work_offers[0].work.id + '/resume_events');
+        var responseFunction = makeResponseFunc(responseHandler);
+        if (pendingHandler) { pendingHandler(); }
+        ajax('POST', url, { reason: 'because i fucking said so' }, responseHandler)
+    },
 };
 
 
