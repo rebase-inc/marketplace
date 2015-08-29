@@ -10,7 +10,7 @@ input:focus, select:focus, textarea:focus, button:focus {
 }
 
 input[type=number]::-webkit-outer-spin-button,
-input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-inner-spin-button {
     -webkit-appearance: none;
     margin: 0;
 }
@@ -232,6 +232,7 @@ tbody {
 }
 
 .mainContent {
+    position: relative;
     display: block;
     float: left;
     width: calc(100% - 200px);
@@ -250,8 +251,46 @@ tbody {
     border: 1px solid hsla(165, 5%, 83%, 1);
 }
 
+.ticket > td {
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
 .ticket:hover {
     background-color: hsla(200, 30%, 96%, 1);
+}
+
+#itemHeader.notification {
+    background-color: hsla(212, 22%, 43%, 1);
+    color: hsla(210, 29%, 97%, 1);
+}
+
+#itemHeader.notification svg path {
+    fill: hsla(210, 29%, 97%, 1);
+}
+
+#itemHeader.completed {
+    background-color: hsla(166, 43%, 56%, 1);
+    color: hsla(210, 29%, 97%, 1);
+}
+
+#itemHeader.completed svg path {
+    fill: hsla(210, 29%, 97%, 1);
+}
+
+#itemHeader.needsResolution {
+    background-color: hsla(37, 89%, 64%, 1);
+    text-align: left;
+    color: hsla(210, 29%, 97%, 1);
+}
+
+#itemHeader.needsResolution svg path {
+    fill: hsla(210, 29%, 97%, 1);
+}
+
+#itemHeader.needsResolution > button {
+    background-color: hsla(37, 84%, 55%, 1);
+    float: right;
 }
 
 #itemHeader {
@@ -278,7 +317,7 @@ tbody {
     cursor: pointer;
 }
 
-#itemHeader > button.danger {
+#itemHeader > button.warning {
     background-color: hsla(351, 51%, 59%, 1);
 }
 
@@ -331,6 +370,7 @@ tbody {
     color: hsla(204, 45%, 98%, 1);
     border-radius: 4px;
     cursor: pointer;
+    margin: 0;
 }
 
 
@@ -414,9 +454,7 @@ tbody {
     text-overflow: ellipsis;
 }
 
-#itemHeader > button {
-    float: right;
-    color: white;
+button {
     background-color: hsla(166, 43%, 56%, 1);
     border: none;
     box-shadow: none;
@@ -424,11 +462,21 @@ tbody {
     padding-bottom: 7px;
     padding-left: 14px;
     padding-right: 14px;
-    font-size: 16px;
     line-height: 16px;
     border-radius: 3px;
     vertical-align: middle;
     margin: 10px;
+    font-size: 16px;
+    color: hsla(210, 29%, 97%, 1);
+    cursor: pointer;
+}
+
+button.small {
+    font-size: 11px;
+}
+
+#itemHeader > button {
+    float: right;
 }
 
 #ticketSearchBar {
@@ -533,7 +581,7 @@ tbody {
 #modalView {
     position: absolute;
     right: 0;
-    width: calc(100% - 200px);
+    width: 100%;
     height: 100%;
     background-color: hsla(213, 23%, 28%, 0.9);
     z-index: 9998;
@@ -543,9 +591,9 @@ tbody {
     position: absolute;
     background-color: hsla(216, 33%, 97%, 1);
     padding: 25px;
-    top: 50%;
+    top: 40%;
     left: 50%;
-    transform: translateX(-50%) translateY(-60%);
+    transform: translateX(-50%) translateY(-50%);
     border-radius: 6px;
     z-index: 9999;
     min-height: 80px;
@@ -631,12 +679,12 @@ tbody {
 /** login box tests **/
 #login-background { width: 100%; height: 100%; background-color: hsla(213, 23%, 28%, 1); }
 #login-box {
-    top: 50%;
+    top: 40%;
     width: 35%;
     min-width: 360px;
     position: relative;
     margin: 0 auto;
-    transform: translateY(-50%); -webkit-transform: translateY(-50%);
+    transform: translateY(-40%); -webkit-transform: translateY(-40%);
     border-radius: 4px;
     background-color: #F6F8FA;
     text-align: center;
@@ -701,11 +749,36 @@ tbody {
 }
 
 
+/** nothing here **/
+
+#nothingHere {
+    opacity: 0.5;
+    top: 50%;
+    width: 100%;
+    position: absolute;
+    transform: translateY(-50%);
+}
+
+#nothingHere > img {
+    display: block;
+    margin: 0 auto;
+}
+
+#nothingHere > span {
+    display: block;
+    text-align: center;
+    margin: 0 auto;
+    font-size: 24px;
+}
 
 /** Animated spinner **/
 
 .spinner {
-    margin: 200px auto;
+    opacity: 0.5;
+    top: 50%;
+    left: 50%;
+    position: absolute;
+    transform: translateX(-50%) translateY(-50%);
     width: 50px;
     height: 40px;
     text-align: center;

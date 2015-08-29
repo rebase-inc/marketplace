@@ -4,82 +4,51 @@ var _ = require('underscore');
 var Icons = require('../components/RebaseIcons.react');
 var Sidebar = require('../components/Sidebar.react');
 var MainView = require('../components/MainView.react');
-var SingleItemView = require('../components/SingleItemView.react');
-var ModalView = require('../components/ModalView.react');
 var TicketStore = require('../stores/TicketStore');
 var UserStore = require('../stores/UserStore');
-var ViewsByRole = require('../constants/ViewConstants').ViewsByRole;
-var RebaseActions = require('../actions/RebaseActions');
+var viewConstants = require('../constants/viewConstants');
+var UserActions = require('../actions/UserActions');
 
 var RebaseApp = React.createClass({
-
-    changeView: function(view) {
-        this.setState({
-            currentView: view,
-            modalIsOpen: false,
-        });
-        TicketStore.select(null);
+    selectRole: function(roleID) {
+        UserActions.selectRole(roleID);
     },
-
-    _onChange: function() {
-        this.setState({ loggedIn: UserStore.getState().loggedIn });
+    getInitialState: function() {
+        return _.extend({ modalIsOpen: false }, UserStore.getState());
     },
     componentDidMount: function() {
-        TicketStore.addChangeListener(this._onChange);
         UserStore.addChangeListener(this._onChange);
     },
     componentWillUnmount: function() {
-        TicketStore.removeChangeListener(this._onChange);
         UserStore.removeChangeListener(this._onChange);
     },
-
-    getInitialState: function() {
-        var currentRole = this.props.user.roles[0];
-        var currentView = ViewsByRole[currentRole.type][0];
-        return {
-            currentRole: currentRole,
-            currentView: currentView,
-            modalIsOpen: false,
-            currentTicket: null,
-            currentAuction: null,
-            loggedIn: UserStore.getState().loggedIn,
-        }
-    },
-    changeRole: function(newRole) {
-        this.setState({
-            currentRole: newRole,
-            modalIsOpen: false,
-            currentView: ViewsByRole[newRole.type][0],
-        });
-        TicketStore.select(null);
-    },
-    openModal: function() {
-        this.setState({ modalIsOpen: true });
-    },
-    closeModal: function() {
-        this.setState({ modalIsOpen: false });
+    _onChange: function() {
+        this.setState(UserStore.getState());
     },
     render: function() {
-        var props = {
-            user: this.props.user,
+        var sidebarProps = {
+            currentUser: this.state.currentUser,
             currentView: this.state.currentView,
             currentRole: this.state.currentRole,
-            changeView: this.changeView,
-            changeRole: this.changeRole,
-            openModal: this.openModal,
-            closeModal: this.closeModal,
-            modalIsOpen: this.state.modalIsOpen,
+            selectRole: this.selectRole,
+        };
+        var modalProps = {
+            currentUser: this.state.currentUser,
+            currentView: this.state.currentView,
+            currentRole: this.state.currentRole,
         }
-        if (!this.state.loggedIn) {
-            return <LoginDialog />;
-        }
-        return (
+        var mainProps = {
+            currentUser: this.state.currentUser,
+            currentView: this.state.currentView,
+            currentRole: this.state.currentRole,
+        };
+        var App = (
             <div id='app'>
-            <Sidebar {...props} />
-            { this.state.modalIsOpen ? <ModalView currentRole={props.currentRole} closeModal={props.closeModal} /> : null }
-            <MainView {...props} />
+                <Sidebar {...sidebarProps} />
+                <MainView {...mainProps} />
             </div>
         );
+        return this.state.loggedIn ? App : <LoginDialog />;
     },
 
 });
@@ -92,12 +61,12 @@ var LoginDialog = React.createClass({
     attemptLogin: function() {
         var email = this.refs.email.getDOMNode().value;
         var password = this.refs.password.getDOMNode().value;
-        RebaseActions.login(email, password);
+        UserActions.login(email, password);
     },
     attemptSignup: function() {
         alert('not implemented!');
         return;
-        RebaseActions.login(this.state.email, this.state.password);
+        UserActions.login(this.state.email, this.state.password);
     },
     handleInput: function() {
         this.setState({

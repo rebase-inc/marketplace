@@ -8,42 +8,14 @@ var _ = require('underscore');
 //Define initial data points
 var _allContracts = [];
 var _currentContract = null;
-
-function persistContracts(data) {
-    if (data) { _allContracts = data.contracts.map(labelContract); }
-}
-
-function persistCommentDetail(data) {
-    data.comment.user = { first_name: 'Andrew', last_name: 'Millspaugh', photo: 'img/andrew.jpg' }; // hack because the api is missing data
-    for(var i=0; i<_allContracts.length; i++) {
-        var comments = _allContracts[i].bid.auction.ticket_set.bid_limits[0].ticket_snapshot.ticket.comments;
-        for ( var j=0; j < comments.length; j++) {
-            if (comments[j].id == data.comment.id) { _allContracts[i].bid.auction.ticket_set.bid_limits[0].ticket_snapshot.ticket.comments[j] = data.comment; }
-        }
-    }
-}
-
-function persistModifiedContract(contract) {
-    for(var i=0; i<_allContracts.length; i++) {
-        if (_allContracts[i].id == contract.id) {
-            _allContracts[i] = _.extend({}, contract);
-            if (_currentContract.id == contract.id) { _currentContract = contract }
-        };
-    }
-}
-
-function labelContract(contract) {
-    if (!contract.bid.work_offers[0].review) {
-        contract.type = ViewConstants.ticketTypes.IN_PROGRESS;
-    }
-    return contract
-}
+var _loadingContractData = false;
 
 var ContractStore = _.extend({}, EventEmitter.prototype, {
     getState: function() {
         return {
             allContracts: _allContracts,
             currentContract: _currentContract,
+            loadingContractData: _loadingContractData,
         };
     },
     select: function(contract) {
@@ -61,21 +33,51 @@ var ContractStore = _.extend({}, EventEmitter.prototype, {
 RebaseAppDispatcher.register(function(payload) {
     var action = payload.action;
     switch(action.type) {
+        case ActionConstants.SELECT_VIEW: _currentContract = null; break;
         case ActionConstants.GET_CONTRACT_DATA:
-            console.log('responding to contract data ', action.response);
             switch(action.response) {
-                case RequestConstants.PENDING: break;
-                default: persistContracts(action.response); break;
+                case RequestConstants.PENDING: 
+                    _loadingContractData = true; 
+                    break;
+                default: 
+                    _allContracts = action.response.contracts.map(labelContractType); 
+                    _loadingContractData = false; 
+                    break; 
             } break;
-        case ActionConstants.ADD_COMMENT_TO_CONTRACT:
+        case ActionConstants.SELECT_CONTRACT:
+            if (!action.contractID) { _currentContract = null; }
+            else {
+                var found = false;
+                for(var i=0; i<_allContracts.length; i++) {
+                    if (_allContracts[i].id == action.contractID) { _currentContract = _allContracts[i]; found=true; };
+                }
+                if (!found) { console.warn('Unknown or invalid contract ID provided to select contract action! : ', action.contractID); }
+            }
+            break;
+        case ActionConstants.ADD_COMMENT_TO_TICKET:
             switch(action.response) {
                 case RequestConstants.PENDING: break;
-                default: persistModifiedContract(action.response.data); break;
+                default: persistNewComment(action.response); break;
             } break;
         case ActionConstants.GET_COMMENT_DETAIL:
             switch(action.response) {
                 case RequestConstants.PENDING: break;
                 default: persistCommentDetail(action.response); break;
+            } break;
+        case ActionConstants.MARK_CONTRACT_COMPLETE:
+            switch (action.response) {
+                case RequestConstants.PENDING: break;
+                default: persistWorkDetail(action.response); break;
+            } break;
+        case ActionConstants.MARK_CONTRACT_BLOCKED:
+            switch (action.response) {
+                case RequestConstants.PENDING: break;
+                default: persistWorkDetail(action.response); break;
+            } break;
+        case ActionConstants.MARK_CONTRACT_UNBLOCKED:
+            switch (action.response) {
+                case RequestConstants.PENDING: break;
+                default: persistWorkDetail(action.response); break;
             } break;
         default: return true;
     }
@@ -84,5 +86,52 @@ RebaseAppDispatcher.register(function(payload) {
     ContractStore.emitChange();
     return true;
 });
+
+function persistNewComment(data) {
+    for(var i=0; i<_allContracts.length; i++) {
+        var ticket = _allContracts[i].bid.work_offers[0].ticket_snapshot.ticket;
+        if (ticket.id == data.comment.ticket.id) {
+            _allContracts[i].bid.work_offers[0].ticket_snapshot.ticket.comments.push(data.comment);
+        }
+    }
+}
+
+function persistWorkDetail(data) {
+    var found = false;
+    for(var i=0; i<_allContracts.length; i++) {
+        var work = _allContracts[i].bid.work_offers[0].work;
+        if (work.id == data.work.id) {
+            found = true;
+            _allContracts[i].bid.work_offers[0].work = data.work;
+        }
+    }
+    if (!found) { console.warn('unknown work detail returned: ', data) }
+}
+
+function persistCommentDetail(data) {
+    //data.comment.user = { first_name: 'Andrew', last_name: 'Millspaugh', photo: 'img/andrew.jpg' }; // hack because the api is missing data
+    for(var i=0; i<_allContracts.length; i++) {
+        var comments = _allContracts[i].bid.work_offers[0].ticket_snapshot.ticket.comments;
+        for ( var j=0; j < comments.length; j++) {
+            if (comments[j].id == data.comment.id) { _allContracts[i].bid.work_offers[0].ticket_snapshot.ticket.comments[j] = data.comment; }
+        }
+    }
+}
+
+function persistModifiedContract(contract) {
+    for(var i=0; i<_allContracts.length; i++) {
+        if (_allContracts[i].id == contract.id) {
+            _allContracts[i] = _.extend({}, contract);
+            if (_currentContract.id == contract.id) { _currentContract = contract }
+        };
+    }
+}
+
+function labelContractType(contract) {
+    if (!contract.bid.work_offers[0].review) {
+        contract.type = ViewConstants.ViewTypes.IN_PROGRESS;
+    }
+    return contract
+}
 
 module.exports = ContractStore;

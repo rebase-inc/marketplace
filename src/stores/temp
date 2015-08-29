@@ -1,0 +1,67 @@
+
+function persistAuctionData(data) {
+    if (data) { _allAuctions = data.auctions.map(labelAuction); }
+}
+
+function handleBidResponse(auction) {
+    _bidPending = false;
+    persistModifiedAuction(auction);
+}
+
+function markBidPending(auction) {
+    _bidPending = true;
+}
+
+function persistModifiedTicket(ticket) {
+    for(var i=0; i<_allTickets.length; i++) {
+        if (_allTickets[i].id == ticket.id) {
+            _allTickets[i] = labelTicket(JSON.parse(JSON.stringify(ticket)));
+            if (_currentTicket.id == ticket.id) { _currentTicket = _allTickets[i]; }
+        };
+    }
+}
+
+function persistNewComment(data) {
+    data.comment.user = { first_name: 'Andrew', last_name: 'Millspaugh', photo: 'img/andrew.jpg' }; // hack because the api is missing data
+    data.comment.marker = 'created by persist new comment';
+    for(var i=0; i<_allTickets.length; i++) {
+        if (_allTickets[i].id == data.comment.ticket.id) {
+            _allTickets[i].comments.push(data.comment);
+        }
+    }
+}
+
+function markBidPending(auction) {
+    _bidPending = true;
+}
+
+function handleBidResponse(auction) {
+    _bidPending = false;
+    var ticket = JSON.parse(JSON.stringify(_currentTicket));
+    ticket.snapshots[0].bid_limit.ticket_set.auction = auction;
+    persistModifiedTicket(ticket);
+}
+
+function isNewTicket(ticket) {
+    return ticket.snapshots.every(snap => !snap.bid_limit || !snap.bid_limit.ticket_set.auction);
+}
+
+function isOfferedTicket(ticket) {
+    return ticket.snapshots.every(snap => snap.bid_limit.ticket_set.auction.state == 'waiting_for_bids');
+}
+
+function isInProgressTicket(ticket) {
+    return (
+        ticket.snapshots.every(snap => snap.bid_limit.ticket_set.auction.state == 'closed') &&
+        ticket.snapshots
+            .every(snap => snap.bid_limit.ticket_set.auction.bids.filter(bid => !!bid.contract)
+                   .every(bid => bid.work_offers.some(offer => !offer.work.review)))
+    );
+}
+
+
+
+function markLoading(tickets) {
+    _loading = true;
+}
+

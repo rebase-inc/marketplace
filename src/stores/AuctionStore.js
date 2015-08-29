@@ -1,53 +1,20 @@
-var RebaseAppDispatcher = require('../dispatcher/RebaseAppDispatcher');
+// external
+var _ = require('underscore');
+var keyMirror = require('keymirror');
 var EventEmitter = require('events').EventEmitter;
+
+// dispatcher
+var Dispatcher = require('../dispatcher/RebaseAppDispatcher');
+
+// constants
 var ActionConstants = require('../constants/ActionConstants');
 var RequestConstants = require('../constants/RequestConstants');
-var ViewConstants = require('../constants/ViewConstants');
-var _ = require('underscore');
+var viewConstants = require('../constants/viewConstants');
 
-//Define initial data points
 var _allAuctions = [];
 var _currentAuction = null;
 var _bidPending = false;
-
-function persistAuctionData(data) {
-    if (data) { _allAuctions = data.auctions.map(labelAuction); }
-}
-
-function persistCommentDetail(data) {
-    data.comment.user = { first_name: 'Andrew', last_name: 'Millspaugh', photo: 'img/andrew.jpg' }; // hack because the api is missing data
-    for(var i=0; i<_allAuctions.length; i++) {
-        var comments = _allAuctions[i].ticket_set.bid_limits[0].ticket_snapshot.ticket.comments;
-        for ( var j=0; j < comments.length; j++) {
-            if (comments[j].id == data.comment.id) { _allAuctions[i].ticket_set.bid_limits[0].ticket_snapshot.ticket.comments[j] = data.comment; }
-        }
-    }
-}
-
-function persistModifiedAuction(auction) {
-    for(var i=0; i<_allAuctions.length; i++) {
-        if (_allAuctions[i].id == auction.id) {
-            _allAuctions[i] = _.extend({}, auction);
-            if (_currentAuction.id == auction.id) { _currentAuction = auction }
-        };
-    }
-}
-
-function handleBidResponse(auction) {
-    _bidPending = false;
-    persistModifiedAuction(auction);
-}
-
-function markBidPending(auction) {
-    _bidPending = true;
-}
-
-function labelAuction(auction) {
-    if (auction.state == 'waiting_for_bids' || auction.state == 'created') {
-        auction.type = ViewConstants.ticketTypes.OFFERED;
-    }
-    return auction
-}
+var _loading = false;
 
 var AuctionStore = _.extend({}, EventEmitter.prototype, {
     getState: function() {
@@ -55,13 +22,8 @@ var AuctionStore = _.extend({}, EventEmitter.prototype, {
             allAuctions: _allAuctions,
             currentAuction: _currentAuction,
             bidPending: _bidPending,
+            loadingAuctionData: _loading,
         };
-    },
-    select: function(auction) {
-        if (!auction) { _currentAuction = null; return; }
-        for(var i=0; i<_allAuctions.length; i++) {
-            if (_allAuctions[i].id == auction.id) { _currentAuction = _allAuctions[i]; };
-        }
     },
     emitChange: function() { this.emit('change'); },
     addChangeListener: function(callback) { this.on('change', callback); },
@@ -69,23 +31,39 @@ var AuctionStore = _.extend({}, EventEmitter.prototype, {
 });
 
 // Register callback with Dispatcher
-RebaseAppDispatcher.register(function(payload) {
+Dispatcher.register(function(payload) {
     var action = payload.action;
     switch(action.type) {
+        case ActionConstants.SELECT_VIEW: _currentAuction = null; break;
         case ActionConstants.GET_AUCTION_DATA:
             switch(action.response) {
-                case RequestConstants.PENDING: break;
-                default: persistAuctionData(action.response); break;
+                case RequestConstants.PENDING:
+                    _loading = true;
+                break;
+                default:
+                    _allAuctions = action.response.auctions.map(labelAuctionType);
+                    _loading = false;
+                break;
             } break;
-        case ActionConstants.ADD_COMMENT_TO_AUCTION:
+        case ActionConstants.SELECT_AUCTION:
+            if (!action.auctionID) { _currentAuction = null; }
+            else {
+                var found = false;
+                for(var i=0; i<_allAuctions.length; i++) {
+                    if (_allAuctions[i].id == action.auctionID) { _currentAuction = _allAuctions[i]; found=true; };
+                }
+                if (!found) { console.warn('Unknown or invalid auction ID provided to select auction action! : ', action.auctionID); }
+            }
+            break;
+        case ActionConstants.ADD_COMMENT_TO_TICKET:
             switch(action.response) {
                 case RequestConstants.PENDING: break;
-                default: persistModifiedAuction(action.response.data); break;
+                default: persistNewComment(action.response); break;
             } break;
         case ActionConstants.BID_ON_AUCTION:
             switch(action.response) {
-                case RequestConstants.PENDING: markBidPending(action.response.data); break;
-                default: handleBidResponse(action.response.data); break;
+                //case RequestConstants.PENDING: markBidPending(action.response.data); break;
+                //default: handleBidResponse(action.response.data); break;
             } break;
         case ActionConstants.GET_COMMENT_DETAIL:
             switch(action.response) {
@@ -99,5 +77,32 @@ RebaseAppDispatcher.register(function(payload) {
     AuctionStore.emitChange();
     return true;
 });
+
+function persistCommentDetail(data) {
+    //data.comment.user = { first_name: 'Andrew', last_name: 'Millspaugh', photo: 'img/andrew.jpg' }; // hack because the api is missing data
+    for(var i=0; i<_allAuctions.length; i++) {
+        var comments = _allAuctions[i].ticket_set.bid_limits[0].ticket_snapshot.ticket.comments;
+        for ( var j=0; j < comments.length; j++) {
+            if (comments[j].id == data.comment.id) { _allAuctions[i].ticket_set.bid_limits[0].ticket_snapshot.ticket.comments[j] = data.comment; }
+        }
+    }
+}
+
+function persistNewComment(data) {
+    //data.comment.user = { first_name: 'Andrew', last_name: 'Millspaugh', photo: 'img/andrew.jpg' }; // hack because the api is missing data
+    for(var i=0; i<_allAuctions.length; i++) {
+        var ticket = _allAuctions[i].ticket_set.bid_limits[0].ticket_snapshot.ticket;
+        if (ticket.id == data.comment.ticket.id) {
+            _allAuctions[i].ticket_set.bid_limits[0].ticket_snapshot.ticket.comments.push(data.comment);
+        }
+    }
+}
+
+function labelAuctionType(auction) {
+    if (auction.state == 'waiting_for_bids' || auction.state == 'created') {
+        auction.type = viewConstants.ViewTypes.OFFERED;
+    }
+    return auction
+}
 
 module.exports = AuctionStore;
