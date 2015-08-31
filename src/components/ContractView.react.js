@@ -16,7 +16,6 @@ var CommentList = require('../components/CommentList.react');
 var CommentBox = require('../components/CommentBox.react');
 var NothingHere = require('../components/NothingHere.react');
 var LoadingAnimation = require('../components/LoadingAnimation.react');
-var StatusBar = require('../components/StatusBar.react');
 
 // Constants
 var viewConstants = require('../constants/viewConstants');
@@ -158,6 +157,13 @@ var Contract = React.createClass({
     },
     render: function() {
         var ticket = this.props.contract.bid.work_offers[0].ticket_snapshot.ticket;
+        var state = this.props.contract.bid.work_offers[0].work.state
+        var className;
+        switch (state) {
+            case 'in_progress': className = 'neutral'; break;
+            case 'in_review': className = 'notification'; break; 
+            case 'blocked': className = 'needsResolution'; break;
+        }
         return (
             <tr className='ticket'>
                 { this.props.currentRole.type == 'manager' ?
@@ -169,6 +175,7 @@ var Contract = React.createClass({
                     <Icons.Comment/>
                     <span>{ticket.comments.length} Comments</span>
                 </td>
+                <td className={'statusPanel ' + className}></td>
             </tr>
         );
     }

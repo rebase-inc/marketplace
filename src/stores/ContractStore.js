@@ -36,13 +36,13 @@ RebaseAppDispatcher.register(function(payload) {
         case ActionConstants.SELECT_VIEW: _currentContract = null; break;
         case ActionConstants.GET_CONTRACT_DATA:
             switch(action.response) {
-                case RequestConstants.PENDING: 
-                    _loadingContractData = true; 
+                case RequestConstants.PENDING:
+                    _loadingContractData = true;
                     break;
-                default: 
-                    _allContracts = action.response.contracts.map(labelContractType); 
-                    _loadingContractData = false; 
-                    break; 
+                default:
+                    _allContracts = action.response.contracts.map(labelContractType);
+                    _loadingContractData = false;
+                    break;
             } break;
         case ActionConstants.SELECT_CONTRACT:
             if (!action.contractID) { _currentContract = null; }
