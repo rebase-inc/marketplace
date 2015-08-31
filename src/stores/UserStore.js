@@ -20,7 +20,7 @@ var UserActions = require('../actions/UserActions');
 
 var _userCookie = Cookies.get('user');
 var _currentUser = !!_userCookie ? JSON.parse(_userCookie) : null;
-var _loggedIn = false;
+var _loggedIn = !!_currentUser;
 var _currentView = null;
 var _currentRole = null;
 

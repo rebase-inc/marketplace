@@ -78,7 +78,7 @@ var SingleContractView = React.createClass({
     openMarkCompleteModal: function() {
         this.setState({
             modalOpen: true ,
-            modalType: 'markFinished',
+            modalType: 'markComplete',
         });
     },
     openMarkBlockedModal: function() {
@@ -226,11 +226,30 @@ var ContractModal = React.createClass({
         return {
             text: '',
             stateChangeSubmitted: false,
+            missingInput: false,
         }
+    },
+    markBlocked: function() {
+        var reason = this.refs.comment.getDOMNode().value;
+        this.setState({ missingInput: !reason.length });
+        if (!reason.length) { return; }
+        this.props.markBlocked(reason);
+    },
+    markUnblocked: function() {
+        var reason = this.refs.comment.getDOMNode().value;
+        this.setState({ missingInput: !reason.length });
+        if (!reason.length) { return; }
+        this.props.markUnblocked(reason);
+    },
+    markComplete: function() {
+        var reason = this.refs.comment.getDOMNode().value;
+        this.setState({ missingInput: !reason.length });
+        if (!reason.length) { return; }
+        this.props.markComplete(reason);
     },
     render: function() {
         switch (this.props.modalType) {
-            case 'markFinished':
+            case 'markComplete':
                 return (
                     <ModalContainer>
                         <div onClick={this.props.closeModal} id='modalClose'>
@@ -238,8 +257,8 @@ var ContractModal = React.createClass({
                         </div>
                         <h3>All done?</h3>
                         <h4>The task will be sent to the client for approval.</h4>
-                        <textarea ref='comment' placeholder='Please leave a short comment describing the work you did'/>
-                        <button className='needsResolution' onClick={function() { this.props.markComplete(this.refs.comment.getDOMNode().value)}.bind(this) }>Submit Work</button>
+                        <textarea className={this.state.missingInput ? 'error' : null} ref='comment' placeholder='Please leave a short comment describing the work you did'/>
+                        <button className='needsResolution' onClick={this.markComplete}>Submit Work</button>
                     </ModalContainer>
                 );
                 break;
@@ -251,8 +270,8 @@ var ContractModal = React.createClass({
                         </div>
                         <h3>Blocked?</h3>
                         <h4>Let the client know you need something to continue</h4>
-                        <textarea ref='comment' placeholder='Please leave a comment describing why you are blocked.'/>
-                        <button className='needsResolution' onClick={function() { this.props.markBlocked(this.refs.comment.getDOMNode().value)}.bind(this) }>Mark Blocked</button>
+                        <textarea className={this.state.missingInput ? 'error' : null} ref='comment' placeholder='Please leave a comment describing why you are blocked.'/>
+                        <button className='needsResolution' onClick={this.markBlocked}>Mark Blocked</button>
                     </ModalContainer>
                 );
                 break;
@@ -264,8 +283,8 @@ var ContractModal = React.createClass({
                         </div>
                         <h3>Not blocked anymore?</h3>
                         <h4>You'll be able to resume work on this task</h4>
-                        <textarea ref='comment' placeholder='Please leave a comment describing why you are no longer blocked.'/>
-                        <button className='needsResolution' onClick={function() { this.props.markUnblocked(this.refs.comment.getDOMNode().value)}.bind(this) }>Remove Block</button>
+                        <textarea className={this.state.missingInput ? 'error' : null} ref='comment' placeholder='Please leave a comment describing why you are no longer blocked.'/>
+                        <button className='needsResolution' onClick={this.markUnblocked}>Remove Block</button>
                     </ModalContainer>
                 );
                 break;
