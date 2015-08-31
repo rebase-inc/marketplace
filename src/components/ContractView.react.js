@@ -203,9 +203,11 @@ var Contract = React.createClass({
             case 'in_progress': className = 'neutral'; break;
             case 'in_review': className = 'notification'; break;
             case 'blocked': className = 'needsResolution'; break;
+            case 'blocked': className = 'needsResolution'; break;
         }
         return (
             <tr className='ticket'>
+                <td className={'statusPanel ' + className}></td>
                 { this.props.currentRole.type == 'manager' ?
                     <FindTalentPanel ticket={ticket} /> :
                     <ProjectInfoPanel ticket={ticket} /> }
@@ -215,7 +217,6 @@ var Contract = React.createClass({
                     <Icons.Comment/>
                     <span>{ticket.comments.length} Comments</span>
                 </td>
-                <td className={'statusPanel ' + className}></td>
             </tr>
         );
     }
@@ -244,7 +245,6 @@ var ContractModal = React.createClass({
     markComplete: function() {
         var reason = this.refs.comment.getDOMNode().value;
         this.setState({ missingInput: !reason.length });
-        if (!reason.length) { return; }
         this.props.markComplete(reason);
     },
     render: function() {
@@ -257,7 +257,7 @@ var ContractModal = React.createClass({
                         </div>
                         <h3>All done?</h3>
                         <h4>The task will be sent to the client for approval.</h4>
-                        <textarea className={this.state.missingInput ? 'error' : null} ref='comment' placeholder='Please leave a short comment describing the work you did'/>
+                        <textarea className={this.state.missingInput ? 'error' : null} ref='comment' placeholder='Leave a short comment describing the work you did (optional)'/>
                         <button className='needsResolution' onClick={this.markComplete}>Submit Work</button>
                     </ModalContainer>
                 );
