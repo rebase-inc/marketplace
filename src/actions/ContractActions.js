@@ -25,7 +25,7 @@ module.exports = {
             contractID: contractID,
         });
     },
-    markComplete: function(user, contract) {
+    markComplete: function(user, contract, reason) {
         var responseAction = function(response) {
             Dispatcher.handleRequestAction({
                 type: ActionConstants.MARK_CONTRACT_COMPLETE,
@@ -38,9 +38,9 @@ module.exports = {
                 response: RequestConstants.PENDING,
             });
         };
-        Api.markContractComplete(user, contract, responseAction, pendingAction);
+        Api.markContractComplete(user, contract, reason, responseAction, pendingAction);
     },
-    markBlocked: function(user, contract) {
+    markBlocked: function(user, contract, reason) {
         var responseAction = function(response) {
             Dispatcher.handleRequestAction({
                 type: ActionConstants.MARK_CONTRACT_BLOCKED,
@@ -53,9 +53,9 @@ module.exports = {
                 response: RequestConstants.PENDING,
             });
         };
-        Api.markContractBlocked(user, contract, responseAction, pendingAction);
+        Api.markContractBlocked(user, contract, reason, responseAction, pendingAction);
     },
-    markUnblocked: function(user, contract) {
+    markUnblocked: function(user, contract, reason) {
         var responseAction = function(response) {
             Dispatcher.handleRequestAction({
                 type: ActionConstants.MARK_CONTRACT_UNBLOCKED,
@@ -68,6 +68,6 @@ module.exports = {
                 response: RequestConstants.PENDING,
             });
         };
-        Api.markContractUnblocked(user, contract, responseAction, pendingAction);
+        Api.markContractUnblocked(user, contract, reason, responseAction, pendingAction);
     },
 };

@@ -15,6 +15,20 @@ input[type=number]::-webkit-inner-spin-button {
     margin: 0;
 }
 
+textarea {
+    resize: none;
+    border: 1px solid hsla(199, 19%, 78%, 1);
+    border-radius: 4px;
+    box-sizing: border-box;
+    background-color: hsla(204, 45%, 99%, 1);
+    font-size: 14px;
+    padding: 14px;
+}
+
+button.needsResolution {
+    background-color: hsla(37, 89%, 64%, 1);
+}
+
 .noselect * {
     -webkit-touch-callout: none;
     -webkit-user-select: none;
@@ -280,7 +294,12 @@ tbody {
     background-color: hsla(200, 30%, 96%, 1);
 }
 
+#itemHeader.neutral {
+    transition: background 1s;
+}
+
 #itemHeader.notification {
+    transition: background 1s;
     background-color: hsla(212, 22%, 43%, 1);
     color: hsla(210, 29%, 97%, 1);
 }
@@ -290,6 +309,7 @@ tbody {
 }
 
 #itemHeader.completed {
+    transition: background 1s;
     background-color: hsla(166, 43%, 56%, 1);
     color: hsla(210, 29%, 97%, 1);
 }
@@ -299,6 +319,7 @@ tbody {
 }
 
 #itemHeader.needsResolution {
+    transition: background 1s;
     background-color: hsla(37, 89%, 64%, 1);
     text-align: left;
     color: hsla(210, 29%, 97%, 1);
@@ -362,8 +383,6 @@ tbody {
     resize: none;
     border: 1px solid hsla(199, 19%, 78%, 1);
     border-radius: 4px;
-    font-size: 14px;
-    padding: 14px;
     box-sizing: border-box;
     background-color: hsla(204, 45%, 99%, 1);
     float: left;
@@ -611,6 +630,7 @@ button.small {
     position: absolute;
     background-color: hsla(216, 33%, 97%, 1);
     padding: 25px;
+    padding-bottom: 10px;
     top: 40%;
     left: 50%;
     transform: translateX(-50%) translateY(-50%);
@@ -619,6 +639,13 @@ button.small {
     min-height: 80px;
     min-width: 400px;
     text-align: center;
+}
+
+#modalDialog textarea {
+    width: 100%;
+    display: block;
+    margin: 14px auto 0 auto;
+    min-height: 100px;
 }
 
 #modalDialog h3 {
@@ -637,7 +664,7 @@ button.small {
 #modalDialog input, #modalDialog button {
     box-shadow: none;
     text-align: center;
-    margin-top: 20px;
+    margin-top: 14px;
 }
 
 #modalDialog button {

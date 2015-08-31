@@ -16,6 +16,7 @@ var CommentList = require('../components/CommentList.react');
 var CommentBox = require('../components/CommentBox.react');
 var NothingHere = require('../components/NothingHere.react');
 var LoadingAnimation = require('../components/LoadingAnimation.react');
+var ModalContainer = require('../components/ModalContainer.react');
 
 // Constants
 var viewConstants = require('../constants/viewConstants');
@@ -246,27 +247,6 @@ var BidModal = React.createClass({
             subHeading = 'But there are ' + remainingTickets.length + ' more tasks waiting for you!';
             inputOrButton = <button onClick={this.props.closeModal}>Show Tasks</button>;
         }
-                    //break;
-                //case ticketTypes.IN_PROGRESS:
-                    //mainHeading = 'Your bid was accepted!';
-                    //subHeading = 'Get started by cloning and running the tests';
-                    //infoOrInput = <div className='infoOrInput cloneInstructions'> $ git clone git@github.com:airpool/ios <br/> $ cd api && python tests/run.py </div>;
-                    //inputOrButton = <button onClick={this.props.closeModal}>Get to work!</button>;
-                    //break;
-                //case ticketTypes.COMPLETED: break;
-            //}
-    }
-});
-
-var ModalContainer = React.createClass({
-    render: function() {
-        return (
-            <div id='modalView'>
-                <div id='modalDialog' onChange={this.handleInput} onKeyPress={this.handleKeyPress}>
-                    {this.props.children}
-                </div>
-            </div>
-        );
     }
 });
 

@@ -130,23 +130,23 @@ var Api = {
         if (pendingHandler) { pendingHandler(); }
         ajax('POST', url, data, responseHandler);
     },
-    markContractComplete: function(user, contract, responseHandler, pendingHandler) {
+    markContractComplete: function(user, contract, reason, responseHandler, pendingHandler) {
         var url = makeUrl('/work/' + contract.bid.work_offers[0].work.id + '/review_events');
         var responseFunction = makeResponseFunc(responseHandler);
         if (pendingHandler) { pendingHandler(); }
         ajax('POST', url, null, responseHandler)
     },
-    markContractBlocked: function(user, contract, responseHandler, pendingHandler) {
+    markContractBlocked: function(user, contract, reason, responseHandler, pendingHandler) {
         var url = makeUrl('/work/' + contract.bid.work_offers[0].work.id + '/halt_events');
         var responseFunction = makeResponseFunc(responseHandler);
         if (pendingHandler) { pendingHandler(); }
-        ajax('POST', url, { reason: 'because i fucking said so' }, responseHandler)
+        ajax('POST', url, { reason: reason }, responseHandler)
     },
-    markContractUnblocked: function(user, contract, responseHandler, pendingHandler) {
+    markContractUnblocked: function(user, contract, reason, responseHandler, pendingHandler) {
         var url = makeUrl('/work/' + contract.bid.work_offers[0].work.id + '/resume_events');
         var responseFunction = makeResponseFunc(responseHandler);
         if (pendingHandler) { pendingHandler(); }
-        ajax('POST', url, { reason: 'because i fucking said so' }, responseHandler)
+        ajax('POST', url, { reason: reason }, responseHandler)
     },
 };
 
