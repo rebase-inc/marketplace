@@ -69,32 +69,32 @@ var SingleContractView = React.createClass({
         currentContract: React.PropTypes.object.isRequired,
         unselectContract: React.PropTypes.func.isRequired,
     },
-    getInitialState: function() { 
-        return { 
+    getInitialState: function() {
+        return {
             modalOpen: false,
             modalType: '',
-        }; 
+        };
     },
-    openMarkCompleteModal: function() { 
-        this.setState({ 
+    openMarkCompleteModal: function() {
+        this.setState({
             modalOpen: true ,
-            modalType: 'markFinished', 
-        }); 
+            modalType: 'markFinished',
+        });
     },
-    openMarkBlockedModal: function() { 
-        this.setState({ 
+    openMarkBlockedModal: function() {
+        this.setState({
             modalOpen: true ,
-            modalType: 'markBlocked', 
-        }); 
+            modalType: 'markBlocked',
+        });
     },
-    openMarkUnblockedModal: function() { 
-        this.setState({ 
+    openMarkUnblockedModal: function() {
+        this.setState({
             modalOpen: true ,
-            modalType: 'markUnblocked', 
-        }); 
+            modalType: 'markUnblocked',
+        });
     },
-    closeModal: function() { 
-        this.setState({ modalOpen: false }); 
+    closeModal: function() {
+        this.setState({ modalOpen: false });
     },
     markComplete: function(reason) {
         ContractActions.markComplete(this.props.currentUser, this.props.currentContract, reason);
@@ -128,7 +128,7 @@ var SingleContractView = React.createClass({
                 switch (this.props.currentContract.bid.work_offers[0].work.state) {
                     case 'in_progress':
                         buttons.push(<button onClick={this.openMarkCompleteModal}>Finished</button>);
-                        buttons.push(<button onClick={this.openMarkBlockedModal} className='warning'>Blocked</button>);
+                        buttons.push(<button onClick={this.openMarkBlockedModal} className='needsResolution'>Blocked</button>);
                         break;
                     case 'in_review':
                         headerClass = 'notification';
@@ -249,8 +249,8 @@ var ContractModal = React.createClass({
                         <div onClick={this.props.closeModal} id='modalClose'>
                             <img src='img/modal-close.svg'/>
                         </div>
-                        <h3>All done?</h3>
-                        <h4>The task will be sent to the client for approval.</h4>
+                        <h3>Blocked?</h3>
+                        <h4>Let the client know you need something to continue</h4>
                         <textarea ref='comment' placeholder='Please leave a comment describing why you are blocked.'/>
                         <button className='needsResolution' onClick={function() { this.props.markBlocked(this.refs.comment.getDOMNode().value)}.bind(this) }>Mark Blocked</button>
                     </ModalContainer>
@@ -262,8 +262,8 @@ var ContractModal = React.createClass({
                         <div onClick={this.props.closeModal} id='modalClose'>
                             <img src='img/modal-close.svg'/>
                         </div>
-                        <h3>All done?</h3>
-                        <h4>The task will be sent to the client for approval.</h4>
+                        <h3>Not blocked anymore?</h3>
+                        <h4>You'll be able to resume work on this task</h4>
                         <textarea ref='comment' placeholder='Please leave a comment describing why you are no longer blocked.'/>
                         <button className='needsResolution' onClick={function() { this.props.markUnblocked(this.refs.comment.getDOMNode().value)}.bind(this) }>Remove Block</button>
                     </ModalContainer>

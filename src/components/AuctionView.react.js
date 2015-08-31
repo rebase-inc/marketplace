@@ -84,7 +84,7 @@ var SingleAuctionView = React.createClass({
         switch (this.props.currentRole.type) {
             case 'contractor':
                 buttons.push(<button onClick={this.openModal}>Bid Now</button>);
-                modal = <BidModal {...this.props} />
+                modal = <BidModal {..._.extend({closeModal: this.closeModal}, {...this.props})} />
                 break;
             case 'manager':
                 buttons.push(<button onClick={this.openModal}>Find More Talent</button>);
@@ -215,7 +215,7 @@ var BidModal = React.createClass({
         if (!this.state.price) {
             return (
                 <ModalContainer>
-                    <div onClick={this.closeModal} id='modalClose'>
+                    <div onClick={this.props.closeModal} id='modalClose'>
                         <img src='img/modal-close.svg'/>
                     </div>
                     <h3>Name your price</h3>
@@ -226,7 +226,7 @@ var BidModal = React.createClass({
         } else if (!this.state.priceSubmitted) {
             return (
                 <ModalContainer>
-                    <div onClick={this.closeModal} id='modalClose'>
+                    <div onClick={this.props.closeModal} id='modalClose'>
                         <img src='img/modal-close.svg'/>
                     </div>
                     <h3>{'Is ' + this.state.price + ' USD Correct?'}</h3>
