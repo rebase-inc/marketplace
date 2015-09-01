@@ -48,18 +48,31 @@ var AuctionView = React.createClass({
     selectAuction: function(auctionID) {
         AuctionActions.selectAuction(auctionID);
     },
-    handleUserInput: function(searchText) { this.setState({ searchText: searchText }); },
+    handleUserInput: function(searchText) {
+        this.setState({ searchText: searchText });
+    },
     render: function() {
-        if (!!this.state.currentAuction) {
-            return <SingleAuctionView {...this.props} {...this.state} unselectAuction={this.selectAuction.bind(null, null)} />;
-        } else {
-            var props = _.extend({ selectAuction: this.selectAuction }, this.state, this.props);
-            return (
-                <div className='mainContent'>
+        var props = {
+            loading: this.state.loading,
+            currentUser: this.props.currentUser,
+            currentRole: this.props.currentRole,
+        }
+        switch (this.state.currentAuction) {
+            case null:
+                props.allAuctions = this.state.allAuctions;
+                props.selectAuction = AuctionActions.selectAuction;
+                return (
+                    <div className='mainContent'>
                     <SearchBar searchText={this.state.searchText} onUserInput={this.handleUserInput}/>
                     <AuctionList {...props} />
-                </div>
-            );
+                    </div>
+                );
+                break;
+            default:
+                props.unselectAuction = AuctionActions.selectAuction.bind(null, null);
+                props.currentAuction = this.state.currentAuction;
+                return <SingleAuctionView {...props} />;
+                break;
         }
     }
 });
@@ -71,34 +84,34 @@ var SingleAuctionView = React.createClass({
         currentAuction: React.PropTypes.object.isRequired,
         unselectAuction: React.PropTypes.func.isRequired,
     },
-    getInitialState: function() { return { modalOpen: false }; },
-    openModal: function() { this.setState({ modalOpen: true }); console.log('opening modal'); },
-    closeModal: function() { this.setState({ modalOpen: false }); },
+    getInitialState: function() {
+        return { modalOpen: false };
+    },
+    toggleModal: function() {
+        this.setState({ modalOpen: !this.state.modalOpen });
+    },
     render: function() {
-        var ticket = this.props.currentAuction.ticket_set.bid_limits[0].ticket_snapshot.ticket;
-        var makeButton = function(props) {
-            return <button onClick={props.onClick} className={props.className}>{props.text}</button>;
-        }
         var buttons = [];
         var modal;
+
         switch (this.props.currentRole.type) {
             case 'contractor':
-                buttons.push(<button onClick={this.openModal}>Bid Now</button>);
-                modal = <BidModal {..._.extend({closeModal: this.closeModal}, {...this.props})} />
+                buttons.push(<button onClick={this.toggleModal}>Bid Now</button>);
+                modal = <BidModal {..._.extend({toggleModal: this.toggleModal}, {...this.props})} />
                 break;
             case 'manager':
-                buttons.push(<button onClick={this.openModal}>Find More Talent</button>);
+                buttons.push(<button onClick={this.toggleModal}>Find More Talent</button>);
                 modal = null;
                 break;
         }
         return (
             <SingleTicketView {...this.props}>
                 { this.state.modalOpen ? modal : null }
-                <TicketHeader goBack={this.props.unselectAuction} title={ticket.title}>
+                <TicketHeader goBack={this.props.unselectAuction} title={this.props.currentAuction.ticket.title}>
                     {buttons}
                 </TicketHeader>
-                <CommentList comments={ticket.comments}/>
-                <CommentBox ticket={ticket} user={this.props.currentUser} />
+                <CommentList comments={this.props.currentAuction.ticket.comments}/>
+                <CommentBox ticket={this.props.currentAuction.ticket} user={this.props.currentUser} />
             </SingleTicketView>
         );
     }
@@ -136,7 +149,7 @@ var AuctionList = React.createClass({
                     </tbody>
                 </table>
             );
-        } else if (this.props.loadingAuctionData) {
+        } else if (this.props.loading) {
             return <LoadingAnimation />;
         } else {
             return <NothingHere text={'We\'re working to find some great auctions for you!'}/>;
@@ -215,7 +228,7 @@ var BidModal = React.createClass({
         if (!this.state.price) {
             return (
                 <ModalContainer>
-                    <div onClick={this.props.closeModal} id='modalClose'>
+                    <div onClick={this.props.toggleModal} id='modalClose'>
                         <img src='img/modal-close.svg'/>
                     </div>
                     <h3>Name your price</h3>
@@ -223,10 +236,10 @@ var BidModal = React.createClass({
                     <input type='number' ref='price' placeholder='Price in USD' onKeyPress={this.handleKeyPress}/>
                 </ModalContainer>
             );
-        } else if (!this.state.priceSubmitted) {
+        } else if (!this.state.priceSubmitted || this.props.loading) {
             return (
                 <ModalContainer>
-                    <div onClick={this.props.closeModal} id='modalClose'>
+                    <div onClick={this.props.toggleModal} id='modalClose'>
                         <img src='img/modal-close.svg'/>
                     </div>
                     <h3>{'Is ' + this.state.price + ' USD Correct?'}</h3>
@@ -234,34 +247,28 @@ var BidModal = React.createClass({
                     <button onClick={this.submitPrice}>Submit Bid</button>
                 </ModalContainer>
             );
-        } else if (this.props.bidPending) {
-            return (
-                <ModalContainer>
-                    <LoadingAnimation />
-                </ModalContainer>
-            );
         } else if (this.props.currentAuction.state == 'waiting_for_bids') {
             var remainingTickets = AuctionStore.getState().allAuctions.filter(function(auction) { return auction.type == viewConstants.ViewTypes.OFFERED; });
             return (
                 <ModalContainer>
-                    <div onClick={this.props.closeModal} id='modalClose'>
+                    <div onClick={this.props.toggleModal} id='modalClose'>
                         <img src='img/modal-close.svg'/>
                     </div>
                     <h3>Your bid was not accepted.</h3>
                     <h4>{'But there are ' + remainingTickets.length + ' more tasks waiting for you!'}</h4>
-                    <button onClick={this.props.closeModal}>Show tasks</button>
+                    <button onClick={this.props.toggleModal}>Show tasks</button>
                 </ModalContainer>
             );
         } else if (this.props.currentAuction.state == 'ended') {
-            return ( 
+            return (
                 <ModalContainer>
-                    <div onClick={this.props.closeModal} id='modalClose'>
+                    <div onClick={this.props.toggleModal} id='modalClose'>
                         <img src='img/modal-close.svg'/>
                     </div>
                     <h3>Your bid was accepted!</h3>
                     <h4>Get started by cloning and running the tests</h4>
                     <div className='infoOrInput cloneInstructions'> $ git clone git@github.com:airpool/ios <br/> $ cd api && python deploy.py && python tests/run.py </div>
-                    <button onClick={this.props.closeModal}>Show task</button>
+                    <button onClick={this.props.toggleModal}>Show task</button>
                 </ModalContainer>
             );
         } else { console.log(this.props.currentAuction); throw 'wtf'; }
