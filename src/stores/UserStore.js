@@ -23,18 +23,7 @@ var _currentUser = !!_userCookie ? JSON.parse(_userCookie) : null;
 var _loggedIn = !!_currentUser;
 var _currentView = null;
 var _currentRole = null;
-
-function persistLoginState(data) {
-    _currentUser = data.user;
-    _currentRole = _currentUser.roles[0];
-    _currentRole.display_name = _currentRole.organization + '/' + _currentRole.project;
-    switch (_currentRole.type) {
-        case 'contractor': _currentView = ContractorViews[ViewTypes.OFFERED]; break;
-        case 'manager': _currentView = ManagerViews[ViewTypes.NEW]; break;
-    }
-    _loggedIn = true;
-    Cookies.set('user', JSON.stringify(_currentUser), 1);
-}
+var _loading = false;
 
 var UserStore = _.extend({}, EventEmitter.prototype, {
     getState: function() {
@@ -43,6 +32,7 @@ var UserStore = _.extend({}, EventEmitter.prototype, {
             loggedIn: _loggedIn,
             currentView: _currentView,
             currentRole: _currentRole,
+            loading: _loading,
         };
     },
     emitChange: function() { this.emit('change'); },
@@ -53,28 +43,10 @@ var UserStore = _.extend({}, EventEmitter.prototype, {
 Dispatcher.register(function(payload) {
     var action = payload.action;
     switch(action.type) {
-        case ActionConstants.LOGIN:
-            switch(action.response) {
-                case RequestConstants.PENDING: console.log('Pending login!'); break;
-                case RequestConstants.ERROR: console.log('Error logging in!'); break;
-                case RequestConstants.NOT_LOGGED_IN: console.log('Not authorized!'); break;
-                default: persistLoginState(action.response); break;
-            } break;
-        case ActionConstants.SELECT_VIEW:
-            switch(_currentRole.type) {
-                case 'contractor': _currentView = ContractorViews[action.viewType]; break;
-                case 'manager': _currentView = ManagerView[action.viewType]; break;
-            } break;
-        case ActionConstants.SELECT_ROLE:
-            var newRole = _currentUser.roles.filter(role => role.id == action.roleID)[0];
-            if (newRole) { _currentRole = newRole; }
-            else { console.warn('Invalid roleID given: ', action.roleID); }
-            break;
-        case ActionConstants.GET_USER_DETAIL:
-            switch(action.response) {
-                case RequestConstants.PENDING: console.log('Pending user details!'); break;
-                default: persistLoginState(action.response); break;
-            } break;
+        case ActionConstants.LOGIN: handleLogin(action.response); break;
+        case ActionConstants.SELECT_VIEW: handleSelectView(action.viewType); break;
+        case ActionConstants.SELECT_ROLE: handleSelectRole(action.roleID); break;
+        case ActionConstants.GET_USER_DETAIL: handleLogin(action.response); break;
         default: return true;
     }
 
@@ -82,5 +54,49 @@ Dispatcher.register(function(payload) {
     UserStore.emitChange();
     return true;
 });
+
+function handleLogin(data) {
+    switch (data) {
+        case RequestConstants.PENDING: _loading = true; break;
+        case RequestConstants.TIMEOUT: _loading = false; console.warn(data); break;
+        case RequestConstants.ERROR: _loading = false; console.warn(data); break;
+        case null: _loading = false; console.warn('Undefined data!');
+        default:
+            _loading = false;
+            _currentUser = data.user;
+            _currentRole = _currentUser.roles[0];
+            _currentRole.display_name = _currentRole.type == 'manager' ? _currentRole.organization + '/' + _currentRole.project : 'Contractor View';
+            switch (_currentRole.type) {
+                case 'contractor': _currentView = ContractorViews[ViewTypes.OFFERED]; break;
+                case 'manager': _currentView = ManagerViews[ViewTypes.NEW]; break;
+            }
+            _loggedIn = !!_currentUser;
+            Cookies.set('user', JSON.stringify(_currentUser), 1);
+    }
+}
+
+function handleSelectView(viewType) {
+    switch(_currentRole.type) {
+        case 'contractor': _currentView = ContractorViews[viewType]; break;
+        case 'manager': _currentView = ManagerViews[viewType]; break;
+    }
+}
+
+function handleSelectRole(roleID) {
+    _currentRole = _currentUser.roles.filter(role => role.id == roleID)[0] || _currentRole;
+}
+
+function handleUserDetail(data) {
+    switch (data) {
+        case RequestConstants.PENDING: _loading = true; break;
+        case RequestConstants.TIMEOUT: _loading = false; console.warn(data); break;
+        case RequestConstants.ERROR: _loading = false; console.warn(data); break;
+        case null: _loading = false; console.warn('Null data!');
+        default:
+            _loading = false;
+            _allAuctions.forEach(auction => auction.ticket.comments.forEach(comment => { comment = comment.id == data.comment.id ? data.comment : comment }));
+            break;
+    }
+}
 
 module.exports = UserStore;
