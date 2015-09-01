@@ -124,6 +124,7 @@ var Api = {
                     contractor: { id: user.roles.filter(r => r.type == 'contractor')[0].id },
                 }],
                 contractor: { id: user.roles.filter(r => r.type == 'contractor')[0].id },
+                auction: { id: auction.id },
             }
         };
         var responseFunction = makeResponseFunc(responseHandler);

@@ -93,6 +93,12 @@ var SingleContractView = React.createClass({
             modalType: 'markUnblocked',
         });
     },
+    openResolveMediationModal: function() {
+        this.setState({
+            modalOpen: true ,
+            modalType: 'resolveMediation',
+        });
+    },
     closeModal: function() {
         this.setState({ modalOpen: false });
     },
@@ -136,6 +142,10 @@ var SingleContractView = React.createClass({
                     case 'blocked':
                         headerClass = 'needsResolution';
                         buttons.push(<button onClick={this.openMarkUnblockedModal}>Unblock</button>);
+                        break;
+                    case 'in_mediation':
+                        headerClass = 'needsResolution';
+                        buttons.push(<button onClick={this.openResolveMediationModal}>Unblock</button>);
                         break;
                     default: break;
                 }
@@ -203,7 +213,7 @@ var Contract = React.createClass({
             case 'in_progress': className = 'neutral'; break;
             case 'in_review': className = 'notification'; break;
             case 'blocked': className = 'needsResolution'; break;
-            case 'blocked': className = 'needsResolution'; break;
+            case 'in_mediation': className = 'needsResolution'; break;
         }
         return (
             <tr className='ticket'>
@@ -258,7 +268,7 @@ var ContractModal = React.createClass({
                         <h3>All done?</h3>
                         <h4>The task will be sent to the client for approval.</h4>
                         <textarea className={this.state.missingInput ? 'error' : null} ref='comment' placeholder='Leave a short comment describing the work you did (optional)'/>
-                        <button className='needsResolution' onClick={this.markComplete}>Submit Work</button>
+                        <button onClick={this.markComplete}>Submit Work</button>
                     </ModalContainer>
                 );
                 break;
@@ -285,6 +295,21 @@ var ContractModal = React.createClass({
                         <h4>You'll be able to resume work on this task</h4>
                         <textarea className={this.state.missingInput ? 'error' : null} ref='comment' placeholder='Please leave a comment describing why you are no longer blocked.'/>
                         <button className='needsResolution' onClick={this.markUnblocked}>Remove Block</button>
+                    </ModalContainer>
+                );
+                break;
+            case 'resolveMediation':
+                return (
+                    <ModalContainer>
+                        <div onClick={this.props.closeModal} id='modalClose'>
+                            <img src='img/modal-close.svg'/>
+                        </div>
+                        <h3>The client doesn't agree that you're finished with the work.</h3>
+                        <h4>How do you want to resolve? You should discuss with the client before making a final decision.</h4>
+                        <textarea className={this.state.missingInput ? 'error' : null} ref='comment' placeholder='Leave a comment explaining your decision'/>
+                        <button className='needsResolution' onClick={this.giveUp}>Give up</button>
+                        <button className='needsResolution' onClick={this.dispute}>Dispute</button>
+                        <button className='needsResolution' onClick={this.returnToWork}>Fix client issue</button>
                     </ModalContainer>
                 );
                 break;

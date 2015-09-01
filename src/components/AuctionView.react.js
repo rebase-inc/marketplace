@@ -234,19 +234,37 @@ var BidModal = React.createClass({
                     <button onClick={this.submitPrice}>Submit Bid</button>
                 </ModalContainer>
             );
-        } else if (true) {
+        } else if (this.props.bidPending) {
             return (
                 <ModalContainer>
                     <LoadingAnimation />
                 </ModalContainer>
             );
-        } else {
-            throw 'fuck';
-            var remainingTickets = TicketStore.getState().allTickets.filter(function(ticket) { return ticket.type == ticketTypes.OFFERED; });
-            mainHeading = 'Your bid was not accepted.';
-            subHeading = 'But there are ' + remainingTickets.length + ' more tasks waiting for you!';
-            inputOrButton = <button onClick={this.props.closeModal}>Show Tasks</button>;
-        }
+        } else if (this.props.currentAuction.state == 'waiting_for_bids') {
+            var remainingTickets = AuctionStore.getState().allAuctions.filter(function(auction) { return auction.type == viewConstants.ViewTypes.OFFERED; });
+            return (
+                <ModalContainer>
+                    <div onClick={this.props.closeModal} id='modalClose'>
+                        <img src='img/modal-close.svg'/>
+                    </div>
+                    <h3>Your bid was not accepted.</h3>
+                    <h4>{'But there are ' + remainingTickets.length + ' more tasks waiting for you!'}</h4>
+                    <button onClick={this.props.closeModal}>Show tasks</button>
+                </ModalContainer>
+            );
+        } else if (this.props.currentAuction.state == 'ended') {
+            return ( 
+                <ModalContainer>
+                    <div onClick={this.props.closeModal} id='modalClose'>
+                        <img src='img/modal-close.svg'/>
+                    </div>
+                    <h3>Your bid was accepted!</h3>
+                    <h4>Get started by cloning and running the tests</h4>
+                    <div className='infoOrInput cloneInstructions'> $ git clone git@github.com:airpool/ios <br/> $ cd api && python deploy.py && python tests/run.py </div>
+                    <button onClick={this.props.closeModal}>Show task</button>
+                </ModalContainer>
+            );
+        } else { console.log(this.props.currentAuction); throw 'wtf'; }
     }
 });
 

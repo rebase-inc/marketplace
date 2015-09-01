@@ -62,8 +62,13 @@ Dispatcher.register(function(payload) {
             } break;
         case ActionConstants.BID_ON_AUCTION:
             switch(action.response) {
-                //case RequestConstants.PENDING: markBidPending(action.response.data); break;
-                //default: handleBidResponse(action.response.data); break;
+                case RequestConstants.PENDING: _bidPending = true; break;
+                case RequestConstants.ERROR: console.log('error!'); break;
+                default:
+                    _bidPending = false;
+                    action.response.auction.type = viewConstants.ViewTypes.TO_BE_DELETED; //no matter what happens, we dont want this in the auction view anymore
+                    persistModifiedAuction(action.response);
+                    break;
             } break;
         case ActionConstants.GET_COMMENT_DETAIL:
             switch(action.response) {
@@ -88,8 +93,19 @@ function persistCommentDetail(data) {
     }
 }
 
+function persistModifiedAuction(data) {
+    var found = false;
+    for(var i=0; i<_allAuctions.length; i++) {
+        if (data.auction.id == _allAuctions[i].id) {
+            _allAuctions[i] = data.auction;
+            if (_currentAuction.id == data.auction.id) { _currentAuction = data.auction; }
+            found = true;
+        }
+    }
+    if (!found) { console.warn('Unknown or invalid auction provided to persistModifiedAuction! : ', data.auction); }
+}
+
 function persistNewComment(data) {
-    //data.comment.user = { first_name: 'Andrew', last_name: 'Millspaugh', photo: 'img/andrew.jpg' }; // hack because the api is missing data
     for(var i=0; i<_allAuctions.length; i++) {
         var ticket = _allAuctions[i].ticket_set.bid_limits[0].ticket_snapshot.ticket;
         if (ticket.id == data.comment.ticket.id) {
@@ -100,7 +116,12 @@ function persistNewComment(data) {
 
 function labelAuctionType(auction) {
     if (auction.state == 'waiting_for_bids' || auction.state == 'created') {
-        auction.type = viewConstants.ViewTypes.OFFERED;
+        var isContractor = false; // obviously we need to get the real info here
+        if (!auction.bids.length || isContractor) {
+            auction.type = viewConstants.ViewTypes.OFFERED;
+        } else {
+            auction.type = viewConstants.ViewTypes.TO_BE_DELETED;
+        }
     }
     return auction
 }
