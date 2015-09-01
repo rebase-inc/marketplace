@@ -35,18 +35,15 @@ var AuctionView = React.createClass({
     getInitialState: function() {
         return _.extend({ searchText: '' }, AuctionStore.getState());
     },
+    _onChange: function() {
+        this.setState(AuctionStore.getState());
+    },
     componentDidMount: function() {
         AuctionStore.addChangeListener(this._onChange);
         setTimeout(AuctionActions.getAuctionData, 0);
     },
     componentWillUnmount: function() {
         AuctionStore.removeChangeListener(this._onChange);
-    },
-    _onChange: function() {
-        this.setState(AuctionStore.getState());
-    },
-    selectAuction: function(auctionID) {
-        AuctionActions.selectAuction(auctionID);
     },
     handleUserInput: function(searchText) {
         this.setState({ searchText: searchText });

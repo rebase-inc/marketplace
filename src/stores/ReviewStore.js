@@ -8,14 +8,15 @@ var _ = require('underscore');
 //Define initial data points
 var _allReviews = [];
 var _currentReview = null;
-var _loadingReviewData = false;
+var _loading = false;
+
 
 var ReviewStore = _.extend({}, EventEmitter.prototype, {
     getState: function() {
         return {
             allReviews: _allReviews,
             currentReview: _currentReview,
-            loadingReviewData: _loadingReviewData,
+            loading: _loading,
         };
     },
     select: function(review) {
@@ -34,36 +35,10 @@ RebaseAppDispatcher.register(function(payload) {
     var action = payload.action;
     switch(action.type) {
         case ActionConstants.SELECT_VIEW: _currentReview = null; break;
-        case ActionConstants.GET_REVIEW_DATA:
-            switch(action.response) {
-                case RequestConstants.PENDING:
-                    _loadingReviewData = true;
-                    break;
-                default:
-                    _allReviews = action.response.reviews;
-                    _loadingReviewData = false;
-                    break;
-            } break;
-        case ActionConstants.SELECT_REVIEW:
-            if (!action.reviewID) { _currentReview = null; }
-            else {
-                var found = false;
-                for(var i=0; i<_allReviews.length; i++) {
-                    if (_allReviews[i].id == action.reviewID) { _currentReview = _allReviews[i]; found=true; };
-                }
-                if (!found) { console.warn('Unknown or invalid review ID provided to select review action! : ', action.reviewID); }
-            }
-            break;
-        case ActionConstants.ADD_COMMENT_TO_TICKET:
-            switch(action.response) {
-                case RequestConstants.PENDING: break;
-                default: persistNewComment(action.response); break;
-            } break;
-        case ActionConstants.GET_COMMENT_DETAIL:
-            switch(action.response) {
-                case RequestConstants.PENDING: break;
-                default: persistCommentDetail(action.response); break;
-            } break;
+        case ActionConstants.GET_REVIEW_DATA: handleNewReviewData(action.response); break;
+        case ActionConstants.SELECT_REVIEW: handleSelectedReview(action.response); break;
+        case ActionConstants.ADD_COMMENT_TO_TICKET: handleNewComment(action.response); break;
+        case ActionConstants.GET_COMMENT_DETAIL: handleCommentDetail(action.response); break;
         default: return true;
     }
 
@@ -72,31 +47,55 @@ RebaseAppDispatcher.register(function(payload) {
     return true;
 });
 
-function persistNewComment(data) {
-    for(var i=0; i<_allReviews.length; i++) {
-        var ticket = _allReviews[i].work.offer.ticket_snapshot.ticket;
-        if (ticket.id == data.comment.ticket.id) {
-            _allReviews[i].work.offer.ticket_snapshot.ticket.comments.push(data.comment);
-        }
+function handleNewReviewData(data) {
+    switch (data) {
+        case RequestConstants.PENDING: _loading = true; break;
+        case RequestConstants.TIMEOUT: _loading = false; console.warn(data); break;
+        case RequestConstants.ERROR: _loading = false; console.warn(data); break;
+        case null: _loading = false; console.warn('Undefined data!');
+        default:
+            _loading = false;
+            _allReviews = data.reviews;
+            _allReviews.forEach(review => addSyntheticProperties(review));
     }
 }
 
-function persistCommentDetail(data) {
-    //data.comment.user = { first_name: 'Andrew', last_name: 'Millspaugh', photo: 'img/andrew.jpg' }; // hack because the api is missing data
-    for(var i=0; i<_allReviews.length; i++) {
-        var comments = _allReviews[i].work.offer.ticket_snapshot.ticket;
-        for ( var j=0; j < comments.length; j++) {
-            if (comments[j].id == data.comment.id) { _allReviews[i].work.offer.ticket_snapshot.ticket = data.comment; }
-        }
+function addSyntheticProperties(review) {
+    Object.defineProperty(contract, 'ticket', {
+        get: function() { return review.work.offer.ticket_snapshot.ticket; },
+        set: function(ticket) { review.work.offer.ticket_snapshot.ticket = ticket; },
+        configurable: true, // a hack to let us repeatedly set the property so we don't have to be careful
+    });
+    return auction;
+}
+
+function handleSelectedReview(id) {
+    _currentReview = _allReviews.filter(review => review.id == id)[0];
+}
+
+function handleNewComment(data) {
+    switch (data) {
+        case RequestConstants.PENDING: _loading = true; break;
+        case RequestConstants.TIMEOUT: _loading = false; console.warn(data); break;
+        case RequestConstants.ERROR: _loading = false; console.warn(data); break;
+        case null: _loading = false; console.warn('Null data!');
+        default:
+            _loading = false;
+            _allReviews.forEach(review => { if (review.ticket.id == data.comment.ticket.id) { review.ticket.comments.push(data.comment) } });
+            break;
     }
 }
 
-function persistModifiedReview(review) {
-    for(var i=0; i<_allReviews.length; i++) {
-        if (_allReviews[i].id == review.id) {
-            _allReviews[i] = _.extend({}, review);
-            if (_currentReview.id == review.id) { _currentReview = review }
-        };
+function handleCommentDetail(data) {
+    switch (data) {
+        case RequestConstants.PENDING: _loading = true; break;
+        case RequestConstants.TIMEOUT: _loading = false; console.warn(data); break;
+        case RequestConstants.ERROR: _loading = false; console.warn(data); break;
+        case null: _loading = false; console.warn('Null data!');
+        default:
+            _loading = false;
+            _allReviews.forEach(review => review.ticket.comments.forEach(comment => { comment = comment.id == data.comment.id ? data.comment : comment }));
+            break;
     }
 }
 

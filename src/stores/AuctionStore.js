@@ -16,7 +16,7 @@ var _currentAuction = null;
 var _bidPending = false;
 var _loading = false;
 
-var _shouldBeVisible = function(auction) {
+function _shouldBeVisible(auction) {
     return (auction.state == 'created' || auction.state == 'waiting_for_bids') && !auction.bids.length
 }
 
