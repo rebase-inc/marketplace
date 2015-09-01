@@ -78,14 +78,40 @@ var SidebarProfile = React.createClass({
     propTypes: {
         currentUser: React.PropTypes.object.isRequired,
     },
+    getInitialState: function() {
+        return { optionsOpen: false };
+    },
+    toggleOptions: function() {
+        this.setState({ optionsOpen: !this.state.optionsOpen });
+    },
     render: function() {
         return (
             <div id='sidebarProfile'>
-                <img src={this.props.currentUser.photo}/>
-                    <span>{this.props.currentUser.first_name + ' ' + this.props.currentUser.last_name}</span>
-                <Icons.Dropdown/>
+                <div id='currentProfile' onClick={this.toggleOptions}>
+                    <img src={this.props.currentUser.photo}/>
+                        <span>{this.props.currentUser.first_name + ' ' + this.props.currentUser.last_name}</span>
+                    <Icons.Dropdown />
+                </div>
+                <ProfileOptions isOpen={this.state.optionsOpen} {...this.props} />
             </div>
        );
+    }
+});
+
+var ProfileOptions = React.createClass({
+    propTypes: {
+        currentUser: React.PropTypes.object.isRequired,
+        isOpen: React.PropTypes.bool.isRequired,
+    },
+    render: function() {
+        return (
+            <div id='profileOptions' className={this.props.isOpen ? 'open' : null}>
+                <ul>
+                    <li>Profile</li>
+                    <li>Sign Out</li>
+                </ul>
+            </div>
+        );
     }
 });
 

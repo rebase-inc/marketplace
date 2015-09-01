@@ -592,25 +592,54 @@ button.small {
 #sidebarProfile {
     position: absolute;
     bottom: 0;
+    width: 200px;
+    box-sizing: border-box;
     font-size: 14px;
-    padding: 10px;
-    opacity: 0.8;
     line-height: 24px;
     cursor: pointer;
+    background-color: hsla(212, 22%, 47%, 1);
+}
+
+#currentProfile {
+    padding: 8px;
+    background-color: hsla(212, 22%, 33%, 1);
+}
+
+#profileOptions {
+    width: 100%;
 }
 
 #sidebarProfile:hover {
     opacity: 1;
 }
 
-#sidebarProfile > img {
+#profileOptions > ul{
+    padding: 0;
+    margin: 0;
+    height: 0;
+    transition: height 0.3s;
+    text-align: center;
+    list-style-type: none;
+}
+
+#profileOptions.open > ul {
+    height: 72px;
+    transition: height 0.3s;
+} 
+
+#profileOptions > ul > li {
+    padding: 5px;
+}
+
+
+#currentProfile > img {
     height: 24px;
     width: 24px;
-    padding-right: 6px;
+    padding-right: 8px;
     float: left;
 }
 
-#sidebarProfile > span {
+#currentProfile > span {
     padding-right: 6px;
     width: 125px;
     float: left;
