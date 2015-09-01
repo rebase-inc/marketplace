@@ -57,8 +57,13 @@ var AuctionView = React.createClass({
             currentUser: this.props.currentUser,
             currentRole: this.props.currentRole,
         }
-        switch (this.state.currentAuction) {
-            case null:
+        switch (!!this.state.currentAuction) {
+            case true:
+                props.unselectAuction = AuctionActions.selectAuction.bind(null, null);
+                props.currentAuction = this.state.currentAuction;
+                return <SingleAuctionView {...props} />;
+                break;
+            default:
                 props.allAuctions = this.state.allAuctions;
                 props.selectAuction = AuctionActions.selectAuction;
                 return (
@@ -67,11 +72,6 @@ var AuctionView = React.createClass({
                     <AuctionList {...props} />
                     </div>
                 );
-                break;
-            default:
-                props.unselectAuction = AuctionActions.selectAuction.bind(null, null);
-                props.currentAuction = this.state.currentAuction;
-                return <SingleAuctionView {...props} />;
                 break;
         }
     }

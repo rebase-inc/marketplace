@@ -48,7 +48,7 @@ Dispatcher.register(function(payload) {
     return true;
 });
 
-function addTicketProperty(auction) {
+function addSyntheticProperties(auction) {
     Object.defineProperty(auction, 'ticket', {
         get: function() { return auction.ticket_set.bid_limits[0].ticket_snapshot.ticket; },
         set: function(ticket) { auction.ticket_set.bid_limits[0].ticket_snapshot.ticket = ticket; },
@@ -66,21 +66,12 @@ function handleNewAuctionData(data) {
         default:
             _loading = false;
             _allAuctions = data.auctions;
-            _allAuctions.forEach(auction => addTicketProperty(auction));
+            _allAuctions.forEach(auction => addSyntheticProperties(auction));
     }
 }
 
 function handleSelectedAuction(id) {
-    if (!id) {
-        _currentAuction = null;
-        return;
-    } else {
-        var found = false;
-        for(var i=0; i<_allAuctions.length; i++) {
-            if (_allAuctions[i].id == id) { _currentAuction = _allAuctions[i]; found=true; };
-        }
-        if (!found) { console.warn('Unknown or invalid auction ID provided to select auction action! : ', id); }
-    }
+    _currentAuction = _allAuctions.filter(auction => auction.id == id)[0];
 }
 
 function handleNewComment(data) {
@@ -91,7 +82,7 @@ function handleNewComment(data) {
         case null: _loading = false; console.warn('Null data!');
         default:
             _loading = false;
-            _allAuctions.forEach(auction => { if (auction.ticket.id == data.comment.data) { auction.ticket.comments.push(data.comment) } });
+            _allAuctions.forEach(auction => { if (auction.ticket.id == data.comment.ticket.id) { auction.ticket.comments.push(data.comment) } });
             break;
     }
 }
@@ -104,8 +95,8 @@ function handleModifiedAuction(data) {
         case null: _loading = false; console.warn('Null data!');
         default:
             _loading = false;
-            _allAuctions = _allAuctions.map(auction => auction.id == data.auction.id ? addTicketProperty(data.auction) : auction);
-            _currentAuction = _currentAuction.id == data.auction.id ? addTicketProperty(data.auction) : _currentAuction;
+            _allAuctions = _allAuctions.map(auction => auction.id == data.auction.id ? addSyntheticProperties(data.auction) : auction);
+            _currentAuction = _currentAuction.id == data.auction.id ? addSyntheticProperties(data.auction) : _currentAuction;
             break;
     }
 }

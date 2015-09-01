@@ -8,14 +8,18 @@ var _ = require('underscore');
 //Define initial data points
 var _allContracts = [];
 var _currentContract = null;
-var _loadingContractData = false;
+var _loading = false;
+
+var _shouldBeVisible = function(contract) {
+    return !contract.work.review
+}
 
 var ContractStore = _.extend({}, EventEmitter.prototype, {
     getState: function() {
         return {
-            allContracts: _allContracts,
+            allContracts: _allContracts.filter(_shouldBeVisible),
             currentContract: _currentContract,
-            loadingContractData: _loadingContractData,
+            loadingContractData: _loading,
         };
     },
     select: function(contract) {
@@ -34,51 +38,13 @@ RebaseAppDispatcher.register(function(payload) {
     var action = payload.action;
     switch(action.type) {
         case ActionConstants.SELECT_VIEW: _currentContract = null; break;
-        case ActionConstants.GET_CONTRACT_DATA:
-            switch(action.response) {
-                case RequestConstants.PENDING:
-                    _loadingContractData = true;
-                    break;
-                default:
-                    _allContracts = action.response.contracts.map(labelContractType);
-                    _loadingContractData = false;
-                    break;
-            } break;
-        case ActionConstants.SELECT_CONTRACT:
-            if (!action.contractID) { _currentContract = null; }
-            else {
-                var found = false;
-                for(var i=0; i<_allContracts.length; i++) {
-                    if (_allContracts[i].id == action.contractID) { _currentContract = _allContracts[i]; found=true; };
-                }
-                if (!found) { console.warn('Unknown or invalid contract ID provided to select contract action! : ', action.contractID); }
-            }
-            break;
-        case ActionConstants.ADD_COMMENT_TO_TICKET:
-            switch(action.response) {
-                case RequestConstants.PENDING: break;
-                default: persistNewComment(action.response); break;
-            } break;
-        case ActionConstants.GET_COMMENT_DETAIL:
-            switch(action.response) {
-                case RequestConstants.PENDING: break;
-                default: persistCommentDetail(action.response); break;
-            } break;
-        case ActionConstants.MARK_CONTRACT_COMPLETE:
-            switch (action.response) {
-                case RequestConstants.PENDING: break;
-                default: persistWorkDetail(action.response); break;
-            } break;
-        case ActionConstants.MARK_CONTRACT_BLOCKED:
-            switch (action.response) {
-                case RequestConstants.PENDING: break;
-                default: persistWorkDetail(action.response); break;
-            } break;
-        case ActionConstants.MARK_CONTRACT_UNBLOCKED:
-            switch (action.response) {
-                case RequestConstants.PENDING: break;
-                default: persistWorkDetail(action.response); break;
-            } break;
+        case ActionConstants.GET_CONTRACT_DATA: handleNewContractData(action.response); break;
+        case ActionConstants.SELECT_CONTRACT: handleSelectedContract(action.contractID); break;
+        case ActionConstants.ADD_COMMENT_TO_TICKET: handleNewComment(action.response); break;
+        case ActionConstants.GET_COMMENT_DETAIL: handleCommentDetail(action.response); break;
+        case ActionConstants.MARK_CONTRACT_COMPLETE: handleWorkDetail(action.response); break;
+        case ActionConstants.MARK_CONTRACT_BLOCKED: handleWorkDetail(action.response); break;
+        case ActionConstants.MARK_CONTRACT_UNBLOCKED: handleWorkDetail(action.response); break;
         default: return true;
     }
 
@@ -87,51 +53,76 @@ RebaseAppDispatcher.register(function(payload) {
     return true;
 });
 
-function persistNewComment(data) {
-    for(var i=0; i<_allContracts.length; i++) {
-        var ticket = _allContracts[i].bid.work_offers[0].ticket_snapshot.ticket;
-        if (ticket.id == data.comment.ticket.id) {
-            _allContracts[i].bid.work_offers[0].ticket_snapshot.ticket.comments.push(data.comment);
-        }
+
+function handleNewContractData(data) {
+    switch (data) {
+        case RequestConstants.PENDING: _loading = true; break;
+        case RequestConstants.TIMEOUT: _loading = false; console.warn(data); break;
+        case RequestConstants.ERROR: _loading = false; console.warn(data); break;
+        case null: _loading = false; console.warn('Undefined data!');
+        default:
+            _loading = false;
+            _allContracts = data.contracts;
+            _allContracts.forEach(contract => addSyntheticProperties(contract));
     }
 }
 
-function persistWorkDetail(data) {
-    var found = false;
-    for(var i=0; i<_allContracts.length; i++) {
-        var work = _allContracts[i].bid.work_offers[0].work;
-        if (work.id == data.work.id) {
-            found = true;
-            _allContracts[i].bid.work_offers[0].work = data.work;
-        }
-    }
-    if (!found) { console.warn('unknown work detail returned: ', data) }
+function addSyntheticProperties(contract) {
+    Object.defineProperty(contract, 'ticket', {
+        get: function() { return contract.bid.work_offers[0].ticket_snapshot.ticket; },
+        set: function(ticket) { contract.bid.work_offers[0].ticket_snapshot.ticket = ticket; },
+        configurable: true, // a hack to let us repeatedly set the property so we don't have to be careful
+    });
+    Object.defineProperty(contract, 'work', {
+        get: function() { return contract.bid.work_offers[0].work; },
+        set: function(ticket) { contract.bid.work_offers[0].work = work; },
+        configurable: true, // a hack to let us repeatedly set the property so we don't have to be careful
+    });
+    return contract;
 }
 
-function persistCommentDetail(data) {
-    //data.comment.user = { first_name: 'Andrew', last_name: 'Millspaugh', photo: 'img/andrew.jpg' }; // hack because the api is missing data
-    for(var i=0; i<_allContracts.length; i++) {
-        var comments = _allContracts[i].bid.work_offers[0].ticket_snapshot.ticket.comments;
-        for ( var j=0; j < comments.length; j++) {
-            if (comments[j].id == data.comment.id) { _allContracts[i].bid.work_offers[0].ticket_snapshot.ticket.comments[j] = data.comment; }
-        }
+function handleSelectedContract(id) {
+    _currentContract = _allContracts.filter(contract => contract.id == id)[0];
+}
+
+function handleNewComment(data) {
+    switch (data) {
+        case RequestConstants.PENDING: _loading = true; break;
+        case RequestConstants.TIMEOUT: _loading = false; console.warn(data); break;
+        case RequestConstants.ERROR: _loading = false; console.warn(data); break;
+        case null: _loading = false; console.warn('Null data!');
+        default:
+            _loading = false;
+            _allContracts.forEach(contract => { if (contract.ticket.id == data.comment.id) { contract.ticket.comments.push(data.comment) } });
+            break;
     }
 }
 
-function persistModifiedContract(contract) {
-    for(var i=0; i<_allContracts.length; i++) {
-        if (_allContracts[i].id == contract.id) {
-            _allContracts[i] = _.extend({}, contract);
-            if (_currentContract.id == contract.id) { _currentContract = contract }
-        };
+function handleCommentDetail(data) {
+    switch (data) {
+        case RequestConstants.PENDING: _loading = true; break;
+        case RequestConstants.TIMEOUT: _loading = false; console.warn(data); break;
+        case RequestConstants.ERROR: _loading = false; console.warn(data); break;
+        case null: _loading = false; console.warn('Null data!');
+        default:
+            _loading = false;
+            _allContracts.forEach(contract => contract.ticket.comments.forEach(comment => { comment = comment.id == data.comment.id ? data.comment : comment }));
+            break;
     }
 }
 
-function labelContractType(contract) {
-    if (!contract.bid.work_offers[0].review) {
-        contract.type = ViewConstants.ViewTypes.IN_PROGRESS;
+function handleWorkDetail(data) {
+    switch (data) {
+        case RequestConstants.PENDING: _loading = true; break;
+        case RequestConstants.TIMEOUT: _loading = false; console.warn(data); break;
+        case RequestConstants.ERROR: _loading = false; console.warn(data); break;
+        case null: _loading = false; console.warn('Null data!');
+        default:
+            _loading = false;
+            _allContracts.filter(contract => contract.work.id == data.work.id).forEach(contract => { contract.work = data.work; });
+            _currentContract.work = _currentContract.work.id == data.work.id ? data.work : _currentContract.work;
+            break;
     }
-    return contract
 }
 
 module.exports = ContractStore;
