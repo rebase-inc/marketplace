@@ -130,7 +130,7 @@ var RoleSelector = React.createClass({
     render: function() {
         return (
             <div id='roleSelector' className={this.state.open ? 'open' : ''} onClick={this.toggleDropdown}>
-            <span> { this.props.currentRole.type == 'contractor' ? 'Contractor View' : this.props.currentRole.organization } </span>
+            <span> { this.props.currentRole.type == 'contractor' ? 'Contractor View' : this.props.currentRole.organization.projects[0].name } </span>
             <Icons.Dropdown />
             { this.state.open ? <RoleSelectorDropdown {...this.props} /> : null }
             </div>
@@ -145,7 +145,7 @@ var RoleSelectorDropdown = React.createClass({
         var managerRoleElements = managerRoles.map(function(role) {
             return (
                 <li className={role == this.props.currentRole ? 'selected': ''} onClick={this.props.selectRole.bind(null, role.id)} key={role.id}>
-                    {role.organization}
+                    {role.organization.projects[0].name}
                 </li>
             );
         }.bind(this));

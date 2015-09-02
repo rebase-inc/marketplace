@@ -1,0 +1,55 @@
+tr.nomination > td.actionPanel > img {
+    width: 18px;
+    height: 18px;
+    display: block;
+    margin: 0 auto;
+}
+
+/*tr.nomination > td.actionPanel > span {*/
+    /*font-size: 8px;*/
+    /*display: block;*/
+    /*text-align: center;*/
+    /*color: hsla(180, 2%, 75%, 1);*/
+/*}*/
+
+tr.nomination > td.actionPanel,
+tr.ticket > td.findTalentPanel {
+    width: 80px;
+    font-size: 8px;
+    text-align: center;
+    color: hsla(180, 2%, 75%, 1);
+}
+
+tr.nomination > td.actionPanel > svg,
+tr.ticket > td.findTalentPanel > svg {
+    cursor: pointer;
+    height: 18px;
+    display: block;
+    margin: 0 auto;
+    padding: 10px 10px 4px 10px;
+}
+
+
+
+.findTalentPanel:hover svg path {
+    fill: hsla(167, 54%, 53%, 1)
+}
+
+.findTalentPanel.darken svg path {
+    fill: hsla(167, 54%, 53%, 1)
+}
+
+.findTalentPanel:hover {
+    color: hsla(167, 54%, 53%, 1)
+}
+
+.findTalentPanel.darken {
+    color: hsla(167, 54%, 53%, 1)
+}
+
+.findTalentPanel > object {
+    margin-top: 30px;
+    display: block;
+    margin: 0 auto;
+}
+

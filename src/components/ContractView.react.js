@@ -217,7 +217,7 @@ var Contract = React.createClass({
         }
         return (
             <tr className='ticket'>
-                <td className={'statusPanel ' + className}></td>
+                <td className={'thin ' + className}></td>
                 { this.props.currentRole.type == 'manager' ?
                     <FindTalentPanel ticket={ticket} /> :
                     <ProjectInfoPanel ticket={ticket} /> }

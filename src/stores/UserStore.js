@@ -65,7 +65,7 @@ function handleLogin(data) {
             _loading = false;
             _currentUser = data.user;
             _currentRole = _currentUser.roles[0];
-            _currentRole.display_name = _currentRole.type == 'manager' ? _currentRole.organization + '/' + _currentRole.project : 'Contractor View';
+            _currentRole.display_name = _currentRole.type == 'manager' ? _currentRole.organization.name + '/' + _currentRole.organization.projects[0].name : 'Contractor View';
             switch (_currentRole.type) {
                 case 'contractor': _currentView = ContractorViews[ViewTypes.OFFERED]; break;
                 case 'manager': _currentView = ManagerViews[ViewTypes.NEW]; break;

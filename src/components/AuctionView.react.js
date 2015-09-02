@@ -17,6 +17,7 @@ var CommentBox = require('../components/CommentBox.react');
 var NothingHere = require('../components/NothingHere.react');
 var LoadingAnimation = require('../components/LoadingAnimation.react');
 var ModalContainer = require('../components/ModalContainer.react');
+var FindTalentPanel = require('../components/FindTalentPanel.react');
 
 // Constants
 var viewConstants = require('../constants/viewConstants');
@@ -33,7 +34,7 @@ var AuctionView = React.createClass({
         currentRole: React.PropTypes.object.isRequired,
     },
     getInitialState: function() {
-        return _.extend({ searchText: '' }, AuctionStore.getState());
+        return _.extend({ searchText: '', viewingTalent: false }, AuctionStore.getState());
     },
     _onChange: function() {
         this.setState(AuctionStore.getState());
@@ -48,6 +49,10 @@ var AuctionView = React.createClass({
     handleUserInput: function(searchText) {
         this.setState({ searchText: searchText });
     },
+    findTalent: function(auctionID) {
+        AuctionActions.selectAuction(auctionID);
+        this.setState({ viewingTalent: true });
+    },
     render: function() {
         var props = {
             loading: this.state.loading,
@@ -59,12 +64,15 @@ var AuctionView = React.createClass({
             case true:
                 props.unselectAuction = AuctionActions.selectAuction.bind(null, null);
                 props.currentAuction = this.state.currentAuction;
+                props.findTalent = this.findTalent;
+                props.viewingTalent = this.state.viewingTalent;
                 return <SingleAuctionView {...props} />;
                 break;
             default:
                 props.allAuctions = this.state.allAuctions;
                 props.selectAuction = AuctionActions.selectAuction;
                 props.searchText = this.state.searchText;
+                props.findTalent = this.findTalent;
                 return (
                     <div className='mainContent'>
                     <SearchBar searchText={this.state.searchText} onUserInput={this.handleUserInput}/>
@@ -92,6 +100,14 @@ var SingleAuctionView = React.createClass({
     render: function() {
         var buttons = [];
         var modal;
+        if (!!this.props.viewingTalent) {
+            return (
+                <div className='mainContent'>
+                    <SearchBar searchText={this.state.searchText} onUserInput={this.handleUserInput}/>
+                    <FindTalentView />;
+                </div>
+            );
+        }
 
         switch (this.props.currentRole.type) {
             case 'contractor':
@@ -123,12 +139,42 @@ function searchAuctions(auctions, searchText) {
     return fuseSearch.search(searchText.substring(0, 32));
 }
 
-var AuctionList = React.createClass({
+var Talent = React.createClass({
+    //propTypes: {
+        //currentRole: React.PropTypes.object.isRequired,
+        //auction: React.PropTypes.object.isRequired,
+        //selectAuction: React.PropTypes.func.isRequired,
+    //},
+    getInitialState: function() {
+        return { talentState: 'unapproved' };
+    },
+    approve: function() {
+        this.setState({ talentState: 'waiting' });
+    },
+    render: function() {
+        return (
+            <tr className='nomination'>
+                <td className='actionPanel'>
+                    <Icons.ApproveTalent state={this.state.talentState} approve={this.approve}/>
+                    <span>Approve</span>
+                </td>
+                <td className='titlePanel'>Andrew Millspaugh</td>
+                <td className='reasonSelectedPanel'>Some shit required</td>
+                <td className='scorePanel'>
+                    <div className='scoreBox'>
+                    95%
+                    </div>
+                </td>
+            </tr>
+        );
+    }
+});
+
+var FindTalentView = React.createClass({
     propTypes: {
         currentUser: React.PropTypes.object.isRequired,
         currentRole: React.PropTypes.object.isRequired,
-        selectAuction: React.PropTypes.func.isRequired,
-        searchText: React.PropTypes.string.isRequired,
+        currentAuction: React.PropTypes.object.isRequired,
     },
     render: function() {
         var props = {
@@ -136,7 +182,39 @@ var AuctionList = React.createClass({
             currentRole: this.props.currentRole,
         }
         var makeTicketElement = function(auction) { return <Auction auction={auction} key={auction.id} {...props} />; }.bind(props);
-        console.log('search text is ', this.props.searchText);
+        //var auctionIDs = !!this.props.searchText ? searchAuctions(this.props.allAuctions, this.props.searchText) : this.props.allAuctions.map(a => a.id);
+        var fakePeople = [1,2,3,4,5];
+        if (true) {
+            return (
+                <table id='talentList'>
+                    <tbody>
+                        { fakePeople.map(p => <Talent/>) }
+                    </tbody>
+                </table>
+            );
+        } else if (this.props.loading) {
+            return <LoadingAnimation />;
+        } else {
+            return <NothingHere text={'We\'re working to find some great auctions for you!'}/>;
+        }
+    }
+});
+
+var AuctionList = React.createClass({
+    propTypes: {
+        currentUser: React.PropTypes.object.isRequired,
+        currentRole: React.PropTypes.object.isRequired,
+        selectAuction: React.PropTypes.func.isRequired,
+        searchText: React.PropTypes.string.isRequired,
+        findTalent: React.PropTypes.func.isRequired,
+    },
+    render: function() {
+        var props = {
+            selectAuction: this.props.selectAuction,
+            currentRole: this.props.currentRole,
+            findTalent: this.props.findTalent,
+        }
+        var makeTicketElement = function(auction) { return <Auction auction={auction} key={auction.id} {...props} />; }.bind(props);
         var auctionIDs = !!this.props.searchText ? searchAuctions(this.props.allAuctions, this.props.searchText) : this.props.allAuctions.map(a => a.id);
         if (!!this.props.allAuctions.length) {
             return (
@@ -159,19 +237,19 @@ var Auction = React.createClass({
         currentRole: React.PropTypes.object.isRequired,
         auction: React.PropTypes.object.isRequired,
         selectAuction: React.PropTypes.func.isRequired,
+        findTalent: React.PropTypes.func.isRequired,
     },
     render: function() {
-        var ticket = this.props.auction.ticket_set.bid_limits[0].ticket_snapshot.ticket;
         return (
             <tr className='ticket'>
                 { this.props.currentRole.type == 'manager' ?
-                    <FindTalentPanel ticket={ticket} /> :
-                    <ProjectInfoPanel ticket={ticket} /> }
-                <td className='titlePanel'>{ticket.title}</td>
-                <td className='skillsRequiredPanel'>{ticket.skillsRequired}</td>
-                <td className='commentsPanel' onClick={this.props.selectAuction.bind(null, this.props.auction.id)}>
+                    <FindTalentPanel handleClick={this.props.findTalent.bind(null, this.props.auction.id)} ticket={this.props.auction.ticket} /> :
+                    <ProjectInfoPanel ticket={this.props.auction.ticket} /> }
+                <td className='titlePanel'>{this.props.auction.ticket.title}</td>
+                <td className='skillsRequiredPanel'>{this.props.auction.ticket.skillsRequired}</td>
+                <td className='commentsPanel' onClick={alert.bind(null, 'not implemented')}>
                     <Icons.Comment/>
-                    <span>{ticket.comments.length} Comments</span>
+                    <span>{this.props.auction.ticket.comments.length} Comments</span>
                 </td>
             </tr>
         );

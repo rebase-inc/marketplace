@@ -1,11 +1,56 @@
 var React = require('react');
 
+
+var ApproveTalent = React.createClass({
+    propTypes: {
+        approved: React.PropTypes.string,
+    },
+    getDefaultProps: function() {
+        return { state: 'unapproved' };
+    },
+    render: function() {
+        switch (this.props.state) {
+            case 'unapproved':
+                return (
+                    <svg width="26px" height="26px" viewBox="0 0 26 26" onClick={this.props.approve}>
+                        <g id="UI" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                            <g id="Mgr-Suggested-Devs" transform="translate(-363.000000, -188.000000)" stroke-linecap="round" stroke="#BDBFBF" stroke-linejoin="round">
+                                <g id="Long-Ticket-Copy-2" transform="translate(325.000000, 141.000000)">
+                                    <g id="Stroke-1494-+-Stroke-1495" transform="translate(39.000000, 48.000000)">
+                                        <path d="M17.04336,8.47032 L9.47776,15.53112 L6.95696,13.00952" id="Stroke-1494"></path>
+                                        <path d="M23.6,12.0016 C23.6,18.408 18.4048,23.6016 12,23.6016 C5.592,23.6016 0.4,18.408 0.4,12.0016 C0.4,5.5936 5.592,0.4016 12,0.4016 C18.4048,0.4016 23.6,5.5936 23.6,12.0016 L23.6,12.0016 Z" id="Stroke-1495"></path>
+                                    </g>
+                                </g>
+                            </g>
+                        </g>
+                    </svg>
+                );
+                break;
+            case 'waiting':
+                return (
+                    <svg width="25px" height="24px" viewBox="0 0 25 24">
+                        <g id="UI" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                            <g id="Mgr-Waiting-for-Dev-Response" transform="translate(-364.000000, -189.000000)" fill="#F5B651">
+                                <g id="Rectangle-349-+-Approved-+-Fill-2197" transform="translate(349.000000, 184.000000)">
+                                    <g id="Fill-2412" transform="translate(15.000000, 5.000000)">
+                                        <path d="M18.3994,17.8457 C18.3004,17.9527 18.1654,18.0077 18.0304,18.0077 C17.9094,18.0077 17.7884,17.9647 17.6924,17.8767 L11.6924,12.3767 C11.5894,12.2817 11.5304,12.1477 11.5304,12.0077 L11.5304,6.5077 C11.5304,6.2317 11.7544,6.0077 12.0304,6.0077 C12.3074,6.0077 12.5304,6.2317 12.5304,6.5077 L12.5304,11.7877 L18.3684,17.1387 C18.5724,17.3257 18.5864,17.6417 18.3994,17.8457 M12.5304,0.0077 C5.9144,0.0077 0.5304,5.3907 0.5304,12.0077 C0.5304,18.6247 5.9144,24.0077 12.5304,24.0077 C19.1474,24.0077 24.5304,18.6247 24.5304,12.0077 C24.5304,5.3907 19.1474,0.0077 12.5304,0.0077"></path>
+                                    </g>
+                                </g>
+                            </g>
+                        </g>
+                    </svg>
+                );
+                break;
+        }
+    }
+});
+
 var FindTalent = React.createClass({
     render: function() {
         return (
             <svg className='findTalentIcon' width="18px" height="25px" viewBox="0 0 18 25">
             <g id="UI" stroke="none" strokeWidth="1" fill="none" fill-rule="evenodd">
-            <g id="Mgr-New-Tickets" transform="translate(-374.000000, -116.000000)" fill="#BDBFBF">
+            <g id="Mgr-New-Tickets" transform="translate(-374.000000, -116.000000)" fill="#DFE1E1">
             <g id="Long-Ticket" transform="translate(325.000000, 70.500000)">
             <g id="Fill-711" transform="translate(49.500000, 46.243000)">
             <path d="M10.7344,0.0498 C10.5184,-0.0472 10.2624,0.0228 10.1234,0.2158 L0.1234,14.2158 C0.0154,14.3678 0.0004,14.5688 0.0864,14.7358 C0.1714,14.9018 0.3434,15.0068 0.5304,15.0068 L7.9074,15.0068 L6.0424,23.3978 C5.9914,23.6298 6.1104,23.8658 6.3274,23.9628 C6.3934,23.9918 6.4624,24.0068 6.5304,24.0068 C6.6884,24.0068 6.8414,23.9318 6.9374,23.7968 L16.9374,9.7968 C17.0464,9.6448 17.0614,9.4448 16.9754,9.2778 C16.8894,9.1118 16.7184,9.0068 16.5304,9.0068 L9.1544,9.0068 L11.0184,0.6148 C11.0704,0.3828 10.9514,0.1468 10.7344,0.0498"></path>
@@ -72,4 +117,5 @@ module.exports = {
     Comment: Comment,
     FindTalent: FindTalent,
     Dropback: Dropback,
+    ApproveTalent: ApproveTalent,
 };

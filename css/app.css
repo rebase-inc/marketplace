@@ -52,12 +52,59 @@ html, body {
     overflow: hidden;
 }
 
-table {
+.mainContent > table {
     display: block;
     border-collapse: collapse;
     height: calc(100% - 44px);
     width: 100%;
 }
+
+.mainContent > table > tbody {
+    display: table;
+    overflow: auto;
+    max-height: 100%;
+    width: 100%;
+}
+
+.mainContent > table > tbody > tr {
+    display: table-row;
+    width: 100%;
+    height: 80px;
+    border: 1px solid hsla(165, 5%, 83%, 1);
+}
+
+.mainContent > table > tbody > tr:hover {
+    background-color: hsla(200, 30%, 96%, 1);
+}
+
+.mainContent > table > tbody > tr > td {
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+.mainContent > table > tbody > tr > td.statusPanel {
+    padding: 0;
+    width: 8px;
+}
+
+.mainContent > table > tbody > tr > td.statusPanel {
+    background-color: hsla(212, 22%, 43%, 1);
+}
+
+.mainContent > table > tbody > tr > td.needsResolution {
+    background-color: hsla(37, 89%, 64%, 1);
+}
+
+.mainContent > table > tbody > tr > td.completed {
+    background-color: hsla(166, 43%, 56%, 1);
+}
+
+.mainContent > table > tbody > tr > td.warning {
+    background-color: hsla(351, 51%, 59%, 1);
+}
+
+
+
 
 #roleSelector {
     left: 0;
@@ -127,13 +174,6 @@ table {
     margin-bottom: 28px;
 }
 
-.findTalentIcon {
-    height: 18px;
-    display: block;
-    margin: 0 auto;
-    padding-bottom: 4px;
-}
-
 .commentIcon {
     height: 18px;
     display: block;
@@ -148,26 +188,6 @@ table {
     color: hsla(180, 2%, 75%, 1);
 }
 
-.statusPanel {
-    width: 8px;
-}
-
-.statusPanel.notification {
-    background-color: hsla(212, 22%, 43%, 1);
-}
-
-.statusPanel.needsResolution {
-    background-color: hsla(37, 89%, 64%, 1);
-}
-
-.statusPanel.completed {
-    background-color: hsla(166, 43%, 56%, 1);
-}
-
-.statusPanel.warning {
-    background-color: hsla(351, 51%, 59%, 1);
-}
-
 .titlePanel {
     width: 400px;
     font-size: 16px;
@@ -175,14 +195,6 @@ table {
 
 .skillsRequiredPanel {
     font-size: 12px;
-}
-
-.findTalentPanel {
-    width: 80px;
-    font-size: 8px;
-    text-align: center;
-    color: hsla(180, 2%, 75%, 1);
-    cursor: pointer;
 }
 
 .projectInfoPanel {
@@ -204,22 +216,6 @@ table {
     padding: 2px;
 }
 
-.findTalentPanel:hover svg path {
-    fill: hsla(167, 54%, 53%, 1)
-}
-
-.findTalentPanel.darken svg path {
-    fill: hsla(167, 54%, 53%, 1)
-}
-
-.findTalentPanel:hover {
-    color: hsla(167, 54%, 53%, 1)
-}
-
-.findTalentPanel.darken {
-    color: hsla(167, 54%, 53%, 1)
-}
-
 .commentsPanel:hover svg path {
     fill: hsla(212, 22%, 33%, 1);
 }
@@ -237,23 +233,10 @@ table {
     color: hsla(215, 15%, 67%, 1);
 }
 
-.findTalentPanel > object {
-    margin-top: 30px;
-    display: block;
-    margin: 0 auto;
-}
-
 .commentsPanel > object {
     margin-top: 30px;
     display: block;
     margin: 0 auto;
-}
-
-tbody {
-    display: table;
-    overflow: auto;
-    max-height: 100%;
-    width: 100%;
 }
 
 #app {
@@ -281,22 +264,6 @@ tbody {
 #ticketList {
     overflow: auto;
     width: 100%;
-}
-
-.ticket {
-    display: table-row;
-    width: 100%;
-    height: 80px;
-    border: 1px solid hsla(165, 5%, 83%, 1);
-}
-
-.ticket > td:not(.statusPanel) {
-    padding-left: 10px;
-    padding-right: 10px;
-}
-
-.ticket:hover {
-    background-color: hsla(200, 30%, 96%, 1);
 }
 
 #itemHeader.neutral {
@@ -625,7 +592,7 @@ button.small {
 #profileOptions.open > ul {
     height: 72px;
     transition: height 0.3s;
-} 
+}
 
 #profileOptions > ul > li {
     padding: 5px;

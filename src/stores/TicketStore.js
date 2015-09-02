@@ -20,21 +20,17 @@ var TicketStore = _.extend({}, EventEmitter.prototype, {
         return {
             allTickets: _allTickets,
             currentTicket: _currentTicket,
+            loading: _loading,
         }
-    },
-    select: function(ticket) {
-        if (!ticket) { _currentTicket = null; }
-        else {
-            for(var i=0; i<_allTickets.length; i++) {
-                if (_allTickets[i].id == ticket.id) { _currentTicket = _allTickets[i]; };
-            }
-        }
-        this.emitChange();
     },
     emitChange: function() { this.emit('change'); },
     addChangeListener: function(callback) { this.on('change', callback); },
     removeChangeListener: function(callback) { this.removeListener('change', callback); }
 });
+
+function handleSelectedTicket(id) {
+    _currentTicket = _allTickets.filter(ticket => ticket.id == id)[0];
+}
 
 // Register callback with Dispatcher
 Dispatcher.register(function(payload) {
@@ -42,6 +38,7 @@ Dispatcher.register(function(payload) {
 
     switch(action.type) {
         case ActionConstants.SELECT_VIEW: _currentTicket = null; break;
+        case ActionConstants.SELECT_TICKET: handleSelectedTicket(action.ticketID); break;
         case ActionConstants.GET_TICKET_DATA:
             switch(action.response) {
                 case RequestConstants.PENDING:

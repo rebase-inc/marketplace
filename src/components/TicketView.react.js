@@ -10,9 +10,19 @@ var TicketActions = require('../actions/TicketActions');
 
 // Components
 var SearchBar = require('../components/SearchBar.react');
+var NothingHere = require('../components/NothingHere.react');
+var LoadingAnimation = require('../components/LoadingAnimation.react');
+var SingleTicketView = require('../components/SingleTicketView.react');
+var TicketHeader = require('../components/TicketHeader.react');
+var CommentList = require('../components/CommentList.react');
+var CommentBox = require('../components/CommentBox.react');
+var FindTalentPanel = require('../components/FindTalentPanel.react');
 
 // Constants
 var viewConstants = require('../constants/viewConstants');
+
+// Icons
+var Icons = require('../components/RebaseIcons.react');
 
 var TicketView = React.createClass({
     propTypes: {
@@ -43,9 +53,18 @@ var TicketView = React.createClass({
         }
         switch (!!this.state.currentTicket) {
             case true:
-                props.unselectTicket = TicketActions.selectTicket.bind(null, null);
-                props.currentTicket = this.state.currentTicket;
-                return <SingleTicketView {...props} />;
+                var buttons = <button onClick={this.toggleModal}>Find Talent</button>;
+                var modal = null; //<BidModal {..._.extend({toggleModal: this.toggleModal}, {...this.props})} />
+                return (
+                    <SingleTicketView {...this.props}>
+                        { this.state.modalOpen ? modal : null }
+                        <TicketHeader goBack={TicketActions.selectTicket.bind(null, null)} title={this.state.currentTicket.title}>
+                            {buttons}
+                        </TicketHeader>
+                        <CommentList comments={this.state.currentTicket.comments}/>
+                        <CommentBox ticket={this.state.currentTicket} user={this.props.currentUser} />
+                    </SingleTicketView>
+                );
                 break;
             default:
                 props.allTickets = this.state.allTickets;
@@ -61,27 +80,10 @@ var TicketView = React.createClass({
     }
 });
 
-var TicketList = React.createClass({
-    render: function() {
-        var props = {
-            selectTicket: this.props.selectTicket,
-            currentRole: this.props.currentRole,
-        }
-        var ticketMatchesText = function(ticket) {
-            return ticket.title.indexOf(this.props.searchText) != -1;
-        }.bind(this);
-        var makeTicketElement = function(ticket) {
-            return <Ticket ticket={ticket} key={ticket.id} {...props} />;
-        }.bind(props);
-        return (
-            <table id='ticketList'>
-                <tbody>
-                    { this.props.tickets.filter(ticketMatchesText).map(makeTicketElement) }
-                </tbody>
-            </table>
-        );
-    }
-});
+function searchTickets(tickets, searchText) {
+    var fuseSearch = new Fuse(tickets, {threshold: 0.35, keys: ['title', 'description', 'project.name', 'project.organization.name'], id: 'id'});
+    return fuseSearch.search(searchText.substring(0, 32));
+}
 
 var TicketList = React.createClass({
     propTypes: {
@@ -94,37 +96,26 @@ var TicketList = React.createClass({
             selectTicket: this.props.selectTicket,
             currentRole: this.props.currentRole,
         }
-        var allTickets = this.props.allTickets.map(function(ticket) {
-            var _ticket = ticket.ticket_set.bid_limits[0].ticket_snapshot.ticket;
-            _ticket.ticketID = ticket.id;
-            return _ticket;
-        });
-        var searchTickets = function() {
-            var fuseSearch = new Fuse(allTickets, {threshold: 0.35, keys: ['title', 'description', 'project.name', 'project.organization.name'], id: 'ticketID'});
-            return fuseSearch.search(this.props.searchText.substring(0, 32));
-        }.bind(this);
-        var ticketIDs = this.props.searchText ? searchTickets() : allTickets.map(t => t.ticketID);
-        var makeTicketElement = function(ticket) {
-            return <Ticket ticket={ticket} key={ticket.id} {...props} />;
-        }.bind(props);
+        var makeTicketElement = function(ticket) { return <Ticket ticket={ticket} key={ticket.id} {...props} />; }.bind(props);
+        var ticketIDs = !!this.props.searchText ? searchTickets(this.props.allTickets, this.props.searchText) : this.props.allTickets.map(a => a.id);
         if (!!this.props.allTickets.length) {
             return (
                 <table id='ticketList'>
                     <tbody>
-                        { ticketIDs.map(ticketID => this.props.allTickets.filter(ticket => ticket.id == ticketID)[0]).map(makeTicketElement) }
+                        { this.props.allTickets.filter(ticket => ticketIDs.indexOf(ticket.id) != -1).map(makeTicketElement) }
                     </tbody>
                 </table>
             );
         } else if (this.props.loading) {
             return <LoadingAnimation />;
         } else {
-            return <NothingHere text={'We\'re working to find some great tickets for you!'}/>;
+            return <NothingHere text={'You don\'t have any tickets! Import some from GitHub!'}/>;
         }
     }
 });
 
 var Ticket = React.createClass({
-    selectTicket: function() { this.props.selectTicket(this.props.ticket); },
+    selectTicket: function() { this.props.selectTicket(this.props.ticket.id); },
     render: function() {
         var role = this.props.currentRole;
         return (
@@ -142,18 +133,5 @@ var Ticket = React.createClass({
         );
     }
 });
-
-var FindTalentPanel = React.createClass({
-    handleClick: function() { alert('Finding talent, motherfucker.'); },
-    render: function() {
-        return (
-            <td onClick={this.handleClick} className='findTalentPanel'>
-            <Icons.FindTalent/>
-            <span>Find Talent</span>
-            </td>
-        );
-    }
-});
-
 
 module.exports = TicketView;
