@@ -120,9 +120,7 @@ var Ticket = React.createClass({
         var role = this.props.currentRole;
         return (
             <tr className='ticket'>
-                { role.type == 'manager' ?
-                    <FindTalentPanel ticket={this.props.ticket} /> :
-                    <ProjectInfoPanel ticket={this.props.ticket} /> }
+                <FindTalentPanel ticket={this.props.ticket} />
                 <td className='titlePanel'>{this.props.ticket.title}</td>
                 <td className='skillsRequiredPanel'>{this.props.ticket.skillsRequired}</td>
                 <td className='commentsPanel' onClick={this.selectTicket}>

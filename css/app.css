@@ -208,14 +208,6 @@ html, body {
     display: block;
 }
 
-.projectInfoPanel .rating {
-    padding-top: 4px;
-}
-
-.projectInfoPanel .rating > img {
-    padding: 2px;
-}
-
 .commentsPanel:hover svg path {
     fill: hsla(212, 22%, 33%, 1);
 }

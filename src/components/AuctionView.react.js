@@ -18,6 +18,7 @@ var NothingHere = require('../components/NothingHere.react');
 var LoadingAnimation = require('../components/LoadingAnimation.react');
 var ModalContainer = require('../components/ModalContainer.react');
 var FindTalentPanel = require('../components/FindTalentPanel.react');
+var RatingStars = require('../components/RatingStars.react');
 
 // Constants
 var viewConstants = require('../constants/viewConstants');
@@ -149,21 +150,26 @@ var Talent = React.createClass({
         return { talentState: 'unapproved' };
     },
     approve: function() {
-        this.setState({ talentState: 'waiting' });
+        this.setState({ talentState: 'rejected' });
     },
     render: function() {
         return (
             <tr className='nomination'>
                 <td className='actionPanel'>
                     <Icons.ApproveTalent state={this.state.talentState} approve={this.approve}/>
-                    <span>Approve</span>
                 </td>
-                <td className='titlePanel'>Andrew Millspaugh</td>
-                <td className='reasonSelectedPanel'>Some shit required</td>
+                <td className='talentPanel'>
+                    <span>Andrew Millspaugh</span>
+                    <RatingStars rating={3} />
+                </td>
+                <td className='reasonSelectedPanel'>
+                    Blah blah blah blah blah blah blah blah blah blah blah
+                    Blah blah blah blah blah blah blah blah blah blah blah
+                    Blah blah blah blah blah blah blah blah blah blah blah
+                    Blah blah blah blah blah blah blah blah blah blah blah
+                </td>
                 <td className='scorePanel'>
-                    <div className='scoreBox'>
-                    95%
-                    </div>
+                    <Icons.TalentScore score={0.95} />
                 </td>
             </tr>
         );
@@ -264,21 +270,6 @@ var ProjectInfoPanel = React.createClass({
             <span>{projectName}</span>
             <RatingStars rating={this.props.ticket.project.rating || 3} />
             </td>
-        );
-    }
-});
-
-var RatingStars = React.createClass({
-    render: function() {
-        var nearestHalf = Math.round(this.props.rating*2)/2;
-        var fullStars = Math.floor(nearestHalf);
-        var showHalfStar = (nearestHalf != fullStars);
-        return (
-            <div className='rating'>
-                { _.range(fullStars).map(function(el, ind) { return <img key={'full-' + ind} src='img/star-10px.svg' /> }) }
-                { showHalfStar ? <img key='half' src='img/half-star-10px.svg' /> : null }
-                { _.range(5 - fullStars - showHalfStar).map(function(el, ind) { return <img key={'empty-' + ind} src='img/empty-star-10px.svg' /> }) }
-            </div>
         );
     }
 });

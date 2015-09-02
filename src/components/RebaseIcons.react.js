@@ -12,37 +12,85 @@ var ApproveTalent = React.createClass({
         switch (this.props.state) {
             case 'unapproved':
                 return (
-                    <svg width="26px" height="26px" viewBox="0 0 26 26" onClick={this.props.approve}>
-                        <g id="UI" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-                            <g id="Mgr-Suggested-Devs" transform="translate(-363.000000, -188.000000)" stroke-linecap="round" stroke="#BDBFBF" stroke-linejoin="round">
-                                <g id="Long-Ticket-Copy-2" transform="translate(325.000000, 141.000000)">
-                                    <g id="Stroke-1494-+-Stroke-1495" transform="translate(39.000000, 48.000000)">
-                                        <path d="M17.04336,8.47032 L9.47776,15.53112 L6.95696,13.00952" id="Stroke-1494"></path>
-                                        <path d="M23.6,12.0016 C23.6,18.408 18.4048,23.6016 12,23.6016 C5.592,23.6016 0.4,18.408 0.4,12.0016 C0.4,5.5936 5.592,0.4016 12,0.4016 C18.4048,0.4016 23.6,5.5936 23.6,12.0016 L23.6,12.0016 Z" id="Stroke-1495"></path>
+                    <div>
+                        <svg width="26px" height="26px" viewBox="0 0 26 26" onClick={this.props.approve}>
+                            <g id="UI" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                <g id="Mgr-Suggested-Devs" transform="translate(-363.000000, -188.000000)" stroke-linecap="round" stroke="#BDBFBF" stroke-linejoin="round">
+                                    <g id="Long-Ticket-Copy-2" transform="translate(325.000000, 141.000000)">
+                                        <g id="Stroke-1494-+-Stroke-1495" transform="translate(39.000000, 48.000000)">
+                                            <path d="M17.04336,8.47032 L9.47776,15.53112 L6.95696,13.00952" id="Stroke-1494"></path>
+                                            <path d="M23.6,12.0016 C23.6,18.408 18.4048,23.6016 12,23.6016 C5.592,23.6016 0.4,18.408 0.4,12.0016 C0.4,5.5936 5.592,0.4016 12,0.4016 C18.4048,0.4016 23.6,5.5936 23.6,12.0016 L23.6,12.0016 Z" id="Stroke-1495"></path>
+                                        </g>
                                     </g>
                                 </g>
                             </g>
-                        </g>
-                    </svg>
+                        </svg>
+                        <span>Approve</span>
+                    </div>
                 );
                 break;
             case 'waiting':
                 return (
-                    <svg width="25px" height="24px" viewBox="0 0 25 24">
-                        <g id="UI" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-                            <g id="Mgr-Waiting-for-Dev-Response" transform="translate(-364.000000, -189.000000)" fill="#F5B651">
-                                <g id="Rectangle-349-+-Approved-+-Fill-2197" transform="translate(349.000000, 184.000000)">
-                                    <g id="Fill-2412" transform="translate(15.000000, 5.000000)">
-                                        <path d="M18.3994,17.8457 C18.3004,17.9527 18.1654,18.0077 18.0304,18.0077 C17.9094,18.0077 17.7884,17.9647 17.6924,17.8767 L11.6924,12.3767 C11.5894,12.2817 11.5304,12.1477 11.5304,12.0077 L11.5304,6.5077 C11.5304,6.2317 11.7544,6.0077 12.0304,6.0077 C12.3074,6.0077 12.5304,6.2317 12.5304,6.5077 L12.5304,11.7877 L18.3684,17.1387 C18.5724,17.3257 18.5864,17.6417 18.3994,17.8457 M12.5304,0.0077 C5.9144,0.0077 0.5304,5.3907 0.5304,12.0077 C0.5304,18.6247 5.9144,24.0077 12.5304,24.0077 C19.1474,24.0077 24.5304,18.6247 24.5304,12.0077 C24.5304,5.3907 19.1474,0.0077 12.5304,0.0077"></path>
+                    <div>
+                        <svg width="25px" height="24px" viewBox="0 0 25 24">
+                            <g id="UI" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                <g id="Mgr-Waiting-for-Dev-Response" transform="translate(-364.000000, -189.000000)" fill="#F5B651">
+                                    <g id="Rectangle-349-+-Approved-+-Fill-2197" transform="translate(349.000000, 184.000000)">
+                                        <g id="Fill-2412" transform="translate(15.000000, 5.000000)">
+                                            <path d="M18.3994,17.8457 C18.3004,17.9527 18.1654,18.0077 18.0304,18.0077 C17.9094,18.0077 17.7884,17.9647 17.6924,17.8767 L11.6924,12.3767 C11.5894,12.2817 11.5304,12.1477 11.5304,12.0077 L11.5304,6.5077 C11.5304,6.2317 11.7544,6.0077 12.0304,6.0077 C12.3074,6.0077 12.5304,6.2317 12.5304,6.5077 L12.5304,11.7877 L18.3684,17.1387 C18.5724,17.3257 18.5864,17.6417 18.3994,17.8457 M12.5304,0.0077 C5.9144,0.0077 0.5304,5.3907 0.5304,12.0077 C0.5304,18.6247 5.9144,24.0077 12.5304,24.0077 C19.1474,24.0077 24.5304,18.6247 24.5304,12.0077 C24.5304,5.3907 19.1474,0.0077 12.5304,0.0077"></path>
+                                        </g>
                                     </g>
                                 </g>
                             </g>
-                        </g>
-                    </svg>
+                        </svg>
+                        <span style={{color: '#F5B651'}}>Waiting</span>
+                    </div>
                 );
                 break;
+            case 'rejected':
+                return (
+                    <div>
+                        <svg width="25px" height="24px" viewBox="0 0 25 24" version="1.1">
+                            <g id="UI" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                <g id="Mgr-Waiting-for-Dev-Response" transform="translate(-364.000000, -320.000000)" fill="#CC6070">
+                                    <g id="Rectangle-349-+-Approved-+-Fill-2197-Copy" transform="translate(349.000000, 315.000000)">
+                                        <g id="Group" transform="translate(15.000000, 5.000000)">
+                                            <path d="M3.7044,20.126 L11.8234,12.006 L3.7044,3.887 C1.7354,6.025 0.5304,8.877 0.5304,12.006 C0.5304,15.135 1.7354,17.987 3.7044,20.126" id="Fill-712"></path>
+                                            <path d="M12.5308,12.7134 L4.4118,20.8334 C6.5498,22.8014 9.4018,24.0064 12.5308,24.0064 C15.6598,24.0064 18.5118,22.8014 20.6498,20.8334 L12.5308,12.7134 Z" id="Fill-713"></path>
+                                            <path d="M13.2379,12.0063 L21.3569,20.1263 C23.3259,17.9873 24.5309,15.1353 24.5309,12.0063 C24.5309,8.8773 23.3259,6.0253 21.3569,3.8873 L13.2379,12.0063 Z" id="Fill-714"></path>
+                                            <path d="M12.5308,11.2993 L20.6498,3.1803 C18.5118,1.2113 15.6598,0.0063 12.5308,0.0063 C9.4018,0.0063 6.5498,1.2113 4.4118,3.1803 L12.5308,11.2993 Z" id="Fill-715"></path>
+                                        </g>
+                                    </g>
+                                </g>
+                            </g>
+                        </svg>
+                        <span style={{color: '#CC6070'}}>Rejected</span>
+                    </div>
+                );
+                break;
+            default: throw 'invalid state'; break;
         }
     }
+});
+
+var TalentScore = React.createClass({
+    propTypes: {
+        score: React.PropTypes.number,
+    },
+    render: function() {
+        var bgColor;
+        var text;
+        if ( this.props.score >= 0.90 ) { bgColor = '#25AE90'; text = 'great match'; }
+        else if (this.props.score >= 0.75 ) { bgColor = '#F5B651'; text = 'good match'; }
+        else if (this.props.score >= 0.5 ) { bgColor = '#CC6070'; text = 'okay match'; }
+        else { text = 'poor match' }
+        return (
+            <div className='talentScore' style={{backgroundColor: bgColor}}>
+                <span className='score'>{ Math.round(100*this.props.score) + '%' }</span>
+                <span className='text'>{text}</span>
+            </div>
+        );
+    },
 });
 
 var FindTalent = React.createClass({
@@ -118,4 +166,5 @@ module.exports = {
     FindTalent: FindTalent,
     Dropback: Dropback,
     ApproveTalent: ApproveTalent,
+    TalentScore: TalentScore,
 };
