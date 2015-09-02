@@ -53,6 +53,7 @@ var AuctionView = React.createClass({
             loading: this.state.loading,
             currentUser: this.props.currentUser,
             currentRole: this.props.currentRole,
+            searchText: this.state.searchText,
         }
         switch (!!this.state.currentAuction) {
             case true:
@@ -63,6 +64,7 @@ var AuctionView = React.createClass({
             default:
                 props.allAuctions = this.state.allAuctions;
                 props.selectAuction = AuctionActions.selectAuction;
+                props.searchText = this.state.searchText;
                 return (
                     <div className='mainContent'>
                     <SearchBar searchText={this.state.searchText} onUserInput={this.handleUserInput}/>
@@ -114,35 +116,33 @@ var SingleAuctionView = React.createClass({
     }
 });
 
+// this should be put into the auction store so we don't have to reinstantiate the
+// search object every time we change the search text
+function searchAuctions(auctions, searchText) {
+    var fuseSearch = new Fuse(auctions, {threshold: 0.35, keys: ['ticket.title', 'ticket.description', 'ticket.project.name', 'ticket.project.organization.name'], id: 'id'});
+    return fuseSearch.search(searchText.substring(0, 32));
+}
+
 var AuctionList = React.createClass({
     propTypes: {
         currentUser: React.PropTypes.object.isRequired,
         currentRole: React.PropTypes.object.isRequired,
         selectAuction: React.PropTypes.func.isRequired,
+        searchText: React.PropTypes.string.isRequired,
     },
     render: function() {
         var props = {
             selectAuction: this.props.selectAuction,
             currentRole: this.props.currentRole,
         }
-        var allTickets = this.props.allAuctions.map(function(auction) {
-            var _ticket = auction.ticket_set.bid_limits[0].ticket_snapshot.ticket;
-            _ticket.auctionID = auction.id;
-            return _ticket;
-        });
-        var searchTickets = function() {
-            var fuseSearch = new Fuse(allTickets, {threshold: 0.35, keys: ['title', 'description', 'project.name', 'project.organization.name'], id: 'auctionID'});
-            return fuseSearch.search(this.props.searchText.substring(0, 32));
-        }.bind(this);
-        var auctionIDs = this.props.searchText ? searchTickets() : allTickets.map(t => t.auctionID);
-        var makeTicketElement = function(auction) {
-            return <Auction auction={auction} key={auction.id} {...props} />;
-        }.bind(props);
+        var makeTicketElement = function(auction) { return <Auction auction={auction} key={auction.id} {...props} />; }.bind(props);
+        console.log('search text is ', this.props.searchText);
+        var auctionIDs = !!this.props.searchText ? searchAuctions(this.props.allAuctions, this.props.searchText) : this.props.allAuctions.map(a => a.id);
         if (!!this.props.allAuctions.length) {
             return (
                 <table id='ticketList'>
                     <tbody>
-                        { auctionIDs.map(auctionID => this.props.allAuctions.filter(auction => auction.id == auctionID)[0]).map(makeTicketElement) }
+                        { this.props.allAuctions.filter(auction => auctionIDs.indexOf(auction.id) != -1).map(makeTicketElement) }
                     </tbody>
                 </table>
             );
