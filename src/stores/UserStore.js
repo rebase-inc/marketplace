@@ -20,6 +20,7 @@ var UserActions = require('../actions/UserActions');
 
 var _userCookie = Cookies.get('user');
 var _currentUser = !!_userCookie ? JSON.parse(_userCookie) : null;
+var _currentUser = null; // don't really want cookies to work right now
 var _loggedIn = !!_currentUser;
 var _currentView = null;
 var _currentRole = null;
