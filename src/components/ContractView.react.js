@@ -218,9 +218,7 @@ var Contract = React.createClass({
         return (
             <tr className='ticket'>
                 <td className={'thin ' + className}></td>
-                { this.props.currentRole.type == 'manager' ?
-                    <FindTalentPanel ticket={ticket} /> :
-                    <ProjectInfoPanel ticket={ticket} /> }
+                <ProjectInfoPanel ticket={ticket} />
                 <td className='titlePanel'>{ticket.title}</td>
                 <td className='skillsRequiredPanel'>{ticket.skillsRequired}</td>
                 <td className='commentsPanel' onClick={this.props.selectContract.bind(null, this.props.contract.id)}>

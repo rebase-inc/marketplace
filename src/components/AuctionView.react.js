@@ -253,7 +253,7 @@ var Auction = React.createClass({
                     <ProjectInfoPanel ticket={this.props.auction.ticket} /> }
                 <td className='titlePanel'>{this.props.auction.ticket.title}</td>
                 <td className='skillsRequiredPanel'>{this.props.auction.ticket.skillsRequired}</td>
-                <td className='commentsPanel' onClick={alert.bind(null, 'not implemented')}>
+                <td className='commentsPanel' onClick={this.props.selectAuction.bind(null, this.props.auction.id)}>
                     <Icons.Comment/>
                     <span>{this.props.auction.ticket.comments.length} Comments</span>
                 </td>

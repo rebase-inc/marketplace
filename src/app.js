@@ -1,4 +1,4 @@
 var React = require('react');
+var ReactDOM = require('react-dom');
 var RebaseApp = require('./components/RebaseApp.react');
-window.React = React; // export for http://fb.me/react-devtools
-React.render(<RebaseApp />, document.body);
+ReactDOM.render(<RebaseApp />, document.body);

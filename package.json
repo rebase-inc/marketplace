@@ -7,6 +7,7 @@
   "dependencies": {
     "flux": "^2.0.1",
     "react": "",
+    "react-dom": "",
     "underscore": "",
     "keymirror": "~0.1.0"
   },

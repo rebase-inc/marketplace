@@ -59,8 +59,8 @@ var LoginDialog = React.createClass({
         else { this.handleInput(); }
     },
     attemptLogin: function() {
-        var email = this.refs.email.getDOMNode().value;
-        var password = this.refs.password.getDOMNode().value;
+        var email = this.refs.email.value;
+        var password = this.refs.password.value;
         UserActions.login(email, password);
     },
     attemptSignup: function() {
@@ -70,8 +70,8 @@ var LoginDialog = React.createClass({
     },
     handleInput: function() {
         this.setState({
-            email: this.refs.email.getDOMNode().value,
-            password: this.refs.password.getDOMNode().value,
+            email: this.refs.email.value,
+            password: this.refs.password.value,
         });
     },
     render: function() {

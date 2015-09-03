@@ -1,6 +1,6 @@
 @font-face {
     font-family: GothamRounded;
-    src: url("/Users/andrewmillspaugh/Downloads/GothamRnd-Light.otf") format("opentype");
+    src: url("../font/GothamRnd-Light.otf") format("opentype");
 }
 
 * { font-family: GothamRounded; font-weight: lighter; }
