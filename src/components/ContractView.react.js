@@ -10,7 +10,6 @@ var ContractActions = require('../actions/ContractActions');
 
 // Components
 var SearchBar = require('../components/SearchBar.react');
-var SingleTicketView = require('../components/SingleTicketView.react');
 var TicketHeader = require('../components/TicketHeader.react');
 var CommentList = require('../components/CommentList.react');
 var CommentBox = require('../components/CommentBox.react');
