@@ -3,11 +3,15 @@ var _ = require('underscore');
 
 var Icons = require('../components/RebaseIcons.react');
 var Sidebar = require('../components/Sidebar.react');
-var MainView = require('../components/MainView.react');
 var TicketStore = require('../stores/TicketStore');
 var UserStore = require('../stores/UserStore');
 var viewConstants = require('../constants/viewConstants');
 var UserActions = require('../actions/UserActions');
+
+var TicketView = require('../components/TicketView.react');
+var AuctionView = require('../components/AuctionView.react');
+var ContractView = require('../components/ContractView.react');
+var ReviewView = require('../components/ReviewView.react');
 
 var RebaseApp = React.createClass({
     selectRole: function(roleID) {
@@ -42,13 +46,27 @@ var RebaseApp = React.createClass({
             currentView: this.state.currentView,
             currentRole: this.state.currentRole,
         };
-        var App = (
-            <div id='app'>
-                <Sidebar {...sidebarProps} />
-                <MainView {...mainProps} />
-            </div>
-        );
-        return this.state.loggedIn ? App : <LoginDialog />;
+        var View;
+        if (!this.state.loggedIn) {
+            return <LoginDialog />
+        } else {
+            return (
+                <div id='app'>
+                    <Sidebar {...sidebarProps} />
+                    {
+                        (function(currentView) {
+                            switch (currentView) {
+                                case viewConstants.ViewTypes.NEW: return <TicketView {...mainProps} />; break;
+                                case viewConstants.ViewTypes.OFFERED: return <AuctionView {...mainProps} />; break;
+                                case viewConstants.ViewTypes.IN_PROGRESS: return <ContractView {...mainProps} />; break;
+                                case viewConstants.ViewTypes.COMPLETED: return <ReviewView {...mainProps} />; break;
+                                default: return <div>ERROR</div>; break;
+                            }
+                        })(this.state.currentView.type)
+                    }
+                </div>
+            );
+        }
     },
 
 });

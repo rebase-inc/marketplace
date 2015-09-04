@@ -37,8 +37,8 @@ Dispatcher.register(function(payload) {
     var action = payload.action;
     switch(action.type) {
         case ActionConstants.SELECT_VIEW: _currentAuction = null; break;
-        case ActionConstants.GET_AUCTION_DATA: handleNewAuctionData(action.response); break;
         case ActionConstants.SELECT_AUCTION: handleSelectedAuction(action.auctionID); break;
+        case ActionConstants.GET_AUCTION_DATA: handleNewAuctionData(action.response); break;
         case ActionConstants.ADD_COMMENT_TO_TICKET: handleNewComment(action.response); break;
         case ActionConstants.BID_ON_AUCTION: handleModifiedAuction(action.response); break;
         case ActionConstants.GET_COMMENT_DETAIL: handleCommentDetail(action.response); break;

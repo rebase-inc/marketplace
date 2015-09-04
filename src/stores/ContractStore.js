@@ -75,7 +75,7 @@ function addSyntheticProperties(contract) {
     });
     Object.defineProperty(contract, 'work', {
         get: function() { return contract.bid.work_offers[0].work; },
-        set: function(ticket) { contract.bid.work_offers[0].work = work; },
+        set: function(work) { contract.bid.work_offers[0].work = work; },
         configurable: true, // a hack to let us repeatedly set the property so we don't have to be careful
     });
     return contract;

@@ -12,7 +12,6 @@ var TicketActions = require('../actions/TicketActions');
 var SearchBar = require('../components/SearchBar.react');
 var NothingHere = require('../components/NothingHere.react');
 var LoadingAnimation = require('../components/LoadingAnimation.react');
-var SingleTicketView = require('../components/SingleTicketView.react');
 var TicketHeader = require('../components/TicketHeader.react');
 var CommentList = require('../components/CommentList.react');
 var CommentBox = require('../components/CommentBox.react');
@@ -56,23 +55,23 @@ var TicketView = React.createClass({
                 var buttons = <button onClick={this.toggleModal}>Find Talent</button>;
                 var modal = null; //<BidModal {..._.extend({toggleModal: this.toggleModal}, {...this.props})} />
                 return (
-                    <SingleTicketView {...this.props}>
+                    <div className='ticketView'>
                         { this.state.modalOpen ? modal : null }
                         <TicketHeader goBack={TicketActions.selectTicket.bind(null, null)} title={this.state.currentTicket.title}>
                             {buttons}
                         </TicketHeader>
                         <CommentList comments={this.state.currentTicket.comments}/>
                         <CommentBox ticket={this.state.currentTicket} user={this.props.currentUser} />
-                    </SingleTicketView>
+                    </div>
                 );
                 break;
             default:
                 props.allTickets = this.state.allTickets;
                 props.selectTicket = TicketActions.selectTicket;
                 return (
-                    <div className='mainContent'>
-                    <SearchBar searchText={this.state.searchText} onUserInput={this.handleUserInput}/>
-                    <TicketList {...props} />
+                    <div className='ticketView'>
+                        <SearchBar searchText={this.state.searchText} onUserInput={this.handleUserInput}/>
+                        <TicketList {...props} />
                     </div>
                 );
                 break;

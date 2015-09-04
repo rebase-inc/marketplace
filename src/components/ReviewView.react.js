@@ -10,7 +10,6 @@ var ReviewActions = require('../actions/ReviewActions');
 
 // Components
 var SearchBar = require('../components/SearchBar.react');
-var SingleTicketView = require('../components/SingleTicketView.react');
 var TicketHeader = require('../components/TicketHeader.react');
 var CommentList = require('../components/CommentList.react');
 var CommentBox = require('../components/CommentBox.react');
@@ -52,7 +51,7 @@ var ReviewView = React.createClass({
         } else {
             var props = _.extend({ selectReview: this.selectReview }, this.state, this.props);
             return (
-                <div className='mainContent'>
+                <div className='reviewView'>
                     <SearchBar searchText={this.state.searchText} onUserInput={this.handleSearchInput}/>
                     <ReviewList {...props} />
                 </div>
@@ -75,11 +74,11 @@ var SingleReviewView = React.createClass({
         }
         this.props.currentReview.date = !!this.props.currentReview.date ? this.props.currentReview.date : 'August 12, 2015'; // temp hack
         return (
-            <SingleTicketView {...this.props}>
+            <div className='reviewView'>
                 <TicketHeader goBack={this.props.unselectReview} title={ticket.title} className='completed' />
                 <CommentList style={{height: 'calc(100% - 230px)'}} comments={ticket.comments}/>
                 <CommentBox ticket={ticket} user={this.props.currentUser} />
-            </SingleTicketView>
+            </div>
         );
     }
 });

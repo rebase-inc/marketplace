@@ -28,10 +28,6 @@ var TicketStore = _.extend({}, EventEmitter.prototype, {
     removeChangeListener: function(callback) { this.removeListener('change', callback); }
 });
 
-function handleSelectedTicket(id) {
-    _currentTicket = _allTickets.filter(ticket => ticket.id == id)[0];
-}
-
 // Register callback with Dispatcher
 Dispatcher.register(function(payload) {
     var action = payload.action;
@@ -39,31 +35,9 @@ Dispatcher.register(function(payload) {
     switch(action.type) {
         case ActionConstants.SELECT_VIEW: _currentTicket = null; break;
         case ActionConstants.SELECT_TICKET: handleSelectedTicket(action.ticketID); break;
-        case ActionConstants.GET_TICKET_DATA:
-            switch(action.response) {
-                case RequestConstants.PENDING:
-                    _loading = true;
-                break;
-                default:
-                    _loading = false;
-                    _allTickets = action.response.tickets.map(labelTicketType);
-                break;
-            } break;
-        case ActionConstants.ADD_COMMENT_TO_TICKET:
-            switch(action.response) {
-                case RequestConstants.PENDING: break;
-                default: persistNewComment(action.response); break;
-            } break;
-        case ActionConstants.BID_ON_AUCTION:
-            switch(action.response) {
-                //case RequestConstants.PENDING: markBidPending(action.response.data); break;
-                //default: handleBidResponse(action.response.data); break;
-            } break;
-        case ActionConstants.GET_COMMENT_DETAIL:
-            switch(action.response) {
-                case RequestConstants.PENDING: break;
-                default: persistCommentDetail(action.response); break;
-            } break;
+        case ActionConstants.GET_TICKET_DATA: handleNewTicketData(action.response); break;
+        case ActionConstants.ADD_COMMENT_TO_TICKET: handleNewComment(action.response); break;
+        case ActionConstants.GET_COMMENT_DETAIL: handleCommentDetail(action.response); break;
         default: return true;
     }
 
@@ -72,41 +46,45 @@ Dispatcher.register(function(payload) {
     return true;
 });
 
-function labelTicketType(ticket) {
-    if ( ticket.snapshots.every(snap => !snap.bid_limit || !snap.bid_limit.ticket_set.auction) ) {
-        ticket.type = viewConstants.ViewTypes.NEW
-    }
-    return ticket;
-    //} else if ( ticket.snapshots.every(snap => snap.bid_limit.ticket_set.auction.state == 'waiting_for_bids') ) {
-        //ticket.type = ViewConstants.ticketTypes.OFFERED
-    //} else if ( ticket.snapshots.every(snap => snap.bid_limit.ticket_set.auction.state == 'closed') &&
-                //ticket.snapshots.every(snap => snap.bid_limit.ticket_set.auction.bids.filter(bid => !!bid.contract)
-               //.every(bid => bid.work_offers.some(offer => !offer.work.review))) ) {
-        //ticket.type = ViewConstants.ticketTypes.IN_PROGRESS;
-   //} else {
-       //ticket.type = ViewConstants.ticketTypes.COMPLETED;
-   //}
+function handleSelectedTicket(id) {
+    _currentTicket = _allTickets.filter(ticket => ticket.id == id)[0];
 }
 
-function persistCommentDetail(data) {
-    //data.comment.user = { first_name: 'Andrew', last_name: 'Millspaugh', photo: 'img/andrew.jpg' }; // hack because the api is missing data
-    for(var i=0; i<_allTickets.length; i++) {
-        var ticket = _allTickets[i];
-        for ( var j=0; j < ticket.comments.length; j++) {
-            if (ticket.comments[j].id == data.comment.id) {
-                _allTickets[i].comments[j] = data.comment;
-                if (_currentTicket.id == _allTickets[i].id) { _currentTicket = _allTickets[i]; }
-            }
-        }
+function handleNewTicketData(data) {
+    switch (data) {
+        case RequestConstants.PENDING: _loading = true; break;
+        case RequestConstants.TIMEOUT: _loading = false; console.warn(data); break;
+        case RequestConstants.ERROR: _loading = false; console.warn(data); break;
+        case null: _loading = false; console.warn('Undefined data!');
+        default:
+            _loading = false;
+            _allTickets = data.tickets;
     }
 }
 
-function persistNewComment(data) {
-    //data.comment.user = { first_name: 'Andrew', last_name: 'Millspaugh', photo: 'img/andrew.jpg' }; // hack because the api is missing data
-    for(var i=0; i<_allTickets.length; i++) {
-        if (_allTickets[i].id == data.comment.ticket.id) {
-            _allTickets[i].comments.push(data.comment);
-        }
+function handleNewComment(data) {
+    switch (data) {
+        case RequestConstants.PENDING: _loading = true; break;
+        case RequestConstants.TIMEOUT: _loading = false; console.warn(data); break;
+        case RequestConstants.ERROR: _loading = false; console.warn(data); break;
+        case null: _loading = false; console.warn('Null data!');
+        default:
+            _loading = false;
+            _allTickets.forEach(ticket => { if (ticket.id == data.comment.ticket.id) { ticket.comments.push(data.comment) } });
+            break;
+    }
+}
+
+function handleCommentDetail(data) {
+    switch (data) {
+        case RequestConstants.PENDING: _loading = true; break;
+        case RequestConstants.TIMEOUT: _loading = false; console.warn(data); break;
+        case RequestConstants.ERROR: _loading = false; console.warn(data); break;
+        case null: _loading = false; console.warn('Null data!');
+        default:
+            _loading = false;
+            _allTickets.forEach(ticket => ticket.comments.forEach(comment => { comment = comment.id == data.comment.id ? data.comment : comment }));
+            break;
     }
 }
 

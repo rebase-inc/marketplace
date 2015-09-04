@@ -10,7 +10,6 @@ var AuctionActions = require('../actions/AuctionActions');
 
 // Components
 var SearchBar = require('../components/SearchBar.react');
-var SingleTicketView = require('../components/SingleTicketView.react');
 var TicketHeader = require('../components/TicketHeader.react');
 var CommentList = require('../components/CommentList.react');
 var CommentBox = require('../components/CommentBox.react');
@@ -75,7 +74,7 @@ var AuctionView = React.createClass({
                 props.searchText = this.state.searchText;
                 props.findTalent = this.findTalent;
                 return (
-                    <div className='mainContent'>
+                    <div className='auctionView'>
                     <SearchBar searchText={this.state.searchText} onUserInput={this.handleUserInput}/>
                     <AuctionList {...props} />
                     </div>
@@ -121,14 +120,14 @@ var SingleAuctionView = React.createClass({
                 break;
         }
         return (
-            <SingleTicketView {...this.props}>
+            <div className='auctionView'>
                 { this.state.modalOpen ? modal : null }
                 <TicketHeader goBack={this.props.unselectAuction} title={this.props.currentAuction.ticket.title}>
                     {buttons}
                 </TicketHeader>
                 <CommentList comments={this.props.currentAuction.ticket.comments}/>
                 <CommentBox ticket={this.props.currentAuction.ticket} user={this.props.currentUser} />
-            </SingleTicketView>
+            </div>
         );
     }
 });
@@ -224,7 +223,7 @@ var AuctionList = React.createClass({
         var auctionIDs = !!this.props.searchText ? searchAuctions(this.props.allAuctions, this.props.searchText) : this.props.allAuctions.map(a => a.id);
         if (!!this.props.allAuctions.length) {
             return (
-                <table id='ticketList'>
+                <table>
                     <tbody>
                         { this.props.allAuctions.filter(auction => auctionIDs.indexOf(auction.id) != -1).map(makeTicketElement) }
                     </tbody>

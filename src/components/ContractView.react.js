@@ -53,7 +53,7 @@ var ContractView = React.createClass({
         } else {
             var props = _.extend({ selectContract: this.selectContract }, this.state, this.props);
             return (
-                <div className='mainContent'>
+                <div className='contractView'>
                     <SearchBar searchText={this.state.searchText} onUserInput={this.handleSearchInput}/>
                     <ContractList {...props} />
                 </div>
@@ -153,14 +153,14 @@ var SingleContractView = React.createClass({
             case 'manager': buttons.push(<button onClick={this.props.bidNow}>Find More Talent</button>); break;
         }
         return (
-            <SingleTicketView {...this.props}>
+            <div className='contractView'>
                 { this.state.modalOpen ? modal : null }
                 <TicketHeader className={headerClass} goBack={this.props.unselectContract} title={ticket.title}>
                     {buttons}
                 </TicketHeader>
                 <CommentList comments={ticket.comments}/>
                 <CommentBox ticket={ticket} user={this.props.currentUser} />
-            </SingleTicketView>
+            </div>
         );
     }
 });
@@ -217,7 +217,7 @@ var Contract = React.createClass({
         }
         return (
             <tr className='ticket'>
-                <td className={'thin ' + className}></td>
+                <td className={'statusPanel ' + className}></td>
                 <ProjectInfoPanel ticket={ticket} />
                 <td className='titlePanel'>{ticket.title}</td>
                 <td className='skillsRequiredPanel'>{ticket.skillsRequired}</td>
