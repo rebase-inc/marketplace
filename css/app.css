@@ -230,14 +230,6 @@ table > tbody > tr > td {
     background-color: hsla(212, 40%, 18%, 1);
 }
 
-.ticketView, .auctionView, .contractView, .reviewView {
-    position: relative;
-    display: block;
-    float: left;
-    width: calc(100% - 200px);
-    height: 100%;
-}
-
 #itemHeader.neutral {
     transition: background 1s;
 }
