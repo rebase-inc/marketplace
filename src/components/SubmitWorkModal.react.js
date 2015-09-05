@@ -19,7 +19,7 @@ var ContractModal = React.createClass({
                 </div>
                 <h3>All done?</h3>
                 <h4>The task will be sent to the client for approval.</h4>
-                <textarea className={this.state.missingInput ? 'error' : null} ref='comment' placeholder='Leave a short comment describing the work you did (optional)'/>
+                <textarea required ref='comment' placeholder='Leave a short comment describing the work you did (optional)'/>
                 <button onClick={this.markComplete}>Submit Work</button>
             </ModalContainer>
         );

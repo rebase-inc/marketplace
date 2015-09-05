@@ -6,6 +6,7 @@ var CommentList = require('../components/CommentList.react');
 var CommentBox = require('../components/CommentBox.react');
 var HaltWorkModal = require('../components/HaltWorkModal.react');
 var ResumeWorkModal = require('../components/ResumeWorkModal.react');
+var SubmitWorkModal = require('../components/SubmitWorkModal.react');
 
 var SingleContractView = React.createClass({
     propTypes: {
