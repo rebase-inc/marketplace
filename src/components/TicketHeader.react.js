@@ -1,8 +1,8 @@
 // External
-var React = require('react/addons');
+var React = require('react');
 
 // Components
-var Icons = require('../components/RebaseIcons.react');
+var Icons = require('../components/Icons.react');
 
 // Constants
 var ViewConstants = require('../constants/ViewConstants');

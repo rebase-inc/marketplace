@@ -8,6 +8,7 @@
     "flux": "^2.0.1",
     "react": "",
     "react-dom": "",
+    "react-addons-css-transition-group": "",
     "underscore": "",
     "keymirror": "~0.1.0"
   },

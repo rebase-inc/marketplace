@@ -1,9 +1,10 @@
 // External
 var React = require('react');
+var ReactDOM = require('react-dom');
 
 var SearchBar = React.createClass({
     handleChange: function() {
-        this.props.onUserInput( this.refs.filterTextInput.getDOMNode().value );
+        this.props.onUserInput( ReactDOM.findDOMNode(this.refs.filterTextInput).value );
     },
     render: function() {
         return (

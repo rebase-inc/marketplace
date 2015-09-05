@@ -1,5 +1,6 @@
 // External
-var React = require('react/addons');
+var React = require('react');
+var ReactDOM = require('react-dom');
 
 // Actions
 var CommentActions = require('../actions/CommentActions');
@@ -30,9 +31,8 @@ var CommentBox = React.createClass({
         this.cancelComment();
     },
     handleInput: function() {
-        this.setState({ commentText: this.refs.commentText.getDOMNode().value });
+        this.setState({ commentText: ReactDOM.findDOMNode(this.refs.commentText).value });
     },
-
     render: function() {
         var buttons;
         var className;

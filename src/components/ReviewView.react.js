@@ -20,7 +20,7 @@ var LoadingAnimation = require('../components/LoadingAnimation.react');
 var viewConstants = require('../constants/viewConstants');
 
 // Icons
-var Icons = require('../components/RebaseIcons.react');
+var Icons = require('../components/Icons.react');
 
 var ReviewView = React.createClass({
     propTypes: {

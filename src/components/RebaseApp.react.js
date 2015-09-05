@@ -1,7 +1,7 @@
 var React = require('react');
 var _ = require('underscore');
 
-var Icons = require('../components/RebaseIcons.react');
+var Icons = require('../components/Icons.react');
 var Sidebar = require('../components/Sidebar.react');
 var TicketStore = require('../stores/TicketStore');
 var UserStore = require('../stores/UserStore');

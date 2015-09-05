@@ -1,0 +1,68 @@
+// External
+var React = require('react');
+
+// Components
+var Icons = require('../components/Icons.react');
+
+// Constants
+var ViewConstants = require('../constants/ViewConstants');
+var ticketTypes = ViewConstants.ticketTypes;
+
+var ContractHeader = React.createClass({
+    propTypes: {
+        openModal: React.PropTypes.func.isRequired,
+        currentContract: React.PropTypes.object.isRequired,
+    },
+    _makeButtons: function() {
+        var buttons = []; 
+        switch (this.props.currentContract.work.state) {
+            case 'in_progress':
+                if (this.props.currentRole.type == 'contractor') {
+                    buttons.push(<button onClick={this.props.openModal.bind(null, 'ask_for_review')}>Finished</button>);
+                    buttons.push(<button onClick={this.props.openModal.bind(null, 'halt_work')} className='needsResolution'>Blocked</button>);
+                    return buttons;
+                } else if (this.props.currentRole.type == 'manager') {
+                    return;
+                } else { console.warn('Invalid role type for given state ', this.props.currentRole.type); }
+                break;
+            case 'in_review':
+                if (this.props.currentRole.type == 'contractor') {
+                    return;
+                } else if (this.props.currentRole.type == 'manager') {
+                    buttons.push(<button onClick={this.props.openModal.bind(null, 'mark_complete')}>Accept Work</button>);
+                    buttons.push(<button onClick={this.props.openModal.bind(null, 'enter_mediation')} className='needsResolution'>Dispute</button>);
+                    return buttons;
+                } else { console.warn('Invalid role type for given state ', this.props.currentRole.type); }
+                break;
+            case 'blocked':
+                buttons.push(<button onClick={this.props.openModal.bind(null, 'resume_work')}>Unblock</button>);
+                return buttons;
+                break;
+            case 'in_mediation':
+                buttons.push(<button onClick={this.props.openModal.bind(null, 'resume_work')}>Resolve Issue</button>);
+                return buttons;
+                break;
+            default: break;
+        }
+    },
+    _getClassName: function() {
+        var _classNames = {
+            'in_progress' : { 'manager' : 'notifiation' },
+            'in_review' : { 'contractor' : 'notification' },
+            'blocked' : { 'contractor' : 'needsResolution', 'manager' : 'needsResolution' },
+            'in_mediation' : { 'contractor' : 'needsResolution', 'manager' : 'needsResolution' },
+        }
+        return _classNames[this.props.currentContract.work.state][this.props.currentRole.type] || 'neutral';
+    },
+    render: function() {
+        return (
+            <div id='itemHeader' className={this._getClassName()}>
+                <div onClick={this.props.goBack} className='backButton'> <Icons.Dropback/> </div>
+                { this._makeButtons() }
+                <span>{this.props.currentContract.ticket.title}</span>
+            </div>
+        );
+    }
+});
+
+module.exports = ContractHeader;

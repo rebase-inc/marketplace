@@ -2,7 +2,7 @@
 var React = require('react');
 
 // Components
-var Icons = require('../components/RebaseIcons.react');
+var Icons = require('../components/Icons.react');
 
 // Actions
 var UserActions = require('../actions/UserActions');

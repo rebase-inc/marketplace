@@ -1,6 +1,6 @@
 var React = require('react');
 
-var Icons = require('../components/RebaseIcons.react');
+var Icons = require('../components/Icons.react');
 
 var FindTalentPanel = React.createClass({
     render: function() {

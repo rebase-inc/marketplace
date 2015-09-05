@@ -1,6 +1,7 @@
 // External
-var React = require('react/addons');
-var ReactCSSTransitionGroup = React.addons.CSSTransitionGroup;
+var React = require('react');
+var ReactDOM = require('react-dom');
+var ReactCSSTransitionGroup = require('react-addons-css-transition-group');
 
 // Actions
 var CommentActions = require('../actions/CommentActions');
@@ -13,26 +14,26 @@ var CommentList = React.createClass({
         handleScrollShadows(this);
     },
     componentWillUnmount: function() {
-        this.getDOMNode().removeEventListener('scroll', this.handleScrollPosition, false);
+        ReactDOM.findDOMNode(this).removeEventListener('scroll', this.handleScrollPosition, false);
     },
     componentWillUpdate: function() {
-        var node = this.getDOMNode();
+        var node = ReactDOM.findDOMNode(this); 
         this.shouldScrollBottom = node.scrollTop + node.offsetHeight === node.scrollHeight;
     },
     componentWillUnmount: function() {
     },
     componentDidUpdate: function() {
         if (this.shouldScrollBottom) {
-            var node = this.getDOMNode();
+            var node = ReactDOM.findDOMNode(this); 
             node.scrollTop = node.scrollHeight
         }
         this.handleScrollPosition();
     },
     componentDidMount: function() {
-        var node = this.getDOMNode();
+        var node = ReactDOM.findDOMNode(this); 
         node.scrollTop = node.scrollHeight
         this.handleScrollPosition();
-        this.getDOMNode().addEventListener('scroll', this.handleScrollPosition, false);
+        node.addEventListener('scroll', this.handleScrollPosition, false);
         this.props.comments.map(CommentActions.getCommentDetail);
     },
     render: function() {

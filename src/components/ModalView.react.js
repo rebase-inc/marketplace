@@ -1,4 +1,5 @@
 var React = require('react');
+var ReactDOM = require('react-dom');
 
 var TicketStore = require('../stores/TicketStore');
 var RebaseActions = require('../actions/RebaseActions');
@@ -24,7 +25,7 @@ var ModalDialog = React.createClass({
         }
     },
    handleInput: function() {
-        this.setState({ price: this.refs.price.getDOMNode().value });
+        this.setState({ price: ReactDOM.findDOMNode(this).value });
     },
     handleKeyPress: function(event) {
         if (event.charCode == 13) {

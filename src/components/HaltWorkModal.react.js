@@ -1,0 +1,34 @@
+var React = require('react');
+var ReactDOM = require('react-dom');
+
+var ModalContainer = require('../components/ModalContainer.react');
+
+var ContractActions = require('../actions/ContractActions');
+
+var HaltWorkModal = React.createClass({
+    propTypes: {
+        closeModal: React.PropTypes.func.isRequired,
+        currentContract: React.PropTypes.object.isRequired,
+    },
+    markBlocked: function() {
+        var reason = ReactDOM.findDOMNode(this.refs.comment).value;
+        if (!reason.length) { return; }
+        ContractActions.markBlocked(this.props.currentUser, this.props.currentContract, reason);
+        this.props.closeModal();
+    },
+    render: function() {
+        return (
+            <ModalContainer>
+                <div onClick={this.props.closeModal} id='modalClose'>
+                    <img src='img/modal-close.svg'/>
+                </div>
+                <h3>Blocked?</h3>
+                <h4>Let the client know you need something to continue</h4>
+                <textarea required ref='comment' placeholder='Please leave a comment describing why you are blocked.'/>
+                <button className='needsResolution' onClick={this.markBlocked}>Mark Blocked</button>
+            </ModalContainer>
+        );
+    }
+});
+
+module.exports = HaltWorkModal;
