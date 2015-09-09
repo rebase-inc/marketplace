@@ -38,9 +38,10 @@ Dispatcher.register(function(payload) {
         case ActionConstants.SELECT_CONTRACT: handleSelectedContract(action.contractID); break;
         case ActionConstants.ADD_COMMENT_TO_TICKET: handleNewComment(action.response); break;
         case ActionConstants.GET_COMMENT_DETAIL: handleCommentDetail(action.response); break;
+        case ActionConstants.SUBMIT_WORK: handleWorkDetail(action.response); break;
         case ActionConstants.MARK_WORK_COMPLETE: handleWorkDetail(action.response); break;
-        case ActionConstants.MARK_CONTRACT_BLOCKED: handleWorkDetail(action.response); break;
-        case ActionConstants.MARK_CONTRACT_UNBLOCKED: handleWorkDetail(action.response); break;
+        case ActionConstants.MARK_WORK_BLOCKED: handleWorkDetail(action.response); break;
+        case ActionConstants.MARK_WORK_UNBLOCKED: handleWorkDetail(action.response); break;
         default: return true;
     }
 

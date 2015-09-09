@@ -13,7 +13,7 @@ var HaltWorkModal = React.createClass({
     markBlocked: function() {
         var reason = ReactDOM.findDOMNode(this.refs.comment).value;
         if (!reason.length) { return; }
-        ContractActions.markBlocked(this.props.currentUser, this.props.currentContract, reason);
+        ContractActions.markWorkBlocked(this.props.currentUser, this.props.currentContract.work, reason);
         this.props.closeModal();
     },
     render: function() {

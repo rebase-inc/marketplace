@@ -55,34 +55,34 @@ module.exports = {
         };
         Api.markWorkComplete(user, work, comment, responseAction, pendingAction);
     },
-    markBlocked: function(user, contract, reason) {
+    markWorkBlocked: function(user, work, reason) {
         var responseAction = function(response) {
             Dispatcher.handleRequestAction({
-                type: ActionConstants.MARK_CONTRACT_BLOCKED,
+                type: ActionConstants.MARK_WORK_BLOCKED,
                 response: response
             });
         };
         var pendingAction = function(response) {
             Dispatcher.handleRequestAction({
-                type: ActionConstants.MARK_CONTRACT_BLOCKED,
+                type: ActionConstants.MARK_WORK_BLOCKED,
                 response: RequestConstants.PENDING,
             });
         };
-        Api.markContractBlocked(user, contract, reason, responseAction, pendingAction);
+        Api.markWorkBlocked(user, work, reason, responseAction, pendingAction);
     },
-    markUnblocked: function(user, contract, reason) {
+    markWorkUnblocked: function(user, work, reason) {
         var responseAction = function(response) {
             Dispatcher.handleRequestAction({
-                type: ActionConstants.MARK_CONTRACT_UNBLOCKED,
+                type: ActionConstants.MARK_WORK_UNBLOCKED,
                 response: response
             });
         };
         var pendingAction = function(response) {
             Dispatcher.handleRequestAction({
-                type: ActionConstants.MARK_CONTRACT_UNBLOCKED,
+                type: ActionConstants.MARK_WORK_UNBLOCKED,
                 response: RequestConstants.PENDING,
             });
         };
-        Api.markContractUnblocked(user, contract, reason, responseAction, pendingAction);
+        Api.markWorkUnblocked(user, work, reason, responseAction, pendingAction);
     },
 };

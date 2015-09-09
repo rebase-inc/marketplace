@@ -143,14 +143,14 @@ var Api = {
         if (pendingHandler) { pendingHandler(); }
         ajax('POST', url, { comment: comment }, responseHandler)
     },
-    markContractBlocked: function(user, contract, reason, responseHandler, pendingHandler) {
-        var url = makeUrl('/work/' + contract.bid.work_offers[0].work.id + '/halt_events');
+    markWorkBlocked: function(user, work, reason, responseHandler, pendingHandler) {
+        var url = makeUrl('/work/' + work.id + '/halt_events');
         var responseFunction = makeResponseFunc(responseHandler);
         if (pendingHandler) { pendingHandler(); }
         ajax('POST', url, { reason: reason }, responseHandler)
     },
-    markContractUnblocked: function(user, contract, reason, responseHandler, pendingHandler) {
-        var url = makeUrl('/work/' + contract.bid.work_offers[0].work.id + '/resume_events');
+    markWorkUnblocked: function(user, work, reason, responseHandler, pendingHandler) {
+        var url = makeUrl('/work/' + work.id + '/resume_events');
         var responseFunction = makeResponseFunc(responseHandler);
         if (pendingHandler) { pendingHandler(); }
         ajax('POST', url, { reason: reason }, responseHandler)
