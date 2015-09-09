@@ -10,16 +10,16 @@ var ticketTypes = ViewConstants.ticketTypes;
 
 var ContractHeader = React.createClass({
     propTypes: {
-        openModal: React.PropTypes.func.isRequired,
+        actions: React.PropTypes.object.isRequired,
         currentContract: React.PropTypes.object.isRequired,
     },
     _makeButtons: function() {
-        var buttons = []; 
+        var buttons = [];
         switch (this.props.currentContract.work.state) {
             case 'in_progress':
                 if (this.props.currentRole.type == 'contractor') {
-                    buttons.push(<button onClick={this.props.openModal.bind(null, 'ask_for_review')}>Finished</button>);
-                    buttons.push(<button onClick={this.props.openModal.bind(null, 'halt_work')} className='needsResolution'>Blocked</button>);
+                    buttons.push(<button onClick={this.props.actions.askForReview}>Finished</button>);
+                    buttons.push(<button onClick={this.props.actions.haltWork} className='needsResolution'>Blocked</button>);
                     return buttons;
                 } else if (this.props.currentRole.type == 'manager') {
                     return;
@@ -29,20 +29,22 @@ var ContractHeader = React.createClass({
                 if (this.props.currentRole.type == 'contractor') {
                     return;
                 } else if (this.props.currentRole.type == 'manager') {
-                    buttons.push(<button onClick={this.props.openModal.bind(null, 'mark_complete')}>Accept Work</button>);
-                    buttons.push(<button onClick={this.props.openModal.bind(null, 'enter_mediation')} className='needsResolution'>Dispute</button>);
+                    buttons.push(<button onClick={this.props.actions.markComplete}>Accept Work</button>);
+                    buttons.push(<button onClick={this.props.actions.enterMediation} className='needsResolution'>Dispute</button>);
                     return buttons;
                 } else { console.warn('Invalid role type for given state ', this.props.currentRole.type); }
                 break;
             case 'blocked':
-                buttons.push(<button onClick={this.props.openModal.bind(null, 'resume_work')}>Unblock</button>);
+                buttons.push(<button onClick={this.props.actions.resumeWork}>Unblock</button>);
                 return buttons;
                 break;
             case 'in_mediation':
-                buttons.push(<button onClick={this.props.openModal.bind(null, 'resume_work')}>Resolve Issue</button>);
+                buttons.push(<button onClick={this.props.actions.mediationAnswerFail}>Give Up</button>);
+                buttons.push(<button onClick={this.props.actions.mediationAnswerComplete}>Resolve Issue</button>);
+                buttons.push(<button onClick={this.props.actions.mediationAnswerResume}>Fix Client Issue</button>);
                 return buttons;
                 break;
-            default: break;
+            default: throw 'Invalid work state ' + this.props.currentContract.work.state; break;
         }
     },
     _getClassName: function() {

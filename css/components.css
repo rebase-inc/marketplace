@@ -31,7 +31,7 @@ table > tbody > tr > td.statusPanel {
 }
 
 table > tbody > tr > td.statusPanel {
-    background-color: hsla(212, 22%, 43%, 1);
+    background-color: transparent;
 }
 
 table > tbody > tr > td.needsResolution {
@@ -90,10 +90,34 @@ tr.ticket > td.findTalentPanel svg {
 
 .ratingStars {
     padding-top: 4px;
+    display: inline-block;
 }
 
-.ratingStars > img {
+.ratingStars.dynamic > img {
+    cursor: pointer;
+}
+
+.ratingStars > img, .ratingStars > span {
+    height: 10px;
     padding: 2px;
+    font-size: 10px;
+    color: #CFD9E6;
+    vertical-align: top;
+}
+
+.ratingStars > span {
+    width: 40px;
+}
+
+.modalView .ratingStars {
+    padding-top: 10px;
+}
+
+#modalDialog .ratingStars > img, #modalDialog .ratingStars > span {
+    display: inline-block;
+    height: 15px;
+    line-height: 15px;
+    padding: 4px;
 }
 
 .scorePanel {

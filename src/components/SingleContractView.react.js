@@ -7,6 +7,7 @@ var CommentBox = require('../components/CommentBox.react');
 var HaltWorkModal = require('../components/HaltWorkModal.react');
 var ResumeWorkModal = require('../components/ResumeWorkModal.react');
 var SubmitWorkModal = require('../components/SubmitWorkModal.react');
+var CompleteWorkModal = require('../components/CompleteWorkModal.react');
 
 var SingleContractView = React.createClass({
     propTypes: {
@@ -30,6 +31,14 @@ var SingleContractView = React.createClass({
             this.setState({modalType: type});
         }
     },
+    componentDidMount: function() {    
+        this.haltWork = this.openModal.bind(null, 'halt_work');
+        this.resumeWork = this.openModal.bind(null, 'resume_work');
+        this.askForReview = this.openModal.bind(null, 'ask_for_review');
+        this.enterMediation = this.openModal.bind(null, 'enter_mediation');
+        this.markComplete = this.openModal.bind(null, 'mark_complete');
+        this.failWork = this.openModal.bind(null, 'fail');
+    },
     _selectModal: function(type) {
         var props = {
             closeModal: this.closeModal,
@@ -41,17 +50,25 @@ var SingleContractView = React.createClass({
             case 'resume_work': return (<ResumeWorkModal {...props}/>); break;
             case 'ask_for_review': return (<SubmitWorkModal {...props}/>); break;
             case 'enter_mediation': return; break;
-            case 'mark_complete': return; break;
+            case 'mark_complete': return (<CompleteWorkModal {...props}/>); break;
             case 'fail': return; break;
             case null: return null; break;
             default: console.warn('Invalid modal type! ', type); break;
         }
     },
     render: function() {
+        var actions = {
+            haltWork: this.haltWork,
+            resumeWork: this.resumeWork,
+            askForReview: this.askForReview,
+            enterMediation: this.enterMediation,
+            markComplete: this.markComplete,
+            failWork: this.failWork,
+        }
         return (
             <div className='contractView'>
                 { this._selectModal(this.state.modalType) }
-                <ContractHeader currentRole={this.props.currentRole} goBack={this.props.unselectContract} openModal={this.openModal} currentContract={this.props.currentContract}/>
+                <ContractHeader currentRole={this.props.currentRole} goBack={this.props.unselectContract} actions={actions} currentContract={this.props.currentContract}/>
                 <CommentList comments={this.props.currentContract.ticket.comments}/>
                 <CommentBox ticket={this.props.currentContract.ticket} user={this.props.currentUser} />
             </div>

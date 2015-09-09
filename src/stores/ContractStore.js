@@ -2,7 +2,9 @@ var RebaseAppDispatcher = require('../dispatcher/RebaseAppDispatcher');
 var EventEmitter = require('events').EventEmitter;
 var ActionConstants = require('../constants/ActionConstants');
 var RequestConstants = require('../constants/RequestConstants');
-var ViewConstants = require('../constants/ViewConstants');
+var viewConstants = require('../constants/viewConstants');
+var ReviewActions = require('../actions/ReviewActions');
+var UserActions = require('../actions/UserActions');
 var _ = require('underscore');
 
 //Define initial data points
@@ -11,7 +13,7 @@ var _currentContract = null;
 var _loading = false;
 
 var _shouldBeVisible = function(contract) {
-    return !contract.work.review
+    return !contract.work.review && contract.work.state != 'complete'; // hack because the api doesnt automatically add reviews yet
 }
 
 var ContractStore = _.extend({}, EventEmitter.prototype, {
@@ -42,7 +44,7 @@ RebaseAppDispatcher.register(function(payload) {
         case ActionConstants.SELECT_CONTRACT: handleSelectedContract(action.contractID); break;
         case ActionConstants.ADD_COMMENT_TO_TICKET: handleNewComment(action.response); break;
         case ActionConstants.GET_COMMENT_DETAIL: handleCommentDetail(action.response); break;
-        case ActionConstants.MARK_CONTRACT_COMPLETE: handleWorkDetail(action.response); break;
+        case ActionConstants.MARK_WORK_COMPLETE: handleWorkDetail(action.response); break;
         case ActionConstants.MARK_CONTRACT_BLOCKED: handleWorkDetail(action.response); break;
         case ActionConstants.MARK_CONTRACT_UNBLOCKED: handleWorkDetail(action.response); break;
         default: return true;
@@ -121,6 +123,11 @@ function handleWorkDetail(data) {
             _loading = false;
             _allContracts.filter(contract => contract.work.id == data.work.id).forEach(contract => { contract.work = data.work; });
             _currentContract.work = _currentContract.work.id == data.work.id ? data.work : _currentContract.work;
+            // this is to deal with the case where an auction transitions to another state
+            if (!_shouldBeVisible(_currentContract)) {
+                setTimeout(ReviewActions.selectReview.bind(null, _currentContract.work.review || null), 0); // || null to deal with fact that reviews arent being created properly yet
+                setTimeout(UserActions.selectView.bind(null, viewConstants.ViewTypes.COMPLETED), 0);
+            }
             break;
     }
 }

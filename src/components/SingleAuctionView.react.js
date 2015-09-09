@@ -1,10 +1,12 @@
 var React = require('react');
+var _ = require('underscore');
 
 // Components
 var TicketHeader = require('../components/TicketHeader.react');
 var CommentList = require('../components/CommentList.react');
 var CommentBox = require('../components/CommentBox.react');
 var SearchBar = require('../components/SearchBar.react');
+var BidModal = require('../components/BidModal.react');
 
 var SingleAuctionView = React.createClass({
     propTypes: {

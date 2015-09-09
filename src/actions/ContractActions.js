@@ -25,20 +25,35 @@ module.exports = {
             contractID: contractID,
         });
     },
-    markComplete: function(user, contract, reason) {
+    submitWork: function(user, contract, reason) {
         var responseAction = function(response) {
             Dispatcher.handleRequestAction({
-                type: ActionConstants.MARK_CONTRACT_COMPLETE,
+                type: ActionConstants.SUBMIT_WORK,
                 response: response
             });
         };
         var pendingAction = function(response) {
             Dispatcher.handleRequestAction({
-                type: ActionConstants.MARK_CONTRACT_COMPLETE,
+                type: ActionConstants.SUBMIT_WORK,
                 response: RequestConstants.PENDING,
             });
         };
-        Api.markContractComplete(user, contract, reason, responseAction, pendingAction);
+        Api.submitWork(user, contract, reason, responseAction, pendingAction);
+    },
+    markWorkComplete: function(user, work, comment) {
+        var responseAction = function(response) {
+            Dispatcher.handleRequestAction({
+                type: ActionConstants.MARK_WORK_COMPLETE,
+                response: response
+            });
+        };
+        var pendingAction = function(response) {
+            Dispatcher.handleRequestAction({
+                type: ActionConstants.MARK_WORK_COMPLETE,
+                response: RequestConstants.PENDING,
+            });
+        };
+        Api.markWorkComplete(user, work, comment, responseAction, pendingAction);
     },
     markBlocked: function(user, contract, reason) {
         var responseAction = function(response) {

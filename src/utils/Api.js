@@ -131,11 +131,17 @@ var Api = {
         if (pendingHandler) { pendingHandler(); }
         ajax('POST', url, data, responseHandler);
     },
-    markContractComplete: function(user, contract, reason, responseHandler, pendingHandler) {
+    submitWork: function(user, contract, reason, responseHandler, pendingHandler) {
         var url = makeUrl('/work/' + contract.bid.work_offers[0].work.id + '/review_events');
         var responseFunction = makeResponseFunc(responseHandler);
         if (pendingHandler) { pendingHandler(); }
         ajax('POST', url, null, responseHandler)
+    },
+    markWorkComplete: function(user, work, comment, responseHandler, pendingHandler) {
+        var url = makeUrl('/work/' + work.id + '/complete_events');
+        var responseFunction = makeResponseFunc(responseHandler);
+        if (pendingHandler) { pendingHandler(); }
+        ajax('POST', url, { comment: comment }, responseHandler)
     },
     markContractBlocked: function(user, contract, reason, responseHandler, pendingHandler) {
         var url = makeUrl('/work/' + contract.bid.work_offers[0].work.id + '/halt_events');

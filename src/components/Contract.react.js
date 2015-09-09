@@ -11,10 +11,10 @@ var Contract = React.createClass({
         selectContract: React.PropTypes.func.isRequired,
     },
     render: function() {
-        var ticket = this.props.contract.bid.work_offers[0].ticket_snapshot.ticket;
-        var state = this.props.contract.bid.work_offers[0].work.state
+        var ticket = this.props.contract.ticket;
         var className;
-        switch (state) {
+        // this needs to be reworked...status bar color should depend on role and state combination
+        switch (this.props.contract.work.state) {
             case 'in_progress': className = 'neutral'; break;
             case 'in_review': className = 'notification'; break;
             case 'blocked': className = 'needsResolution'; break;

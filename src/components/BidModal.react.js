@@ -1,6 +1,12 @@
 var React = require('react');
 var ReactDOM = require('react-dom');
 
+var ModalContainer = require('../components/ModalContainer.react');
+
+var AuctionActions = require('../actions/AuctionActions');
+
+var AuctionStore = require('../stores/AuctionStore');
+
 var BidModal = React.createClass({
     getInitialState: function() {
         return {
