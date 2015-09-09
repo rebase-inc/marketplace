@@ -13,7 +13,7 @@ var _currentContract = null;
 var _loading = false;
 
 var _shouldBeVisible = function(contract) {
-    return !contract.work.review && contract.work.state != 'complete'; // hack because the api doesnt automatically add reviews yet
+    return contract.work.state != 'complete' || !contract.work.review; // hack because the api doesnt automatically add reviews yet
 }
 
 var ContractStore = _.extend({}, EventEmitter.prototype, {

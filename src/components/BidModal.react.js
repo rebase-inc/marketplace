@@ -7,6 +7,8 @@ var AuctionActions = require('../actions/AuctionActions');
 
 var AuctionStore = require('../stores/AuctionStore');
 
+var viewConstants = require('../constants/viewConstants');
+
 var BidModal = React.createClass({
     getInitialState: function() {
         return {

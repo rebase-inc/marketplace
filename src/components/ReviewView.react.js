@@ -127,9 +127,7 @@ var Review = React.createClass({
         var ticket = this.props.review.work.offer.ticket_snapshot.ticket;
         return (
             <tr className='ticket'>
-                { this.props.currentRole.type == 'manager' ?
-                    <FindTalentPanel ticket={ticket} /> :
-                    <ProjectInfoPanel ticket={ticket} /> }
+                <ProjectInfoPanel ticket={ticket} />
                 <td className='titlePanel'>{ticket.title}</td>
                 <td className='skillsRequiredPanel'>{ticket.skillsRequired}</td>
                 <td className='commentsPanel' onClick={this.props.selectReview.bind(null, this.props.review.id)}>

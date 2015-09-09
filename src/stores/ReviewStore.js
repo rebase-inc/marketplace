@@ -61,12 +61,12 @@ function handleNewReviewData(data) {
 }
 
 function addSyntheticProperties(review) {
-    Object.defineProperty(contract, 'ticket', {
+    Object.defineProperty(review, 'ticket', {
         get: function() { return review.work.offer.ticket_snapshot.ticket; },
         set: function(ticket) { review.work.offer.ticket_snapshot.ticket = ticket; },
         configurable: true, // a hack to let us repeatedly set the property so we don't have to be careful
     });
-    return auction;
+    return review;
 }
 
 function handleSelectedReview(id) {
