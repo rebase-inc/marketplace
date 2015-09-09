@@ -5,13 +5,13 @@ var Api = require('../utils/Api');
 
 module.exports = {
     getContractData: function() {
-        var responseAction = function(response) {
+        function responseAction(response) {
             Dispatcher.handleRequestAction({
                 type: ActionConstants.GET_CONTRACT_DATA,
                 response: response
             });
         };
-        var pendingAction = function(response) {
+        function pendingAction(response) {
             Dispatcher.handleRequestAction({
                 type: ActionConstants.GET_CONTRACT_DATA,
                 response: RequestConstants.PENDING,

@@ -34,7 +34,7 @@ var CommentList = React.createClass({
         node.scrollTop = node.scrollHeight
         this.handleScrollPosition();
         node.addEventListener('scroll', this.handleScrollPosition, false);
-        this.props.comments.map(CommentActions.getCommentDetail);
+        this.props.comments.map(el => setTimeout(CommentActions.getCommentDetail.bind(null, el), 0));
     },
     render: function() {
         var all_comments = [];

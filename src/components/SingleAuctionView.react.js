@@ -35,11 +35,11 @@ var SingleAuctionView = React.createClass({
 
         switch (this.props.currentRole.type) {
             case 'contractor':
-                buttons.push(<button onClick={this.toggleModal}>Bid Now</button>);
+                buttons.push(<button onClick={this.toggleModal} key='bidNow'>Bid Now</button>);
                 modal = <BidModal {..._.extend({toggleModal: this.toggleModal}, {...this.props})} />
                 break;
             case 'manager':
-                buttons.push(<button onClick={this.toggleModal}>Find More Talent</button>);
+                buttons.push(<button onClick={this.toggleModal} key='findMoreTalent'>Find More Talent</button>);
                 modal = null;
                 break;
         }

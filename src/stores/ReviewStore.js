@@ -10,11 +10,14 @@ var _allReviews = [];
 var _currentReview = null;
 var _loading = false;
 
+var _shouldBeVisible = function(contract) {
+    return review.work.state == 'complete'; // hack because the api is creating unnecessary reviews
+}
 
 var ReviewStore = _.extend({}, EventEmitter.prototype, {
     getState: function() {
         return {
-            allReviews: _allReviews,
+            allReviews: _allReviews.filter(_shouldBeVisible),
             currentReview: _currentReview,
             loading: _loading,
         };

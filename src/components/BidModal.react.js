@@ -4,6 +4,8 @@ var ReactDOM = require('react-dom');
 var ModalContainer = require('../components/ModalContainer.react');
 
 var AuctionActions = require('../actions/AuctionActions');
+var ContractActions = require('../actions/ContractActions');
+var UserActions = require('../actions/UserActions');
 
 var AuctionStore = require('../stores/AuctionStore');
 
@@ -24,6 +26,15 @@ var BidModal = React.createClass({
     submitPrice: function() {
         AuctionActions.bidOnAuction(this.props.currentUser, this.props.currentAuction, this.state.price);
         this.setState({ priceSubmitted: true });
+    },
+    returnToAuctions: function() {
+        AuctionActions.selectAuction(null);
+        this.props.toggleModal();
+    },
+    showContract: function() {
+        setTimeout(UserActions.selectView.bind(null, viewConstants.ViewTypes.IN_PROGRESS), 0);
+        setTimeout(ContractActions.selectContract.bind(null, this.props.currentAuction.contract.id), 0);
+        this.props.toggleModal();
     },
     render: function() {
         if (!this.state.price) {
@@ -57,7 +68,7 @@ var BidModal = React.createClass({
                     </div>
                     <h3>Your bid was not accepted.</h3>
                     <h4>{'But there are ' + remainingTickets.length + ' more tasks waiting for you!'}</h4>
-                    <button onClick={this.props.toggleModal}>Show tasks</button>
+                    <button onClick={this.returnToAuctions}>Show tasks</button>
                 </ModalContainer>
             );
         } else if (this.props.currentAuction.state == 'ended') {
@@ -69,7 +80,7 @@ var BidModal = React.createClass({
                     <h3>Your bid was accepted!</h3>
                     <h4>Get started by cloning and running the tests</h4>
                     <div className='infoOrInput cloneInstructions'> $ git clone git@github.com:airpool/ios <br/> $ cd api && python deploy.py && python tests/run.py </div>
-                    <button onClick={this.props.toggleModal}>Show task</button>
+                    <button onClick={this.showContract}>Show task</button>
                 </ModalContainer>
             );
         } else { console.log(this.props.currentAuction); throw 'wtf'; }

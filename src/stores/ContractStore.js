@@ -1,4 +1,4 @@
-var RebaseAppDispatcher = require('../dispatcher/RebaseAppDispatcher');
+var Dispatcher = require('../dispatcher/RebaseAppDispatcher');
 var EventEmitter = require('events').EventEmitter;
 var ActionConstants = require('../constants/ActionConstants');
 var RequestConstants = require('../constants/RequestConstants');
@@ -9,7 +9,7 @@ var _ = require('underscore');
 
 //Define initial data points
 var _allContracts = [];
-var _currentContract = null;
+var _currentContractId = null;
 var _loading = false;
 
 var _shouldBeVisible = function(contract) {
@@ -20,15 +20,9 @@ var ContractStore = _.extend({}, EventEmitter.prototype, {
     getState: function() {
         return {
             allContracts: _allContracts.filter(_shouldBeVisible),
-            currentContract: _currentContract,
+            currentContract: getCurrentContract(_currentContractId),
             loadingContractData: _loading,
         };
-    },
-    select: function(contract) {
-        if (!contract) { _currentContract = null; return; }
-        for(var i=0; i<_allContracts.length; i++) {
-            if (_allContracts[i].id == contract.id) { _currentContract = _allContracts[i]; };
-        }
     },
     emitChange: function() { this.emit('change'); },
     addChangeListener: function(callback) { this.on('change', callback); },
@@ -36,10 +30,10 @@ var ContractStore = _.extend({}, EventEmitter.prototype, {
 });
 
 // Register callback with Dispatcher
-RebaseAppDispatcher.register(function(payload) {
+Dispatcher.register(function(payload) {
     var action = payload.action;
     switch(action.type) {
-        case ActionConstants.SELECT_VIEW: _currentContract = null; break;
+        case ActionConstants.SELECT_VIEW: _currentContractId = null; break;
         case ActionConstants.GET_CONTRACT_DATA: handleNewContractData(action.response); break;
         case ActionConstants.SELECT_CONTRACT: handleSelectedContract(action.contractID); break;
         case ActionConstants.ADD_COMMENT_TO_TICKET: handleNewComment(action.response); break;
@@ -55,6 +49,9 @@ RebaseAppDispatcher.register(function(payload) {
     return true;
 });
 
+function handleSelectedContract(id) {
+    _currentContractId = id;
+}
 
 function handleNewContractData(data) {
     switch (data) {
@@ -83,8 +80,8 @@ function addSyntheticProperties(contract) {
     return contract;
 }
 
-function handleSelectedContract(id) {
-    _currentContract = _allContracts.filter(contract => contract.id == id)[0];
+function getCurrentContract(id) {
+    return _allContracts.filter(contract => contract.id == id)[0];
 }
 
 function handleNewComment(data) {
@@ -122,8 +119,8 @@ function handleWorkDetail(data) {
         default:
             _loading = false;
             _allContracts.filter(contract => contract.work.id == data.work.id).forEach(contract => { contract.work = data.work; });
-            _currentContract.work = _currentContract.work.id == data.work.id ? data.work : _currentContract.work;
             // this is to deal with the case where an auction transitions to another state
+            var _currentContract = getCurrentContract(_currentContractId);
             if (!_shouldBeVisible(_currentContract)) {
                 setTimeout(ReviewActions.selectReview.bind(null, _currentContract.work.review || null), 0); // || null to deal with fact that reviews arent being created properly yet
                 setTimeout(UserActions.selectView.bind(null, viewConstants.ViewTypes.COMPLETED), 0);

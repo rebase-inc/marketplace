@@ -41,7 +41,7 @@ var UserStore = _.extend({}, EventEmitter.prototype, {
     removeChangeListener: function(callback) { this.removeListener('change', callback); }
 });
 
-Dispatcher.register(function(payload) {
+UserStore.dispatchToken = Dispatcher.register(function(payload) {
     var action = payload.action;
     switch(action.type) {
         case ActionConstants.LOGIN: handleLogin(action.response); break;

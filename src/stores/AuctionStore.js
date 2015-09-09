@@ -54,6 +54,10 @@ function addSyntheticProperties(auction) {
         set: function(ticket) { auction.ticket_set.bid_limits[0].ticket_snapshot.ticket = ticket; },
         configurable: true, // a hack to let us repeatedly set the property so we don't have to be careful
     });
+    Object.defineProperty(auction, 'contract', {
+        get: function() { return auction.bids[0].contract; },
+        configurable: true, // a hack to let us repeatedly set the property so we don't have to be careful
+    });
     return auction;
 }
 

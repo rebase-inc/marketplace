@@ -18,8 +18,8 @@ var ContractHeader = React.createClass({
         switch (this.props.currentContract.work.state) {
             case 'in_progress':
                 if (this.props.currentRole.type == 'contractor') {
-                    buttons.push(<button onClick={this.props.actions.askForReview}>Finished</button>);
-                    buttons.push(<button onClick={this.props.actions.haltWork} className='needsResolution'>Blocked</button>);
+                    buttons.push(<button onClick={this.props.actions.askForReview} key='finished'>Finished</button>);
+                    buttons.push(<button onClick={this.props.actions.haltWork} className='needsResolution' key='blocked'>Blocked</button>);
                     return buttons;
                 } else if (this.props.currentRole.type == 'manager') {
                     return;
@@ -29,19 +29,19 @@ var ContractHeader = React.createClass({
                 if (this.props.currentRole.type == 'contractor') {
                     return;
                 } else if (this.props.currentRole.type == 'manager') {
-                    buttons.push(<button onClick={this.props.actions.markComplete}>Accept Work</button>);
-                    buttons.push(<button onClick={this.props.actions.enterMediation} className='needsResolution'>Dispute</button>);
+                    buttons.push(<button onClick={this.props.actions.markComplete} key='acceptWork'>Accept Work</button>);
+                    buttons.push(<button onClick={this.props.actions.enterMediation} className='needsResolution' key='dispute'>Dispute</button>);
                     return buttons;
                 } else { console.warn('Invalid role type for given state ', this.props.currentRole.type); }
                 break;
             case 'blocked':
-                buttons.push(<button onClick={this.props.actions.resumeWork}>Unblock</button>);
+                buttons.push(<button onClick={this.props.actions.resumeWork} key='unblock'>Unblock</button>);
                 return buttons;
                 break;
             case 'in_mediation':
-                buttons.push(<button onClick={this.props.actions.mediationAnswerFail}>Give Up</button>);
-                buttons.push(<button onClick={this.props.actions.mediationAnswerComplete}>Resolve Issue</button>);
-                buttons.push(<button onClick={this.props.actions.mediationAnswerResume}>Fix Client Issue</button>);
+                buttons.push(<button onClick={this.props.actions.mediationAnswerFail} key='giveUp'>Give Up</button>);
+                buttons.push(<button onClick={this.props.actions.mediationAnswerComplete} key='resolveIssue'>Resolve Issue</button>);
+                buttons.push(<button onClick={this.props.actions.mediationAnswerResume} key='fixClientIssue'>Fix Client Issue</button>);
                 return buttons;
                 break;
             default: throw 'Invalid work state ' + this.props.currentContract.work.state; break;
