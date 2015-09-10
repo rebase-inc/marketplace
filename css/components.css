@@ -34,6 +34,14 @@ table > tbody > tr > td.statusPanel {
     background-color: transparent;
 }
 
+table > tbody > tr > td.neutral {
+    background-color: hsla(166, 43%, 56%, 1);
+}
+
+table > tbody > tr > td.notification {
+    background-color: hsla(212, 22%, 43%, 1);
+}
+
 table > tbody > tr > td.needsResolution {
     background-color: hsla(37, 89%, 64%, 1);
 }
@@ -45,7 +53,6 @@ table > tbody > tr > td.completed {
 table > tbody > tr > td.warning {
     background-color: hsla(351, 51%, 59%, 1);
 }
-
 
 tr.nomination > td.actionPanel,
 tr.ticket > td.findTalentPanel {

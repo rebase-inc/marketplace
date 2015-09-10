@@ -40,6 +40,21 @@ module.exports = {
         };
         Api.submitWork(user, contract, reason, responseAction, pendingAction);
     },
+    disputeWork: function(user, work, reason) {
+        var responseAction = function(response) {
+            Dispatcher.handleRequestAction({
+                type: ActionConstants.DISPUTE_WORK,
+                response: response
+            });
+        };
+        var pendingAction = function(response) {
+            Dispatcher.handleRequestAction({
+                type: ActionConstants.DISPUTE_WORK,
+                response: RequestConstants.PENDING,
+            });
+        };
+        Api.disputeWork(user, work, reason, responseAction, pendingAction);
+    },
     markWorkComplete: function(user, work, comment) {
         var responseAction = function(response) {
             Dispatcher.handleRequestAction({

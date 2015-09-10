@@ -8,6 +8,7 @@ var HaltWorkModal = require('../components/HaltWorkModal.react');
 var ResumeWorkModal = require('../components/ResumeWorkModal.react');
 var SubmitWorkModal = require('../components/SubmitWorkModal.react');
 var CompleteWorkModal = require('../components/CompleteWorkModal.react');
+var DisputeWorkModal = require('../components/DisputeWorkModal.react');
 
 var SingleContractView = React.createClass({
     propTypes: {
@@ -31,13 +32,13 @@ var SingleContractView = React.createClass({
             this.setState({modalType: type});
         }
     },
-    componentDidMount: function() {    
+    componentWillMount: function() {    
         this.haltWork = this.openModal.bind(null, 'halt_work');
         this.resumeWork = this.openModal.bind(null, 'resume_work');
         this.askForReview = this.openModal.bind(null, 'ask_for_review');
         this.enterMediation = this.openModal.bind(null, 'enter_mediation');
         this.markComplete = this.openModal.bind(null, 'mark_complete');
-        this.failWork = this.openModal.bind(null, 'fail');
+        this.resolveMediation = this.openModal.bind(null, 'resolve_mediation');
     },
     _selectModal: function(type) {
         var props = {
@@ -49,9 +50,9 @@ var SingleContractView = React.createClass({
             case 'halt_work': return (<HaltWorkModal {...props}/>); break;
             case 'resume_work': return (<ResumeWorkModal {...props}/>); break;
             case 'ask_for_review': return (<SubmitWorkModal {...props}/>); break;
-            case 'enter_mediation': return; break;
+            case 'enter_mediation': return (<DisputeWorkModal {...props}/>); break;
             case 'mark_complete': return (<CompleteWorkModal {...props}/>); break;
-            case 'fail': return; break;
+            case 'resolve_mediation': return (<ResolveMediationModal {...props}/>); break;
             case null: return null; break;
             default: console.warn('Invalid modal type! ', type); break;
         }
@@ -63,7 +64,7 @@ var SingleContractView = React.createClass({
             askForReview: this.askForReview,
             enterMediation: this.enterMediation,
             markComplete: this.markComplete,
-            failWork: this.failWork,
+            resolveMediation: this.resolveMediation,
         }
         return (
             <div className='contractView'>

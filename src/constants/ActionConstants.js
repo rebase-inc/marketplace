@@ -20,6 +20,7 @@ module.exports = keyMirror({
     ADD_COMMENT_TO_TICKET: null,
     ADD_COMMENT_TO_REVIEW: null,
     SUBMIT_WORK: null,
+    DISPUTE_WORK: null,
     MARK_WORK_COMPLETE: null,
     MARK_WORK_BLOCKED: null,
     MARK_WORK_UNBLOCKED: null,

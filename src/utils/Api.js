@@ -137,6 +137,12 @@ var Api = {
         if (pendingHandler) { pendingHandler(); }
         ajax('POST', url, null, responseHandler)
     },
+    disputeWork: function(user, work, reason, responseHandler, pendingHandler) {
+        var url = makeUrl('/work/' + work.id + '/mediate_events');
+        var responseFunction = makeResponseFunc(responseHandler);
+        if (pendingHandler) { pendingHandler(); }
+        ajax('POST', url, null, responseHandler)
+    },
     markWorkComplete: function(user, work, comment, responseHandler, pendingHandler) {
         var url = makeUrl('/work/' + work.id + '/complete_events');
         var responseFunction = makeResponseFunc(responseHandler);

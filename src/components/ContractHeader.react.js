@@ -10,8 +10,15 @@ var ticketTypes = ViewConstants.ticketTypes;
 
 var ContractHeader = React.createClass({
     propTypes: {
-        actions: React.PropTypes.object.isRequired,
         currentContract: React.PropTypes.object.isRequired,
+        actions: React.PropTypes.shape({
+            haltWork: React.PropTypes.func.isRequired,
+            resumeWork: React.PropTypes.func.isRequired,
+            askForReview: React.PropTypes.func.isRequired,
+            enterMediation: React.PropTypes.func.isRequired,
+            markComplete: React.PropTypes.func.isRequired,
+            failWork: React.PropTypes.func.isRequired,
+        }).isRequired,
     },
     _makeButtons: function() {
         var buttons = [];
@@ -39,9 +46,23 @@ var ContractHeader = React.createClass({
                 return buttons;
                 break;
             case 'in_mediation':
-                buttons.push(<button onClick={this.props.actions.mediationAnswerFail} key='giveUp'>Give Up</button>);
-                buttons.push(<button onClick={this.props.actions.mediationAnswerComplete} key='resolveIssue'>Resolve Issue</button>);
-                buttons.push(<button onClick={this.props.actions.mediationAnswerResume} key='fixClientIssue'>Fix Client Issue</button>);
+                switch(this.props.currentContract.work.mediation[0].state) {
+                    case 'discussion':
+                        buttons.push(<button onClick={this.props.actions.mediationAnswerComplete} key='resolveIssue'>Resolve Issue</button>);
+                        break;
+                    case 'waiting_for_client':
+                        if (this.props.currentRole.type == 'manager') {
+                            buttons.push(<button onClick={this.props.actions.mediationAnswerComplete} key='resolveIssue'>Resolve Issue</button>);
+                            return buttons;
+                        }
+                        break;
+                    case 'waiting_for_dev':
+                        if (this.props.currentRole.type == 'contractor') {
+                            buttons.push(<button onClick={this.props.actions.mediationAnswerComplete} key='resolveIssue'>Resolve Issue</button>);
+                            return buttons;
+                        }
+                        break;
+                }
                 return buttons;
                 break;
             default: throw 'Invalid work state ' + this.props.currentContract.work.state; break;

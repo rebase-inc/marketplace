@@ -14,11 +14,23 @@ var Contract = React.createClass({
         var ticket = this.props.contract.ticket;
         var className;
         // this needs to be reworked...status bar color should depend on role and state combination
-        switch (this.props.contract.work.state) {
-            case 'in_progress': className = 'neutral'; break;
-            case 'in_review': className = 'notification'; break;
-            case 'blocked': className = 'needsResolution'; break;
-            case 'in_mediation': className = 'needsResolution'; break;
+        switch(this.props.currentRole.type) {
+            case 'contractor':
+                switch (this.props.contract.work.state) {
+                    case 'in_progress': className = 'neutral'; break;
+                    case 'in_review': className = 'notification'; break;
+                    case 'blocked': className = 'needsResolution'; break;
+                    case 'in_mediation': className = 'needsResolution'; break;
+                }
+                break;
+            case 'manager':
+                switch (this.props.contract.work.state) {
+                    case 'in_progress': className = 'notification'; break;
+                    case 'in_review': className = 'neutral'; break;
+                    case 'blocked': className = 'needsResolution'; break;
+                    case 'in_mediation': className = 'needsResolution'; break;
+                }
+                break;
         }
         return (
             <tr className='ticket'>
