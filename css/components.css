@@ -60,6 +60,7 @@ tr.ticket > td.findTalentPanel {
     font-size: 8px;
     text-align: center;
     color: hsla(180, 2%, 75%, 1);
+    cursor: pointer;
 }
 
 tr.nomination > td.actionPanel svg,
@@ -71,7 +72,9 @@ tr.ticket > td.findTalentPanel svg {
     padding: 10px 10px 4px 10px;
 }
 
-
+tr.ticket > td.findTalentPanel:hover {
+    color: hsla(167, 54%, 53%, 1)
+}
 
 .findTalentPanel:hover svg path {
     fill: hsla(167, 54%, 53%, 1)
@@ -79,10 +82,6 @@ tr.ticket > td.findTalentPanel svg {
 
 .findTalentPanel.darken svg path {
     fill: hsla(167, 54%, 53%, 1)
-}
-
-.findTalentPanel:hover {
-    color: hsla(167, 54%, 53%, 1)
 }
 
 .findTalentPanel.darken {

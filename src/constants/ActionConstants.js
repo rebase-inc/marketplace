@@ -24,4 +24,7 @@ module.exports = keyMirror({
     MARK_WORK_COMPLETE: null,
     MARK_WORK_BLOCKED: null,
     MARK_WORK_UNBLOCKED: null,
+    MARK_MEDIATION_FAILED: null,
+    MARK_MEDIATION_PARTIALLY_COMPLETE: null,
+    MARK_MEDIATION_COMPLETE: null,
 });

@@ -47,10 +47,10 @@ function ajax(method, url, data, responseHandler) {
         type: method || 'GET',
         xhrFields: { withCredentials: true },
         url: url,
-        data: JSON.stringify(data) || '',
+        data: JSON.stringify(data || undefined),
         contentType: 'application/json; charset=utf-8',
     }).done(responseHandler).fail(function(requestObj, textStatus) {
-            console.log('we failed with this info: ', requestObj, textStatus);
+            console.log('Request failed with this info: ', requestObj, textStatus);
             switch (textStatus) {
                 case 'error': responseHandler(RequestConstants.ERROR); break;
                 case 'timeout' : responseHandler(RequestConstants.TIMEOUT); break;
@@ -157,6 +157,12 @@ var Api = {
     },
     markWorkUnblocked: function(user, work, reason, responseHandler, pendingHandler) {
         var url = makeUrl('/work/' + work.id + '/resume_events');
+        var responseFunction = makeResponseFunc(responseHandler);
+        if (pendingHandler) { pendingHandler(); }
+        ajax('POST', url, { reason: reason }, responseHandler)
+    },
+    markMediationFailed: function(role, mediation, reason, responseHandler, pendingHandler) {
+        var url = makeUrl('/mediations/' + mediation.id + '/client_answer');
         var responseFunction = makeResponseFunc(responseHandler);
         if (pendingHandler) { pendingHandler(); }
         ajax('POST', url, { reason: reason }, responseHandler)

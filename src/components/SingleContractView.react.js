@@ -9,6 +9,7 @@ var ResumeWorkModal = require('../components/ResumeWorkModal.react');
 var SubmitWorkModal = require('../components/SubmitWorkModal.react');
 var CompleteWorkModal = require('../components/CompleteWorkModal.react');
 var DisputeWorkModal = require('../components/DisputeWorkModal.react');
+var ResolveMediationModal = require('../components/ResolveMediationModal.react');
 
 var SingleContractView = React.createClass({
     propTypes: {
@@ -24,7 +25,7 @@ var SingleContractView = React.createClass({
         this.setState({ modalType: null });
     },
     openModal: function(type) {
-        var modalTypes = ['halt_work', 'resume_work', 'ask_for_review', 'enter_mediation', 'mark_complete', 'fail'];
+        var modalTypes = ['halt_work', 'resume_work', 'ask_for_review', 'enter_mediation', 'mark_complete', 'fail', 'resolve_mediation'];
         if (modalTypes.indexOf(type) == -1) {
             console.warn('Invalid modal type! ', type);
             this.setState({modalType: null});

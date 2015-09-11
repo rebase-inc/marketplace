@@ -598,8 +598,10 @@ button.small {
 #modalDialog {
     position: absolute;
     background-color: hsla(216, 33%, 97%, 1);
-    padding: 25px;
-    padding-bottom: 10px;
+    padding-top: 25px;
+    padding-left: 35px;
+    padding-right: 35px;
+    padding-bottom: 5px;
     top: 40%;
     left: 50%;
     transform: translateX(-50%) translateY(-50%);
@@ -628,6 +630,16 @@ button.small {
     padding: 0;
     margin: 0;
     opacity: .6;
+}
+
+#modalDialog h5 {
+    font-size: 11px;
+    line-height: 14px;
+    padding: 0;
+    margin: 0;
+    margin-bottom: 5px;
+    opacity: .6;
+    cursor: pointer;
 }
 
 #modalDialog input, #modalDialog button {
@@ -693,6 +705,7 @@ button.small {
 }
 
 /** login box tests **/
+
 #login-background { width: 100%; height: 100%; background-color: hsla(213, 23%, 28%, 1); }
 #login-box {
     top: 40%;

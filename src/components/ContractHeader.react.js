@@ -48,17 +48,17 @@ var ContractHeader = React.createClass({
             case 'in_mediation':
                 switch(this.props.currentContract.work.mediation[0].state) {
                     case 'discussion':
-                        buttons.push(<button onClick={this.props.actions.mediationAnswerComplete} key='resolveIssue'>Resolve Issue</button>);
+                        buttons.push(<button onClick={this.props.actions.resolveMediation} key='resolveIssue'>Resolve Issue</button>);
                         break;
                     case 'waiting_for_client':
                         if (this.props.currentRole.type == 'manager') {
-                            buttons.push(<button onClick={this.props.actions.mediationAnswerComplete} key='resolveIssue'>Resolve Issue</button>);
+                            buttons.push(<button onClick={this.props.actions.resolveMediation} key='resolveIssue'>Resolve Issue</button>);
                             return buttons;
                         }
                         break;
                     case 'waiting_for_dev':
                         if (this.props.currentRole.type == 'contractor') {
-                            buttons.push(<button onClick={this.props.actions.mediationAnswerComplete} key='resolveIssue'>Resolve Issue</button>);
+                            buttons.push(<button onClick={this.props.actions.resolveMediation} key='resolveIssue'>Resolve Issue</button>);
                             return buttons;
                         }
                         break;
