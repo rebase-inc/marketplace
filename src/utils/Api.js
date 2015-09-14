@@ -16,11 +16,8 @@ function abortPendingRequests(key) {
         _pendingRequests[key].abort();
         _pendingRequests[key] = null;
     }
-}
 
-//function token() {
-    //return UserStore.getState().token;
-//}
+}
 
 function makeUrl(part) {
     return API_URL + part;
@@ -43,7 +40,7 @@ function makeResponseFunc(responseHandler) {
 }
 
 function ajax(method, url, data, responseHandler) {
-    $.ajax({
+    return $.ajax({
         type: method || 'GET',
         xhrFields: { withCredentials: true },
         url: url,
@@ -67,6 +64,23 @@ var Api = {
         var data = { user: { email: email }, password: password, };
         pendingHandler();
         ajax('POST', url, data, responseHandler);
+    },
+    logout: function(responseHandler, pendingHandler) {
+        var url = makeUrl('/auth');
+        pendingHandler();
+        ajax('GET', url, null, responseHandler);
+    },
+    authenticateGithub: function(responseHandler, pendingHandler) {
+        var url = makeUrl('/github/');
+        pendingHandler();
+        ajax('GET', url, null, responseHandler);
+    },
+    getTalentData: function(auction, responseHandler, pendingHandler) {
+        var url = makeUrl("/nominations");
+        var params = {};
+        var responseFunction = makeResponseFunc(responseHandler);
+        pendingHandler();
+        ajax('GET', url, null, responseHandler);
     },
     getContractData: function(responseHandler, pendingHandler) {
         var url = makeUrl("/contracts");

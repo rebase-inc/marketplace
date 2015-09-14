@@ -10,7 +10,7 @@ var _allReviews = [];
 var _currentReview = null;
 var _loading = false;
 
-var _shouldBeVisible = function(contract) {
+var _shouldBeVisible = function(review) {
     return review.work.state == 'complete'; // hack because the api is creating unnecessary reviews
 }
 

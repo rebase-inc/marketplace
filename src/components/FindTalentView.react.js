@@ -1,14 +1,12 @@
 var React = require('react');
+var _ = require('underscore');
 
 // Utils
-Fuse = require('../utils/Fuse');
+var Fuse = require('../utils/Fuse');
 
-// this should be put into the auction store so we don't have to reinstantiate the
-// search object every time we change the search text
-function searchAuctions(auctions, searchText) {
-    var fuseSearch = new Fuse(auctions, {threshold: 0.35, keys: ['ticket.title', 'ticket.description', 'ticket.project.name', 'ticket.project.organization.name'], id: 'id'});
-    return fuseSearch.search(searchText.substring(0, 32));
-}
+var Talent = require('../components/Talent.react');
+var TalentStore = require('../stores/TalentStore');
+var TalentActions = require('../actions/TalentActions');
 
 var FindTalentView = React.createClass({
     propTypes: {
@@ -16,19 +14,30 @@ var FindTalentView = React.createClass({
         currentRole: React.PropTypes.object.isRequired,
         currentAuction: React.PropTypes.object.isRequired,
     },
+    getInitialState: function() {
+        return _.extend({ searchText: '' }, TalentStore.getState());
+    },
+    componentDidMount: function() {
+        TalentStore.addChangeListener(this._onChange);
+        setTimeout(TalentActions.getTalentData, 0);
+    },
+    componentWillUnmount: function() {
+        TalentStore.removeChangeListener(this._onChange);
+    },
+    _onChange: function() {
+        this.setState(TalentStore.getState());
+    },
     render: function() {
         var props = {
             selectAuction: this.props.selectAuction,
             currentRole: this.props.currentRole,
         }
-        var makeTicketElement = function(auction) { return <Auction auction={auction} key={auction.id} {...props} />; }.bind(props);
-        //var auctionIDs = !!this.props.searchText ? searchAuctions(this.props.allAuctions, this.props.searchText) : this.props.allAuctions.map(a => a.id);
-        var fakePeople = [1,2,3,4,5];
         if (true) {
+            console.log('state is ', this.state);
             return (
                 <table id='talentList'>
                     <tbody>
-                        { fakePeople.map(p => <Talent/>) }
+                        { this.state.allTalent.map(talent => <Talent nomination={talent}/>) }
                     </tbody>
                 </table>
             );

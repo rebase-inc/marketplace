@@ -81,9 +81,9 @@ var TalentScore = React.createClass({
         var bgColor;
         var text;
         if ( this.props.score >= 0.90 ) { bgColor = '#25AE90'; text = 'great match'; }
-        else if (this.props.score >= 0.75 ) { bgColor = '#F5B651'; text = 'good match'; }
-        else if (this.props.score >= 0.5 ) { bgColor = '#CC6070'; text = 'okay match'; }
-        else { text = 'poor match' }
+        else if (this.props.score >= 0.75 ) { bgColor = '#25AE90'; text = 'good match'; }
+        else if (this.props.score >= 0.5 ) { bgColor = '#F5B651'; text = 'okay match'; }
+        else { bgColor = '#CC6070'; text = 'poor match'; }
         return (
             <div className='talentScore' style={{backgroundColor: bgColor}}>
                 <span className='score'>{ Math.round(100*this.props.score) + '%' }</span>

@@ -9,12 +9,13 @@ var CommentBox = require('../components/CommentBox.react');
 var SearchBar = require('../components/SearchBar.react');
 var BidModal = require('../components/BidModal.react');
 
-var SingleAuctionView = React.createClass({
+var SingleTicketView = React.createClass({
     propTypes: {
         currentRole: React.PropTypes.object.isRequired,
         currentUser: React.PropTypes.object.isRequired,
-        currentAuction: React.PropTypes.object.isRequired,
-        unselectAuction: React.PropTypes.func.isRequired,
+        currentTicket: React.PropTypes.object.isRequired,
+        unselectTicket: React.PropTypes.func.isRequired,
+        findTalent: React.PropTypes.func.isRequired,
     },
     getInitialState: function() {
         return { modalOpen: false };
@@ -27,34 +28,30 @@ var SingleAuctionView = React.createClass({
         var modal;
         if (!!this.props.viewingTalent) {
             return (
-                <div className='mainContent'>
+                <div className='auctionView'>
                     <SearchBar searchText={this.state.searchText} onUserInput={this.handleUserInput}/>
                     <FindTalentView />;
                 </div>
             );
         }
-
         switch (this.props.currentRole.type) {
-            case 'contractor':
-                buttons.push(<button onClick={this.toggleModal} key='bidNow'>Bid Now</button>);
-                modal = <BidModal {..._.extend({toggleModal: this.toggleModal}, {...this.props})} />
-                break;
+            case 'contractor': throw 'Invalid view for contractor role!'; break;
             case 'manager':
-                buttons.push(<button onClick={this.props.findTalent.bind(null, null)} key='findMoreTalent'>Find More Talent</button>);
+                buttons.push(<button onClick={this.props.findTalent.bind(null, null)} key='findMoreTalent'>Find Talent</button>);
                 modal = null;
                 break;
         }
         return (
-            <div className='auctionView'>
+            <div className='ticketView'>
                 { this.state.modalOpen ? modal : null }
-                <TicketHeader goBack={this.props.unselectAuction} title={this.props.currentAuction.ticket.title}>
+                <TicketHeader goBack={this.props.unselectTicket} title={this.props.currentTicket.title}>
                     {buttons}
                 </TicketHeader>
-                <CommentList comments={this.props.currentAuction.ticket.comments}/>
-                <CommentBox ticket={this.props.currentAuction.ticket} user={this.props.currentUser} />
+                <CommentList comments={this.props.currentTicket.comments}/>
+                <CommentBox ticket={this.props.currentTicket} user={this.props.currentUser} />
             </div>
         );
     }
 });
 
-module.exports = SingleAuctionView;
+module.exports = SingleTicketView;

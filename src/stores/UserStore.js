@@ -11,9 +11,9 @@ var Cookies = require('../utils/Cookies');
 // Constants
 var ActionConstants = require('../constants/ActionConstants');
 var RequestConstants = require('../constants/RequestConstants');
-var ViewTypes = require('../constants/viewconstants').ViewTypes;
-var ContractorViews = require('../constants/viewconstants').ContractorViews;
-var ManagerViews = require('../constants/viewconstants').ManagerViews;
+var ViewTypes = require('../constants/ViewConstants').ViewTypes;
+var ContractorViews = require('../constants/ViewConstants').ContractorViews;
+var ManagerViews = require('../constants/ViewConstants').ManagerViews;
 
 // Actions
 var UserActions = require('../actions/UserActions');
@@ -45,6 +45,7 @@ UserStore.dispatchToken = Dispatcher.register(function(payload) {
     var action = payload.action;
     switch(action.type) {
         case ActionConstants.LOGIN: handleLogin(action.response); break;
+        case ActionConstants.LOGOUT: handleLogout(action.response); break;
         case ActionConstants.SELECT_VIEW: handleSelectView(action.viewType); break;
         case ActionConstants.SELECT_ROLE: handleSelectRole(action.roleID); break;
         case ActionConstants.GET_USER_DETAIL: handleLogin(action.response); break;
@@ -76,11 +77,31 @@ function handleLogin(data) {
     }
 }
 
-function handleSelectView(viewType) {
-    switch(_currentRole.type) {
-        case 'contractor': _currentView = ContractorViews[viewType]; break;
-        case 'manager': _currentView = ManagerViews[viewType]; break;
+function handleLogout(data) {
+    switch (data) {
+        case RequestConstants.PENDING: _loading = true; break;
+        case RequestConstants.TIMEOUT: _loading = false; console.warn(data); break;
+        case RequestConstants.ERROR: _loading = false; console.warn(data); break;
+        case null: _loading = false; console.warn('Undefined data!');
+        default:
+            _loading = false;
+            _currentUser = null;
+            _currentRole = null;
+            _loggedIn = null;
     }
+}
+
+function handleSelectView(viewType) {
+    console.log('selecting view of type ', viewType);
+    if (!ViewTypes[viewType]) {
+        console.warn("Invalid view selected", viewType);
+        return;
+    }
+    switch(_currentRole.type) {
+        case 'contractor': _currentView = ContractorViews[viewType] || {type: viewType}; break;
+        case 'manager': _currentView = ManagerViews[viewType] || {type: viewType}; break;
+    }
+    console.log('now, current view is ', viewType);
 }
 
 function handleSelectRole(roleID) {

@@ -12,7 +12,7 @@ tr.nomination > td.actionPanel > img {
     /*color: hsla(180, 2%, 75%, 1);*/
 /*}*/
 
-.ticketView, .auctionView, .contractView, .reviewView {
+.ticketView, .auctionView, .contractView, .reviewView, .profileView {
     position: relative;
     display: block;
     float: left;
@@ -150,4 +150,25 @@ tr.ticket > td.findTalentPanel:hover {
 .talentScore > .text {
     font-size: 8px;
     display: block;
+}
+
+
+.profileView input {
+    text-align: center;
+    height: 50px;
+    font-size: 16px;
+    border: none;
+    border-bottom: 1px solid #1C2D41;
+    padding-top: 8px;
+    background-color: transparent;
+    display: block;
+    margin: 14px auto;
+    width: 240px;
+}
+
+.profileView button {
+    display: block;
+    margin: 56px auto;
+    width: 240px;
+    height: 50px;
 }

@@ -8,9 +8,9 @@ var Icons = require('../components/Icons.react');
 var UserActions = require('../actions/UserActions');
 
 // Constants
-var ViewTypes = require('../constants/viewconstants').ViewTypes;
-var ContractorViews = require('../constants/viewconstants').ContractorViews;
-var ManagerViews = require('../constants/viewconstants').ManagerViews;
+var ViewTypes = require('../constants/ViewConstants').ViewTypes;
+var ContractorViews = require('../constants/ViewConstants').ContractorViews;
+var ManagerViews = require('../constants/ViewConstants').ManagerViews;
 
 var Sidebar = React.createClass({
     propTypes: {
@@ -107,8 +107,8 @@ var ProfileOptions = React.createClass({
         return (
             <div id='profileOptions' className={this.props.isOpen ? 'open' : null}>
                 <ul>
-                    <li>Profile</li>
-                    <li>Sign Out</li>
+                    <li onClick={UserActions.selectView.bind(null, ViewTypes.PROFILE)}>Profile</li>
+                    <li onClick={UserActions.logout}>Sign Out</li>
                 </ul>
             </div>
         );

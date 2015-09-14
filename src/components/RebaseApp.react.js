@@ -12,6 +12,7 @@ var TicketView = require('../components/TicketView.react');
 var AuctionView = require('../components/AuctionView.react');
 var ContractView = require('../components/ContractView.react');
 var ReviewView = require('../components/ReviewView.react');
+var ProfileView = require('../components/ProfileView.react');
 
 var RebaseApp = React.createClass({
     selectRole: function(roleID) {
@@ -55,11 +56,13 @@ var RebaseApp = React.createClass({
                     <Sidebar {...sidebarProps} />
                     {
                         (function(currentView) {
+                            console.log(currentView);
                             switch (currentView) {
                                 case viewConstants.ViewTypes.NEW: return <TicketView {...mainProps} />; break;
                                 case viewConstants.ViewTypes.OFFERED: return <AuctionView {...mainProps} />; break;
                                 case viewConstants.ViewTypes.IN_PROGRESS: return <ContractView {...mainProps} />; break;
                                 case viewConstants.ViewTypes.COMPLETED: return <ReviewView {...mainProps} />; break;
+                                case viewConstants.ViewTypes.PROFILE: return <ProfileView {...mainProps} />; break;
                                 default: return <div>ERROR</div>; break;
                             }
                         })(this.state.currentView.type)

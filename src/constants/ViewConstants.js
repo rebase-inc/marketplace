@@ -1,6 +1,6 @@
 var keyMirror = require('keymirror');
 
-var VIEW_TYPES = keyMirror({ NEW: null, OFFERED: null, IN_PROGRESS: null, COMPLETED: null, TO_BE_REMOVED: null });
+var VIEW_TYPES = keyMirror({ NEW: null, OFFERED: null, IN_PROGRESS: null, COMPLETED: null, PROFILE: null });
 
 var CONTRACTOR_VIEWS = {}
 var MANAGER_VIEWS = {}

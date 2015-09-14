@@ -19,6 +19,36 @@ module.exports = {
         };
         Api.login(email, password, responseAction, pendingAction);
     },
+    logout: function() {
+        var responseAction = function(response) {
+            Dispatcher.handleRequestAction({
+                type: ActionConstants.LOGOUT,
+                response: response
+            });
+        };
+        var pendingAction = function(response) {
+            Dispatcher.handleRequestAction({
+                type: ActionConstants.LOGOUT,
+                response: RequestConstants.PENDING,
+            });
+        };
+        Api.logout(responseAction, pendingAction);
+    },
+    authenticateGithub: function() {
+        function responseAction(response) {
+            Dispatcher.handleRequestAction({
+                type: ActionConstants.AUTHENTICATE_GITHUB,
+                response: response
+            });
+        };
+        function pendingAction(response) {
+            Dispatcher.handleRequestAction({
+                type: ActionConstants.AUTHENTICATE_GITHUB,
+                response: RequestConstants.PENDING,
+            });
+        };
+        Api.authenticateGithub(responseAction, pendingAction);
+    },
     getUserDetail: function(userID) {
         var responseAction = function(response) {
             Dispatcher.handleRequestAction({

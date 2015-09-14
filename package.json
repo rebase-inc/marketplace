@@ -19,8 +19,8 @@
     "watchify": "^2.1.1"
   },
   "scripts": {
-    "start": "watchify -o build/bundle.js -v -d src/app.js",
-    "build": "browserify . > build/bundle.js",
+   "start": "watchify src/app.js -o '> build/bundle.js && afplay /System/Library/Sounds/Pop.aiff' -v -d",
+    "build": "browserify . > build/bundle.js && afplay /System/Library/Sounds/Pop.aiff",
     "test": "jest"
   },
   "author": "Bill Fisher",

@@ -35,7 +35,7 @@ var AuctionView = React.createClass({
         this.setState({ searchText: searchText });
     },
     findTalent: function(auctionID) {
-        AuctionActions.selectAuction(auctionID);
+        if (!!auctionID) {  TicketActions.selectAuction(auctionID); }
         this.setState({ viewingTalent: true });
     },
     render: function() {
@@ -51,6 +51,7 @@ var AuctionView = React.createClass({
                 props.currentAuction = this.state.currentAuction;
                 props.findTalent = this.findTalent;
                 props.viewingTalent = this.state.viewingTalent;
+                props.findTalent = this.findTalent;
                 return <SingleAuctionView {...props} />;
                 break;
             default:
@@ -60,8 +61,8 @@ var AuctionView = React.createClass({
                 props.findTalent = this.findTalent;
                 return (
                     <div className='auctionView'>
-                    <SearchBar searchText={this.state.searchText} onUserInput={this.handleUserInput}/>
-                    <AuctionList {...props} />
+                        <SearchBar searchText={this.state.searchText} onUserInput={this.handleUserInput}/>
+                        <AuctionList {...props} />
                     </div>
                 );
                 break;
