@@ -6,16 +6,16 @@
   "main": "src/app.js",
   "dependencies": {
     "flux": "^2.0.1",
-    "react": "",
-    "react-dom": "",
-    "react-addons-css-transition-group": "",
+    "react": "^0.14.0-rc1",
+    "react-dom": "^0.14.0-rc1",
+    "react-addons-css-transition-group": "0.14.0-rc1",
     "underscore": "",
     "keymirror": "~0.1.0"
   },
   "devDependencies": {
     "babelify": "^6.1.3",
     "browserify": "^6.2.0",
-    "react": "",
+    "react": "^0.14.0-rc1",
     "watchify": "^2.1.1"
   },
   "scripts": {
