@@ -17,7 +17,12 @@ function getCookie(cname) {
     return "";
 }
 
+function eraseCookie(cname) {
+    setCookie(cname,"",-1);
+}
+
 module.exports = {
     set: setCookie,
     get: getCookie,
+    erase: eraseCookie,
 }

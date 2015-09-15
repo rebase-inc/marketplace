@@ -19,12 +19,13 @@ var ManagerViews = require('../constants/ViewConstants').ManagerViews;
 var UserActions = require('../actions/UserActions');
 
 var _userCookie = Cookies.get('user');
-var _currentUser = !!_userCookie ? JSON.parse(_userCookie) : null;
-var _currentUser = null; // don't really want cookies to work right now
-var _loggedIn = !!_currentUser;
+var _currentUser = null;
+var _loggedIn = null;
 var _currentView = null;
 var _currentRole = null;
 var _loading = false;
+
+!!_userCookie ? handleLogin({user: JSON.parse(_userCookie)}) : null;
 
 var UserStore = _.extend({}, EventEmitter.prototype, {
     getState: function() {
@@ -88,6 +89,7 @@ function handleLogout(data) {
             _currentUser = null;
             _currentRole = null;
             _loggedIn = null;
+            Cookies.erase('user');
     }
 }
 
