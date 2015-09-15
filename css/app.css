@@ -403,7 +403,7 @@ table > tbody > tr > td {
     bottom: 0;
 }
 
-.comment > .photo > img {
+.comment > .photo > img, .comment > .photo > svg {
     padding: 7px;
     width: 35px;
     height: 35px;
@@ -567,7 +567,7 @@ button.small {
 }
 
 
-#currentProfile > img {
+#currentProfile > img, #currentProfile > .profilePicture {
     height: 24px;
     width: 24px;
     padding-right: 8px;

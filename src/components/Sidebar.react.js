@@ -88,8 +88,12 @@ var SidebarProfile = React.createClass({
         return (
             <div id='sidebarProfile'>
                 <div id='currentProfile' onClick={this.toggleOptions}>
-                    <img src={this.props.currentUser.photo}/>
-                        <span>{this.props.currentUser.first_name + ' ' + this.props.currentUser.last_name}</span>
+                    {
+                        !!this.props.currentUser.photo ?
+                        <img src={this.props.currentUser.photo}/> :
+                        <Icons.ProfilePicture user={this.props.currentUser} />
+                    }
+                    <span>{this.props.currentUser.first_name + ' ' + this.props.currentUser.last_name}</span>
                     <Icons.Dropdown />
                 </div>
                 <ProfileOptions isOpen={this.state.optionsOpen} {...this.props} />

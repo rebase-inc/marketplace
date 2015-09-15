@@ -19,7 +19,11 @@ var ProfileView = React.createClass({
     render: function() {
         return (
             <div className='profileView'>
-                <img src={this.props.currentUser.photo} />
+                {
+                    !!this.props.currentUser.photo ?
+                    <img src={this.props.currentUser.photo}/> :
+                    <Icons.ProfilePicture user={this.props.currentUser} />
+                }
                 <input placeholder={this.props.currentUser.first_name}/>
                 <input placeholder={this.props.currentUser.last_name}/>
                 <input placeholder='Seattle, WA'/>

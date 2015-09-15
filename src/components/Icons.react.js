@@ -73,9 +73,33 @@ var ApproveTalent = React.createClass({
     }
 });
 
+var ProfilePicture = React.createClass({
+    propTypes: {
+        user: React.PropTypes.object.isRequired,
+    },
+    render: function() {
+        var initials = this.props.user.first_name.charAt(0) + this.props.user.last_name.charAt(0);
+        return (
+            <svg className='profilePicture' width="140px" height="140px" viewBox="0 0 140 140" version="1.1">
+                <g id="UI" stroke="none" strokeWidth="1" fill="none" fill-rule="evenodd">
+                    <g id="UX-Profile-Copy" transform="translate(-494.000000, -334.000000)">
+                        <g id="Oval-276-+-AM" transform="translate(494.000000, 334.000000)">
+                            <circle id="Oval-276" fill="#718296" cx="70" cy="70" r="70"></circle>
+                            <text id="intials" x='70' y='70' fontFamily="Gotham Rounded" fontSize="54px" dy="18px" fill="#F5F7FA" textAnchor='middle'>
+                                {initials}
+                            </text>
+                        </g>
+                    </g>
+                </g>
+            </svg>
+        );
+    }
+});
+
+
 var TalentScore = React.createClass({
     propTypes: {
-        score: React.PropTypes.number,
+        score: React.PropTypes.number.isRequired,
     },
     render: function() {
         var bgColor;
@@ -170,4 +194,5 @@ module.exports = {
     Dropback: Dropback,
     ApproveTalent: ApproveTalent,
     TalentScore: TalentScore,
+    ProfilePicture: ProfilePicture,
 };

@@ -3,6 +3,9 @@ var React = require('react');
 var ReactDOM = require('react-dom');
 var ReactCSSTransitionGroup = require('react-addons-css-transition-group');
 
+//Components
+var ProfilePicture = require('../components/Icons.react').ProfilePicture;
+
 // Actions
 var CommentActions = require('../actions/CommentActions');
 
@@ -42,7 +45,7 @@ var CommentList = React.createClass({
             all_comments.push(
                 <div className='comment' key={comment.id}>
                     <div className='photo'>
-                        <img src={!!comment.user ? comment.user.photo : 'img/placeholder-user-60px.png'}/>
+                        <ProfilePicture user={comment.user || {first_name: 'A', last_name: 'M'}}/>    
                     </div>
                     <div className='content'>
                         <div className='name'>{!!comment.user ? comment.user.first_name + ' ' + comment.user.last_name : 'Unknown User'}</div>

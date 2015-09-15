@@ -92,7 +92,6 @@ function handleLogout(data) {
 }
 
 function handleSelectView(viewType) {
-    console.log('selecting view of type ', viewType);
     if (!ViewTypes[viewType]) {
         console.warn("Invalid view selected", viewType);
         return;
@@ -101,24 +100,10 @@ function handleSelectView(viewType) {
         case 'contractor': _currentView = ContractorViews[viewType] || {type: viewType}; break;
         case 'manager': _currentView = ManagerViews[viewType] || {type: viewType}; break;
     }
-    console.log('now, current view is ', viewType);
 }
 
 function handleSelectRole(roleID) {
     _currentRole = _currentUser.roles.filter(role => role.id == roleID)[0] || _currentRole;
-}
-
-function handleUserDetail(data) {
-    switch (data) {
-        case RequestConstants.PENDING: _loading = true; break;
-        case RequestConstants.TIMEOUT: _loading = false; console.warn(data); break;
-        case RequestConstants.ERROR: _loading = false; console.warn(data); break;
-        case null: _loading = false; console.warn('Null data!');
-        default:
-            _loading = false;
-            _allAuctions.forEach(auction => auction.ticket.comments.forEach(comment => { comment = comment.id == data.comment.id ? data.comment : comment }));
-            break;
-    }
 }
 
 module.exports = UserStore;
