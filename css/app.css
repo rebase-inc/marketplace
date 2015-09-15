@@ -231,7 +231,7 @@ table > tbody > tr > td {
     float: left;
     width: 200px;
     height: 100%;
-    background-color: hsla(212, 40%, 18%, 1);
+    background-color: hsla(211, 40%, 13%, 1)
 }
 
 #itemHeader.neutral {
