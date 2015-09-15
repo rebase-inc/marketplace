@@ -23,8 +23,6 @@ var CommentList = React.createClass({
         var node = ReactDOM.findDOMNode(this); 
         this.shouldScrollBottom = node.scrollTop + node.offsetHeight === node.scrollHeight;
     },
-    componentWillUnmount: function() {
-    },
     componentDidUpdate: function() {
         if (this.shouldScrollBottom) {
             var node = ReactDOM.findDOMNode(this); 
