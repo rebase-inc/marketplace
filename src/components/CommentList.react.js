@@ -20,20 +20,18 @@ var CommentList = React.createClass({
         ReactDOM.findDOMNode(this).removeEventListener('scroll', this.handleScrollPosition, false);
     },
     componentWillUpdate: function() {
-        var node = ReactDOM.findDOMNode(this); 
+        var node = ReactDOM.findDOMNode(this);
         this.shouldScrollBottom = node.scrollTop + node.offsetHeight === node.scrollHeight;
-    },
-    componentWillUnmount: function() {
     },
     componentDidUpdate: function() {
         if (this.shouldScrollBottom) {
-            var node = ReactDOM.findDOMNode(this); 
+            var node = ReactDOM.findDOMNode(this);
             node.scrollTop = node.scrollHeight
         }
         this.handleScrollPosition();
     },
     componentDidMount: function() {
-        var node = ReactDOM.findDOMNode(this); 
+        var node = ReactDOM.findDOMNode(this);
         node.scrollTop = node.scrollHeight
         this.handleScrollPosition();
         node.addEventListener('scroll', this.handleScrollPosition, false);
@@ -45,7 +43,7 @@ var CommentList = React.createClass({
             all_comments.push(
                 <div className='comment' key={comment.id}>
                     <div className='photo'>
-                        <ProfilePicture user={comment.user || {first_name: 'A', last_name: 'M'}}/>    
+                        <ProfilePicture user={comment.user || {first_name: 'A', last_name: 'M'}}/>
                     </div>
                     <div className='content'>
                         <div className='name'>{!!comment.user ? comment.user.first_name + ' ' + comment.user.last_name : 'Unknown User'}</div>

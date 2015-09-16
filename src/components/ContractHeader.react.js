@@ -62,6 +62,7 @@ var ContractHeader = React.createClass({
                             return buttons;
                         }
                         break;
+                    case 'arbitration': break;
                 }
                 return buttons;
                 break;

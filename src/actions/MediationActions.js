@@ -4,7 +4,7 @@ var RequestConstants = require('../constants/RequestConstants');
 var Api = require('../utils/Api');
 
 module.exports = {
-    markFailed: function(user, mediation, reason) {
+    answerFailed: function(role, mediation) {
         function responseAction(response) {
             Dispatcher.handleRequestAction({
                 type: ActionConstants.ANSWER_MEDIATION_FAILED,
@@ -17,6 +17,6 @@ module.exports = {
                 response: RequestConstants.PENDING,
             });
         };
-        Api.markMediationFailed(user, mediation, reason, responseAction, pendingAction);
+        Api.markMediationFailed(role, mediation, responseAction, pendingAction);
     },
 };
