@@ -19,7 +19,7 @@
     "watchify": "^2.1.1"
   },
   "scripts": {
-   "start": "watchify src/app.js -o '> build/bundle.js && afplay /System/Library/Sounds/Pop.aiff' -v -d",
+   "start": "watchify src/app.js -o build/bundle.js -v -d",
     "build": "browserify . > build/bundle.js && afplay /System/Library/Sounds/Pop.aiff",
     "test": "jest"
   },

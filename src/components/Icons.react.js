@@ -1,4 +1,5 @@
 var React = require('react');
+var TalentActions = require('../actions/TalentActions');
 
 
 var ApproveTalent = React.createClass({
@@ -8,12 +9,19 @@ var ApproveTalent = React.createClass({
     getDefaultProps: function() {
         return { state: 'unapproved' };
     },
+    _getNominationState: function(nomination) {
+        if (!!nomination.auction) {
+            return 'waiting';
+        } else {
+            return 'unapproved';
+        }
+    },
     render: function() {
-        switch (this.props.state) {
+        switch (this._getNominationState(this.props.nomination)) {
             case 'unapproved':
                 return (
                     <div>
-                        <svg width="26px" height="26px" viewBox="0 0 26 26" onClick={this.props.approve}>
+                        <svg width="26px" height="26px" viewBox="0 0 26 26" onClick={TalentActions.approveNomination.bind(null, this.props.nomination)}>
                             <g id="UI" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
                                 <g id="Mgr-Suggested-Devs" transform="translate(-363.000000, -188.000000)" stroke-linecap="round" stroke="#BDBFBF" stroke-linejoin="round">
                                     <g id="Long-Ticket-Copy-2" transform="translate(325.000000, 141.000000)">

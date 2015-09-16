@@ -8,19 +8,19 @@ var UserActions = require('../actions/UserActions');
 var _ = require('underscore');
 
 //Define initial data points
-var _allTalent = [];
+var _allNominations = [];
 var _loading = false;
 var _currentAuctionID = undefined;
 
 var TalentStore = _.extend({}, EventEmitter.prototype, {
     getState: function(auctionID) {
         //if (auctionID != _currentAuctionID) {
-            //_allTalent = [];
+            //_allNominations = [];
             //_loading = false;
             //_currentAuctionID = auctionID;
         //}
         return {
-            allTalent: _allTalent,
+            allTalent: _allNominations,
             loading: _loading,
         };
     },
@@ -34,6 +34,7 @@ Dispatcher.register(function(payload) {
     var action = payload.action;
     switch(action.type) {
         case ActionConstants.GET_TALENT_DATA: handleNewTalentData(action.response); break;
+        case ActionConstants.APPROVE_NOMINATION: handleModifiedNomination(action.response); break;
         default: return true;
     }
 
@@ -47,10 +48,23 @@ function handleNewTalentData(data) {
         case RequestConstants.PENDING: _loading = true; break;
         case RequestConstants.TIMEOUT: _loading = false; console.warn(data); break;
         case RequestConstants.ERROR: _loading = false; console.warn(data); break;
-        case null: _loading = false; console.warn('Undefined data!');
+        case null: _loading = false; console.warn('Undefined data!'); break;
         default:
             _loading = false;
-            _allTalent = data.nominations.sort((n1, n2) => n2.job_fit.score - n1.job_fit.score);
+            _allNominations = data.nominations.sort((n1, n2) => n2.job_fit.score - n1.job_fit.score);
+    }
+}
+
+function handleModifiedNomination(data) {
+    switch (data) {
+        case RequestConstants.PENDING: _loading = true; break;
+        case RequestConstants.TIMEOUT: _loading = false; console.warn(data); break;
+        case RequestConstants.ERROR: _loading = false; console.warn(data); break;
+        case null: _loading = false; console.warn('Null data!'); break;
+        default:
+            _loading = false;
+            _allNominations = _allNominations.map(n => n.contractor.id == data.nomination.contractor.id && n.ticket_set.id == data.nomination.ticket_set.id ? data.nomination : n);
+            break;
     }
 }
 

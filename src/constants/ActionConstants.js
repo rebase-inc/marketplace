@@ -3,6 +3,7 @@ var keyMirror = require('keymirror');
 module.exports = keyMirror({
     LOGIN: null,
     LOGOUT: null,
+    APPROVE_NOMINATION: null,
     AUTHENTICATE_GITHUB: null,
     GET_TICKET_DATA: null,
     GET_AUCTION_DATA: null,

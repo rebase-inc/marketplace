@@ -181,6 +181,12 @@ var Api = {
         if (pendingHandler) { pendingHandler(); }
         ajax('POST', url, { reason: reason }, responseHandler)
     },
+    approveNomination: function(nomination, responseHandler, pendingHandler) {
+        var url = makeUrl('/nominations/' + nomination.contractor.id + '/' + nomination.ticket_set.id);
+        var responseFunction = makeResponseFunc(responseHandler);
+        if (pendingHandler) { pendingHandler(); }
+        ajax('PUT', url, { auction: nomination.ticket_set.auction }, responseHandler)
+    },
 };
 
 

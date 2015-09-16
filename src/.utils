@@ -1,0 +1,11 @@
+search () {
+	grep -rn --include $1 --color=auto "$2" src
+}
+
+js () {
+	search \*.js $1
+}
+
+jsx () {
+	search \*.react.js $1
+}

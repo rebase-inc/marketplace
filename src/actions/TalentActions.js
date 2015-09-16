@@ -19,4 +19,19 @@ module.exports = {
         };
         Api.getTalentData(auction, responseAction, pendingAction);
     },
+    approveNomination: function(nomination) {
+        function responseAction(response) {
+            Dispatcher.handleRequestAction({
+                type: ActionConstants.APPROVE_NOMINATION,
+                response: response
+            });
+        };
+        function pendingAction(response) {
+            Dispatcher.handleRequestAction({
+                type: ActionConstants.APPROVE_NOMINATION,
+                response: RequestConstants.PENDING,
+            });
+        };
+        Api.approveNomination(nomination, responseAction, pendingAction);
+    },
 };
