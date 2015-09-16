@@ -45,6 +45,7 @@ var SingleContractView = React.createClass({
         var props = {
             closeModal: this.closeModal,
             currentUser: this.props.currentUser,
+            currentRole: this.props.currentRole,
             currentContract: this.props.currentContract,
         }
         switch (type) {

@@ -149,13 +149,13 @@ var Api = {
         var url = makeUrl('/work/' + contract.bid.work_offers[0].work.id + '/review_events');
         var responseFunction = makeResponseFunc(responseHandler);
         if (pendingHandler) { pendingHandler(); }
-        ajax('POST', url, null, responseHandler)
+        ajax('POST', url, { reason: reason }, responseHandler)
     },
     disputeWork: function(user, work, reason, responseHandler, pendingHandler) {
         var url = makeUrl('/work/' + work.id + '/mediate_events');
         var responseFunction = makeResponseFunc(responseHandler);
         if (pendingHandler) { pendingHandler(); }
-        ajax('POST', url, null, responseHandler)
+        ajax('POST', url, { reason: reason }, responseHandler)
     },
     markWorkComplete: function(user, work, comment, responseHandler, pendingHandler) {
         var url = makeUrl('/work/' + work.id + '/complete_events');
@@ -175,11 +175,13 @@ var Api = {
         if (pendingHandler) { pendingHandler(); }
         ajax('POST', url, { reason: reason }, responseHandler)
     },
-    markMediationFailed: function(role, mediation, reason, responseHandler, pendingHandler) {
-        var url = makeUrl('/mediations/' + mediation.id + '/client_answer');
+    markMediationFailed: function(role, mediation, responseHandler, pendingHandler) {
+        var event_url = role.type == 'manager' ? '/client_answer_events' : '/dev_answer_events';
+        var url = makeUrl('/mediation/' + mediation.id + event_url);
         var responseFunction = makeResponseFunc(responseHandler);
         if (pendingHandler) { pendingHandler(); }
-        ajax('POST', url, { reason: reason }, responseHandler)
+        var data = role.type == 'manager' ? {'client_answer' : 'fail'} : {'dev_answer' : 'fail'};
+        ajax('POST', url, data, responseHandler)
     },
 };
 

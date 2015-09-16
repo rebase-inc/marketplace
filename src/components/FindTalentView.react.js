@@ -33,7 +33,6 @@ var FindTalentView = React.createClass({
             currentRole: this.props.currentRole,
         }
         if (true) {
-            console.log('state is ', this.state);
             return (
                 <table id='talentList'>
                     <tbody>

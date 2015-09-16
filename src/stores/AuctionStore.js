@@ -96,7 +96,7 @@ function handleModifiedAuction(data) {
         case RequestConstants.PENDING: _loading = true; break;
         case RequestConstants.TIMEOUT: _loading = false; console.warn(data); break;
         case RequestConstants.ERROR: _loading = false; console.warn(data); break;
-        case null: _loading = false; console.warn('Null data!');
+        case null: _loading = false; console.warn('Null data!'); break;
         default:
             _loading = false;
             _allAuctions = _allAuctions.map(auction => auction.id == data.auction.id ? addSyntheticProperties(data.auction) : auction);

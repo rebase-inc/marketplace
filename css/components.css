@@ -43,7 +43,7 @@ table > tbody > tr > td.notification {
 }
 
 table > tbody > tr > td.needsResolution {
-    background-color: hsla(37, 89%, 64%, 1);
+    background-color: hsla(37, 87%, 61%, 1);
 }
 
 table > tbody > tr > td.completed {
@@ -51,7 +51,7 @@ table > tbody > tr > td.completed {
 }
 
 table > tbody > tr > td.warning {
-    background-color: hsla(351, 51%, 59%, 1);
+    background-color: hsla(351, 50%, 50%, 1);
 }
 
 tr.nomination > td.actionPanel,
@@ -73,19 +73,19 @@ tr.ticket > td.findTalentPanel svg {
 }
 
 tr.ticket > td.findTalentPanel:hover {
-    color: hsla(167, 54%, 53%, 1)
+    color: hsla(167, 48%, 49%, 1);
 }
 
 .findTalentPanel:hover svg path {
-    fill: hsla(167, 54%, 53%, 1)
+    fill: hsla(167, 48%, 49%, 1);
 }
 
 .findTalentPanel.darken svg path {
-    fill: hsla(167, 54%, 53%, 1)
+    fill: hsla(167, 48%, 49%, 1);
 }
 
 .findTalentPanel.darken {
-    color: hsla(167, 54%, 53%, 1)
+    color: hsla(167, 48%, 49%, 1);
 }
 
 .talentPanel {
