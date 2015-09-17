@@ -55,7 +55,7 @@ function handleNewTicketData(data) {
         case RequestConstants.PENDING: _loading = true; break;
         case RequestConstants.TIMEOUT: _loading = false; console.warn(data); break;
         case RequestConstants.ERROR: _loading = false; console.warn(data); break;
-        case null: _loading = false; console.warn('Undefined data!');
+        case null: _loading = false; console.warn('Undefined data!'); break;
         default:
             _loading = false;
             _allTickets = data.tickets;

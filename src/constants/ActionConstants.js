@@ -7,6 +7,7 @@ module.exports = keyMirror({
     AUTHENTICATE_GITHUB: null,
     GET_TICKET_DATA: null,
     GET_AUCTION_DATA: null,
+    GET_AUCTION_DETAIL: null,
     GET_CONTRACT_DATA: null,
     GET_TALENT_DATA: null,
     GET_REVIEW_DATA: null,

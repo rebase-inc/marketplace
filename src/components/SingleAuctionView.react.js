@@ -27,9 +27,9 @@ var SingleAuctionView = React.createClass({
         var modal;
         if (!!this.props.viewingTalent) {
             return (
-                <div className='mainContent'>
+                <div className='auctionView'>
                     <SearchBar searchText={this.state.searchText} onUserInput={this.handleUserInput}/>
-                    <FindTalentView />;
+                    <FindTalentView currentAuction={this.props.currentAuction} />
                 </div>
             );
         }

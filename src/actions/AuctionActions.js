@@ -19,6 +19,22 @@ module.exports = {
         };
         Api.getAuctionData(responseAction, pendingAction);
     },
+    getAuctionDetail: function(id) {
+        !id ? console.warn('No auction id provided!') : null;
+        function responseHandler(response) {
+            Dispatcher.handleRequestAction({
+                type: ActionConstants.GET_AUCTION_DETAIL,
+                response: response
+            });
+        };
+        function pendingHandler(response) {
+            Dispatcher.handleRequestAction({
+                type: ActionConstants.GET_AUCTION_DETAIL,
+                response: RequestConstants.PENDING,
+            });
+        };
+        Api.getAuctionDetail(id, responseHandler, pendingHandler);
+    },
     bidOnAuction: function(user, auction, price) {
         var responseAction = function(response) {
             Dispatcher.handleRequestAction({

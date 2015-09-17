@@ -1,6 +1,6 @@
 var ActionConstants = require('../constants/ActionConstants');
 var AuctionStore = require('../stores/AuctionStore');
-var RequestConstants = require('../constants/ActionConstants');
+var RequestConstants = require('../constants/RequestConstants');
 var AppDispatcher = require('../dispatcher/RebaseAppDispatcher');
 var MockData = require('../MockData');
 var _ = require('underscore');
@@ -23,22 +23,6 @@ function makeUrl(part) {
     return API_URL + part;
 }
 
-// return successful response, else return request Constants
-function makeResponseFunc(responseHandler) {
-    if (!responseHandler) { throw 'No response handler provided!' }
-    return function (err, response) {
-        if (err && err.timeout === TIMEOUT) {
-            responseHandler(RequestConstants.TIMEOUT);
-        } else if (response.status === 401) {
-            responseHandler(RequestConstants.NOT_LOGGED_IN);
-        } else if (!response.ok) {
-            responseHandler(RequestConstants.ERROR);
-        } else {
-            responseHandler(response);
-        }
-    };
-}
-
 function ajax(method, url, data, responseHandler) {
     return $.ajax({
         type: method || 'GET',
@@ -46,14 +30,13 @@ function ajax(method, url, data, responseHandler) {
         url: url,
         data: JSON.stringify(data || undefined),
         contentType: 'application/json; charset=utf-8',
-    }).done(responseHandler).fail(function(requestObj, textStatus) {
-            console.log('Request failed with this info: ', requestObj, textStatus);
-            switch (textStatus) {
-                case 'error': responseHandler(RequestConstants.ERROR); break;
-                case 'timeout' : responseHandler(RequestConstants.TIMEOUT); break;
-                default: responseHandler(RequestConstants.ERROR); break
-            }
-        });
+    }).done((t) => { responseHandler(t); console.log('success!') }).fail(function(jqXHR, textStatus, errorThrown) {
+        console.log('we failed!')
+        switch (textStatus) {
+            case 'timeout': responseHandler(RequestConstants.TIMEOUT); break;
+            default: responseHandler(RequestConstants.ERROR); break;
+        }
+    });
 }
 
 // This looks like an anti-DRY situation...Maybe the action creators
@@ -78,28 +61,29 @@ var Api = {
     getTalentData: function(auction, responseHandler, pendingHandler) {
         var url = makeUrl("/nominations");
         var params = {};
-        var responseFunction = makeResponseFunc(responseHandler);
         pendingHandler();
         ajax('GET', url, null, responseHandler);
     },
     getContractData: function(responseHandler, pendingHandler) {
         var url = makeUrl("/contracts");
         var params = {};
-        var responseFunction = makeResponseFunc(responseHandler);
         pendingHandler();
         ajax('GET', url, null, responseHandler);
     },
     getReviewData: function(responseHandler, pendingHandler) {
         var url = makeUrl("/reviews");
         var params = {};
-        var responseFunction = makeResponseFunc(responseHandler);
         pendingHandler();
         ajax('GET', url, null, responseHandler);
     },
     getAuctionData: function(responseHandler, pendingHandler) {
         var url = makeUrl("/auctions");
         var params = {};
-        var responseFunction = makeResponseFunc(responseHandler);
+        pendingHandler();
+        ajax('GET', url, null, responseHandler);
+    },
+    getAuctionDetail: function(id, responseHandler, pendingHandler) {
+        var url = makeUrl("/auctions/" + id);
         pendingHandler();
         ajax('GET', url, null, responseHandler);
     },
@@ -112,19 +96,16 @@ var Api = {
     getTicketData: function(responseHandler, pendingHandler) {
         var url = makeUrl("/tickets");
         var params = {};
-        var responseFunction = makeResponseFunc(responseHandler);
         pendingHandler();
         ajax('GET', url, null, responseHandler);
     },
     getCommentDetail: function(comment, responseHandler, pendingHandler) {
         var url = makeUrl("/comments/" + comment.id);
-        var responseFunction = makeResponseFunc(responseHandler);
         pendingHandler();
         ajax('GET', url, null, responseHandler);
     },
     getUserDetail: function(userID, responseHandler, pendingHandler) {
         var url = makeUrl("/users/" + userID);
-        var responseFunction = makeResponseFunc(responseHandler);
         pendingHandler();
         ajax('GET', url, null, responseHandler);
     },
@@ -141,51 +122,43 @@ var Api = {
                 auction: { id: auction.id },
             }
         };
-        var responseFunction = makeResponseFunc(responseHandler);
         if (pendingHandler) { pendingHandler(); }
         ajax('POST', url, data, responseHandler);
     },
     submitWork: function(user, contract, reason, responseHandler, pendingHandler) {
         var url = makeUrl('/work/' + contract.bid.work_offers[0].work.id + '/review_events');
-        var responseFunction = makeResponseFunc(responseHandler);
         if (pendingHandler) { pendingHandler(); }
         ajax('POST', url, { reason: reason }, responseHandler)
     },
     disputeWork: function(user, work, reason, responseHandler, pendingHandler) {
         var url = makeUrl('/work/' + work.id + '/mediate_events');
-        var responseFunction = makeResponseFunc(responseHandler);
         if (pendingHandler) { pendingHandler(); }
         ajax('POST', url, { reason: reason }, responseHandler)
     },
     markWorkComplete: function(user, work, comment, responseHandler, pendingHandler) {
         var url = makeUrl('/work/' + work.id + '/complete_events');
-        var responseFunction = makeResponseFunc(responseHandler);
         if (pendingHandler) { pendingHandler(); }
         ajax('POST', url, { comment: comment }, responseHandler)
     },
     markWorkBlocked: function(user, work, reason, responseHandler, pendingHandler) {
         var url = makeUrl('/work/' + work.id + '/halt_events');
-        var responseFunction = makeResponseFunc(responseHandler);
         if (pendingHandler) { pendingHandler(); }
         ajax('POST', url, { reason: reason }, responseHandler)
     },
     markWorkUnblocked: function(user, work, reason, responseHandler, pendingHandler) {
         var url = makeUrl('/work/' + work.id + '/resume_events');
-        var responseFunction = makeResponseFunc(responseHandler);
         if (pendingHandler) { pendingHandler(); }
         ajax('POST', url, { reason: reason }, responseHandler)
     },
     markMediationFailed: function(role, mediation, responseHandler, pendingHandler) {
         var event_url = role.type == 'manager' ? '/client_answer_events' : '/dev_answer_events';
         var url = makeUrl('/mediation/' + mediation.id + event_url);
-        var responseFunction = makeResponseFunc(responseHandler);
         if (pendingHandler) { pendingHandler(); }
         var data = role.type == 'manager' ? {'client_answer' : 'fail'} : {'dev_answer' : 'fail'};
         ajax('POST', url, data, responseHandler)
     },
     approveNomination: function(nomination, responseHandler, pendingHandler) {
         var url = makeUrl('/nominations/' + nomination.contractor.id + '/' + nomination.ticket_set.id);
-        var responseFunction = makeResponseFunc(responseHandler);
         if (pendingHandler) { pendingHandler(); }
         ajax('PUT', url, { auction: nomination.ticket_set.auction }, responseHandler)
     },

@@ -6,7 +6,7 @@ var Fuse = require('../utils/Fuse');
 
 var Talent = require('../components/Talent.react');
 var TalentStore = require('../stores/TalentStore');
-var TalentActions = require('../actions/TalentActions');
+var AuctionActions = require('../actions/AuctionActions');
 
 var FindTalentView = React.createClass({
     propTypes: {
@@ -19,7 +19,7 @@ var FindTalentView = React.createClass({
     },
     componentDidMount: function() {
         TalentStore.addChangeListener(this._onChange);
-        setTimeout(TalentActions.getTalentData, 0);
+        setTimeout(AuctionActions.getAuctionDetail.bind(null, this.props.currentAuction.id), 0);
     },
     componentWillUnmount: function() {
         TalentStore.removeChangeListener(this._onChange);

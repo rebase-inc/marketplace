@@ -10,15 +10,15 @@ var _ = require('underscore');
 //Define initial data points
 var _allNominations = [];
 var _loading = false;
-var _currentAuctionID = undefined;
+var _auctionID = null;
 
 var TalentStore = _.extend({}, EventEmitter.prototype, {
     getState: function(auctionID) {
-        //if (auctionID != _currentAuctionID) {
-            //_allNominations = [];
-            //_loading = false;
-            //_currentAuctionID = auctionID;
-        //}
+        if (auctionID != _auctionID) {
+            _allNominations = [];
+            _loading = false;
+            _auctionID = auctionID;
+        }
         return {
             allTalent: _allNominations,
             loading: _loading,
@@ -33,7 +33,7 @@ var TalentStore = _.extend({}, EventEmitter.prototype, {
 Dispatcher.register(function(payload) {
     var action = payload.action;
     switch(action.type) {
-        case ActionConstants.GET_TALENT_DATA: handleNewTalentData(action.response); break;
+        case ActionConstants.GET_AUCTION_DETAIL: handleNewAuctionData(action.response); break;
         case ActionConstants.APPROVE_NOMINATION: handleModifiedNomination(action.response); break;
         default: return true;
     }
@@ -43,15 +43,16 @@ Dispatcher.register(function(payload) {
     return true;
 });
 
-function handleNewTalentData(data) {
+function handleNewAuctionData(data) {
     switch (data) {
         case RequestConstants.PENDING: _loading = true; break;
         case RequestConstants.TIMEOUT: _loading = false; console.warn(data); break;
         case RequestConstants.ERROR: _loading = false; console.warn(data); break;
         case null: _loading = false; console.warn('Undefined data!'); break;
+        case undefined: _loading = false; console.warn('Undefined data!'); break;
         default:
             _loading = false;
-            _allNominations = data.nominations.sort((n1, n2) => n2.job_fit.score - n1.job_fit.score);
+            _allNominations = data.auction.ticket_set.nominations.sort((n1, n2) => n2.job_fit.score - n1.job_fit.score);
     }
 }
 
