@@ -1,4 +1,5 @@
 var React = require('react');
+var ReactDOM = require('react-dom');
 var TalentActions = require('../actions/TalentActions');
 
 
@@ -83,24 +84,50 @@ var ApproveTalent = React.createClass({
 
 var ProfilePicture = React.createClass({
     propTypes: {
-        user: React.PropTypes.object.isRequired,
+        user: React.PropTypes.object,
+        dynamic: React.PropTypes.bool,
+    },
+    getDefaultProps: function() {
+        return { dynamic: false };
+    },
+    openFileDialog: function() {
+        if (this.props.dynamic) {
+            var fileInput = ReactDOM.findDOMNode(this.refs.fileInput);
+            fileInput.value = null;
+            fileInput.click();
+        }
     },
     render: function() {
-        var initials = this.props.user.first_name.charAt(0) + this.props.user.last_name.charAt(0);
-        return (
-            <svg className='profilePicture' width="140px" height="140px" viewBox="0 0 140 140" version="1.1">
-                <g id="UI" stroke="none" strokeWidth="1" fill="none" fill-rule="evenodd">
-                    <g id="UX-Profile-Copy" transform="translate(-494.000000, -334.000000)">
-                        <g id="Oval-276-+-AM" transform="translate(494.000000, 334.000000)">
-                            <circle id="Oval-276" fill="#718296" cx="70" cy="70" r="70"></circle>
-                            <text id="intials" x='70' y='70' fontFamily="Gotham Rounded" fontSize="54px" dy="18px" fill="#F5F7FA" textAnchor='middle'>
-                                {initials}
-                            </text>
+        if (!!this.props.photo) {
+            return (
+                <div>
+                    <img onClick={this.openFileDialog} src={this.props.user.photo}/>
+                    {!!this.props.dynamic ? <h5>Change profile picture</h5> : null }
+                    <input type='file' ref='fileInput' style={{ display: 'none' }}/>
+                </div>
+           );
+        }
+        else {
+            var initials = this.props.user.first_name.charAt(0) + this.props.user.last_name.charAt(0);
+            return (
+                <div>
+                    <svg onClick={this.openFileDialog} className='profilePicture' width="140px" height="140px" viewBox="0 0 140 140" version="1.1">
+                        <g id="UI" stroke="none" strokeWidth="1" fill="none" fill-rule="evenodd">
+                            <g id="UX-Profile-Copy" transform="translate(-494.000000, -334.000000)">
+                                <g id="Oval-276-+-AM" transform="translate(494.000000, 334.000000)">
+                                    <circle id="Oval-276" fill="#718296" cx="70" cy="70" r="70"></circle>
+                                    <text id="intials" x='70' y='70' fontFamily="Gotham Rounded" fontSize="54px" dy="18px" fill="#F5F7FA" textAnchor='middle'>
+                                        {initials}
+                                    </text>
+                                </g>
+                            </g>
                         </g>
-                    </g>
-                </g>
-            </svg>
-        );
+                    </svg>
+                    {!!this.props.dynamic ? <h5>Change profile picture</h5> : null }
+                    <input type='file' ref='fileInput' style={{ display: 'none' }}/>
+                </div>
+            );
+        }
     }
 });
 

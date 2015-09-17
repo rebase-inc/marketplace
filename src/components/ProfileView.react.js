@@ -19,14 +19,11 @@ var ProfileView = React.createClass({
     render: function() {
         return (
             <div className='profileView'>
-                {
-                    !!this.props.currentUser.photo ?
-                    <img src={this.props.currentUser.photo}/> :
-                    <Icons.ProfilePicture user={this.props.currentUser} />
-                }
-                <input placeholder={this.props.currentUser.first_name}/>
-                <input placeholder={this.props.currentUser.last_name}/>
-                <input placeholder='Seattle, WA'/>
+                <Icons.ProfilePicture user={this.props.currentUser} dynamic={true}/>
+                <input value={this.props.currentUser.first_name}/>
+                <input value={this.props.currentUser.last_name}/>
+                <input value='Seattle, WA'/>
+                <button>Update Settings</button>
                 <button onClick={window.open.bind(null, '/github/', '_blank')}>Authenticate GitHub</button>
             </div>
         );

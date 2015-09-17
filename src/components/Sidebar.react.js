@@ -112,6 +112,9 @@ var ProfileOptions = React.createClass({
             <div id='profileOptions' className={this.props.isOpen ? 'open' : null}>
                 <ul>
                     <li onClick={UserActions.selectView.bind(null, ViewTypes.PROFILE)}>Profile</li>
+                    <li onClick={UserActions.selectView.bind(null, ViewTypes.PROJECTS)}>Projects</li>
+                    <li onClick={UserActions.selectView.bind(null, ViewTypes.WORK_HISTORY)}>Work History</li>
+                    <li onClick={UserActions.selectView.bind(null, ViewTypes.BILLING_AND_PAYMENTS)}>Billing and Payments</li>
                     <li onClick={UserActions.logout}>Sign Out</li>
                 </ul>
             </div>

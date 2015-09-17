@@ -558,7 +558,7 @@ button.small {
 }
 
 #profileOptions.open > ul {
-    height: 72px;
+    height: 180px;
     transition: height 0.3s;
 }
 
@@ -567,7 +567,7 @@ button.small {
 }
 
 
-#currentProfile > img, #currentProfile > .profilePicture {
+#currentProfile img, #currentProfile .profilePicture {
     height: 24px;
     width: 24px;
     padding-right: 8px;

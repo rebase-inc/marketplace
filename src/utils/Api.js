@@ -31,7 +31,6 @@ function ajax(method, url, data, responseHandler) {
         data: JSON.stringify(data || undefined),
         contentType: 'application/json; charset=utf-8',
     }).done((t) => { responseHandler(t); console.log('success!') }).fail(function(jqXHR, textStatus, errorThrown) {
-        console.log('we failed!')
         switch (textStatus) {
             case 'timeout': responseHandler(RequestConstants.TIMEOUT); break;
             default: responseHandler(RequestConstants.ERROR); break;
