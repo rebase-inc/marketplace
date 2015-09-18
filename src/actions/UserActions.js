@@ -64,6 +64,36 @@ module.exports = {
         };
         Api.getUserDetail(userID, responseAction, pendingAction);
     },
+    updateUserSettings: function(user) {
+        function responseHandler(response) {
+            Dispatcher.handleRequestAction({
+                type: ActionConstants.UPDATE_USER_SETTINGS,
+                response: response
+            });
+        };
+        function pendingHandler(response) {
+            Dispatcher.handleRequestAction({
+                type: ActionConstants.UPDATE_USER_SETTINGS,
+                response: RequestConstants.PENDING,
+            });
+        };
+        Api.updateUserSettings(user, responseHandler, pendingHandler);
+    },
+    updateProfilePhoto: function(file) {
+        function responseHandler(response) {
+            Dispatcher.handleRequestAction({
+                type: ActionConstants.UPDATE_PROFILE_PHOTO,
+                response: response
+            });
+        };
+        function pendingHandler(response) {
+            Dispatcher.handleRequestAction({
+                type: ActionConstants.UPDATE_PROFILE_PHOTO,
+                response: RequestConstants.PENDING,
+            });
+        };
+        Api.updateProfilePhoto(file, responseHandler, pendingHandler);
+    },
     selectRole: function(roleID) {
         Dispatcher.handleRequestAction({
             type: ActionConstants.SELECT_ROLE,

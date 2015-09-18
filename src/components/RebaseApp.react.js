@@ -56,7 +56,6 @@ var RebaseApp = React.createClass({
                     <Sidebar {...sidebarProps} />
                     {
                         (function(currentView) {
-                            console.log(currentView);
                             switch (currentView) {
                                 case viewConstants.ViewTypes.NEW: return <TicketView {...mainProps} />; break;
                                 case viewConstants.ViewTypes.OFFERED: return <AuctionView {...mainProps} />; break;

@@ -30,7 +30,26 @@ function ajax(method, url, data, responseHandler) {
         url: url,
         data: JSON.stringify(data || undefined),
         contentType: 'application/json; charset=utf-8',
-    }).done((t) => { responseHandler(t); console.log('success!') }).fail(function(jqXHR, textStatus, errorThrown) {
+    }).done(responseHandler).fail(function(jqXHR, textStatus, errorThrown) {
+        switch (textStatus) {
+            case 'timeout': responseHandler(RequestConstants.TIMEOUT); break;
+            default: responseHandler(RequestConstants.ERROR); break;
+        }
+    });
+}
+
+function fileUpload(url, formAttr, file, responseHandler) {
+    var data = new FormData();
+    data.append(formAttr, file);
+    $.ajax({
+        type: 'POST',
+        xhrFields: { withCredentials: true },
+        url: url,
+        data: data,
+        cache: false,
+        contentType: false,
+        processData: false,
+    }).done(responseHandler).fail(function(jqXHR, textStatus, errorThrown) {
         switch (textStatus) {
             case 'timeout': responseHandler(RequestConstants.TIMEOUT); break;
             default: responseHandler(RequestConstants.ERROR); break;
@@ -160,6 +179,16 @@ var Api = {
         var url = makeUrl('/nominations/' + nomination.contractor.id + '/' + nomination.ticket_set.id);
         if (pendingHandler) { pendingHandler(); }
         ajax('PUT', url, { auction: nomination.ticket_set.auction }, responseHandler)
+    },
+    updateProfilePhoto: function(file, responseHandler, pendingHandler) {
+        var url = makeUrl('/uploads');
+        if (pendingHandler) { pendingHandler(); }
+        fileUpload(url, 'photo', file, responseHandler)
+    },
+    updateUserSettings: function(user, responseHandler, pendingHandler) {
+        var url = makeUrl('/users/' + user.id);
+        if (pendingHandler) { pendingHandler(); }
+        ajax('PUT', url, user, responseHandler);
     },
 };
 

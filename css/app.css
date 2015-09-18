@@ -403,7 +403,11 @@ table > tbody > tr > td {
     bottom: 0;
 }
 
-.comment > .photo > img, .comment > .photo > svg {
+img.profilePicture {
+    border-radius: 50%;
+}
+
+.comment > .photo img, .comment > .photo svg {
     padding: 7px;
     width: 35px;
     height: 35px;
@@ -566,11 +570,14 @@ button.small {
     padding: 5px;
 }
 
+#profileOptions > ul > li:hover {
+    background-color: hsla(0, 0%, 100%, 0.2);
+}
 
 #currentProfile img, #currentProfile .profilePicture {
     height: 24px;
     width: 24px;
-    padding-right: 8px;
+    margin-right: 8px;
     float: left;
 }
 

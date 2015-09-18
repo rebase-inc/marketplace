@@ -26,6 +26,7 @@ var _currentRole = null;
 var _loading = false;
 
 !!_userCookie ? handleLogin({user: JSON.parse(_userCookie)}) : null;
+!!_currentUser ? UserActions.getUserDetail(_currentUser.id) : null;
 
 var UserStore = _.extend({}, EventEmitter.prototype, {
     getState: function() {
@@ -49,7 +50,9 @@ UserStore.dispatchToken = Dispatcher.register(function(payload) {
         case ActionConstants.LOGOUT: handleLogout(action.response); break;
         case ActionConstants.SELECT_VIEW: handleSelectView(action.viewType); break;
         case ActionConstants.SELECT_ROLE: handleSelectRole(action.roleID); break;
-        case ActionConstants.GET_USER_DETAIL: handleLogin(action.response); break;
+        case ActionConstants.GET_USER_DETAIL: updateUserDetail(action.response); break;
+        case ActionConstants.UPDATE_PROFILE_PHOTO: updateUserDetail(action.response); break;
+        case ActionConstants.UPDATE_USER_SETTINGS: updateUserDetail(action.response); break;
         default: return true;
     }
 
@@ -57,6 +60,19 @@ UserStore.dispatchToken = Dispatcher.register(function(payload) {
     UserStore.emitChange();
     return true;
 });
+
+function updateUserDetail(data) {
+    switch (data) {
+        case RequestConstants.PENDING: _loading = true; break;
+        case RequestConstants.TIMEOUT: _loading = false; console.warn(data); break;
+        case RequestConstants.ERROR: _loading = false; console.warn(data); break;
+        case null: _loading = false; console.warn('Undefined data!');
+        default:
+            _loading = false;
+            _currentUser = data.user;
+            Cookies.set('user', JSON.stringify(_currentUser), 1);
+    }
+}
 
 function handleLogin(data) {
     switch (data) {

@@ -152,24 +152,33 @@ tr.ticket > td.findTalentPanel:hover {
     display: block;
 }
 
+.profileView > .profileSettings {
+    display: block;
+    position: absolute;
+    width: 360px;
+    margin: 0 auto;
+    top: 50%;
+    left: 50%;
+    transform: translateX(-50%) translateY(-50%);
+}
 
 .profileView input {
-    text-align: center;
+    text-align: left;
     height: 50px;
     font-size: 16px;
     border: none;
-    border-bottom: 1px solid #1C2D41;
+    border-bottom: 1px solid #BFC4CB;
     padding-top: 8px;
     background-color: transparent;
     display: block;
     margin: 14px auto;
-    width: 240px;
+    width: 360px;
 }
 
 .profileView button {
     display: block;
     margin: 56px auto;
-    width: 240px;
+    width: 360px;
     height: 50px;
 }
 

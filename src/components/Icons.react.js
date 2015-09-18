@@ -1,7 +1,16 @@
 var React = require('react');
 var ReactDOM = require('react-dom');
 var TalentActions = require('../actions/TalentActions');
+var UserActions = require('../actions/UserActions');
 
+function _dataURItoBlob(dataURI) {
+    var binary = atob(dataURI.split(',')[1]);
+    var array = [];
+    for(var i = 0; i < binary.length; i++) {
+        array.push(binary.charCodeAt(i));
+    }
+    return new Blob([new Uint8Array(array)], {type: 'image/jpeg'});
+}
 
 var ApproveTalent = React.createClass({
     propTypes: {
@@ -97,15 +106,35 @@ var ProfilePicture = React.createClass({
             fileInput.click();
         }
     },
+    handleFile: function(event) {
+        var MAX_DIMENSION = 600;
+        var fileToUpload = event.target.files[0];
+
+        var img = document.createElement('img');
+        img.src = window.URL.createObjectURL(fileToUpload);
+        var canvas = document.createElement('canvas');
+        canvas.height = MAX_DIMENSION;
+        canvas.width = MAX_DIMENSION;
+        var ctx = canvas.getContext("2d");
+        ctx.drawImage(img, 0, 0);
+
+        img.onload = function() {
+            var size = Math.min(img.width, img.height);
+            ctx.drawImage(img, 0, 0, size, size, 0, 0, MAX_DIMENSION, MAX_DIMENSION);
+            var imgUrl = canvas.toDataURL('image/jpeg');
+            this.setState({ photo: imgUrl });
+            UserActions.updateProfilePhoto(_dataURItoBlob(imgUrl));
+        }.bind(this);
+    },
     render: function() {
-        if (!!this.props.photo) {
+        if (!!this.props.user.photo) {
             return (
                 <div>
-                    <img onClick={this.openFileDialog} src={this.props.user.photo}/>
+                    <img ref='imgNode' className='profilePicture' onClick={this.openFileDialog} src={this.props.user.photo}/>
                     {!!this.props.dynamic ? <h5>Change profile picture</h5> : null }
-                    <input type='file' ref='fileInput' style={{ display: 'none' }}/>
+                    <input type='file' ref='fileInput' style={{ display: 'none' }} onChange={this.handleFile} />
                 </div>
-           );
+            );
         }
         else {
             var initials = this.props.user.first_name.charAt(0) + this.props.user.last_name.charAt(0);
@@ -124,7 +153,7 @@ var ProfilePicture = React.createClass({
                         </g>
                     </svg>
                     {!!this.props.dynamic ? <h5>Change profile picture</h5> : null }
-                    <input type='file' ref='fileInput' style={{ display: 'none' }}/>
+                    <input type='file' ref='fileInput' style={{ display: 'none' }} onChange={this.handleFile} />
                 </div>
             );
         }
