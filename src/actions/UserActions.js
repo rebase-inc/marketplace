@@ -5,9 +5,10 @@ var Api = require('../utils/Api');
 
 module.exports = {
     login: function(email, password) {
-        var responseAction = function(response) {
+        var responseAction = function(response, status) {
             Dispatcher.handleRequestAction({
                 type: ActionConstants.LOGIN,
+                status: status || RequestConstants.SUCCESS,
                 response: response
             });
         };

@@ -4,4 +4,5 @@ module.exports = keyMirror({
     PENDING: null,
     TIMEOUT: null,
     ERROR: null,
+    SUCESS: null,
 });

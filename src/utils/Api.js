@@ -144,27 +144,27 @@ var Api = {
         ajax('POST', url, data, responseHandler);
     },
     submitWork: function(user, contract, reason, responseHandler, pendingHandler) {
-        var url = makeUrl('/work/' + contract.bid.work_offers[0].work.id + '/review_events');
+        var url = makeUrl('/works/' + contract.bid.work_offers[0].work.id + '/review');
         if (pendingHandler) { pendingHandler(); }
         ajax('POST', url, { reason: reason }, responseHandler)
     },
     disputeWork: function(user, work, reason, responseHandler, pendingHandler) {
-        var url = makeUrl('/work/' + work.id + '/mediate_events');
+        var url = makeUrl('/works/' + work.id + '/mediate');
         if (pendingHandler) { pendingHandler(); }
         ajax('POST', url, { reason: reason }, responseHandler)
     },
     markWorkComplete: function(user, work, comment, responseHandler, pendingHandler) {
-        var url = makeUrl('/work/' + work.id + '/complete_events');
+        var url = makeUrl('/works/' + work.id + '/complete');
         if (pendingHandler) { pendingHandler(); }
         ajax('POST', url, { comment: comment }, responseHandler)
     },
     markWorkBlocked: function(user, work, reason, responseHandler, pendingHandler) {
-        var url = makeUrl('/work/' + work.id + '/halt_events');
+        var url = makeUrl('/works/' + work.id + '/halt');
         if (pendingHandler) { pendingHandler(); }
         ajax('POST', url, { reason: reason }, responseHandler)
     },
     markWorkUnblocked: function(user, work, reason, responseHandler, pendingHandler) {
-        var url = makeUrl('/work/' + work.id + '/resume_events');
+        var url = makeUrl('/works/' + work.id + '/resume');
         if (pendingHandler) { pendingHandler(); }
         ajax('POST', url, { reason: reason }, responseHandler)
     },

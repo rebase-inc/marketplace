@@ -12,7 +12,7 @@ tr.nomination > td.actionPanel > img {
     /*color: hsla(180, 2%, 75%, 1);*/
 /*}*/
 
-.ticketView, .auctionView, .contractView, .reviewView, .profileView {
+.ticketView, .auctionView, .contractView, .reviewView, .profileView, .projectView {
     position: relative;
     display: block;
     float: left;
@@ -152,14 +152,76 @@ tr.ticket > td.findTalentPanel:hover {
     display: block;
 }
 
-.profileView > .profileSettings {
+.profileView > .profileSettings, .projectView > .projectSettings {
     display: block;
     position: absolute;
-    width: 360px;
     margin: 0 auto;
     top: 50%;
     left: 50%;
     transform: translateX(-50%) translateY(-50%);
+}
+
+.projectView .projectDetails {
+    display: inline-block;
+    float: left;
+}
+
+.projectGraph path.openTickets {
+    stroke: #D5DBE3;
+    stroke-width: 2;
+    fill: none;
+}
+
+.projectGraph span.openTickets {
+    color: #D5DBE3;
+}
+
+.projectGraph circle.openTickets {
+    fill: #D5DBE3;
+}
+
+.projectGraph path.closedTickets {
+    stroke: #5FC0AA;
+    stroke-width: 2;
+    fill: none;
+}
+
+.projectGraph span.closedTickets {
+    color: #5FC0AA;
+}
+
+.projectGraph circle.closedTickets {
+    fill: #5FC0AA;
+}
+
+.projectView .project {
+    overflow: auto;
+    padding: 20px;
+}
+
+.projectView .projectDetails span {
+    display: block;
+    font-size: 32px;
+}
+
+.projectView .projectDetails span:first-child {
+    transform: translateY(8px);
+    font-size: 14px;
+    padding-left: 1px;
+    opacity: 0.5;
+}
+
+.projectView .projectDetails span:last-child {
+    font-size: 10px;
+    padding-left: 2px;
+    color: hsla(351, 50%, 50%, 1);
+    cursor: pointer;
+}
+
+.projectView .projectGraph {
+    display: inline-block;
+    float: left;
+    padding-right: 20px;
 }
 
 .profileView input {
@@ -173,6 +235,11 @@ tr.ticket > td.findTalentPanel:hover {
     display: block;
     margin: 14px auto;
     width: 360px;
+}
+
+.profileView input:focus {
+    border-bottom: 1px solid #1C2D41;
+    transition: border 500ms;
 }
 
 .profileView button {
@@ -190,10 +257,31 @@ tr.ticket > td.findTalentPanel:hover {
     cursor: pointer;
 }
 
-.profileView h5 {
+.profileView h5, .projectView h5 {
     margin: 0 auto;
     text-align: center;
     font-size: 10px;
     opacity: 0.6;
+    cursor: pointer;
 }
 
+.projectView .addNewProject {
+    padding: 10px;
+}
+
+.projectView .addNewProject svg {
+    display: block;
+    margin: 0 auto;
+    text-align: center;
+    padding: 5px;
+    cursor: pointer;
+}
+
+.projectGraph span {
+    display: block;
+    height: 12px;
+    line-height: 12px;
+    min-height: 12px;
+    text-align: center;
+    font-size: 10px;
+}

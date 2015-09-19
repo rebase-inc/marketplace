@@ -5,7 +5,7 @@ var Icons = require('../components/Icons.react');
 var Sidebar = require('../components/Sidebar.react');
 var TicketStore = require('../stores/TicketStore');
 var UserStore = require('../stores/UserStore');
-var viewConstants = require('../constants/viewConstants');
+var viewConstants = require('../constants/ViewConstants');
 var UserActions = require('../actions/UserActions');
 
 var TicketView = require('../components/TicketView.react');
@@ -13,6 +13,7 @@ var AuctionView = require('../components/AuctionView.react');
 var ContractView = require('../components/ContractView.react');
 var ReviewView = require('../components/ReviewView.react');
 var ProfileView = require('../components/ProfileView.react');
+var ProjectView = require('../components/ProjectView.react');
 
 var RebaseApp = React.createClass({
     selectRole: function(roleID) {
@@ -49,7 +50,7 @@ var RebaseApp = React.createClass({
         };
         var View;
         if (!this.state.loggedIn) {
-            return <LoginDialog />
+            return <LoginDialog error={this.state.error}/>
         } else {
             return (
                 <div id='app'>
@@ -62,7 +63,8 @@ var RebaseApp = React.createClass({
                                 case viewConstants.ViewTypes.IN_PROGRESS: return <ContractView {...mainProps} />; break;
                                 case viewConstants.ViewTypes.COMPLETED: return <ReviewView {...mainProps} />; break;
                                 case viewConstants.ViewTypes.PROFILE: return <ProfileView {...mainProps} />; break;
-                                default: return <div>ERROR</div>; break;
+                                case viewConstants.ViewTypes.PROJECTS: return <ProjectView {...mainProps} />; break;
+                                default: return <div>ERROR, INVALID VIEW: {currentView}</div>; break;
                             }
                         })(this.state.currentView.type)
                     }
@@ -99,6 +101,7 @@ var LoginDialog = React.createClass({
             <div id='login-background'>
                 <div id='login-box' onKeyPress={this.handleKeyPress}>
                     <img src='img/logo.svg' alt='Rebase Logo' />
+                    <p>{ this.props.error }</p>
                     <input id='email' type='email' ref='email' className='required email' placeholder='Email' />
                     <input id='password' type='password' ref='password' placeholder='Password' />
                     <button id='log-in' onClick={this.attemptLogin}>Log in</button>

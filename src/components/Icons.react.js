@@ -120,7 +120,9 @@ var ProfilePicture = React.createClass({
 
         img.onload = function() {
             var size = Math.min(img.width, img.height);
-            ctx.drawImage(img, 0, 0, size, size, 0, 0, MAX_DIMENSION, MAX_DIMENSION);
+            var sourceX = (img.width - size)/2;
+            var sourceY = (img.height - size)/2;
+            ctx.drawImage(img, sourceX, sourceY, size, size, 0, 0, MAX_DIMENSION, MAX_DIMENSION);
             var imgUrl = canvas.toDataURL('image/jpeg');
             this.setState({ photo: imgUrl });
             UserActions.updateProfilePhoto(_dataURItoBlob(imgUrl));
@@ -131,7 +133,7 @@ var ProfilePicture = React.createClass({
             return (
                 <div>
                     <img ref='imgNode' className='profilePicture' onClick={this.openFileDialog} src={this.props.user.photo}/>
-                    {!!this.props.dynamic ? <h5>Change profile picture</h5> : null }
+                    {!!this.props.dynamic ? <h5 onClick={this.openFileDialog}>Change profile picture</h5> : null }
                     <input type='file' ref='fileInput' style={{ display: 'none' }} onChange={this.handleFile} />
                 </div>
             );
@@ -251,6 +253,113 @@ var Dropdown = React.createClass({
     }
 });
 
+var AddNewProject = React.createClass({
+    render: function() {
+        return (
+            <div className='addNewProject'>
+                <h5>Add New Project</h5>
+                <svg width="25px" height="25px" viewBox="0 0 25 25" version="1.1">
+                    <g id="UI" stroke="none" strokeWidth="1" fill="none" fill-rule="evenodd">
+                        <g id="UX-Profile-Copy" transform="translate(-873.000000, -500.000000)" fill="#D5DBE3">
+                            <g id="Fill-2337" transform="translate(873.000000, 500.000000)">
+                                <path d="M24.0386,8.0295 L16.5386,8.0155 L16.5526,0.5155 C16.5536,0.3825 16.5006,0.2555 16.4066,0.1615 C16.3136,0.0675 16.1856,0.0145 16.0536,0.0145 L9.0316,0.0075 L9.0306,0.0075 C8.8986,0.0075 8.7716,0.0605 8.6776,0.1545 C8.5836,0.2475 8.5306,0.3745 8.5306,0.5075 L8.5306,8.0075 L1.0306,8.0075 C0.7546,8.0075 0.5306,8.2315 0.5306,8.5075 L0.5306,15.5075 C0.5306,15.7845 0.7546,16.0075 1.0306,16.0075 L8.5306,16.0075 L8.5306,23.5075 C8.5306,23.7845 8.7546,24.0075 9.0306,24.0075 L16.0306,24.0075 C16.3066,24.0075 16.5306,23.7845 16.5306,23.5075 L16.5306,16.0075 L24.0306,16.0075 C24.3066,16.0075 24.5306,15.7845 24.5306,15.5085 L24.5376,8.5305 C24.5376,8.2545 24.3146,8.0305 24.0386,8.0295"></path>
+                            </g>
+                        </g>
+                    </g>
+                </svg>
+            </div>
+        );
+    }
+});
+
+var ProjectGraph = React.createClass({
+    getInitialState: function() {
+        return { displayText: '' }
+    },
+    componentDidMount: function() {
+        function getRandomInt(min, max) {
+            return Math.floor(Math.random() * (max - min + 1)) + min;
+        }
+        var element = ReactDOM.findDOMNode(this);
+        var w = 150; // width
+        var h = 50; // height
+        var openTickets = [0, 0, 0, 0, 0].map(e => getRandomInt(0, 10)); //horrible hack
+        var closedTickets = [1, 2, 5, 2, 4].map(e => getRandomInt(0, 10));//horrible hack
+        var x = d3.scale.linear().domain([0, openTickets.length - 1]).range([0, w]);
+        var y = d3.scale.linear().domain([0, Math.max(d3.max(openTickets), d3.max(closedTickets))]).range([h, 0]);
+
+        var line = d3.svg.line().x( function(d,i) { return x(i); }).y(function(d) { return y(d); });
+        var graph = d3.select(element).insert("svg:svg", ":first-child")
+            .attr("width", w + 20)
+            .attr("height", h + 20)
+            .append("svg:g").attr("transform", "translate(10,10)");
+        graph.append("svg:path").attr("d", line(openTickets)).attr('class', 'openTickets');
+
+        var setGraphText = function(text) {
+            this.setState({ displayClass: 'openTickets' });
+            this.setState({ displayText: text });
+        }.bind(this);
+        graph.selectAll(".point")
+        .data(openTickets)
+        .enter().append("svg:circle")
+        .attr("cx", function(d, i) { return x(i) })
+        .attr("cy", function(d, i) { return y(d) })
+        .attr("r", function(d, i) { return 5 })
+        .attr('class', 'openTickets')
+        .on("mouseover", function(d,i) {
+            d3.select(this).transition()
+            .ease("elastic")
+            .duration("400")
+            .attr("r", 7);
+           setGraphText('Offered ' + d + ' tickets on day ' + i);
+        })
+        .on("mouseout", function(d,i) {
+            d3.select(this).transition()
+            .ease("quad")
+            .delay("100")
+            .duration("200")
+            .attr("r", 5);
+           setGraphText(null);
+        });
+        graph.append("svg:path").attr("d", line(closedTickets)).attr('class', 'closedTickets');
+
+        var setGraphText = function(text) {
+            this.setState({ displayClass: 'closedTickets' });
+            this.setState({ displayText: text });
+        }.bind(this);
+        graph.selectAll(".point")
+        .data(closedTickets)
+        .enter().append("svg:circle")
+        .attr("cx", function(d, i) { return x(i) })
+        .attr("cy", function(d, i) { return y(d) })
+        .attr("r", function(d, i) { return 5 })
+        .attr('class', 'closedTickets')
+        .on("mouseover", function(d,i) {
+            d3.select(this).transition()
+            .ease("elastic")
+            .duration("400")
+            .attr("r", 7);
+           setGraphText('Completed ' + d + ' tickets on day ' + i);
+        })
+        .on("mouseout", function(d,i) {
+            d3.select(this).transition()
+            .ease("quad")
+            .delay("100")
+            .duration("200")
+            .attr("r", 5);
+           setGraphText(null);
+        });
+    },
+    render: function() {
+        return (
+            <div className='projectGraph'>
+                <span ref='graphText' className={this.state.displayClass}>{this.state.displayText}</span>
+            </div>
+        );
+    }
+});
+
+
 module.exports = {
     Dropdown: Dropdown,
     Comment: Comment,
@@ -259,4 +368,6 @@ module.exports = {
     ApproveTalent: ApproveTalent,
     TalentScore: TalentScore,
     ProfilePicture: ProfilePicture,
+    AddNewProject: AddNewProject,
+    ProjectGraph: ProjectGraph,
 };

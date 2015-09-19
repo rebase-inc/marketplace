@@ -24,6 +24,7 @@ var _loggedIn = null;
 var _currentView = null;
 var _currentRole = null;
 var _loading = false;
+var _error = null;
 
 !!_userCookie ? handleLogin({user: JSON.parse(_userCookie)}) : null;
 !!_currentUser ? UserActions.getUserDetail(_currentUser.id) : null;
@@ -78,7 +79,7 @@ function handleLogin(data) {
     switch (data) {
         case RequestConstants.PENDING: _loading = true; break;
         case RequestConstants.TIMEOUT: _loading = false; console.warn(data); break;
-        case RequestConstants.ERROR: _loading = false; console.warn(data); break;
+        case RequestConstants.ERROR: _loading = false; _error = data; console.log(data); break;
         case null: _loading = false; console.warn('Undefined data!');
         default:
             _loading = false;

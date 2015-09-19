@@ -1,0 +1,62 @@
+// External
+var React = require('react');
+var ReactDOM = require('react-dom');
+var _ = require('underscore');
+
+// Stores
+var UserStore = require('../stores/UserStore');
+
+// Actions
+var UserActions = require('../actions/UserActions');
+
+// Icons
+var Icons = require('../components/Icons.react');
+
+var ProfileView = React.createClass({
+    propTypes: {
+        currentUser: React.PropTypes.object.isRequired,
+        currentRole: React.PropTypes.object.isRequired,
+    },
+    updateProfileSettings: function() {
+        var user = {
+            id: this.props.currentUser.id,
+            first_name: ReactDOM.findDOMNode(this.refs.first_name).value,
+            last_name: ReactDOM.findDOMNode(this.refs.last_name).value,
+            email: ReactDOM.findDOMNode(this.refs.email).value,
+        }
+        UserActions.updateUserSettings(user);
+    },
+    _makeProjectElement: function(organization, project) {
+        return (
+            <div className='project'>
+                <Icons.ProjectGraph />
+                <div className='projectDetails'>
+                    <span className='orgName'>{organization.name}</span>
+                    <span className='projName'>{project.name}</span>
+                    <span className='projDelete'>{'Delete Project?'}</span>
+                </div>
+            </div>
+        );
+    },
+    render: function() {
+        var projects = [];
+        // temp hack until we make managers own projects, instead of organizations
+        var role;
+        var project;
+        this.props.currentUser.roles.forEach(role => role.organization.projects.forEach(project => projects.push(this._makeProjectElement(role.organization, project))));
+        projects.push(this._makeProjectElement({name: 'rebase'}, {name: 'api'}));
+        projects.push(this._makeProjectElement({name: 'rebase'}, {name: 'react-app'}));
+        projects.push(this._makeProjectElement({name: 'rebase'}, {name: 'models'}));
+        return (
+            <div className='projectView'>
+                <div className='projectSettings'>
+                    { projects }
+                    <Icons.AddNewProject />
+                </div>
+            </div>
+        );
+    }
+});
+
+//<button onClick={window.open.bind(null, '/github/', '_blank')}>Authenticate GitHub</button>
+module.exports = ProfileView;

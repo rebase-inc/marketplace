@@ -92,7 +92,7 @@ var SidebarProfile = React.createClass({
                     <span>{this.props.currentUser.first_name + ' ' + this.props.currentUser.last_name}</span>
                     <Icons.Dropdown />
                 </div>
-                <ProfileOptions isOpen={this.state.optionsOpen} {...this.props} />
+                <ProfileOptions isOpen={this.state.optionsOpen} toggleOptions={this.toggleOptions} {...this.props} />
             </div>
        );
     }
@@ -103,14 +103,18 @@ var ProfileOptions = React.createClass({
         currentUser: React.PropTypes.object.isRequired,
         isOpen: React.PropTypes.bool.isRequired,
     },
+    selectOption: function(option) {
+        UserActions.selectView(option);
+        this.props.toggleOptions();
+    },
     render: function() {
         return (
             <div id='profileOptions' className={this.props.isOpen ? 'open' : null}>
                 <ul>
-                    <li onClick={UserActions.selectView.bind(null, ViewTypes.PROFILE)}>Profile</li>
-                    <li onClick={UserActions.selectView.bind(null, ViewTypes.PROJECTS)}>Projects</li>
-                    <li onClick={UserActions.selectView.bind(null, ViewTypes.WORK_HISTORY)}>Work History</li>
-                    <li onClick={UserActions.selectView.bind(null, ViewTypes.BILLING_AND_PAYMENTS)}>Billing and Payments</li>
+                    <li onClick={this.selectOption.bind(null, ViewTypes.PROFILE)}>Profile</li>
+                    <li onClick={this.selectOption.bind(null, ViewTypes.PROJECTS)}>Projects</li>
+                    <li onClick={this.selectOption.bind(null, ViewTypes.WORK_HISTORY)}>Work History</li>
+                    <li onClick={this.selectOption.bind(null, ViewTypes.BILLING_AND_PAYMENTS)}>Billing and Payments</li>
                     <li onClick={UserActions.logout}>Sign Out</li>
                 </ul>
             </div>
