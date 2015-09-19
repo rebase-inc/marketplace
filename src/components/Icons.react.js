@@ -295,7 +295,7 @@ var ProjectGraph = React.createClass({
             .append("svg:g").attr("transform", "translate(10,10)");
         graph.append("svg:path").attr("d", line(openTickets)).attr('class', 'openTickets');
 
-        var setGraphText = function(text) {
+        var setGraphTextOpen = function(text) {
             this.setState({ displayClass: 'openTickets' });
             this.setState({ displayText: text });
         }.bind(this);
@@ -305,13 +305,15 @@ var ProjectGraph = React.createClass({
         .attr("cx", function(d, i) { return x(i) })
         .attr("cy", function(d, i) { return y(d) })
         .attr("r", function(d, i) { return 5 })
+        .style("stroke", 'transparent')
+        .style("stroke-width", 30)
         .attr('class', 'openTickets')
         .on("mouseover", function(d,i) {
             d3.select(this).transition()
             .ease("elastic")
             .duration("400")
             .attr("r", 7);
-           setGraphText('Offered ' + d + ' tickets on day ' + i);
+           setGraphTextOpen('Offered ' + d + ' tickets on day ' + i);
         })
         .on("mouseout", function(d,i) {
             d3.select(this).transition()
@@ -319,11 +321,11 @@ var ProjectGraph = React.createClass({
             .delay("100")
             .duration("200")
             .attr("r", 5);
-           setGraphText(null);
+           setGraphTextOpen(null);
         });
         graph.append("svg:path").attr("d", line(closedTickets)).attr('class', 'closedTickets');
 
-        var setGraphText = function(text) {
+        var setGraphTextClosed = function(text) {
             this.setState({ displayClass: 'closedTickets' });
             this.setState({ displayText: text });
         }.bind(this);
@@ -333,13 +335,15 @@ var ProjectGraph = React.createClass({
         .attr("cx", function(d, i) { return x(i) })
         .attr("cy", function(d, i) { return y(d) })
         .attr("r", function(d, i) { return 5 })
+        .style("stroke", 'transparent')
+        .style("stroke-width", 30)
         .attr('class', 'closedTickets')
         .on("mouseover", function(d,i) {
             d3.select(this).transition()
             .ease("elastic")
             .duration("400")
             .attr("r", 7);
-           setGraphText('Completed ' + d + ' tickets on day ' + i);
+           setGraphTextClosed('Completed ' + d + ' tickets on day ' + i);
         })
         .on("mouseout", function(d,i) {
             d3.select(this).transition()
@@ -347,7 +351,7 @@ var ProjectGraph = React.createClass({
             .delay("100")
             .duration("200")
             .attr("r", 5);
-           setGraphText(null);
+           setGraphTextClosed(null);
         });
     },
     render: function() {
