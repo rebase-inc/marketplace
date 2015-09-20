@@ -257,7 +257,7 @@ var Dropdown = React.createClass({
 var AddNewProject = React.createClass({
     render: function() {
         return (
-            <div className='addNewProject'>
+            <div onClick={this.props.onClick} className='addNewProject'>
                 <h5>Add New Project</h5>
                 <svg width="25px" height="25px" viewBox="0 0 25 25" version="1.1">
                     <g id="UI" stroke="none" strokeWidth="1" fill="none" fill-rule="evenodd">
@@ -291,13 +291,7 @@ var ProjectGraph = React.createClass({
         var openTickets = [0, 0, 0, 0, 0].map(e => getRandomInt(0, 12)); //horrible hack
         var closedTickets = [1, 2, 5, 2, 4].map(e => getRandomInt(3, 11));//horrible hack
         var element = ReactDOM.findDOMNode(this);
-        var props = {
-            width: this.props.width,
-            height: this.props.height,
-            margin: this.props.margin,
-            updateText: (className, text) => { console.log('calling with' , className, text); this.setState({ displayText: text, displayClass: className }) }
-        }
-        Graph.lineChart.create(element, props, {openTickets: openTickets, closedTickets: closedTickets});
+        Graph.lineChart.create(element, this.props, {openTickets: openTickets, closedTickets: closedTickets});
     },
     render: function() {
         return (

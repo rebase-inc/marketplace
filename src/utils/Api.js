@@ -127,6 +127,11 @@ var Api = {
         pendingHandler();
         ajax('GET', url, null, responseHandler);
     },
+    getRepoData: function(responseHandler, pendingHandler) {
+        var url = makeUrl("/github/user/repos");
+        pendingHandler();
+        ajax('GET', url, null, responseHandler);
+    },
     bidOnAuction: function(user, auction, price, responseHandler, pendingHandler) {
         var url = makeUrl("/auctions/" + auction.id + '/bid_events');
         var data = {

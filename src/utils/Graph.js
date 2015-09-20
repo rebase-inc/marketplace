@@ -56,12 +56,16 @@ d3Chart.update = function(element, props, state) {
                     .style({opacity: '0'});
             });
 
+            var otherData = (className == 'openTickets') ? state.closedTickets : state.openTickets; // there has to be a better way...
             graph.selectAll('.point').data(data).enter().append("text")
                 .attr("x", function(d, i) { return scale.x(i) - 2; })
-                .attr("y", function(d, i) { return scale.y(d) - 8; })
+                .attr("y", function(d, i) {
+                    var offset = (d >= otherData[i]) ? -8 : 18;
+                    return scale.y(d) + offset;
+                })
                 .text((d,i) => d)
                 .style('font-size', Math.floor(props.height/4))
-                .attr('class', className); 
+                .attr('class', className);
     }
 };
 

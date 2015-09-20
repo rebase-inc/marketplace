@@ -3,6 +3,9 @@ var React = require('react');
 var ReactDOM = require('react-dom');
 var _ = require('underscore');
 
+// Components
+var ImportProjectModal = require('../components/ImportProjectModal.react');
+
 // Stores
 var UserStore = require('../stores/UserStore');
 
@@ -16,6 +19,9 @@ var ProfileView = React.createClass({
     propTypes: {
         currentUser: React.PropTypes.object.isRequired,
         currentRole: React.PropTypes.object.isRequired,
+    },
+    getInitialState: function() {
+        return { modalOpen: false };
     },
     updateProfileSettings: function() {
         var user = {
@@ -38,6 +44,9 @@ var ProfileView = React.createClass({
             </div>
         );
     },
+    toggleModal: function() {
+        this.setState({ modalOpen: !this.state.modalOpen });
+    },
     render: function() {
         var projects = [];
         // temp hack until we make managers own projects, instead of organizations
@@ -49,9 +58,10 @@ var ProfileView = React.createClass({
         projects.push(this._makeProjectElement({name: 'rebase'}, {name: 'models'}));
         return (
             <div className='projectView'>
+                { this.state.modalOpen ? <ImportProjectModal {...this.props} /> : null }
                 <div className='projectSettings'>
                     { projects }
-                    <Icons.AddNewProject />
+                    <Icons.AddNewProject onClick={this.toggleModal} />
                 </div>
             </div>
         );
