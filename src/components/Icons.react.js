@@ -2,6 +2,7 @@ var React = require('react');
 var ReactDOM = require('react-dom');
 var TalentActions = require('../actions/TalentActions');
 var UserActions = require('../actions/UserActions');
+var Graph = require('../utils/Graph');
 
 function _dataURItoBlob(dataURI) {
     var binary = atob(dataURI.split(',')[1]);
@@ -273,6 +274,13 @@ var AddNewProject = React.createClass({
 });
 
 var ProjectGraph = React.createClass({
+    propTypes: {
+        width: React.PropTypes.number,
+        height: React.PropTypes.number,
+    },
+    getDefaultProps: function() {
+        return { width: 160, height: 50, margin: 18 }
+    },
     getInitialState: function() {
         return { displayText: '' }
     },
@@ -280,84 +288,24 @@ var ProjectGraph = React.createClass({
         function getRandomInt(min, max) {
             return Math.floor(Math.random() * (max - min + 1)) + min;
         }
+        var openTickets = [0, 0, 0, 0, 0].map(e => getRandomInt(0, 12)); //horrible hack
+        var closedTickets = [1, 2, 5, 2, 4].map(e => getRandomInt(3, 11));//horrible hack
         var element = ReactDOM.findDOMNode(this);
-        var w = 150; // width
-        var h = 50; // height
-        var openTickets = [0, 0, 0, 0, 0].map(e => getRandomInt(0, 10)); //horrible hack
-        var closedTickets = [1, 2, 5, 2, 4].map(e => getRandomInt(0, 10));//horrible hack
-        var x = d3.scale.linear().domain([0, openTickets.length - 1]).range([0, w]);
-        var y = d3.scale.linear().domain([0, Math.max(d3.max(openTickets), d3.max(closedTickets))]).range([h, 0]);
-
-        var line = d3.svg.line().x( function(d,i) { return x(i); }).y(function(d) { return y(d); });
-        var graph = d3.select(element).insert("svg:svg", ":first-child")
-            .attr("width", w + 20)
-            .attr("height", h + 20)
-            .append("svg:g").attr("transform", "translate(10,10)");
-        graph.append("svg:path").attr("d", line(openTickets)).attr('class', 'openTickets');
-
-        var setGraphTextOpen = function(text) {
-            this.setState({ displayClass: 'openTickets' });
-            this.setState({ displayText: text });
-        }.bind(this);
-        graph.selectAll(".point")
-        .data(openTickets)
-        .enter().append("svg:circle")
-        .attr("cx", function(d, i) { return x(i) })
-        .attr("cy", function(d, i) { return y(d) })
-        .attr("r", function(d, i) { return 5 })
-        .style("stroke", 'transparent')
-        .style("stroke-width", 30)
-        .attr('class', 'openTickets')
-        .on("mouseover", function(d,i) {
-            d3.select(this).transition()
-            .ease("elastic")
-            .duration("400")
-            .attr("r", 7);
-           setGraphTextOpen('Offered ' + d + ' tickets on day ' + i);
-        })
-        .on("mouseout", function(d,i) {
-            d3.select(this).transition()
-            .ease("quad")
-            .delay("100")
-            .duration("200")
-            .attr("r", 5);
-           setGraphTextOpen(null);
-        });
-        graph.append("svg:path").attr("d", line(closedTickets)).attr('class', 'closedTickets');
-
-        var setGraphTextClosed = function(text) {
-            this.setState({ displayClass: 'closedTickets' });
-            this.setState({ displayText: text });
-        }.bind(this);
-        graph.selectAll(".point")
-        .data(closedTickets)
-        .enter().append("svg:circle")
-        .attr("cx", function(d, i) { return x(i) })
-        .attr("cy", function(d, i) { return y(d) })
-        .attr("r", function(d, i) { return 5 })
-        .style("stroke", 'transparent')
-        .style("stroke-width", 30)
-        .attr('class', 'closedTickets')
-        .on("mouseover", function(d,i) {
-            d3.select(this).transition()
-            .ease("elastic")
-            .duration("400")
-            .attr("r", 7);
-           setGraphTextClosed('Completed ' + d + ' tickets on day ' + i);
-        })
-        .on("mouseout", function(d,i) {
-            d3.select(this).transition()
-            .ease("quad")
-            .delay("100")
-            .duration("200")
-            .attr("r", 5);
-           setGraphTextClosed(null);
-        });
+        var props = {
+            width: this.props.width,
+            height: this.props.height,
+            margin: this.props.margin,
+            updateText: (className, text) => { console.log('calling with' , className, text); this.setState({ displayText: text, displayClass: className }) }
+        }
+        Graph.lineChart.create(element, props, {openTickets: openTickets, closedTickets: closedTickets});
     },
     render: function() {
         return (
             <div className='projectGraph'>
-                <span ref='graphText' className={this.state.displayClass}>{this.state.displayText}</span>
+                <div className='graphLabels'>
+                    <span className='openTickets'>Offered</span>
+                    <span className='closedTickets'>Completed</span>
+                </div>
             </div>
         );
     }

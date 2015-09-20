@@ -164,16 +164,53 @@ tr.ticket > td.findTalentPanel:hover {
 .projectView .projectDetails {
     display: inline-block;
     float: left;
+    padding-top: 20px;
 }
 
+.projectView .projectGraph svg text {
+    transition: opacity 500ms;
+    opacity: 0;
+}
+
+.projectView .projectGraph:hover svg text {
+    transition: opacity 500ms;
+    opacity: 1;
+}
+
+.projectGraph > .graphLabels {
+    transition: opacity 500ms;
+    opacity: 0;
+    display: block;
+    margin: 0 auto;
+    width: 70%;
+}
+
+.projectGraph > .graphLabels > span {
+    display: inline;
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
+.projectGraph:hover > .graphLabels {
+    transition: opacity 500ms;
+    opacity: 1;
+}
+
+
+.projectGraph span {
+    display: block;
+    text-align: center;
+    font-size: 12px;
+}
 .projectGraph path.openTickets {
     stroke: #D5DBE3;
     stroke-width: 2;
     fill: none;
 }
 
-.projectGraph span.openTickets {
+.projectGraph .openTickets {
     color: #D5DBE3;
+    fill: #D5DBE3;
 }
 
 .projectGraph circle.openTickets {
@@ -186,8 +223,9 @@ tr.ticket > td.findTalentPanel:hover {
     fill: none;
 }
 
-.projectGraph span.closedTickets {
+.projectGraph .closedTickets {
     color: #5FC0AA;
+    fill: #5FC0AA;
 }
 
 .projectGraph circle.closedTickets {
@@ -196,7 +234,6 @@ tr.ticket > td.findTalentPanel:hover {
 
 .projectView .project {
     overflow: auto;
-    padding: 20px;
 }
 
 .projectView .projectDetails span {
@@ -277,11 +314,3 @@ tr.ticket > td.findTalentPanel:hover {
     cursor: pointer;
 }
 
-.projectGraph span {
-    display: block;
-    height: 12px;
-    line-height: 12px;
-    min-height: 12px;
-    text-align: center;
-    font-size: 10px;
-}

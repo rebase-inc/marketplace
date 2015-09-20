@@ -19,7 +19,4 @@ function handleScrollShadows(element) {
     //return noFalsy;
 //}
 
-module.exports = {
-    handleScrollShadows: handleScrollShadows,
-    //m: m
-}
+module.exports = { handleScrollShadows: handleScrollShadows }
