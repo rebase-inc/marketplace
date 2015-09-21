@@ -87,39 +87,6 @@ html, body {
     margin: 0;
 }
 
-table {
-    display: block;
-    border-collapse: collapse;
-    height: calc(100% - 44px);
-    width: 100%;
-}
-
-table > tbody {
-    display: table;
-    overflow: auto;
-    max-height: 100%;
-    width: 100%;
-}
-
-table > tbody > tr {
-    display: table-row;
-    width: 100%;
-    height: 80px;
-    /*border: 1px solid hsla(165, 5%, 83%, 1);*/
-}
-
-table > tbody > tr:hover {
-    background-color: hsla(200, 30%, 96%, 1);
-}
-
-table > tbody > tr > td {
-    padding-left: 10px;
-    padding-right: 10px;
-}
-
-
-
-
 #roleSelector {
     left: 0;
     height: 40px;
@@ -646,7 +613,7 @@ img.profilePicture {
     cursor: pointer;
 }
 
-#modalDialog input, #modalDialog button {
+#modalDialog input[type=text], #modalDialog input[type=textarea], #modalDialog button {
     box-shadow: none;
     text-align: center;
     margin-top: 14px;
@@ -663,13 +630,46 @@ img.profilePicture {
     padding-bottom: 12px;
 }
 
-#modalDialog input {
+#modalDialog input[type=text] {
     height: 54px;
     width: 180px;
     border-radius: 6px;
     background: none;
     border: 1px solid hsla(213, 23%, 28%, 0.5);
     font-size: 22px;
+}
+
+#modalDialog #projectImportWrapper {
+    margin: 20px;
+}
+
+#modalDialog table {
+    text-align: left;
+    margin: 0 auto;
+}
+
+#modalDialog #projectImportWrapper {
+    max-height: 300px;
+    overflow: scroll;
+}
+
+#modalDialog table td {
+    padding-top: 6px;
+    padding-bottom: 6px;
+}
+
+#modalDialog table td.project {
+    font-size: 16px;
+    line-height: 16px;
+}
+
+#modalDialog table td.checkbox {
+    padding-right: 3px;
+}
+
+#modalDialog table td.organization {
+    font-size: 12px;
+    opacity: 0.35;
 }
 
 #modalDialog .infoOrInput {

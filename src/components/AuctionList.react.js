@@ -23,7 +23,7 @@ var AuctionList = React.createClass({
         var auctionIDs = !!this.props.searchText ? searchAuctions(this.props.allAuctions, this.props.searchText) : this.props.allAuctions.map(a => a.id);
         if (!!this.props.allAuctions.length) {
             return (
-                <table>
+                <table className='contentList'>
                     <tbody>
                         { this.props.allAuctions.filter(auction => auctionIDs.indexOf(auction.id) != -1).map(makeTicketElement) }
                     </tbody>

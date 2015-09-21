@@ -25,7 +25,7 @@ var ContractList = React.createClass({
         }.bind(props);
         if (!!this.props.allContracts.length) {
             return (
-                <table id='ticketList'>
+                <table className='contentList'>
                     <tbody>
                         { this.props.allContracts.filter(titleMatchesText).map(makeTicketElement) }
                     </tbody>

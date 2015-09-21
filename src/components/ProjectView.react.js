@@ -58,7 +58,7 @@ var ProfileView = React.createClass({
         projects.push(this._makeProjectElement({name: 'rebase'}, {name: 'models'}));
         return (
             <div className='projectView'>
-                { this.state.modalOpen ? <ImportProjectModal {...this.props} /> : null }
+                { this.state.modalOpen ? <ImportProjectModal toggleModal={this.toggleModal} {...this.props} /> : null }
                 <div className='projectSettings'>
                     { projects }
                     <Icons.AddNewProject onClick={this.toggleModal} />

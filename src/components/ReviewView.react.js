@@ -103,7 +103,7 @@ var ReviewList = React.createClass({
         }.bind(props);
         if (!!this.props.allReviews.length) {
             return (
-                <table id='ticketList'>
+                <table className='contentList'>
                     <tbody>
                         { this.props.allReviews.filter(titleMatchesText).map(makeTicketElement) }
                     </tbody>
