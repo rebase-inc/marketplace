@@ -5,16 +5,17 @@ var Api = require('../utils/Api');
 
 module.exports = {
     getContractData: function() {
-        function responseAction(response) {
+        function responseAction(response, status) {
             Dispatcher.handleRequestAction({
                 type: ActionConstants.GET_CONTRACT_DATA,
+                status: status,
                 response: response
             });
         };
-        function pendingAction(response) {
+        function pendingAction() {
             Dispatcher.handleRequestAction({
                 type: ActionConstants.GET_CONTRACT_DATA,
-                response: RequestConstants.PENDING,
+                status: RequestConstants.PENDING,
             });
         };
         Api.getContractData(responseAction, pendingAction);
@@ -32,10 +33,10 @@ module.exports = {
                 response: response
             });
         };
-        var pendingAction = function(response) {
+        var pendingAction = function() {
             Dispatcher.handleRequestAction({
                 type: ActionConstants.SUBMIT_WORK,
-                response: RequestConstants.PENDING,
+                status: RequestConstants.PENDING,
             });
         };
         Api.submitWork(user, contract, reason, responseAction, pendingAction);
@@ -47,10 +48,10 @@ module.exports = {
                 response: response
             });
         };
-        var pendingAction = function(response) {
+        var pendingAction = function() {
             Dispatcher.handleRequestAction({
                 type: ActionConstants.DISPUTE_WORK,
-                response: RequestConstants.PENDING,
+                status: RequestConstants.PENDING,
             });
         };
         Api.disputeWork(user, work, reason, responseAction, pendingAction);
@@ -62,10 +63,10 @@ module.exports = {
                 response: response
             });
         };
-        var pendingAction = function(response) {
+        var pendingAction = function() {
             Dispatcher.handleRequestAction({
                 type: ActionConstants.MARK_WORK_COMPLETE,
-                response: RequestConstants.PENDING,
+                status: RequestConstants.PENDING,
             });
         };
         Api.markWorkComplete(user, work, comment, responseAction, pendingAction);
@@ -77,10 +78,10 @@ module.exports = {
                 response: response
             });
         };
-        var pendingAction = function(response) {
+        var pendingAction = function() {
             Dispatcher.handleRequestAction({
                 type: ActionConstants.MARK_WORK_BLOCKED,
-                response: RequestConstants.PENDING,
+                status: RequestConstants.PENDING,
             });
         };
         Api.markWorkBlocked(user, work, reason, responseAction, pendingAction);
@@ -92,10 +93,10 @@ module.exports = {
                 response: response
             });
         };
-        var pendingAction = function(response) {
+        var pendingAction = function() {
             Dispatcher.handleRequestAction({
                 type: ActionConstants.MARK_WORK_UNBLOCKED,
-                response: RequestConstants.PENDING,
+                status: RequestConstants.PENDING,
             });
         };
         Api.markWorkUnblocked(user, work, reason, responseAction, pendingAction);

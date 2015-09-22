@@ -26,7 +26,7 @@ var _currentRole = null;
 var _loading = false;
 var _error = null;
 
-!!_userCookie ? handleLogin({user: JSON.parse(_userCookie)}) : null;
+!!_userCookie ? handleLogin({response: {user: JSON.parse(_userCookie)}}) : null;
 !!_currentUser ? UserActions.getUserDetail(_currentUser.id) : null;
 
 var UserStore = _.extend({}, EventEmitter.prototype, {
@@ -37,6 +37,7 @@ var UserStore = _.extend({}, EventEmitter.prototype, {
             currentView: _currentView,
             currentRole: _currentRole,
             loading: _loading,
+            error: _error,
         };
     },
     emitChange: function() { this.emit('change'); },
@@ -47,13 +48,13 @@ var UserStore = _.extend({}, EventEmitter.prototype, {
 UserStore.dispatchToken = Dispatcher.register(function(payload) {
     var action = payload.action;
     switch(action.type) {
-        case ActionConstants.LOGIN: handleLogin(action.response); break;
-        case ActionConstants.LOGOUT: handleLogout(action.response); break;
+        case ActionConstants.LOGIN: handleLogin(action); break;
+        case ActionConstants.LOGOUT: handleLogout(action); break;
         case ActionConstants.SELECT_VIEW: handleSelectView(action.viewType); break;
         case ActionConstants.SELECT_ROLE: handleSelectRole(action.roleID); break;
-        case ActionConstants.GET_USER_DETAIL: updateUserDetail(action.response); break;
-        case ActionConstants.UPDATE_PROFILE_PHOTO: updateUserDetail(action.response); break;
-        case ActionConstants.UPDATE_USER_SETTINGS: updateUserDetail(action.response); break;
+        case ActionConstants.GET_USER_DETAIL: updateUserDetail(action); break;
+        case ActionConstants.UPDATE_PROFILE_PHOTO: updateUserDetail(action); break;
+        case ActionConstants.UPDATE_USER_SETTINGS: updateUserDetail(action); break;
         default: return true;
     }
 
@@ -62,28 +63,41 @@ UserStore.dispatchToken = Dispatcher.register(function(payload) {
     return true;
 });
 
-function updateUserDetail(data) {
-    switch (data) {
+function updateUserDetail(action) {
+    switch (action.status) {
         case RequestConstants.PENDING: _loading = true; break;
-        case RequestConstants.TIMEOUT: _loading = false; console.warn(data); break;
-        case RequestConstants.ERROR: _loading = false; console.warn(data); break;
+        case RequestConstants.TIMEOUT: _loading = false; console.warn(action.response); break;
+        case RequestConstants.ERROR: _loading = false; console.warn(action.response); break;
         case null: _loading = false; console.warn('Undefined data!');
         default:
             _loading = false;
-            _currentUser = data.user;
+            _currentUser = action.response.user;
             Cookies.set('user', JSON.stringify(_currentUser), 1);
     }
 }
 
-function handleLogin(data) {
-    switch (data) {
+function handleLogin(action) {
+    switch (action.status) {
         case RequestConstants.PENDING: _loading = true; break;
-        case RequestConstants.TIMEOUT: _loading = false; console.warn(data); break;
-        case RequestConstants.ERROR: _loading = false; _error = data; console.log(data); break;
+        case RequestConstants.TIMEOUT: _loading = false; _error='Timeout'; console.warn('Timeout during login.'); break;
+        case RequestConstants.ERROR: {
+            _loading = false;
+            switch (action.response.status) {
+                case 401: {
+                    _error = 'Wrong credentials.';
+                    console.log(action.response.responseJSON);
+                } break;
+                default: {
+                    _error = action.response.responseText;
+                    console.log(action.response);
+                }
+            }
+            
+        } break;
         case null: _loading = false; console.warn('Undefined data!');
         default:
             _loading = false;
-            _currentUser = data.user;
+            _currentUser = action.response.user;
             _currentRole = _currentUser.roles[0];
             _currentRole.display_name = _currentRole.type == 'manager' ? _currentRole.organization.name + '/' + _currentRole.organization.projects[0].name : 'Contractor View';
             switch (_currentRole.type) {
@@ -95,17 +109,18 @@ function handleLogin(data) {
     }
 }
 
-function handleLogout(data) {
-    switch (data) {
+function handleLogout(action) {
+    switch (action.status) {
         case RequestConstants.PENDING: _loading = true; break;
-        case RequestConstants.TIMEOUT: _loading = false; console.warn(data); break;
-        case RequestConstants.ERROR: _loading = false; console.warn(data); break;
+        case RequestConstants.TIMEOUT: _loading = false; console.warn(action.response); break;
+        case RequestConstants.ERROR: _loading = false; console.warn(action.response); break;
         case null: _loading = false; console.warn('Undefined data!');
         default:
             _loading = false;
             _currentUser = null;
             _currentRole = null;
             _loggedIn = null;
+            _error = null;
             Cookies.erase('user');
     }
 }

@@ -1,8 +1,8 @@
 var keyMirror = require('keymirror');
 
 module.exports = keyMirror({
-    PENDING: null,
-    TIMEOUT: null,
     ERROR: null,
+    PENDING: null,
     SUCESS: null,
+    TIMEOUT: null,
 });

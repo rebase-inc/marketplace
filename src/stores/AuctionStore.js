@@ -38,10 +38,10 @@ Dispatcher.register(function(payload) {
     switch(action.type) {
         case ActionConstants.SELECT_VIEW: _currentAuction = null; break;
         case ActionConstants.SELECT_AUCTION: handleSelectedAuction(action.auctionID); break;
-        case ActionConstants.GET_AUCTION_DATA: handleNewAuctionData(action.response); break;
-        case ActionConstants.ADD_COMMENT_TO_TICKET: handleNewComment(action.response); break;
-        case ActionConstants.BID_ON_AUCTION: handleModifiedAuction(action.response); break;
-        case ActionConstants.GET_COMMENT_DETAIL: handleCommentDetail(action.response); break;
+        case ActionConstants.GET_AUCTION_DATA: handleNewAuctionData(action); break;
+        case ActionConstants.ADD_COMMENT_TO_TICKET: handleNewComment(action); break;
+        case ActionConstants.BID_ON_AUCTION: handleModifiedAuction(action); break;
+        case ActionConstants.GET_COMMENT_DETAIL: handleCommentDetail(action); break;
         default: return true;
     }
     AuctionStore.emitChange();
@@ -61,15 +61,15 @@ function addSyntheticProperties(auction) {
     return auction;
 }
 
-function handleNewAuctionData(data) {
-    switch (data) {
+function handleNewAuctionData(action) {
+    switch (action.status) {
         case RequestConstants.PENDING: _loading = true; break;
-        case RequestConstants.TIMEOUT: _loading = false; console.warn(data); break;
-        case RequestConstants.ERROR: _loading = false; console.warn(data); break;
+        case RequestConstants.TIMEOUT: _loading = false; console.warn(action.response); break;
+        case RequestConstants.ERROR: _loading = false; console.warn(action.response); break;
         case null: _loading = false; console.warn('Undefined data!');
         default:
             _loading = false;
-            _allAuctions = data.auctions;
+            _allAuctions = action.response.auctions;
             _allAuctions.forEach(auction => addSyntheticProperties(auction));
     }
 }
@@ -78,43 +78,47 @@ function handleSelectedAuction(id) {
     _currentAuction = _allAuctions.filter(auction => auction.id == id)[0];
 }
 
-function handleNewComment(data) {
-    switch (data) {
+function handleNewComment(action) {
+    switch (action.status) {
         case RequestConstants.PENDING: _loading = true; break;
-        case RequestConstants.TIMEOUT: _loading = false; console.warn(data); break;
-        case RequestConstants.ERROR: _loading = false; console.warn(data); break;
+        case RequestConstants.TIMEOUT: _loading = false; console.warn(action.response); break;
+        case RequestConstants.ERROR: _loading = false; console.warn(action.response); break;
         case null: _loading = false; console.warn('Null data!');
         default:
             _loading = false;
-            _allAuctions.forEach(auction => { if (auction.ticket.id == data.comment.ticket.id) { auction.ticket.comments.push(data.comment) } });
+            var new_comment = action.response.comment;
+            _allAuctions.forEach(auction => { if (auction.ticket.id == new_comment.ticket.id) { auction.ticket.comments.push(new_comment) } });
             break;
     }
 }
 
-function handleModifiedAuction(data) {
-    switch (data) {
+function handleModifiedAuction(action) {
+    switch (action.status) {
         case RequestConstants.PENDING: _loading = true; break;
-        case RequestConstants.TIMEOUT: _loading = false; console.warn(data); break;
-        case RequestConstants.ERROR: _loading = false; console.warn(data); break;
+        case RequestConstants.TIMEOUT: _loading = false; console.warn(action.response); break;
+        case RequestConstants.ERROR: _loading = false; console.warn(action.response); break;
         case null: _loading = false; console.warn('Null data!'); break;
         default:
             _loading = false;
-            _allAuctions = _allAuctions.map(auction => auction.id == data.auction.id ? addSyntheticProperties(data.auction) : auction);
-            _currentAuction = _currentAuction.id == data.auction.id ? addSyntheticProperties(data.auction) : _currentAuction;
+            var modified_auction = action.response.auction;
+            _allAuctions = _allAuctions.map(auction => auction.id == modified_auction.id ? addSyntheticProperties(modified_auction) : auction);
+            _currentAuction = _currentAuction.id == modified_auction.id ? addSyntheticProperties(modified_auction) : _currentAuction;
             break;
     }
 }
 
-function handleCommentDetail(data) {
-    switch (data) {
+function handleCommentDetail(action) {
+    switch (action.status) {
         case RequestConstants.PENDING: _loading = true; break;
-        case RequestConstants.TIMEOUT: _loading = false; console.warn(data); break;
-        case RequestConstants.ERROR: _loading = false; console.warn(data); break;
+        case RequestConstants.TIMEOUT: _loading = false; console.warn(action.response); break;
+        case RequestConstants.ERROR: _loading = false; console.warn(action.response); break;
         case null: _loading = false; console.warn('Null data!');
-        default:
+        default: {
             _loading = false;
-            _allAuctions.forEach(auction => auction.ticket.comments.forEach(comment => { comment = comment.id == data.comment.id ? data.comment : comment }));
+            var detailed_comment = action.response.comment;
+            _allAuctions.forEach(auction => auction.ticket.comments.forEach(comment => { comment = comment.id == detailed_comment.id ? detailed_comment : comment }));
             break;
+        }
     }
 }
 

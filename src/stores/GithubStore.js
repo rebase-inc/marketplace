@@ -27,7 +27,7 @@ var TalentStore = _.extend({}, EventEmitter.prototype, {
 Dispatcher.register(function(payload) {
     var action = payload.action;
     switch(action.type) {
-        case ActionConstants.GET_GITHUB_REPOS: handleNewRepoData(action.response); break;
+        case ActionConstants.GET_GITHUB_REPOS: handleNewRepoData(action); break;
         default: return true;
     }
 
@@ -36,16 +36,16 @@ Dispatcher.register(function(payload) {
     return true;
 });
 
-function handleNewRepoData(data) {
-    switch (data) {
+function handleNewRepoData(action) {
+    switch (action.status) {
         case RequestConstants.PENDING: _loading = true; break;
-        case RequestConstants.TIMEOUT: _loading = false; console.warn(data); break;
-        case RequestConstants.ERROR: _loading = false; console.warn(data); break;
+        case RequestConstants.TIMEOUT: _loading = false; console.warn(action.response); break;
+        case RequestConstants.ERROR: _loading = false; console.warn(action.response); break;
         case null: _loading = false; console.warn('Undefined data!'); break;
         case undefined: _loading = false; console.warn('Undefined data!'); break;
         default:
             _loading = false;
-            _allRepos = data.repos;
+            _allRepos = action.response.repos;
     }
 }
 

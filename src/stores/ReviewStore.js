@@ -38,10 +38,10 @@ RebaseAppDispatcher.register(function(payload) {
     var action = payload.action;
     switch(action.type) {
         case ActionConstants.SELECT_VIEW: _currentReview = null; break;
-        case ActionConstants.GET_REVIEW_DATA: handleNewReviewData(action.response); break;
-        case ActionConstants.SELECT_REVIEW: handleSelectedReview(action.response); break;
-        case ActionConstants.ADD_COMMENT_TO_TICKET: handleNewComment(action.response); break;
-        case ActionConstants.GET_COMMENT_DETAIL: handleCommentDetail(action.response); break;
+        case ActionConstants.GET_REVIEW_DATA: handleNewReviewData(action); break;
+        case ActionConstants.SELECT_REVIEW: handleSelectedReview(action.reviewID); break;
+        case ActionConstants.ADD_COMMENT_TO_TICKET: handleNewComment(action); break;
+        case ActionConstants.GET_COMMENT_DETAIL: handleCommentDetail(action); break;
         default: return true;
     }
 
@@ -50,15 +50,15 @@ RebaseAppDispatcher.register(function(payload) {
     return true;
 });
 
-function handleNewReviewData(data) {
-    switch (data) {
+function handleNewReviewData(action) {
+    switch (action.status) {
         case RequestConstants.PENDING: _loading = true; break;
-        case RequestConstants.TIMEOUT: _loading = false; console.warn(data); break;
-        case RequestConstants.ERROR: _loading = false; console.warn(data); break;
+        case RequestConstants.TIMEOUT: _loading = false; console.warn(action.response); break;
+        case RequestConstants.ERROR: _loading = false; console.warn(action.response); break;
         case null: _loading = false; console.warn('Undefined data!');
         default:
             _loading = false;
-            _allReviews = data.reviews;
+            _allReviews = action.response.reviews;
             _allReviews.forEach(review => addSyntheticProperties(review));
     }
 }
@@ -89,15 +89,16 @@ function handleNewComment(data) {
     }
 }
 
-function handleCommentDetail(data) {
-    switch (data) {
+function handleCommentDetail(action) {
+    switch (action.status) {
         case RequestConstants.PENDING: _loading = true; break;
-        case RequestConstants.TIMEOUT: _loading = false; console.warn(data); break;
-        case RequestConstants.ERROR: _loading = false; console.warn(data); break;
+        case RequestConstants.TIMEOUT: _loading = false; console.warn(action.response); break;
+        case RequestConstants.ERROR: _loading = false; console.warn(action.response); break;
         case null: _loading = false; console.warn('Null data!');
         default:
             _loading = false;
-            _allReviews.forEach(review => review.ticket.comments.forEach(comment => { comment = comment.id == data.comment.id ? data.comment : comment }));
+            var detailed_comment = action.response.comment
+            _allReviews.forEach(review => review.ticket.comments.forEach(comment => { comment = comment.id == detailed_comment.id ? detailed_comment : comment }));
             break;
     }
 }

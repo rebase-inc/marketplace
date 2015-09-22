@@ -20,16 +20,17 @@ module.exports = {
         Api.getTalentData(auction, responseAction, pendingAction);
     },
     approveNomination: function(nomination) {
-        function responseAction(response) {
+        function responseAction(response, status) {
             Dispatcher.handleRequestAction({
                 type: ActionConstants.APPROVE_NOMINATION,
+                status: status,
                 response: response
             });
         };
-        function pendingAction(response) {
+        function pendingAction() {
             Dispatcher.handleRequestAction({
                 type: ActionConstants.APPROVE_NOMINATION,
-                response: RequestConstants.PENDING,
+                status: RequestConstants.PENDING,
             });
         };
         Api.approveNomination(nomination, responseAction, pendingAction);

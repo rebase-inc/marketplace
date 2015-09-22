@@ -5,15 +5,16 @@ var Api = require('../utils/Api');
 
 module.exports = {
     getTicketData: function() {
-        var pendingAction = function(response) {
+        var pendingAction = function() {
             Dispatcher.handleRequestAction({
                 type: ActionConstants.GET_TICKET_DATA,
-                response: RequestConstants.PENDING,
+                status: RequestConstants.PENDING,
             });
         };
-        var responseAction = function(response) {
+        var responseAction = function(response, status) {
             Dispatcher.handleRequestAction({
                 type: ActionConstants.GET_TICKET_DATA,
+                status: status,
                 response: response
             });
         };

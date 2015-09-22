@@ -5,47 +5,50 @@ var Api = require('../utils/Api');
 
 module.exports = {
     getAuctionData: function() {
-        var responseAction = function(response) {
+        var responseAction = function(response, status) {
             Dispatcher.handleRequestAction({
                 type: ActionConstants.GET_AUCTION_DATA,
+                status: status,
                 response: response
             });
         };
-        var pendingAction = function(response) {
+        var pendingAction = function() {
             Dispatcher.handleRequestAction({
                 type: ActionConstants.GET_AUCTION_DATA,
-                response: RequestConstants.PENDING,
+                status: RequestConstants.PENDING,
             });
         };
         Api.getAuctionData(responseAction, pendingAction);
     },
     getAuctionDetail: function(id) {
         !id ? console.warn('No auction id provided!') : null;
-        function responseHandler(response) {
+        function responseHandler(response, status) {
             Dispatcher.handleRequestAction({
                 type: ActionConstants.GET_AUCTION_DETAIL,
+                status: status,
                 response: response
             });
         };
-        function pendingHandler(response) {
+        function pendingHandler() {
             Dispatcher.handleRequestAction({
                 type: ActionConstants.GET_AUCTION_DETAIL,
-                response: RequestConstants.PENDING,
+                status: RequestConstants.PENDING,
             });
         };
         Api.getAuctionDetail(id, responseHandler, pendingHandler);
     },
     bidOnAuction: function(user, auction, price) {
-        var responseAction = function(response) {
+        var responseAction = function(response, status) {
             Dispatcher.handleRequestAction({
                 type: ActionConstants.BID_ON_AUCTION,
+                status: status,
                 response: response
             });
         };
-        var pendingAction = function(response) {
+        var pendingAction = function() {
             Dispatcher.handleRequestAction({
                 type: ActionConstants.BID_ON_AUCTION,
-                response: RequestConstants.PENDING,
+                status: RequestConstants.PENDING,
             });
         };
         Api.bidOnAuction(user, auction, price, responseAction, pendingAction);

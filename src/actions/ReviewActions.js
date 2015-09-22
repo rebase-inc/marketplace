@@ -5,16 +5,17 @@ var Api = require('../utils/Api');
 
 module.exports = {
     getReviewData: function() {
-        var responseAction = function(response) {
+        var responseAction = function(response, status) {
             Dispatcher.handleRequestAction({
                 type: ActionConstants.GET_REVIEW_DATA,
+                status: status,
                 response: response
             });
         };
-        var pendingAction = function(response) {
+        var pendingAction = function() {
             Dispatcher.handleRequestAction({
                 type: ActionConstants.GET_REVIEW_DATA,
-                response: RequestConstants.PENDING,
+                status: RequestConstants.PENDING,
             });
         };
         Api.getReviewData(responseAction, pendingAction);
