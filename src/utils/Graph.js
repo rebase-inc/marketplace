@@ -26,6 +26,16 @@ d3Chart.update = function(element, props, state) {
         var text = (cn, d, i) => {
             return (cn == 'openTickets') ?  'Offered ' + d + ' tickets on day ' + i : d + ' tickets were completed on day ' + i;
         }
+        var otherData = (className == 'openTickets') ? state.closedTickets : state.openTickets; // there has to be a better way...
+        graph.selectAll('.point').data(data).enter().append("text")
+            .attr("x", function(d, i) { return scale.x(i) - 2; })
+            .attr("y", function(d, i) {
+                var offset = (d >= otherData[i]) ? -8 : 18;
+                return scale.y(d) + offset;
+            })
+            .text((d,i) => d)
+            .style('font-size', Math.floor(props.height/4))
+            .attr('class', className);
         graph.append("svg:path")
             .attr("d", line(data))
             .attr('class', className);
@@ -56,16 +66,6 @@ d3Chart.update = function(element, props, state) {
                     .style({opacity: '0'});
             });
 
-            var otherData = (className == 'openTickets') ? state.closedTickets : state.openTickets; // there has to be a better way...
-            graph.selectAll('.point').data(data).enter().append("text")
-                .attr("x", function(d, i) { return scale.x(i) - 2; })
-                .attr("y", function(d, i) {
-                    var offset = (d >= otherData[i]) ? -8 : 18;
-                    return scale.y(d) + offset;
-                })
-                .text((d,i) => d)
-                .style('font-size', Math.floor(props.height/4))
-                .attr('class', className);
     }
 };
 

@@ -25,7 +25,7 @@ var TicketList = React.createClass({
         var ticketIDs = !!this.props.searchText ? searchTickets(this.props.allTickets, this.props.searchText) : this.props.allTickets.map(a => a.id);
         if (!!this.props.allTickets.length) {
             return (
-                <table id='ticketList'>
+                <table id='ticketList' className='contentList'>
                     <tbody>
                         { this.props.allTickets.filter(ticket => ticketIDs.indexOf(ticket.id) != -1).map(makeTicketElement) }
                     </tbody>
