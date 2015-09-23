@@ -33,8 +33,8 @@ var TalentStore = _.extend({}, EventEmitter.prototype, {
 Dispatcher.register(function(payload) {
     var action = payload.action;
     switch(action.type) {
-        case ActionConstants.GET_AUCTION_DETAIL: handleNewAuctionData(action.response); break;
-        case ActionConstants.APPROVE_NOMINATION: handleModifiedNomination(action.response); break;
+        case ActionConstants.GET_AUCTION_DETAIL: handleNewAuctionData(action); break;
+        case ActionConstants.APPROVE_NOMINATION: handleModifiedNomination(action); break;
         default: return true;
     }
 
@@ -43,28 +43,44 @@ Dispatcher.register(function(payload) {
     return true;
 });
 
-function handleNewAuctionData(data) {
-    switch (data) {
+function sort_nominations(n1, n2) {
+    if (n1.job_fit) {
+        if (n2.job_fit) {
+            return n1.job_fit.score - n2.job_fit.score;
+        }
+        return -1;
+    } else {
+        if (n2.job_fit) {
+            return 1;
+        }
+        return 0;
+    }
+    throw 'Unreachable path in sort_nominations';
+}
+
+function handleNewAuctionData(action) {
+    switch (action.status) {
         case RequestConstants.PENDING: _loading = true; break;
-        case RequestConstants.TIMEOUT: _loading = false; console.warn(data); break;
-        case RequestConstants.ERROR: _loading = false; console.warn(data); break;
+        case RequestConstants.TIMEOUT: _loading = false; console.warn(action.response); break;
+        case RequestConstants.ERROR: _loading = false; console.warn(action.response); break;
         case null: _loading = false; console.warn('Undefined data!'); break;
         case undefined: _loading = false; console.warn('Undefined data!'); break;
         default:
             _loading = false;
-            _allNominations = data.auction.ticket_set.nominations.sort((n1, n2) => n2.job_fit.score - n1.job_fit.score);
+            _allNominations = action.response.auction.ticket_set.nominations.sort(sort_nominations);
     }
 }
 
-function handleModifiedNomination(data) {
-    switch (data) {
+function handleModifiedNomination(action) {
+    switch (action.status) {
         case RequestConstants.PENDING: _loading = true; break;
-        case RequestConstants.TIMEOUT: _loading = false; console.warn(data); break;
-        case RequestConstants.ERROR: _loading = false; console.warn(data); break;
+        case RequestConstants.TIMEOUT: _loading = false; console.warn(action.response); break;
+        case RequestConstants.ERROR: _loading = false; console.warn(action.response); break;
         case null: _loading = false; console.warn('Null data!'); break;
         default:
             _loading = false;
-            _allNominations = _allNominations.map(n => n.contractor.id == data.nomination.contractor.id && n.ticket_set.id == data.nomination.ticket_set.id ? data.nomination : n);
+            var modified_nomination = action.response.nomination
+            _allNominations = _allNominations.map(n => n.contractor.id == modified_nomination.contractor.id && n.ticket_set.id == modified_nomination.ticket_set.id ? modified_nomination : n);
             break;
     }
 }

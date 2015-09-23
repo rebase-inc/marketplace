@@ -35,9 +35,9 @@ Dispatcher.register(function(payload) {
     switch(action.type) {
         case ActionConstants.SELECT_VIEW: _currentTicket = null; break;
         case ActionConstants.SELECT_TICKET: handleSelectedTicket(action.ticketID); break;
-        case ActionConstants.GET_TICKET_DATA: handleNewTicketData(action.response); break;
+        case ActionConstants.GET_TICKET_DATA: handleNewTicketData(action); break;
         case ActionConstants.ADD_COMMENT_TO_TICKET: handleNewComment(action.response); break;
-        case ActionConstants.GET_COMMENT_DETAIL: handleCommentDetail(action.response); break;
+        case ActionConstants.GET_COMMENT_DETAIL: handleCommentDetail(action); break;
         default: return true;
     }
 
@@ -50,15 +50,15 @@ function handleSelectedTicket(id) {
     _currentTicket = _allTickets.filter(ticket => ticket.id == id)[0];
 }
 
-function handleNewTicketData(data) {
-    switch (data) {
+function handleNewTicketData(action) {
+    switch (action.status) {
         case RequestConstants.PENDING: _loading = true; break;
-        case RequestConstants.TIMEOUT: _loading = false; console.warn(data); break;
-        case RequestConstants.ERROR: _loading = false; console.warn(data); break;
+        case RequestConstants.TIMEOUT: _loading = false; console.warn(action.response); break;
+        case RequestConstants.ERROR: _loading = false; console.warn(action.response); break;
         case null: _loading = false; console.warn('Undefined data!'); break;
         default:
             _loading = false;
-            _allTickets = data.tickets;
+            _allTickets = action.response.tickets;
     }
 }
 
@@ -75,15 +75,16 @@ function handleNewComment(data) {
     }
 }
 
-function handleCommentDetail(data) {
-    switch (data) {
+function handleCommentDetail(action) {
+    switch (action.status) {
         case RequestConstants.PENDING: _loading = true; break;
-        case RequestConstants.TIMEOUT: _loading = false; console.warn(data); break;
-        case RequestConstants.ERROR: _loading = false; console.warn(data); break;
+        case RequestConstants.TIMEOUT: _loading = false; console.warn(action.response); break;
+        case RequestConstants.ERROR: _loading = false; console.warn(action.response); break;
         case null: _loading = false; console.warn('Null data!');
         default:
             _loading = false;
-            _allTickets.forEach(ticket => ticket.comments.forEach(comment => { comment = comment.id == data.comment.id ? data.comment : comment }));
+            var detailed_comment = action.response.comment;
+            _allTickets.forEach(ticket => ticket.comments.forEach(comment => { comment = comment.id == detailed_comment.id ? detailed_comment : comment }));
             break;
     }
 }

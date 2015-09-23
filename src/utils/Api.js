@@ -32,8 +32,9 @@ function ajax(method, url, data, responseHandler) {
         contentType: 'application/json; charset=utf-8',
     }).done(responseHandler).fail(function(jqXHR, textStatus, errorThrown) {
         switch (textStatus) {
-            case 'timeout': responseHandler(RequestConstants.TIMEOUT); break;
-            default: responseHandler(RequestConstants.ERROR); break;
+            case 'timeout': responseHandler(jqXHR, RequestConstants.TIMEOUT); break;
+            case 'error':   responseHandler(jqXHR, RequestConstants.ERROR); break;
+            default:        responseHandler(jqXHR, RequestConstants.ERROR); break;
         }
     });
 }
@@ -51,8 +52,8 @@ function fileUpload(url, formAttr, file, responseHandler) {
         processData: false,
     }).done(responseHandler).fail(function(jqXHR, textStatus, errorThrown) {
         switch (textStatus) {
-            case 'timeout': responseHandler(RequestConstants.TIMEOUT); break;
-            default: responseHandler(RequestConstants.ERROR); break;
+            case 'timeout': responseHandler(jqXHR, RequestConstants.TIMEOUT); break;
+            default:        responseHandler(jqXHR, RequestConstants.ERROR); break;
         }
     });
 }

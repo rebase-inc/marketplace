@@ -34,14 +34,14 @@ Dispatcher.register(function(payload) {
     var action = payload.action;
     switch(action.type) {
         case ActionConstants.SELECT_VIEW: _currentContractId = null; break;
-        case ActionConstants.GET_CONTRACT_DATA: handleNewContractData(action.response); break;
+        case ActionConstants.GET_CONTRACT_DATA: handleNewContractData(action); break;
         case ActionConstants.SELECT_CONTRACT: handleSelectedContract(action.contractID); break;
         case ActionConstants.ADD_COMMENT_TO_TICKET: handleNewComment(action.response); break;
-        case ActionConstants.GET_COMMENT_DETAIL: handleCommentDetail(action.response); break;
-        case ActionConstants.SUBMIT_WORK: handleWorkDetail(action.response); break;
-        case ActionConstants.MARK_WORK_COMPLETE: handleWorkDetail(action.response); break;
-        case ActionConstants.MARK_WORK_BLOCKED: handleWorkDetail(action.response); break;
-        case ActionConstants.MARK_WORK_UNBLOCKED: handleWorkDetail(action.response); break;
+        case ActionConstants.GET_COMMENT_DETAIL: handleCommentDetail(action); break;
+        case ActionConstants.SUBMIT_WORK: handleWorkDetail(action); break;
+        case ActionConstants.MARK_WORK_COMPLETE: handleWorkDetail(action); break;
+        case ActionConstants.MARK_WORK_BLOCKED: handleWorkDetail(action); break;
+        case ActionConstants.MARK_WORK_UNBLOCKED: handleWorkDetail(action); break;
         default: return true;
     }
 
@@ -54,15 +54,15 @@ function handleSelectedContract(id) {
     _currentContractId = id;
 }
 
-function handleNewContractData(data) {
-    switch (data) {
+function handleNewContractData(action) {
+    switch (action.status) {
         case RequestConstants.PENDING: _loading = true; break;
-        case RequestConstants.TIMEOUT: _loading = false; console.warn(data); break;
-        case RequestConstants.ERROR: _loading = false; console.warn(data); break;
+        case RequestConstants.TIMEOUT: _loading = false; console.warn(action.response); break;
+        case RequestConstants.ERROR: _loading = false; console.warn(action.response); break;
         case null: _loading = false; console.warn('Undefined data!');
         default:
             _loading = false;
-            _allContracts = data.contracts;
+            _allContracts = action.response.contracts;
             _allContracts.forEach(contract => addSyntheticProperties(contract));
     }
 }
@@ -98,28 +98,30 @@ function handleNewComment(data) {
     }
 }
 
-function handleCommentDetail(data) {
-    switch (data) {
+function handleCommentDetail(action) {
+    switch (action.status) {
         case RequestConstants.PENDING: _loading = true; break;
-        case RequestConstants.TIMEOUT: _loading = false; console.warn(data); break;
-        case RequestConstants.ERROR: _loading = false; console.warn(data); break;
+        case RequestConstants.TIMEOUT: _loading = false; console.warn(action.response); break;
+        case RequestConstants.ERROR: _loading = false; console.warn(action.response); break;
         case null: _loading = false; console.warn('Null data!');
         default:
             _loading = false;
-            _allContracts.forEach(contract => contract.ticket.comments.forEach(comment => { comment = comment.id == data.comment.id ? data.comment : comment }));
+            var detailed_comment = action.response.comment
+            _allContracts.forEach(contract => contract.ticket.comments.forEach(comment => { comment = comment.id == detailed_comment.id ? detailed_comment : comment }));
             break;
     }
 }
 
-function handleWorkDetail(data) {
-    switch (data) {
+function handleWorkDetail(action) {
+    switch (action.status) {
         case RequestConstants.PENDING: _loading = true; break;
-        case RequestConstants.TIMEOUT: _loading = false; console.warn(data); break;
-        case RequestConstants.ERROR: _loading = false; console.warn(data); break;
+        case RequestConstants.TIMEOUT: _loading = false; console.warn(action.response); break;
+        case RequestConstants.ERROR: _loading = false; console.warn(action.response); break;
         case null: _loading = false; console.warn('Null data!');
         default:
             _loading = false;
-            _allContracts.filter(contract => contract.work.id == data.work.id).forEach(contract => { contract.work = data.work; });
+            var detailed_work = action.response.work
+            _allContracts.filter(contract => contract.work.id == detailed_work.id).forEach(contract => { contract.work = detailed_work; });
             // this is to deal with the case where an auction transitions to another state
             var _currentContract = getCurrentContract(_currentContractId);
             if (!_shouldBeVisible(_currentContract)) {

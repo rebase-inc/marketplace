@@ -5,16 +5,17 @@ var Api = require('../utils/Api');
 
 module.exports = {
     getCommentDetail: function(comment) {
-        var responseAction = function(response) {
+        var responseAction = function(response, status) {
             Dispatcher.handleRequestAction({
                 type: ActionConstants.GET_COMMENT_DETAIL,
+                status: status,
                 response: response
             });
         };
-        var pendingAction = function(response) {
+        var pendingAction = function() {
             Dispatcher.handleRequestAction({
                 type: ActionConstants.GET_COMMENT_DETAIL,
-                response: RequestConstants.PENDING,
+                status: RequestConstants.PENDING,
             });
         };
         Api.getCommentDetail(comment, responseAction, pendingAction);

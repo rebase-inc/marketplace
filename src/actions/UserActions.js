@@ -8,22 +8,23 @@ module.exports = {
         var responseAction = function(response, status) {
             Dispatcher.handleRequestAction({
                 type: ActionConstants.LOGIN,
-                status: status || RequestConstants.SUCCESS,
+                status: status || RequestConstants.ERROR,
                 response: response
             });
         };
-        var pendingAction = function(response) {
+        var pendingAction = function() {
             Dispatcher.handleRequestAction({
                 type: ActionConstants.LOGIN,
-                response: RequestConstants.PENDING,
+                status: RequestConstants.PENDING,
             });
         };
         Api.login(email, password, responseAction, pendingAction);
     },
     logout: function() {
-        var responseAction = function(response) {
+        var responseAction = function(response, status) {
             Dispatcher.handleRequestAction({
                 type: ActionConstants.LOGOUT,
+                status: status,
                 response: response
             });
         };
@@ -36,24 +37,26 @@ module.exports = {
         Api.logout(responseAction, pendingAction);
     },
     authenticateGithub: function() {
-        function responseAction(response) {
+        function responseAction(response, status) {
             Dispatcher.handleRequestAction({
                 type: ActionConstants.AUTHENTICATE_GITHUB,
+                status: status,
                 response: response
             });
         };
-        function pendingAction(response) {
+        function pendingAction() {
             Dispatcher.handleRequestAction({
                 type: ActionConstants.AUTHENTICATE_GITHUB,
-                response: RequestConstants.PENDING,
+                status: RequestConstants.PENDING,
             });
         };
         Api.authenticateGithub(responseAction, pendingAction);
     },
     getUserDetail: function(userID) {
-        var responseAction = function(response) {
+        var responseAction = function(response, status) {
             Dispatcher.handleRequestAction({
                 type: ActionConstants.GET_USER_DETAIL,
+                status: status,
                 response: response
             });
         };
@@ -66,31 +69,33 @@ module.exports = {
         Api.getUserDetail(userID, responseAction, pendingAction);
     },
     updateUserSettings: function(user) {
-        function responseHandler(response) {
+        function responseHandler(response, status) {
             Dispatcher.handleRequestAction({
                 type: ActionConstants.UPDATE_USER_SETTINGS,
+                status: status,
                 response: response
             });
         };
-        function pendingHandler(response) {
+        function pendingHandler() {
             Dispatcher.handleRequestAction({
                 type: ActionConstants.UPDATE_USER_SETTINGS,
-                response: RequestConstants.PENDING,
+                status: RequestConstants.PENDING,
             });
         };
         Api.updateUserSettings(user, responseHandler, pendingHandler);
     },
     updateProfilePhoto: function(file) {
-        function responseHandler(response) {
+        function responseHandler(response, status) {
             Dispatcher.handleRequestAction({
                 type: ActionConstants.UPDATE_PROFILE_PHOTO,
+                status: status,
                 response: response
             });
         };
-        function pendingHandler(response) {
+        function pendingHandler() {
             Dispatcher.handleRequestAction({
                 type: ActionConstants.UPDATE_PROFILE_PHOTO,
-                response: RequestConstants.PENDING,
+                status: RequestConstants.PENDING,
             });
         };
         Api.updateProfilePhoto(file, responseHandler, pendingHandler);

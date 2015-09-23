@@ -22,7 +22,7 @@ var Talent = React.createClass({
                 </td>
                 <td className='reasonSelectedPanel'> No information yet </td>
                 <td className='scorePanel'>
-                    <Icons.TalentScore score={this.props.nomination.job_fit.score/100} />
+                    <Icons.TalentScore score={this.props.nomination.job_fit ? this.props.nomination.job_fit.score/100 : 1} />
                 </td>
             </tr>
         );
