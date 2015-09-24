@@ -12,7 +12,7 @@ var Ticket = React.createClass({
                 <FindTalentPanel onClick={this.props.findTalent.bind(null, this.props.ticket.id)} />
                 <td className='titlePanel'>{this.props.ticket.title}</td>
                 <td className='skillsRequiredPanel'>{this.props.ticket.skillsRequired}</td>
-                <td className='commentsPanel' onClick={this.selectTicket}>
+                <td className='commentsPanel' onClick={this.props.selectTicket.bind(null, this.props.ticket.id)}>
                     <Icons.Comment/>
                     <span>{this.props.ticket.comments.length} Comments</span>
                 </td>

@@ -17,7 +17,7 @@ var _bidPending = false;
 var _loading = false;
 
 function _shouldBeVisible(auction) {
-    return (auction.state == 'created' || auction.state == 'waiting_for_bids') && !auction.bids.length
+    return (auction.state == 'created' || auction.state == 'waiting_for_bids')
 }
 
 var AuctionStore = _.extend({}, EventEmitter.prototype, {

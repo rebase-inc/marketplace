@@ -7,14 +7,11 @@ var Talent = React.createClass({
     propTypes: {
         nomination: React.PropTypes.object.isRequired,
     },
-    getInitialState: function() {
-        return { talentState: 'unapproved' };
-    },
     render: function() {
         return (
             <tr className='nomination'>
                 <td className='actionPanel'>
-                    <Icons.ApproveTalent nomination={this.props.nomination} />
+                    <Icons.ApproveTalent currentAuction={this.props.currentAuction} nomination={this.props.nomination} />
                 </td>
                 <td className='talentPanel'>
                     <span>{this.props.nomination.contractor.user.first_name + ' ' + this.props.nomination.contractor.user.last_name}</span>

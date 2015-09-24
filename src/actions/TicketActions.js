@@ -21,6 +21,7 @@ module.exports = {
         Api.getTicketData(responseAction, pendingAction);
     },
     selectTicket: function(ticketID) {
+        !ticketID ? console.warn('No ticket ID provided!') : null;
         Dispatcher.handleRequestAction({
             type: ActionConstants.SELECT_TICKET,
             ticketID: ticketID,
