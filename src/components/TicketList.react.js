@@ -15,11 +15,13 @@ var TicketList = React.createClass({
         currentUser: React.PropTypes.object.isRequired,
         currentRole: React.PropTypes.object.isRequired,
         selectTicket: React.PropTypes.func.isRequired,
+        findTalent: React.PropTypes.func.isRequired,
     },
     render: function() {
         var props = {
             selectTicket: this.props.selectTicket,
             currentRole: this.props.currentRole,
+            findTalent: this.props.findTalent,
         }
         var makeTicketElement = function(ticket) { return <Ticket ticket={ticket} key={ticket.id} {...props} />; }.bind(props);
         var ticketIDs = !!this.props.searchText ? searchTickets(this.props.allTickets, this.props.searchText) : this.props.allTickets.map(a => a.id);

@@ -19,7 +19,7 @@ var TicketView = React.createClass({
         currentRole: React.PropTypes.object.isRequired,
     },
     getInitialState: function() {
-        return _.extend({ searchText: '' }, TicketStore.getState());
+        return _.extend({ searchText: '', modalOpen: false }, TicketStore.getState());
     },
     _onChange: function() {
         this.setState(TicketStore.getState());
@@ -35,9 +35,12 @@ var TicketView = React.createClass({
         this.setState({ searchText: searchText });
     },
     findTalent: function(ticketID) {
-        console.log('finding talent with ticket id ', ticketID);
+        console.log('finding talent for ticket id ', ticketID);
         if (!!ticketID) {  TicketActions.selectTicket(ticketID); }
-        this.setState({ viewingTalent: true });
+        this.setState({ modalOpen: true });
+    },
+    toggleModal: function() {
+        this.setState({ modalOpen: !this.state.modalOpen });
     },
     render: function() {
         var props = {
@@ -52,6 +55,8 @@ var TicketView = React.createClass({
                 props.currentTicket = this.state.currentTicket;
                 props.findTalent = this.findTalent;
                 props.viewingTalent = this.state.viewingTalent;
+                props.modalOpen = this.state.modalOpen;
+                props.toggleModal = this.toggleModal;
                 return <SingleTicketView {...props} />;
                 break;
             default:

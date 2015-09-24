@@ -30,13 +30,14 @@ function ajax(method, url, data, responseHandler) {
         url: url,
         data: JSON.stringify(data || undefined),
         contentType: 'application/json; charset=utf-8',
-    }).done(responseHandler).fail(function(jqXHR, textStatus, errorThrown) {
-        switch (textStatus) {
-            case 'timeout': responseHandler(jqXHR, RequestConstants.TIMEOUT); break;
-            case 'error':   responseHandler(jqXHR, RequestConstants.ERROR); break;
-            default:        responseHandler(jqXHR, RequestConstants.ERROR); break;
-        }
-    });
+    }).done(jqXHR => responseHandler(jqXHR, RequestConstants.SUCCESS))
+        .fail(function(jqXHR, textStatus, errorThrown) {
+            switch (textStatus) {
+                case 'timeout': responseHandler(jqXHR, RequestConstants.TIMEOUT); break;
+                case 'error':   responseHandler(jqXHR, RequestConstants.ERROR); break;
+                default:        responseHandler(jqXHR, RequestConstants.ERROR); break;
+            }
+        });
 }
 
 function fileUpload(url, formAttr, file, responseHandler) {
@@ -180,6 +181,18 @@ var Api = {
         if (pendingHandler) { pendingHandler(); }
         var data = role.type == 'manager' ? {'client_answer' : 'fail'} : {'dev_answer' : 'fail'};
         ajax('POST', url, data, responseHandler)
+    },
+    createAuction: function(ticket, max_price, responseHandler, pendingHandler) {
+        var url = makeUrl('/auctions');
+        pendingHandler();
+        var data = {
+            ticket_set: {
+                bid_limits: [{ ticket_snapshot: { ticket: { id: ticket.id } }, price: max_price }]
+            },
+            term_sheet: { legalese: 'You must do this' },
+            organization: ticket.project.organization,
+        }
+        ajax('POST', url, data, responseHandler);
     },
     approveNomination: function(nomination, responseHandler, pendingHandler) {
         var url = makeUrl('/nominations/' + nomination.contractor.id + '/' + nomination.ticket_set.id);

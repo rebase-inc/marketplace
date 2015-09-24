@@ -50,6 +50,7 @@ UserStore.dispatchToken = Dispatcher.register(function(payload) {
     switch(action.type) {
         case ActionConstants.LOGIN: handleLogin(action); break;
         case ActionConstants.LOGOUT: handleLogout(action); break;
+        case ActionConstants.CREATE_AUCTION: handleCreateAuction(action); break;
         case ActionConstants.SELECT_VIEW: handleSelectView(action.viewType); break;
         case ActionConstants.SELECT_ROLE: handleSelectRole(action.roleID); break;
         case ActionConstants.GET_USER_DETAIL: updateUserDetail(action); break;
@@ -62,6 +63,25 @@ UserStore.dispatchToken = Dispatcher.register(function(payload) {
     UserStore.emitChange();
     return true;
 });
+
+function handleCreateAuction(action) {
+    switch (action.status) {
+        case RequestConstants.PENDING: _loading = true; break;
+        case RequestConstants.TIMEOUT: _loading = false; console.warn(action.response); break;
+        case RequestConstants.ERROR: _loading = false; console.warn(action.response); break;
+        case null: _loading = false; console.warn('Undefined data!');
+        case RequestConstants.SUCCESS:
+            _loading = false;
+            switch(_currentRole.type) {
+                case 'contractor': console.warn('Invalid action CREATE_AUCTION for contractor role'); break;
+                case 'manager': _currentView = ManagerViews[ViewTypes.OFFERED]; break;
+            }
+            break;
+        default:
+            console.log(action);
+            throw 'Invalid status from action CREATE_AUCTION: ' + action.status;
+    }
+}
 
 function updateUserDetail(action) {
     switch (action.status) {
@@ -92,7 +112,7 @@ function handleLogin(action) {
                     console.log(action.response);
                 }
             }
-            
+
         } break;
         case null: _loading = false; console.warn('Undefined data!');
         default:

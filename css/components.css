@@ -23,7 +23,6 @@ input[type=checkbox]:checked + label {
     background-size: contain;
 }
 
-
 .ticketView, .auctionView, .contractView, .reviewView, .profileView, .projectView {
     position: relative;
     display: block;

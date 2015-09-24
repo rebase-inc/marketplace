@@ -4,6 +4,22 @@ var RequestConstants = require('../constants/RequestConstants');
 var Api = require('../utils/Api');
 
 module.exports = {
+    createAuction: function(ticket, max_price) {
+        function responseHandler(response, status) {
+            Dispatcher.handleRequestAction({
+                type: ActionConstants.CREATE_AUCTION,
+                status: status,
+                response: response
+            });
+        };
+        function pendingHandler() {
+            Dispatcher.handleRequestAction({
+                type: ActionConstants.CREATE_AUCTION,
+                status: RequestConstants.PENDING,
+            });
+        };
+        Api.createAuction(ticket, max_price, responseHandler, pendingHandler);
+    },
     getAuctionData: function() {
         var responseAction = function(response, status) {
             Dispatcher.handleRequestAction({

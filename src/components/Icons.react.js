@@ -171,7 +171,8 @@ var TalentScore = React.createClass({
     render: function() {
         var bgColor;
         var text;
-        if ( this.props.score >= 0.90 ) { bgColor = '#25AE90'; text = 'great match'; }
+        if ( this.props.score >= 0.97 ) { bgColor = '#25AE90'; text = 'perfect match'; }
+        else if ( this.props.score >= 0.90 ) { bgColor = '#25AE90'; text = 'great match'; }
         else if (this.props.score >= 0.75 ) { bgColor = '#25AE90'; text = 'good match'; }
         else if (this.props.score >= 0.5 ) { bgColor = '#F5B651'; text = 'okay match'; }
         else { bgColor = '#CC6070'; text = 'poor match'; }
