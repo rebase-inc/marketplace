@@ -11,49 +11,47 @@ var UserActions = require('../actions/UserActions');
 var AuctionStore = require('../stores/AuctionStore');
 
 var viewConstants = require('../constants/viewConstants');
+var Graph = require('../utils/Graph');
 
 var _ModalStates = keyMirror({ NEW: null, SUBMITTED: null, CONFIRMED: null });
 var CreateAuctionModal = React.createClass({
     getInitialState: function() {
         return {view: _ModalStates.NEW}
     },
-    handleKeyPress: function(event) {
-        if (event.charCode == 13) {
-            this.setState({ price: ReactDOM.findDOMNode(this.refs.price).value, view: _ModalStates.SUBMITTED });
-        }
-    },
     createAuction: function() {
-        AuctionActions.createAuction(this.props.ticket, this.state.price);
+        AuctionActions.createAuction(this.props.ticket, this.state.cutoff_price);
         this.props.toggleModal();
     },
+    setPrice: function(event) {
+        this.setState({ cutoff_price: event.target.valueAsNumber });
+    },
+    componentDidUpdate: function() {
+        var element = ReactDOM.findDOMNode(this.refs.devBellCurve);
+        Graph.bellCurve.update(element, this.props, this.state);
+    },
+    getDefaultProps: function() {
+        return { width: 240, height: 50, margin: 18 }
+    },
+    getInitialState: () => ({ minimum_price: 100, maximum_price: 1800, cutoff_price: 800 }),
+    componentDidMount: function() {
+        var element = ReactDOM.findDOMNode(this.refs.devBellCurve);
+        Graph.bellCurve.create(element, this.props, this.state);
+    },
     render: function() {
-        switch (this.state.view) {
-            case (_ModalStates.NEW):
-                return (
-                    <ModalContainer>
-                        <div onClick={this.props.toggleModal} id='modalClose'>
-                            <img src='img/modal-close.svg'/>
-                        </div>
-                        <h3>Set your budget</h3>
-                        <h4>to see recommended developers</h4>
-                        <input type='number' ref='price' placeholder='Budget in USD' onKeyPress={this.handleKeyPress}/>
-                    </ModalContainer>
-                );
-                break;
-            case (_ModalStates.SUBMITTED):
-                return (
-                    <ModalContainer>
-                        <div onClick={this.props.toggleModal} id='modalClose'>
-                            <img src='img/modal-close.svg'/>
-                        </div>
-                        <h3>{'Is ' + this.state.price + ' USD Correct?'}</h3>
-                        <h4>This just sets a limit. Usually, you'll pay much less</h4>
-                        <button onClick={this.createAuction}>Submit Budget</button>
-                    </ModalContainer>
-                );
-                break;
-            default: throw "ERROR"; break;
-        }
+        return (
+            <ModalContainer>
+                <div onClick={this.props.toggleModal} id='modalClose'>
+                    <img src='img/modal-close.svg'/>
+                </div>
+                <h3>Set your budget</h3>
+                <h4>to see recommended developers</h4>
+                <div className='devBellCurve' ref='devBellCurve'>
+                    <input style={{width: this.props.width + 'px'}} defaultValue={this.state.cutoff_price} type='range' min={this.state.minimum_price} max={this.state.maximum_price} step={20} onChange={this.setPrice} />
+                    <h3>{this.state.cutoff_price + ' USD'}</h3>
+                </div>
+                <button onClick={this.createAuction}>Submit Budget</button>
+            </ModalContainer>
+        );
     }
 });
 

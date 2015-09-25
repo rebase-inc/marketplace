@@ -268,6 +268,42 @@ tr.ticket > td.findTalentPanel:hover {
     fill: #5FC0AA;
 }
 
+.devBellCurve path.line {
+    fill: none;
+    stroke-width: 2px;
+    stroke: #1C2D41;
+}
+
+.devBellCurve path.areaBorder {
+    fill: none;
+    stroke-width: 2px;
+    stroke: hsla(167, 48%, 49%, 1);
+}
+
+.devBellCurve path.area {
+    fill: hsla(167, 48%, 49%, 0.5);
+    stroke: none;
+}
+
+.devBellCurve > svg,
+.devBellCurve > input,
+.devBellCurve > h3 {
+    display: block;
+    margin: 4px auto;
+}
+
+.devBellCurve text {
+    opacity: 0;
+    transition: 500ms opacity;
+}
+
+.devBellCurve:hover text {
+    opacity: 1;
+    transition: 500ms opacity;
+}
+
+
+
 .projectView .project {
     overflow: auto;
 }
