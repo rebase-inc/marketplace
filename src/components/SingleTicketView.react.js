@@ -18,6 +18,10 @@ var SingleTicketView = React.createClass({
         findTalent: React.PropTypes.func.isRequired,
         modalOpen: React.PropTypes.bool.isRequired,
     },
+    getInitialState: () => ({ showDetails: false }),
+    toggleDetails: function() {
+        this.setState({ showDetails: !this.state.showDetails });
+    },
     render: function() {
         var buttons = [];
         if (!!this.props.viewingTalent) {
@@ -37,14 +41,21 @@ var SingleTicketView = React.createClass({
         return (
             <div className='ticketView'>
                 { this.props.modalOpen ? <CreateAuctionModal ticket={this.props.currentTicket} toggleModal={this.props.toggleModal} /> : null }
-                <TicketHeader goBack={this.props.unselectTicket} title={this.props.currentTicket.title}>
+                <TicketHeader goBack={this.props.unselectTicket} title={this.props.currentTicket.title} toggleDetails={this.toggleDetails}>
                     {buttons}
                 </TicketHeader>
+                <TicketDetails hidden={!this.state.showDetails} />
                 <CommentList comments={this.props.currentTicket.comments}/>
                 <CommentBox ticket={this.props.currentTicket} user={this.props.currentUser} />
             </div>
         );
     }
+});
+
+var TicketDetails = React.createClass({
+    render: function() {
+        return <div className={this.props.hidden ? 'hidden' : 'visible'} id='itemDetails'/>
+    },
 });
 
 module.exports = SingleTicketView;

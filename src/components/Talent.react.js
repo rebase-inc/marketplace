@@ -1,6 +1,7 @@
 var React = require('react');
 
 var Icons = require('../components/Icons.react');
+var TalentActions = require('../actions/TalentActions');
 var RatingStars = require('../components/RatingStars.react');
 
 var Talent = React.createClass({
@@ -10,7 +11,7 @@ var Talent = React.createClass({
     render: function() {
         return (
             <tr className='nomination'>
-                <td className='actionPanel'>
+                <td className='actionPanel' onClick={TalentActions.approveNomination.bind(null, this.props.nomination)}>
                     <Icons.ApproveTalent currentAuction={this.props.currentAuction} nomination={this.props.nomination} />
                 </td>
                 <td className='talentPanel'>

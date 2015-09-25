@@ -10,8 +10,6 @@ var AuctionActions = require('../actions/AuctionActions');
 
 var FindTalentView = React.createClass({
     propTypes: {
-        currentUser: React.PropTypes.object.isRequired,
-        currentRole: React.PropTypes.object.isRequired,
         currentAuction: React.PropTypes.object.isRequired,
     },
     getInitialState: function() {
@@ -36,7 +34,7 @@ var FindTalentView = React.createClass({
             return (
                 <table className='contentList'>
                     <tbody>
-                        { this.state.allTalent.map(talent => <Talent currentAuction={this.props.currentAuction} nomination={talent}/>) }
+                        { this.state.allTalent.map(talent => <Talent key={talent.id} currentAuction={this.props.currentAuction} nomination={talent}/>) }
                     </tbody>
                 </table>
             );
