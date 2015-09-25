@@ -1,7 +1,6 @@
 var React = require('react');
 var ReactDOM = require('react-dom');
 var keymirror = require('keymirror');
-var TalentActions = require('../actions/TalentActions');
 var UserActions = require('../actions/UserActions');
 var Graph = require('../utils/Graph');
 
@@ -20,7 +19,6 @@ var ApproveTalent = React.createClass({
         approved: React.PropTypes.string,
     },
     _getNominationState: function() {
-        console.log(this.props.currentAuction.bids);
         if (!this.props.nomination.auction) {
             return _TalentStates.UNAPPROVED;
         } else if (!!this.props.currentAuction.bids.every(bid => bid.contractor.id != this.props.nomination.contractor.id)) {
@@ -36,9 +34,9 @@ var ApproveTalent = React.createClass({
             case _TalentStates.UNAPPROVED:
                 return (
                     <div>
-                        <svg width="26px" height="26px" viewBox="0 0 26 26" onClick={TalentActions.approveNomination.bind(null, this.props.nomination)}>
-                            <g id="UI" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-                                <g id="Mgr-Suggested-Devs" transform="translate(-363.000000, -188.000000)" stroke-linecap="round" stroke="#BDBFBF" stroke-linejoin="round">
+                        <svg width="26px" height="26px" viewBox="0 0 26 26">
+                            <g id="UI" stroke="none" strokeWidth="1" fill="none" fill-rule="evenodd">
+                                <g id="Mgr-Suggested-Devs" transform="translate(-363.000000, -188.000000)" strokeLinecap="round" stroke="#BDBFBF" stroke-linejoin="round">
                                     <g id="Long-Ticket-Copy-2" transform="translate(325.000000, 141.000000)">
                                         <g id="Stroke-1494-+-Stroke-1495" transform="translate(39.000000, 48.000000)">
                                             <path d="M17.04336,8.47032 L9.47776,15.53112 L6.95696,13.00952" id="Stroke-1494"></path>
@@ -56,7 +54,7 @@ var ApproveTalent = React.createClass({
                 return (
                     <div>
                         <svg width="25px" height="24px" viewBox="0 0 25 24">
-                            <g id="UI" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                            <g id="UI" stroke="none" strokeWidth="1" fill="none" fill-rule="evenodd">
                                 <g id="Mgr-Waiting-for-Dev-Response" transform="translate(-364.000000, -189.000000)" fill="#F5B651">
                                     <g id="Rectangle-349-+-Approved-+-Fill-2197" transform="translate(349.000000, 184.000000)">
                                         <g id="Fill-2412" transform="translate(15.000000, 5.000000)">
@@ -74,7 +72,7 @@ var ApproveTalent = React.createClass({
                 return (
                     <div>
                         <svg width="25px" height="24px" viewBox="0 0 25 24" version="1.1">
-                            <g id="UI" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                            <g id="UI" stroke="none" strokeWidth="1" fill="none" fill-rule="evenodd">
                                 <g id="Mgr-Waiting-for-Dev-Response" transform="translate(-364.000000, -320.000000)" fill="#CC6070">
                                     <g id="Rectangle-349-+-Approved-+-Fill-2197-Copy" transform="translate(349.000000, 315.000000)">
                                         <g id="Group" transform="translate(15.000000, 5.000000)">

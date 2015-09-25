@@ -18,7 +18,7 @@ var TicketHeader = React.createClass({
             <div id='itemHeader' className={this.props.className || 'neutral'}>
                 <div onClick={this.props.goBack} className='backButton'> <Icons.Dropback/> </div>
                 { this.props.children }
-                <span>{this.props.title}</span>
+                <span onClick={this.props.toggleDetails} className='title'>{this.props.title}</span>
             </div>
         );
     }
