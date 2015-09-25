@@ -613,7 +613,10 @@ img.profilePicture {
     cursor: pointer;
 }
 
-#modalDialog input[type=text], #modalDialog input[type=textarea], #modalDialog button {
+#modalDialog input[type=text],
+#modalDialog input[type=number],
+#modalDialog input[type=textarea],
+#modalDialog button {
     box-shadow: none;
     text-align: center;
     margin-top: 14px;
@@ -630,6 +633,7 @@ img.profilePicture {
     padding-bottom: 12px;
 }
 
+#modalDialog input[type=number],
 #modalDialog input[type=text] {
     height: 54px;
     width: 180px;

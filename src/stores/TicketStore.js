@@ -15,10 +15,14 @@ var _allTickets = [];
 var _currentTicket = null;
 var _loading = false;
 
+function _shouldBeVisible(ticket) {
+    return !ticket.snapshots.some(snap => !!snap.bid_limit.ticket_set.auction)
+}
+
 var TicketStore = _.extend({}, EventEmitter.prototype, {
     getState: function() {
         return {
-            allTickets: _allTickets,
+            allTickets: _allTickets.filter(_shouldBeVisible),
             currentTicket: _currentTicket,
             loading: _loading,
         }

@@ -17,7 +17,7 @@ var _bidPending = false;
 var _loading = false;
 
 function _shouldBeVisible(auction) {
-    return (auction.state == 'created' || auction.state == 'waiting_for_bids') && !auction.bids.length
+    return (auction.state == 'created' || auction.state == 'waiting_for_bids')
 }
 
 var AuctionStore = _.extend({}, EventEmitter.prototype, {
@@ -38,6 +38,7 @@ Dispatcher.register(function(payload) {
     switch(action.type) {
         case ActionConstants.SELECT_VIEW: _currentAuction = null; break;
         case ActionConstants.SELECT_AUCTION: handleSelectedAuction(action.auctionID); break;
+        case ActionConstants.CREATE_AUCTION: handleCreateAuction(action); break;
         case ActionConstants.GET_AUCTION_DATA: handleNewAuctionData(action); break;
         case ActionConstants.ADD_COMMENT_TO_TICKET: handleNewComment(action); break;
         case ActionConstants.BID_ON_AUCTION: handleModifiedAuction(action); break;
@@ -71,6 +72,21 @@ function handleNewAuctionData(action) {
             _loading = false;
             _allAuctions = action.response.auctions;
             _allAuctions.forEach(auction => addSyntheticProperties(auction));
+    }
+}
+
+function handleCreateAuction(action) {
+    switch (action.status) {
+        case RequestConstants.PENDING: _loading = true; break;
+        case RequestConstants.TIMEOUT: _loading = false; console.warn(action.response); break;
+        case RequestConstants.ERROR: _loading = false; console.warn(action.response); break;
+        case null: _loading = false; console.warn('Undefined data!');
+        case RequestConstants.SUCCESS:
+            _loading = false;
+            _allAuctions.push(addSyntheticProperties(action.response.auction));
+            handleSelectedAuction(action.response.auction.id);
+            break;
+        default: console.warn('Invalid status given to CREATE_AUCTION: ', action.status); break;
     }
 }
 

@@ -19,7 +19,10 @@ var AuctionView = React.createClass({
         currentRole: React.PropTypes.object.isRequired,
     },
     getInitialState: function() {
-        return _.extend({ searchText: '', viewingTalent: false }, AuctionStore.getState());
+        return _.extend({
+            searchText: '',
+            viewingTalent: !!(this.props.currentRole.type == 'manager')
+        }, AuctionStore.getState());
     },
     _onChange: function() {
         this.setState(AuctionStore.getState());
@@ -38,6 +41,9 @@ var AuctionView = React.createClass({
         if (!!auctionID) {  TicketActions.selectAuction(auctionID); }
         this.setState({ viewingTalent: true });
     },
+    leaveTalentView: function() {
+        this.setState({ viewingTalent: false });
+    },
     render: function() {
         var props = {
             loading: this.state.loading,
@@ -52,6 +58,7 @@ var AuctionView = React.createClass({
                 props.findTalent = this.findTalent;
                 props.viewingTalent = this.state.viewingTalent;
                 props.findTalent = this.findTalent;
+                props.leaveTalentView = this.leaveTalentView;
                 return <SingleAuctionView {...props} />;
                 break;
             default:

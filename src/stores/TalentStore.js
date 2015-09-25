@@ -35,6 +35,7 @@ Dispatcher.register(function(payload) {
     switch(action.type) {
         case ActionConstants.GET_AUCTION_DETAIL: handleNewAuctionData(action); break;
         case ActionConstants.APPROVE_NOMINATION: handleModifiedNomination(action); break;
+        case ActionConstants.SELECT_AUCTION: TalentStore.getState(-1); break;
         default: return true;
     }
 

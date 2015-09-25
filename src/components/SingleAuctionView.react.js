@@ -28,7 +28,7 @@ var SingleAuctionView = React.createClass({
         if (!!this.props.viewingTalent) {
             return (
                 <div className='auctionView'>
-                    <SearchBar searchText={this.state.searchText} onUserInput={this.handleUserInput}/>
+                    <TicketHeader goBack={this.props.leaveTalentView} title={this.props.currentAuction.ticket.title}/>
                     <FindTalentView currentAuction={this.props.currentAuction} />
                 </div>
             );

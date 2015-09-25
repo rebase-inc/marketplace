@@ -1,5 +1,6 @@
 var React = require('react');
 var ReactDOM = require('react-dom');
+var keymirror = require('keymirror');
 var TalentActions = require('../actions/TalentActions');
 var UserActions = require('../actions/UserActions');
 var Graph = require('../utils/Graph');
@@ -13,23 +14,26 @@ function _dataURItoBlob(dataURI) {
     return new Blob([new Uint8Array(array)], {type: 'image/jpeg'});
 }
 
+var _TalentStates = keymirror({ UNAPPROVED: null, WAITING: null, REJECTED: null, ACCEPTED: null });
 var ApproveTalent = React.createClass({
     propTypes: {
         approved: React.PropTypes.string,
     },
-    getDefaultProps: function() {
-        return { state: 'unapproved' };
-    },
-    _getNominationState: function(nomination) {
-        if (!!nomination.auction) {
-            return 'waiting';
+    _getNominationState: function() {
+        console.log(this.props.currentAuction.bids);
+        if (!this.props.nomination.auction) {
+            return _TalentStates.UNAPPROVED;
+        } else if (!!this.props.currentAuction.bids.every(bid => bid.contractor.id != this.props.nomination.contractor.id)) {
+            return _TalentStates.WAITING;
+        } else if (!!this.props.currentAuction.bids.some(bid => bid.contractor.id == this.props.nomination.contractor.id && bid.contract)) {
+            return _TalentStates.ACCEPTED;
         } else {
-            return 'unapproved';
+            return _TalentStates.REJECTED;
         }
     },
     render: function() {
-        switch (this._getNominationState(this.props.nomination)) {
-            case 'unapproved':
+        switch (this._getNominationState()) {
+            case _TalentStates.UNAPPROVED:
                 return (
                     <div>
                         <svg width="26px" height="26px" viewBox="0 0 26 26" onClick={TalentActions.approveNomination.bind(null, this.props.nomination)}>
@@ -48,7 +52,7 @@ var ApproveTalent = React.createClass({
                     </div>
                 );
                 break;
-            case 'waiting':
+            case _TalentStates.WAITING:
                 return (
                     <div>
                         <svg width="25px" height="24px" viewBox="0 0 25 24">
@@ -66,7 +70,7 @@ var ApproveTalent = React.createClass({
                     </div>
                 );
                 break;
-            case 'rejected':
+            case _TalentStates.REJECTED:
                 return (
                     <div>
                         <svg width="25px" height="24px" viewBox="0 0 25 24" version="1.1">
@@ -171,7 +175,8 @@ var TalentScore = React.createClass({
     render: function() {
         var bgColor;
         var text;
-        if ( this.props.score >= 0.90 ) { bgColor = '#25AE90'; text = 'great match'; }
+        if ( this.props.score >= 0.97 ) { bgColor = '#25AE90'; text = 'perfect match'; }
+        else if ( this.props.score >= 0.90 ) { bgColor = '#25AE90'; text = 'great match'; }
         else if (this.props.score >= 0.75 ) { bgColor = '#25AE90'; text = 'good match'; }
         else if (this.props.score >= 0.5 ) { bgColor = '#F5B651'; text = 'okay match'; }
         else { bgColor = '#CC6070'; text = 'poor match'; }

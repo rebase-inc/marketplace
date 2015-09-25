@@ -34,9 +34,9 @@ var FindTalentView = React.createClass({
         }
         if (true) {
             return (
-                <table id='talentList'>
+                <table className='contentList'>
                     <tbody>
-                        { this.state.allTalent.map(talent => <Talent nomination={talent}/>) }
+                        { this.state.allTalent.map(talent => <Talent currentAuction={this.props.currentAuction} nomination={talent}/>) }
                     </tbody>
                 </table>
             );

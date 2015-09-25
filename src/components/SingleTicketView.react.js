@@ -7,7 +7,7 @@ var TicketHeader = require('../components/TicketHeader.react');
 var CommentList = require('../components/CommentList.react');
 var CommentBox = require('../components/CommentBox.react');
 var SearchBar = require('../components/SearchBar.react');
-var BidModal = require('../components/BidModal.react');
+var CreateAuctionModal = require('../components/CreateAuctionModal.react');
 
 var SingleTicketView = React.createClass({
     propTypes: {
@@ -16,16 +16,10 @@ var SingleTicketView = React.createClass({
         currentTicket: React.PropTypes.object.isRequired,
         unselectTicket: React.PropTypes.func.isRequired,
         findTalent: React.PropTypes.func.isRequired,
-    },
-    getInitialState: function() {
-        return { modalOpen: false };
-    },
-    toggleModal: function() {
-        this.setState({ modalOpen: !this.state.modalOpen });
+        modalOpen: React.PropTypes.bool.isRequired,
     },
     render: function() {
         var buttons = [];
-        var modal;
         if (!!this.props.viewingTalent) {
             return (
                 <div className='auctionView'>
@@ -38,12 +32,11 @@ var SingleTicketView = React.createClass({
             case 'contractor': throw 'Invalid view for contractor role!'; break;
             case 'manager':
                 buttons.push(<button onClick={this.props.findTalent.bind(null, null)} key='findMoreTalent'>Find Talent</button>);
-                modal = null;
                 break;
         }
         return (
             <div className='ticketView'>
-                { this.state.modalOpen ? modal : null }
+                { this.props.modalOpen ? <CreateAuctionModal ticket={this.props.currentTicket} toggleModal={this.props.toggleModal} /> : null }
                 <TicketHeader goBack={this.props.unselectTicket} title={this.props.currentTicket.title}>
                     {buttons}
                 </TicketHeader>
