@@ -16,7 +16,7 @@ var ImportProjectModal = React.createClass({
         return _.extend({projectsToImport: new Set()}, GithubStore.getState());
     },
     componentWillMount: function() {
-        GithubActions.getRepoData();
+        GithubActions.getAccounts();
     },
     componentDidMount: function() {
         GithubStore.addChangeListener(this._onChange);
@@ -51,9 +51,15 @@ var ImportProjectModal = React.createClass({
                     <span>{repo.name}</span>
                 </td>
                 <td className='organization'>
-                    <span>{repo.owner.login}</span>
+                    <span>{repo.org.login}</span>
                 </td>
             </tr>
+        );
+    },
+    _intoRepos: function(Repos, account, _, __) {
+        // reduces an array of GithubAccounts into an array of GithubRepositories
+        return Repos.concat(
+            account.orgs.reduce(function(result, org, _, __) { return result.concat(org.repos); }, [])
         );
     },
     render: function() {
@@ -66,7 +72,7 @@ var ImportProjectModal = React.createClass({
                 <div id='projectImportWrapper' ref='projectImportWrapper'>
                     <table>
                         <tbody>
-                            { this.state.allRepos.map(this._makeProject) }
+                            { this.state.allAccounts.reduce(this._intoRepos, []).map(this._makeProject) }
                         </tbody>
                     </table>
                 </div>

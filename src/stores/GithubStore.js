@@ -9,12 +9,12 @@ var _ = require('underscore');
 
 //Define initial data points
 var _loading = false;
-var _allRepos = [];
+var _allAccounts = [];
 
-var TalentStore = _.extend({}, EventEmitter.prototype, {
+var GithubStore = _.extend({}, EventEmitter.prototype, {
     getState: function() {
         return {
-            allRepos: _allRepos,
+            allAccounts: _allAccounts,
             loading: _loading,
         };
     },
@@ -27,39 +27,28 @@ var TalentStore = _.extend({}, EventEmitter.prototype, {
 Dispatcher.register(function(payload) {
     var action = payload.action;
     switch(action.type) {
-        case ActionConstants.GET_GITHUB_REPOS: handleNewRepoData(action); break;
+        case ActionConstants.GET_GITHUB_ACCOUNTS: handleNewAccountData(action); break;
         default: return true;
     }
 
     // If action was responded to, emit change event
-    TalentStore.emitChange();
+    GithubStore.emitChange();
     return true;
 });
 
-function handleNewRepoData(action) {
+function handleNewAccountData(action) {
     switch (action.status) {
         case RequestConstants.PENDING: _loading = true; break;
         case RequestConstants.TIMEOUT: _loading = false; console.warn(action.response); break;
         case RequestConstants.ERROR: _loading = false; console.warn(action.response); break;
         case null: _loading = false; console.warn('Undefined data!'); break;
         case undefined: _loading = false; console.warn('Undefined data!'); break;
-        default:
+        default: {
             _loading = false;
-            _allRepos = action.response.repos;
+            _allAccounts = action.response.github_accounts;
+        }
+
     }
 }
 
-function handleModifiedNomination(data) {
-    switch (data) {
-        case RequestConstants.PENDING: _loading = true; break;
-        case RequestConstants.TIMEOUT: _loading = false; console.warn(data); break;
-        case RequestConstants.ERROR: _loading = false; console.warn(data); break;
-        case null: _loading = false; console.warn('Null data!'); break;
-        default:
-            _loading = false;
-            _allNominations = _allNominations.map(n => n.contractor.id == data.nomination.contractor.id && n.ticket_set.id == data.nomination.ticket_set.id ? data.nomination : n);
-            break;
-    }
-}
-
-module.exports = TalentStore;
+module.exports = GithubStore;

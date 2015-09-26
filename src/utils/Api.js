@@ -129,8 +129,8 @@ var Api = {
         pendingHandler();
         ajax('GET', url, null, responseHandler);
     },
-    getRepoData: function(responseHandler, pendingHandler) {
-        var url = makeUrl("/github/user/repos");
+    getGithubAccounts: function(responseHandler, pendingHandler) {
+        var url = makeUrl("/github_accounts");
         pendingHandler();
         ajax('GET', url, null, responseHandler);
     },

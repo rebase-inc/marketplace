@@ -4,19 +4,20 @@ var RequestConstants = require('../constants/RequestConstants');
 var Api = require('../utils/Api');
 
 module.exports = {
-    getRepoData: function() {
-        function responseAction(response) {
+    getAccounts: function() {
+        function responseAction(response, status) {
             Dispatcher.handleRequestAction({
-                type: ActionConstants.GET_GITHUB_REPOS,
+                type: ActionConstants.GET_GITHUB_ACCOUNTS,
+                status: status,
                 response: response
             });
         };
-        function pendingAction(response) {
+        function pendingAction() {
             Dispatcher.handleRequestAction({
-                type: ActionConstants.GET_GITHUB_REPOS,
-                response: RequestConstants.PENDING,
+                type: ActionConstants.GET_GITHUB_ACCOUNTS,
+                status: RequestConstants.PENDING,
             });
         };
-        Api.getRepoData(responseAction, pendingAction);
+        Api.getGithubAccounts(responseAction, pendingAction);
     },
 };
