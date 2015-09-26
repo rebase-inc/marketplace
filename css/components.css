@@ -302,8 +302,6 @@ tr.ticket > td.findTalentPanel:hover {
     transition: 500ms opacity;
 }
 
-
-
 .projectView .project {
     overflow: auto;
 }

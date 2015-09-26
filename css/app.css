@@ -357,10 +357,20 @@ html, body {
     fill: hsla(37, 87%, 61%, 1);
 }
 
-#itemHeader > button {
+#itemHeader > button, 
+#itemHeader > .details {
     float: right;
     cursor: pointer;
 }
+
+#itemHeader > .details {
+    padding: 22px 10px 22px 10px;
+}
+
+#itemHeader > .details:hover {
+    opacity: 0.6;
+}
+
 
 #itemHeader {
     height: 50px;
@@ -384,15 +394,17 @@ html, body {
 }
 
 #itemDetails.hidden {
+    overflow: auto;
     background-color: #4C627D;
     height: 0;
-    transition: height 500ms;
+    transition: height 250ms;
 }
 
 #itemDetails.visible {
+    overflow: auto;
     background-color: #4C627D;
     height: 150px;
-    transition: height 500ms;
+    transition: height 250ms;
 }
 
 #singleItem {
