@@ -32,7 +32,7 @@ var CreateAuctionModal = React.createClass({
     getDefaultProps: function() {
         return { width: 240, height: 50, margin: 18 }
     },
-    getInitialState: () => ({ minimum_price: 100, maximum_price: 1800, cutoff_price: 800 }),
+    getInitialState: () => ({ minimum_price: 100, maximum_price: 2000, cutoff_price: 800 }),
     componentDidMount: function() {
         var element = ReactDOM.findDOMNode(this.refs.devBellCurve);
         Graph.bellCurve.create(element, this.props, this.state);
