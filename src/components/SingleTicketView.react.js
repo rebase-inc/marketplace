@@ -8,6 +8,7 @@ var CommentList = require('../components/CommentList.react');
 var CommentBox = require('../components/CommentBox.react');
 var SearchBar = require('../components/SearchBar.react');
 var CreateAuctionModal = require('../components/CreateAuctionModal.react');
+var TicketDetails = require('../components/TicketDetails.react');
 
 var SingleTicketView = React.createClass({
     propTypes: {
@@ -50,16 +51,6 @@ var SingleTicketView = React.createClass({
             </div>
         );
     }
-});
-
-var TicketDetails = React.createClass({
-    render: function() {
-        return (
-            <div className={this.props.hidden ? 'hidden' : 'visible'} id='itemDetails'>
-                <span>{this.props.ticket.title}</span>
-            </div>
-        );
-    },
 });
 
 module.exports = SingleTicketView;

@@ -149,6 +149,9 @@ button.small {
 button { background-color: hsla(167, 48%, 49%, 1); }
 button:hover { background-color: hsla(167, 48%, 59%, 1); }
 
+button.notification { background-color: hsla(212, 22%, 43%, 1); }
+button.notification:hover { background-color: hsla(212, 22%, 53%, 1); }
+
 button.needsResolution { background-color: hsla(37, 87%, 61%, 1); }
 button.needsResolution:hover { background-color: hsla(37, 87%, 71%, 1); }
 #itemHeader.needsResolution>button { background-color: hsla(37, 87%, 51%, 1); }
@@ -357,7 +360,7 @@ html, body {
     fill: hsla(37, 87%, 61%, 1);
 }
 
-#itemHeader > button, 
+#itemHeader > button,
 #itemHeader > .details {
     float: right;
     cursor: pointer;
@@ -395,16 +398,77 @@ html, body {
 
 #itemDetails.hidden {
     overflow: auto;
-    background-color: #4C627D;
+    background-color: hsla(204, 14%, 92%, 1);
     height: 0;
     transition: height 250ms;
 }
 
 #itemDetails.visible {
     overflow: auto;
-    background-color: #4C627D;
+    background-color: hsla(204, 14%, 92%, 1);
     height: 150px;
     transition: height 250ms;
+}
+
+#itemDetails > #mainInfo {
+    display: inline-block;
+    float: left;
+    width: 55%;
+    position: relative;
+    height: 100%;
+}
+
+#itemDetails > #mainInfo > span {
+    display: block;
+    text-align: left;
+}
+
+#itemDetails > #mainInfo > span:last-of-type {
+    opacity: 0.5;
+    font-size: 14px;
+}
+
+/*#itemDetails > #mainInfo > button {*/
+    /*position: absolute;*/
+    /*top: 105px;*/
+/*}*/
+
+#itemDetails > #mainInfo > *:first-child {
+    margin-top: 20px;
+}
+
+#itemDetails > #mainInfo > span,
+#itemDetails > #mainInfo > button {
+    margin-left: 20px;
+    margin-right: 20px;
+    margin-top: 5px;
+}
+
+#itemDetails > #technicalInfo {
+    display: inline-block;
+    float: left;
+    width: 45%;
+    margin-top: 20px;
+}
+
+#itemDetails > #technicalInfo > div {
+    width: 100%;
+    height: 30px;
+}
+
+#itemDetails > #technicalInfo > div > span:first-child {
+    font-size: 10px;
+    opacity: 0.5;
+    text-transform: lowercase;
+    width: 50px;
+    margin-right: 10px;
+    text-align: right;
+    display: inline-block;
+}
+
+#itemDetails > #technicalInfo > div > span:nth-child(2) {
+    font-size: 14px;
+    font-family: "Courier New", Courier, monospace;
 }
 
 #singleItem {
@@ -849,18 +913,23 @@ img.profilePicture {
     box-sizing: border-box;
     padding: 24px;
 }
+
 #login-box img {
     height: 50px;
     padding-bottom: 10px;
 }
-#login-box input, #login-box button {
+
+#login-box input,
+#login-box button {
     width: 85%;
     height: 40px;
     display: block;
     margin: 14px auto;
     border-radius: 3px;
 }
+
 #buttons { padding-bottom: 28px; }
+
 #login-box button {
     background-color: hsla(167, 48%, 49%, 1);
     box-shadow: none;
@@ -870,6 +939,7 @@ img.profilePicture {
     cursor: pointer;
     color: hsla(210, 29%, 97%, 1);
 }
+
 #login-box input {
     line-height: 24px;
     font-size: 14px;
@@ -905,9 +975,6 @@ img.profilePicture {
     background-color: transparent;
     transition: background 2.5s ease-out;
 }
-
-
-/** nothing here **/
 
 #nothingHere {
     opacity: 0.5;
@@ -1048,40 +1115,40 @@ img.profilePicture {
 .sk-fading-circle .sk-circle11 {
     -webkit-transform: rotate(300deg);
     -ms-transform: rotate(300deg);
-    transform: rotate(300deg); 
+    transform: rotate(300deg);
 }
 .sk-fading-circle .sk-circle12 {
     -webkit-transform: rotate(330deg);
     -ms-transform: rotate(330deg);
-    transform: rotate(330deg); 
+    transform: rotate(330deg);
 }
 .sk-fading-circle .sk-circle2:before {
     -webkit-animation-delay: -1.1s;
-    animation-delay: -1.1s; 
+    animation-delay: -1.1s;
 }
 .sk-fading-circle .sk-circle3:before {
     -webkit-animation-delay: -1s;
-    animation-delay: -1s; 
+    animation-delay: -1s;
 }
 .sk-fading-circle .sk-circle4:before {
     -webkit-animation-delay: -0.9s;
-    animation-delay: -0.9s; 
+    animation-delay: -0.9s;
 }
 .sk-fading-circle .sk-circle5:before {
     -webkit-animation-delay: -0.8s;
-    animation-delay: -0.8s; 
+    animation-delay: -0.8s;
 }
 .sk-fading-circle .sk-circle6:before {
     -webkit-animation-delay: -0.7s;
-    animation-delay: -0.7s; 
+    animation-delay: -0.7s;
 }
 .sk-fading-circle .sk-circle7:before {
     -webkit-animation-delay: -0.6s;
-    animation-delay: -0.6s; 
+    animation-delay: -0.6s;
 }
 .sk-fading-circle .sk-circle8:before {
     -webkit-animation-delay: -0.5s;
-    animation-delay: -0.5s; 
+    animation-delay: -0.5s;
 }
 .sk-fading-circle .sk-circle9:before {
     -webkit-animation-delay: -0.4s;
@@ -1107,7 +1174,7 @@ img.profilePicture {
 
 @keyframes sk-circleFadeDelay {
     0%, 39%, 100% { opacity: 0; }
-    40% { opacity: 1; } 
+    40% { opacity: 1; }
 }
 
 @-webkit-keyframes sk-stretchdelay {
