@@ -619,12 +619,28 @@ img.profilePicture {
 #nothingHere {
     background: url('../img/desk-contents.svg') no-repeat center, url('../img/desk-background.svg') repeat-x bottom;
     background-size: auto 90%, auto 100%;
-    height: calc(100% - 44px);
+    height: calc(100% - 40px);
     width: 100%;
+    bottom: 0;
     position: absolute;
 }
 
-#nothingHere > div {
+#opacityMask {
+    display: block;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-color: hsla(204, 45%, 98%, 1);
+    opacity: 1;
+}
+
+#opacityMask.fade-away {
+    transition: opacity 1200ms;
+    transition-delay: 0;
+    opacity: 0;
+}
+
+#nothingHere > #content {
     top: 50%;
     left: 50%;
     width: 40%;
@@ -632,22 +648,22 @@ img.profilePicture {
     transform: translateY(-80%) translateX(-50%);
 }
 
-#nothingHere > div > * {
+#nothingHere > #content > * {
     display: block;
     margin: 10px auto;
     text-align: center;
 }
 
-#nothingHere > div > h3 {
+#nothingHere > #content > h3 {
     font-size: 24px;
 }
 
-#nothingHere > div > span {
+#nothingHere > #content > span {
     font-size: 14;
     opacity: 0.5;
 }
 
-#nothingHere > div > button {
+#nothingHere > #content > button {
     font-size: 14px;
 }
 
