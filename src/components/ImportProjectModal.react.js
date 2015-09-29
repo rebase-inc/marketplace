@@ -2,13 +2,14 @@ var _ = require('underscore');
 var React = require('react');
 var ReactDOM = require('react-dom');
 
+var LoadingAnimation = require('../components/LoadingAnimation.react');
+
 var ModalContainer = require('../components/ModalContainer.react');
 
 var GithubActions = require('../actions/GithubActions');
 
 var GithubStore = require('../stores/GithubStore');
 
-var viewConstants = require('../constants/viewConstants');
 var handleScrollShadows = require('../utils/Style').handleScrollShadows;
 
 var ImportProjectModal = React.createClass({
@@ -76,6 +77,17 @@ var ImportProjectModal = React.createClass({
         GithubActions.importRepos(this.state.projectsToImport);
     },
     render: function() {
+        if (this.state.loading) {
+        return (
+            <ModalContainer>
+                <div onClick={this.props.toggleModal} id='modalClose'>
+                    <img src='img/modal-close.svg'/>
+                </div>
+                <h3>Select Project(s) to Import</h3>
+                <LoadingAnimation/>
+            </ModalContainer>
+        );
+        } else {
         return (
             <ModalContainer>
                 <div onClick={this.props.toggleModal} id='modalClose'>
@@ -92,6 +104,7 @@ var ImportProjectModal = React.createClass({
                 <button onClick={this._importRepos}>Import Selected</button>
             </ModalContainer>
         );
+        }
     }
 });
 

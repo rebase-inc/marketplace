@@ -43,6 +43,8 @@ var ProfileView = React.createClass({
     componentDidUpdate: function() {
         handleScrollShadows(this.refs.projectList);
     },
+    _deleteProject: function(project) {
+    },
     _makeProjectElement: function(organization, project) {
         return (
             <div className='project'>
@@ -50,7 +52,7 @@ var ProfileView = React.createClass({
                 <div className='projectDetails'>
                     <span className='orgName'>{organization.name}</span>
                     <span className='projName'>{project.name}</span>
-                    <span className='projDelete'>{'Delete Project?'}</span>
+                    <span className='projDelete' onClick={this._deleteProject.bind(null, project)} >{'Delete Project?'}</span>
                 </div>
             </div>
         );

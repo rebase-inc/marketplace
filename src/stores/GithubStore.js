@@ -8,7 +8,7 @@ var UserActions = require('../actions/UserActions');
 var _ = require('underscore');
 
 //Define initial data points
-var _loading = false;
+var _loading = true;
 var _allAccounts = [];
 
 var GithubStore = _.extend({}, EventEmitter.prototype, {
