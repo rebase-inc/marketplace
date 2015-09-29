@@ -4,8 +4,12 @@ var NothingHere = React.createClass({
     render: function() {
         return (
             <div id='nothingHere'>
-                <img src='img/working-60px.svg' />
-                <span>{this.props.text}</span>
+                <div>
+                    <h3>In order to get some work done, you first need some tasks</h3>
+                    <button>Import GitHub Project</button>
+                    <span>OR</span>
+                    <button className='notification'>Add a Sample Task</button>
+                </div>
            </div>
         );
     }
