@@ -1,6 +1,10 @@
 var React = require('react');
 var ReactCSSTransitionGroup = require('react-addons-css-transition-group');
 
+var UserActions = require('../actions/UserActions');
+
+var ViewTypes = require('../constants/ViewConstants').ViewTypes;
+
 var NothingHere = React.createClass({
     getInitialState: () => ({mounted: false}),
     componentDidMount: function() {
@@ -14,7 +18,7 @@ var NothingHere = React.createClass({
                 <div id='opacityMask' className={!!this.state.mounted ? 'fade-away' : ''} />
                 <div id='content'>
                     <h3>In order to get some work done, you first need some tasks</h3>
-                    <button>Import GitHub Project</button>
+                    <button onClick={UserActions.selectView.bind(null, ViewTypes.PROJECTS)}>Import GitHub Project</button>
                     <span>OR</span>
                     <button className='notification'>Add a Sample Task</button>
                 </div>
