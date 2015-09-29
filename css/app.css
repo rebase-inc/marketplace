@@ -633,7 +633,6 @@ img.profilePicture {
     bottom: 7px;
     width: 486px; /* cant figure out why i have to do this... */
     padding-left: 25px;
-    color: hsla(215, 10%, 55%, 1);
 }
 
 #searchBox {
@@ -650,9 +649,10 @@ img.profilePicture {
     float: right;
     position: relative;
     padding-right: 40px;
-    padding-top: 10px;
+    padding-top: 12px;
     color: #BDBFBF;
     font-size: 14px;
+    box-sizing: border-box;
 }
 
 #sortOptions:hover {
@@ -710,7 +710,7 @@ img.profilePicture {
 }
 
 ::-webkit-input-placeholder {
-    color: hsla(217, 18%, 81%, 1);
+    color: hsla(217, 18%, 71%, 1);
 }
 
 #viewList {
