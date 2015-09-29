@@ -2,9 +2,6 @@ var Dispatcher = require('../dispatcher/RebaseAppDispatcher');
 var EventEmitter = require('events').EventEmitter;
 var ActionConstants = require('../constants/ActionConstants');
 var RequestConstants = require('../constants/RequestConstants');
-var viewConstants = require('../constants/viewConstants');
-var ReviewActions = require('../actions/ReviewActions');
-var UserActions = require('../actions/UserActions');
 var _ = require('underscore');
 
 //Define initial data points
