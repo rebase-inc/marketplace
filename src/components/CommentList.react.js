@@ -54,7 +54,7 @@ var CommentList = React.createClass({
             );
         });
         return (
-                <ReactCSSTransitionGroup component='div' id='commentList' transitionName='newComment'>
+                <ReactCSSTransitionGroup component='div' transitionLeaveTimeout={300} id='commentList' transitionName='newComment'>
                 {all_comments}
                 </ReactCSSTransitionGroup>
                );

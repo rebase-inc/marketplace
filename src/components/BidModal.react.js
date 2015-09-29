@@ -12,18 +12,13 @@ var AuctionStore = require('../stores/AuctionStore');
 var viewConstants = require('../constants/viewConstants');
 
 var BidModal = React.createClass({
-    getInitialState: function() {
-        return {
-            price: '',
-            priceSubmitted: false,
-        }
-    },
+    getInitialState: () => ({ minimum_price: 80, maximum_price: 1800, price: 800, priceSubmitted: false }),
     handleKeyPress: function(event) {
         if (event.charCode == 13) {
             this.setState({ price: ReactDOM.findDOMNode(this.refs.price).value });
         }
     },
-    submitPrice: function() {
+    bidOnAuction: function() {
         AuctionActions.bidOnAuction(this.props.currentUser, this.props.currentAuction, this.state.price);
         this.setState({ priceSubmitted: true });
     },
@@ -36,27 +31,24 @@ var BidModal = React.createClass({
         setTimeout(ContractActions.selectContract.bind(null, this.props.currentAuction.contract.id), 0);
         this.props.toggleModal();
     },
+    setPrice: function(event) {
+        this.setState({ price: event.target.valueAsNumber });
+    },
+    getDefaultProps: function() {
+        return { width: 240, height: 50, margin: 18 }
+    },
     render: function() {
-        if (!this.state.price) {
+        if (!this.state.priceSubmitted || this.props.loading) {
             return (
                 <ModalContainer>
                     <div onClick={this.props.toggleModal} id='modalClose'>
                         <img src='img/modal-close.svg'/>
                     </div>
-                    <h3>Name your price</h3>
+                    <h3>Choose your price</h3>
                     <h4>to work on this task</h4>
-                    <input type='number' ref='price' placeholder='Price in USD' onKeyPress={this.handleKeyPress}/>
-                </ModalContainer>
-            );
-        } else if (!this.state.priceSubmitted || this.props.loading) {
-            return (
-                <ModalContainer>
-                    <div onClick={this.props.toggleModal} id='modalClose'>
-                        <img src='img/modal-close.svg'/>
-                    </div>
-                    <h3>{'Is ' + this.state.price + ' USD Correct?'}</h3>
-                    <h4>If accepted, you'll start right away!</h4>
-                    <button onClick={this.submitPrice}>Submit Bid</button>
+                    <input style={{width: this.props.width + 'px', margin: '10px'}} defaultValue={this.state.price} type='range' min={this.state.minimum_price} max={this.state.maximum_price} step={20} onChange={this.setPrice} />
+                    <h3>{this.state.price + ' USD'}</h3>
+                    <button onClick={this.bidOnAuction}>Submit Bid</button>
                 </ModalContainer>
             );
         } else if (this.props.currentAuction.state == 'waiting_for_bids') {

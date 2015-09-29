@@ -15,6 +15,9 @@ var UserActions = require('../actions/UserActions');
 // Icons
 var Icons = require('../components/Icons.react');
 
+// Utils
+var handleScrollShadows = require('../utils/Style').handleScrollShadows;
+
 var ProfileView = React.createClass({
     propTypes: {
         currentUser: React.PropTypes.object.isRequired,
@@ -31,6 +34,14 @@ var ProfileView = React.createClass({
             email: ReactDOM.findDOMNode(this.refs.email).value,
         }
         UserActions.updateUserSettings(user);
+    },
+    componentDidMount: function() {
+        handleScrollShadows(this.refs.projectList);
+        var node = ReactDOM.findDOMNode(this.refs.projectList);
+        node.addEventListener('scroll', handleScrollShadows.bind(null, this.refs.projectList), false);
+    },
+    componentDidUpdate: function() {
+        handleScrollShadows(this.refs.projectList);
     },
     _makeProjectElement: function(organization, project) {
         return (
@@ -56,8 +67,10 @@ var ProfileView = React.createClass({
         return (
             <div className='projectView'>
                 { this.state.modalOpen ? <ImportProjectModal toggleModal={this.toggleModal} {...this.props} /> : null }
-                <div className='projectSettings'>
-                    { projects }
+                <div className='projectInfo'>
+                    <div ref='projectList' className='projectList'>
+                        { projects }
+                    </div>
                     <Icons.AddNewProject onClick={this.toggleModal} />
                 </div>
             </div>

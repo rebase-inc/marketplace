@@ -8,6 +8,7 @@ var CommentList = require('../components/CommentList.react');
 var CommentBox = require('../components/CommentBox.react');
 var SearchBar = require('../components/SearchBar.react');
 var CreateAuctionModal = require('../components/CreateAuctionModal.react');
+var TicketDetails = require('../components/TicketDetails.react');
 
 var SingleTicketView = React.createClass({
     propTypes: {
@@ -19,8 +20,8 @@ var SingleTicketView = React.createClass({
         modalOpen: React.PropTypes.bool.isRequired,
     },
     getInitialState: () => ({ showDetails: false }),
-    toggleDetails: function() {
-        this.setState({ showDetails: !this.state.showDetails });
+    toggleDetails: function(state) {
+        typeof(state) === 'boolean' ? this.setState({ showDetails: state }) : this.setState({ showDetails: !this.state.showDetails });
     },
     render: function() {
         var buttons = [];
@@ -44,18 +45,12 @@ var SingleTicketView = React.createClass({
                 <TicketHeader goBack={this.props.unselectTicket} title={this.props.currentTicket.title} toggleDetails={this.toggleDetails}>
                     {buttons}
                 </TicketHeader>
-                <TicketDetails hidden={!this.state.showDetails} />
+                <TicketDetails hidden={!this.state.showDetails} ticket={this.props.currentTicket} />
                 <CommentList comments={this.props.currentTicket.comments}/>
                 <CommentBox ticket={this.props.currentTicket} user={this.props.currentUser} />
             </div>
         );
     }
-});
-
-var TicketDetails = React.createClass({
-    render: function() {
-        return <div className={this.props.hidden ? 'hidden' : 'visible'} id='itemDetails'/>
-    },
 });
 
 module.exports = SingleTicketView;
