@@ -189,7 +189,7 @@ tr.ticket > td.findTalentPanel:hover {
     display: block;
 }
 
-.profileView > .profileSettings, .projectView > .projectDetails {
+.profileView > .profileSettings, .projectView > .projectInfo {
     display: block;
     position: absolute;
     margin: 0 auto;
@@ -198,7 +198,7 @@ tr.ticket > td.findTalentPanel:hover {
     transform: translateX(-50%) translateY(-50%);
 }
 
-.projectView > .projectDetails > .projectList {
+.projectView > .projectInfo > .projectList {
     max-height: 500px;
     overflow: scroll;
 }

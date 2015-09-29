@@ -70,7 +70,7 @@ var ProfileView = React.createClass({
         return (
             <div className='projectView'>
                 { this.state.modalOpen ? <ImportProjectModal toggleModal={this.toggleModal} {...this.props} /> : null }
-                <div className='projectDetails'>
+                <div className='projectInfo'>
                     <div ref='projectList' className='projectList'>
                         { projects }
                     </div>
