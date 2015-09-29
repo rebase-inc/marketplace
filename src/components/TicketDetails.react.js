@@ -11,19 +11,19 @@ var TicketDetails = React.createClass({
                 </div>
                 <div id='technicalInfo'>
                     <div>
-                        <span>Clone</span> 
+                        <span>Clone</span>
                         <span>{this.props.ticket.clone_command || 'git clone git@github.com:airpool/ios'}</span>
                     </div>
                     <div>
-                        <span>Deploy</span> 
+                        <span>Deploy</span>
                         <span>{this.props.ticket.deploy_command || './manage data recreate && ./manage runserver'}</span>
                     </div>
                     <div>
-                        <span>Test</span> 
+                        <span>Test</span>
                         <span>{this.props.ticket.test_command || 'python tests/run.py'}</span>
                     </div>
                     <div>
-                        <span>Readme</span> 
+                        <span>Readme</span>
                         <span>{this.props.ticket.readme_file || 'README.md'}</span>
                     </div>
                 </div>

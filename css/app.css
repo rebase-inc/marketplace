@@ -612,32 +612,113 @@ img.profilePicture {
 }
 
 #ticketSearchBar {
-    width: 100%;
-    padding: 9px;
-    box-sizing: border-box;
-    background-color: hsla(200, 30%, 96%, 1);
+    background-color: hsla(200, 20%, 93%, 1);
+    height: 40px;
 }
 
-#ticketSearchBar input {
-    background-color: hsla(204, 45%, 98%, 1);
-}
-
-::-webkit-input-placeholder {
-    color: hsla(217, 18%, 81%, 1);
-}
-
-#ticketSearchBar > input {
+#searchBox input {
+    background: hsla(204, 45%, 98%, 1);
     height: 26px;
     font-size: 14px;
-    line-height: 20px;
+    line-height: 18px;
     padding: 8px;
     box-sizing: border-box;
-    width: 100%;
     border-radius: 4px;
     border-width: 1px;
     border-style: solid;
     border-color: hsla(0, 0%, 80%, .6);
-    background-color: transparent;
+    position: absolute;
+    top: 7px;
+    left: 7px;
+    right: 7px;
+    bottom: 7px;
+    width: calc(100% - 14px); /* cant figure out why i have to do this... */
+    padding-left: 23px;
+    border-color: hsla(211, 10%, 83%, 1);
+    color: hsla(215, 10%, 55%, 1);
+}
+
+#searchBox.focused {
+    border-color: hsla(215, 10%, 55%, 1);
+}
+
+#searchBox {
+    width: 200px;
+    transition: width 300ms;
+    height: 100%;
+    display: inline-block;
+    position: relative;
+}
+
+#sortOptions {
+    height: 100%;
+    display: inline-block;
+    float: right;
+    position: relative;
+    padding-right: 40px;
+    padding-top: 10px;
+    color: #BDBFBF;
+    font-size: 14px;
+}
+
+#sortOptions:hover {
+    cursor: pointer;
+    color: #364557;
+}
+
+#sortOptions svg {
+    height: 8px;
+}
+
+#sortOptions svg g {
+    fill: #BDBFBF;
+}
+
+#sortOptions:hover svg g {
+    fill: #364557;
+}
+
+#searchBox.focused {
+    width: 500px;
+    transition: width 300ms;
+}
+
+#searchBox #searchImg {
+    opacity: 0.5;
+    position: absolute;
+    height: 16px;
+    top: 12px;
+    left: 12px;
+}
+
+#searchBox.focused #searchImg {
+    opacity: 1;
+    transition: opacity 300ms;
+    transition-delay: 300ms;
+}
+
+#searchBox #clearImg {
+    opacity: 0;
+    transition: opacity 300ms;
+    position: absolute;
+    height: 16px;
+    top: 12px;
+    right: 12px;
+    cursor: pointer;
+}
+
+#searchBox.focused #clearImg {
+    opacity: 0.6;
+    transition: opacity 300ms;
+    transition-delay: 300ms;
+}
+
+#ticketSearchBar #clearImg:hover {
+    opacity: 1;
+}
+
+::-webkit-input-placeholder {
+    color: hsla(217, 18%, 81%, 1);
 }
 
 #viewList {

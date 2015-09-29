@@ -1,4 +1,5 @@
 var React = require('react');
+var Fuse = require('../utils/Fuse');
 
 // Components
 var NothingHere = require('../components/NothingHere.react');
