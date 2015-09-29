@@ -617,7 +617,7 @@ img.profilePicture {
 }
 
 #searchBox input {
-    background: hsla(204, 45%, 98%, 1);
+    background: transparent;
     height: 26px;
     font-size: 14px;
     line-height: 18px;
@@ -625,21 +625,15 @@ img.profilePicture {
     box-sizing: border-box;
     border-radius: 4px;
     border-width: 1px;
-    border-style: solid;
-    border-color: hsla(0, 0%, 80%, .6);
+    border-style: none;
     position: absolute;
     top: 7px;
     left: 7px;
     right: 7px;
     bottom: 7px;
-    width: calc(100% - 14px); /* cant figure out why i have to do this... */
-    padding-left: 23px;
-    border-color: hsla(211, 10%, 83%, 1);
+    width: 486px; /* cant figure out why i have to do this... */
+    padding-left: 25px;
     color: hsla(215, 10%, 55%, 1);
-}
-
-#searchBox.focused {
-    border-color: hsla(215, 10%, 55%, 1);
 }
 
 #searchBox {
@@ -694,7 +688,6 @@ img.profilePicture {
 #searchBox.focused #searchImg {
     opacity: 1;
     transition: opacity 300ms;
-    transition-delay: 300ms;
 }
 
 #searchBox #clearImg {
@@ -710,7 +703,6 @@ img.profilePicture {
 #searchBox.focused #clearImg {
     opacity: 0.6;
     transition: opacity 300ms;
-    transition-delay: 300ms;
 }
 
 #ticketSearchBar #clearImg:hover {
