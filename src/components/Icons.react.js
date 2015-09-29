@@ -264,7 +264,7 @@ var Dropdown = React.createClass({
 var AddNewProject = React.createClass({
     render: function() {
         return (
-            <div onClick={this.props.onClick} className='addNewProject'>
+            <div onClick={this.props.onClick} className='addNewProject icon'>
                 <h5>Add New Project</h5>
                 <svg width="25px" height="25px" viewBox="0 0 25 25" version="1.1">
                     <g id="UI" stroke="none" strokeWidth="1" fill="none" fill-rule="evenodd">

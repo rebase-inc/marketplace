@@ -10,7 +10,7 @@ var NothingHere = React.createClass({
     componentDidMount: function() {
         setTimeout(function() {
             !!this.isMounted() ?  this.setState({ mounted: true }) : null;
-        }.bind(this), 50);
+        }.bind(this), 50); // animation hack
     },
     render: function() {
         return (
