@@ -53,9 +53,6 @@ var ProfileView = React.createClass({
         var role;
         var project;
         this.props.currentUser.roles.forEach(role => role.organization.projects.forEach(project => projects.push(this._makeProjectElement(role.organization, project))));
-        projects.push(this._makeProjectElement({name: 'rebase'}, {name: 'api'}));
-        projects.push(this._makeProjectElement({name: 'rebase'}, {name: 'react-app'}));
-        projects.push(this._makeProjectElement({name: 'rebase'}, {name: 'models'}));
         return (
             <div className='projectView'>
                 { this.state.modalOpen ? <ImportProjectModal toggleModal={this.toggleModal} {...this.props} /> : null }

@@ -20,4 +20,20 @@ module.exports = {
         };
         Api.getGithubAccounts(responseAction, pendingAction);
     },
+    importRepos: function(selectedRepos) {
+        function responseAction(response, status) {
+            Dispatcher.handleRequestAction({
+                type: ActionConstants.IMPORT_GITHUB_REPOS,
+                status: status,
+                response: response
+            });
+        };
+        function pendingAction() {
+            Dispatcher.handleRequestAction({
+                type: ActionConstants.IMPORT_GITHUB_REPOS,
+                status: RequestConstants.PENDING,
+            });
+        };
+        Api.importGithubRepos(selectedRepos, responseAction, pendingAction);
+    }
 };

@@ -28,6 +28,7 @@ Dispatcher.register(function(payload) {
     var action = payload.action;
     switch(action.type) {
         case ActionConstants.GET_GITHUB_ACCOUNTS: handleNewAccountData(action); break;
+        case ActionConstants.IMPORT_GITHUB_REPOS: handleImportRepos(action); break;
         default: return true;
     }
 
@@ -46,6 +47,20 @@ function handleNewAccountData(action) {
         default: {
             _loading = false;
             _allAccounts = action.response.github_accounts;
+        }
+
+    }
+}
+
+function handleImportRepos(action) {
+    switch (action.status) {
+        case RequestConstants.PENDING: _loading = true; break;
+        case RequestConstants.TIMEOUT: _loading = false; console.warn(action.response); break;
+        case RequestConstants.ERROR: _loading = false; console.warn(action.response); break;
+        case null: _loading = false; console.warn('Undefined data!'); break;
+        case undefined: _loading = false; console.warn('Undefined data!'); break;
+        default: {
+            _loading = false;
         }
 
     }

@@ -35,5 +35,6 @@ module.exports = keyMirror({
     ANSWER_MEDIATION_PARTIALLY_COMPLETE: null,
     ANSWER_MEDIATION_COMPLETE: null,
     GET_GITHUB_ACCOUNTS: null,
+    IMPORT_GITHUB_REPOS: null,
     CREATE_AUCTION: null,
 });

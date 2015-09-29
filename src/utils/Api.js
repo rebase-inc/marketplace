@@ -134,6 +134,14 @@ var Api = {
         pendingHandler();
         ajax('GET', url, null, responseHandler);
     },
+    importGithubRepos: function(selectedRepos, responseHandler, pendingHandler) {
+        var url = makeUrl("/github/import_repos");
+        pendingHandler();
+        var data = {
+            repos: selectedRepos
+        };
+        ajax('POST', url, data, responseHandler, pendingHandler);
+    },
     bidOnAuction: function(user, auction, price, responseHandler, pendingHandler) {
         var url = makeUrl("/auctions/" + auction.id + '/bid_events');
         var data = {

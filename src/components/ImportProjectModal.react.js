@@ -13,7 +13,7 @@ var handleScrollShadows = require('../utils/Style').handleScrollShadows;
 
 var ImportProjectModal = React.createClass({
     getInitialState: function() {
-        return _.extend({projectsToImport: new Set()}, GithubStore.getState());
+        return _.extend({projectsToImport: {}}, GithubStore.getState());
     },
     componentWillMount: function() {
         GithubActions.getAccounts();
@@ -33,18 +33,28 @@ var ImportProjectModal = React.createClass({
     _onChange: function() {
         this.setState(GithubStore.getState());
     },
-    addProject: function(repoId, event) {
+    _selectRepo: function(repo, state) {
+        var projects = state.projectsToImport;
+        projects[repo.repo_id] = repo;
+        return { projectsToImport: projects };
+    },
+    _unselectRepo: function(repo, state) {
+        var projects = state.projectsToImport;
+        delete projects[repo.repo_id];
+        return { projectsToImport: projects };
+    },
+    addProject: function(repo, event) {
         if (!!event.target.checked) {
-            this.setState((state) => {projectsToImport: state.projectsToImport.add(repoId)});
+            this.setState(this._selectRepo.bind(null, repo));
         } else {
-            this.setState((state) => {projectsToImport: state.projectsToImport.delete(repoId)});
+            this.setState(this._unselectRepo.bind(null, repo));
         }
     },
     _makeProject: function(repo, ind) {
         return (
             <tr className='githubProject'>
                 <td className='checkbox'>
-                    <input onChange={this.addProject.bind(null, repo.id)} type='checkbox' id={'checkbox' + ind} />
+                    <input onChange={this.addProject.bind(null, repo)} type='checkbox' id={'checkbox' + ind} />
                     <label htmlFor={'checkbox' + ind} />
                 </td>
                 <td className='project'>
@@ -62,6 +72,9 @@ var ImportProjectModal = React.createClass({
             account.orgs.reduce(function(result, org, _, __) { return result.concat(org.repos); }, [])
         );
     },
+    _importRepos: function() {
+        GithubActions.importRepos(this.state.projectsToImport);
+    },
     render: function() {
         return (
             <ModalContainer>
@@ -76,7 +89,7 @@ var ImportProjectModal = React.createClass({
                         </tbody>
                     </table>
                 </div>
-                <button onClick={() => {alert.bind(null, 'Im not implemented yet motherfucker')(); console.log(this.state.projectsToImport)}}>Import Selected</button>
+                <button onClick={this._importRepos}>Import Selected</button>
             </ModalContainer>
         );
     }
