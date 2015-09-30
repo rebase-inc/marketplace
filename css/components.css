@@ -50,6 +50,7 @@ table.contentList > tbody > tr {
     display: table-row;
     width: 100%;
     height: 80px;
+    cursor: pointer;
     /*border: 1px solid hsla(165, 5%, 83%, 1);*/
 }
 
@@ -92,7 +93,8 @@ table.contentList > tbody > tr > td.warning {
 }
 
 tr.nomination > td.actionPanel,
-tr.ticket > td.findTalentPanel {
+tr.ticket > td.findTalentPanel,
+tr.auction > td.findTalentPanel {
     width: 80px;
     font-size: 8px;
     text-align: center;
@@ -106,7 +108,8 @@ tr.auction > td.talentOverviewPanel {
 }
 
 tr.nomination > td.actionPanel svg,
-tr.ticket > td.findTalentPanel svg {
+tr.ticket > td.findTalentPanel svg,
+tr.auction > td.findTalentPanel svg {
     cursor: pointer;
     height: 18px;
     display: block;
@@ -122,7 +125,8 @@ tr.auction > td.talentOverviewPanel svg {
     padding: 0;
 }
 
-tr.ticket > td.findTalentPanel:hover {
+tr.ticket > td.findTalentPanel:hover,
+tr.auction > td.findTalentPanel:hover {
     color: hsla(167, 48%, 49%, 1);
 }
 

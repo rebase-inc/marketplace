@@ -293,7 +293,7 @@ var FindTalentOverview = React.createClass({
         var element = ReactDOM.findDOMNode(this);
         let data = [
             {category: 'nominated', population: this.props.auction.ticket_set.nominations.filter(n => !n.auction).length, color: '#507196'}, 
-            {category: 'offered', population: this.props.auction.approved_talents.length - this.props.auction.bids.filter(b => !b.contract).length, color: '#5FC0AA'}, 
+            {category: 'offered', population: this.props.auction.approved_talents.length - this.props.auction.bids.filter(b => !b.contract).length, color: '#CBD0D4'}, 
             {category: 'rejected', population: this.props.auction.bids.filter(b => !b.contract).length, color: '#CC6070'}
         ];
         Graph.donutChart.create(element, this.props, data);

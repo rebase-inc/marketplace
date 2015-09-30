@@ -169,8 +169,11 @@ donutChart.create = function(element, props, data) {
     let totalDevelopers = data.reduce((pv, cv) => pv + cv.population, 0);
 
     let radius = props.height / 2;
+    let arcWidth = props.height / 5;
 
-    let arc = d3.svg.arc().outerRadius(radius).innerRadius(radius - props.height/5);
+    let arc = d3.svg.arc()
+        .outerRadius(d => d.data.category == 'offered' ? radius - arcWidth / 3 : radius)
+        .innerRadius(d => d.data.category == 'offered' ? radius - arcWidth *2/3 : radius - arcWidth);
 
     let pie = d3.layout.pie().sort(null).value(function(d) { return d.population; });
 
@@ -187,7 +190,7 @@ donutChart.create = function(element, props, data) {
             .attr("class", "arc");
     } else {
         var g = svg.selectAll('.arc')
-            .data(pie([{color: '#CBD0D4', population: 999}]))
+            .data(pie([{color: '#F5B651', population: 999}]))
             .enter().append('g')
             .attr('class', 'arc');
     }
@@ -201,6 +204,8 @@ donutChart.create = function(element, props, data) {
 
     let path = g.append("path")
         .attr("d", arc)
+        .style('stroke', 'hsla(204, 45%, 98%, 1)')
+        .style('stroke-width', '2px')
         .style("fill", d => d.data.color);
 
     let legendSize = 8;

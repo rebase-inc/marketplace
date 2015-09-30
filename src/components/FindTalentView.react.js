@@ -5,6 +5,8 @@ var _ = require('underscore');
 var Fuse = require('../utils/Fuse');
 
 var Talent = require('../components/Talent.react');
+var LoadingAnimation = require('../components/LoadingAnimation.react');
+
 var TalentStore = require('../stores/TalentStore');
 var AuctionActions = require('../actions/AuctionActions');
 
@@ -30,7 +32,10 @@ var FindTalentView = React.createClass({
             selectAuction: this.props.selectAuction,
             currentRole: this.props.currentRole,
         }
-        if (true) {
+        if (this.state.loading) {
+            return <LoadingAnimation />
+        }
+        else {
             return (
                 <table className='contentList'>
                     <tbody>
@@ -38,10 +43,6 @@ var FindTalentView = React.createClass({
                     </tbody>
                 </table>
             );
-        } else if (this.props.loading) {
-            return <LoadingAnimation />;
-        } else {
-            return <NothingHere text={'We\'re working to find some great auctions for you!'}/>;
         }
     }
 });

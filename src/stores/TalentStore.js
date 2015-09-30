@@ -17,7 +17,7 @@ var TalentStore = _.extend({}, EventEmitter.prototype, {
             throw 'No auction id provided!'
         }
         return {
-            allTalent: _allNominations[auctionID],
+            allTalent: _allNominations[auctionID] || [],
             loading: _loading,
         };
     },
