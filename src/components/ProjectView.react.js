@@ -5,9 +5,9 @@ var _ = require('underscore');
 
 // Components
 var ImportProjectModal = require('../components/ImportProjectModal.react');
+var DeleteProjectModal = require('../components/DeleteProjectModal.react');
 
 // Stores
-var UserStore = require('../stores/UserStore');
 
 // Actions
 var UserActions = require('../actions/UserActions');
@@ -24,7 +24,10 @@ var ProfileView = React.createClass({
         currentRole: React.PropTypes.object.isRequired,
     },
     getInitialState: function() {
-        return { modalOpen: false };
+        return {
+            addModalOpen: false,
+            deleteModalOpen: false
+        };
     },
     updateProfileSettings: function() {
         var user = {
@@ -44,6 +47,7 @@ var ProfileView = React.createClass({
         handleScrollShadows(this.refs.projectList);
     },
     _deleteProject: function(project) {
+        ProjectActions.deleteProject(project);
     },
     _makeProjectElement: function(organization, project) {
         return (
@@ -52,13 +56,19 @@ var ProfileView = React.createClass({
                 <div className='projectDetails'>
                     <span className='orgName'>{organization.name}</span>
                     <span className='projName'>{project.name}</span>
-                    <span className='projDelete' onClick={this._deleteProject.bind(null, project)} >{'Delete Project?'}</span>
+                    <span className='projDelete' onClick={this._toggleDeleteModal.bind(null, project)} >{'Delete Project?'}</span>
                 </div>
             </div>
         );
     },
-    toggleModal: function() {
-        this.setState({ modalOpen: !this.state.modalOpen });
+    _toggleAddModal: function() {
+        this.setState({ addModalOpen: !this.state.addModalOpen });
+    },
+    _toggleDeleteModal: function(project) {
+        this.setState({
+            deleteModalOpen: !this.state.deleteModalOpen,
+            projectToDelete: !this.state.deleteModalOpen ? project : null
+        });
     },
     render: function() {
         var projects = [];
@@ -68,17 +78,17 @@ var ProfileView = React.createClass({
         this.props.currentUser.roles.forEach(role => role.organization.projects.forEach(project => projects.push(this._makeProjectElement(role.organization, project))));
         return (
             <div className='projectView'>
-                { this.state.modalOpen ? <ImportProjectModal toggleModal={this.toggleModal} {...this.props} /> : null }
+                { this.state.addModalOpen ? <ImportProjectModal toggleModal={this._toggleAddModal} {...this.props} /> : null }
+                { this.state.deleteModalOpen ? <DeleteProjectModal toggleModal={this._toggleDeleteModal} project={this.state.projectToDelete} {...this.props} /> : null }
                 <div className='projectInfo'>
                     <div ref='projectList' className='projectList'>
                         { projects }
                     </div>
-                    <Icons.AddNewProject onClick={this.toggleModal} />
+                    <Icons.AddNewProject onClick={this._toggleAddModal} />
                 </div>
             </div>
         );
     }
 });
 
-//<button onClick={window.open.bind(null, '/github/', '_blank')}>Authenticate GitHub</button>
 module.exports = ProfileView;

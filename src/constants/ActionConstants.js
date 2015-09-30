@@ -37,4 +37,5 @@ module.exports = keyMirror({
     GET_GITHUB_ACCOUNTS: null,
     IMPORT_GITHUB_REPOS: null,
     CREATE_AUCTION: null,
+    DELETE_PROJECT: null,
 });

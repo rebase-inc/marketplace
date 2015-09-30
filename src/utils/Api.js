@@ -142,6 +142,11 @@ var Api = {
         };
         ajax('POST', url, data, responseHandler, pendingHandler);
     },
+    deleteProject: function(project, responseHandler, pendingHandler) {
+        var url = makeUrl("/projects/"+project.id);
+        pendingHandler();
+        ajax('DELETE', url, null, responseHandler);
+    },
     bidOnAuction: function(user, auction, price, responseHandler, pendingHandler) {
         var url = makeUrl("/auctions/" + auction.id + '/bid_events');
         var data = {
