@@ -83,6 +83,7 @@ var ContractHeader = React.createClass({
             <div id='itemHeader' className={this._getClassName()}>
                 <div onClick={this.props.goBack} className='backButton'> <Icons.Dropback/> </div>
                 { this._makeButtons() }
+                <img onClick={this.props.toggleDetails} className='details' src='img/three-dots.svg'/>
                 <span>{this.props.currentContract.ticket.title}</span>
             </div>
         );

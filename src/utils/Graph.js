@@ -94,7 +94,7 @@ var _yVals = [0.00481007105373589, 0.00588403333648915, 0.0071611532738489, 0.00
     0.113457253156541, 0.102712759106334, 0.0925125683327799, 0.082901290718612, 0.0739104860663592, 0.0655594099743629,
     0.0578559762376489, 0.0507978846636382, 0.0443738632961124, 0.0385649760808486, 0.0333459506730553, 0.0286864860292165,
     0.0245525052753891, 0.0209073257351149, 0.0177127245897184, 0.0149298851255644, 0.0125202146382633, 0.0104460306085229,
-    0.00867111659092601, 0.00716115327384891, 0.00588403333648916, 0.0048100710537359] 
+    0.00867111659092601, 0.00716115327384891, 0.00588403333648916, 0.0048100710537359]
 
 var bellCurve = {}
 
@@ -163,8 +163,97 @@ bellCurve.update = function(element, props, state) {
     this.graph.selectAll('path.areaBorder').data([[{q: this.cutoff, p: 0}, this.data.filter(d => Math.abs(d.q - this.cutoff) <= 0.0001)[0]]]).attr('d', this.line);
 };
 
+let donutChart = {}
+donutChart.create = function(element, props, data) {
+
+    let totalDevelopers = data.reduce((pv, cv) => pv + cv.population, 0);
+
+    let radius = props.height / 2;
+
+    let arc = d3.svg.arc().outerRadius(radius).innerRadius(radius - props.height/5);
+
+    let pie = d3.layout.pie().sort(null).value(function(d) { return d.population; });
+
+    let svg = d3.select(element).insert("svg:svg", ':first-child')
+        .attr("width", props.width + 2*props.margin)
+        .attr("height", props.height + 2*props.margin)
+        .append("svg:g")
+        .attr("transform", "translate(" + props.height / 2 + "," + props.height / 2 + ")");
+
+    if (!!totalDevelopers) {
+        var g = svg.selectAll(".arc")
+            .data(pie(data))
+            .enter().append("g")
+            .attr("class", "arc");
+    } else {
+        var g = svg.selectAll('.arc')
+            .data(pie([{color: '#CBD0D4', population: 999}]))
+            .enter().append('g')
+            .attr('class', 'arc');
+    }
+
+    g.append('text')
+        .attr('text-anchor', 'middle')
+        .attr('font-size', '14px')
+        .attr('fill', 'transparent')
+        .attr('dy', '4px')
+        .attr('class', 'percentage');
+
+    let path = g.append("path")
+        .attr("d", arc)
+        .style("fill", d => d.data.color);
+
+    let legendSize = 8;
+    let legendSpacing = 8;
+    let legend = svg.selectAll('.legend')
+        .data(data)
+        .enter()
+        .append('g')
+        .attr('class', 'legend')
+        .attr('transform', function(d, i) {
+            var height = legendSize + legendSpacing;
+            var offset =  height * 3 / 2;
+            var x = props.height - legendSize;
+            var y = i * height - offset;
+            return 'translate(' + x + ',' + y + ')';
+        });
+
+    legend.append('rect')
+        .attr('width', legendSize)
+        .attr('height', legendSize)
+        .style('fill', d => d.color)
+        .style('stroke', d => d.color);
+
+    let fontSize = props.height / 6;
+    legend.append('text')
+        .text(d => d.population + ' ' + d.category)
+        .attr('font-size', fontSize)
+        .style('fill', d => d.color)
+        .attr('transform', () => 'translate(' + (legendSize + fontSize) + ',' + legendSize + ')');
+
+    let hoverableElements = svg.selectAll('path,.legend');
+    hoverableElements.on('mouseover', function(d,i) {
+        var parentData = d.data || d;
+        svg.selectAll('path,.legend').transition().style('opacity',function (data) {
+            let childCategory = !!data.data ? data.data.category : data.category;
+            return (parentData.category == childCategory) ? 1.0 : 0.35;
+        });
+        let percentage = !!totalDevelopers ? Math.round(100 * parentData.population / totalDevelopers) + '%' : '';
+        svg.select('.percentage').text(percentage).attr('fill', parentData.color);
+
+    });
+    hoverableElements.on('mouseleave', function(d, i) {
+        svg.selectAll('path,.legend').transition().style('opacity', 1.0);
+        svg.select('.percentage').attr('fill', 'transparent');
+    });
+
+
+
+}
+
 
 module.exports = {
     lineChart: d3Chart,
     bellCurve: bellCurve,
+    donutChart: donutChart,
 }

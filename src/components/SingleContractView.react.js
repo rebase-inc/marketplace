@@ -10,6 +10,7 @@ var SubmitWorkModal = require('../components/SubmitWorkModal.react');
 var CompleteWorkModal = require('../components/CompleteWorkModal.react');
 var DisputeWorkModal = require('../components/DisputeWorkModal.react');
 var ResolveMediationModal = require('../components/ResolveMediationModal.react');
+var TicketDetails = require('../components/TicketDetails.react');
 
 var SingleContractView = React.createClass({
     propTypes: {
@@ -18,9 +19,7 @@ var SingleContractView = React.createClass({
         currentContract: React.PropTypes.object.isRequired,
         unselectContract: React.PropTypes.func.isRequired,
     },
-    getInitialState: function() {
-        return { modalType: null, };
-    },
+    getInitialState: () => ({ modalType: null, showDetails: false }),
     closeModal: function() {
         this.setState({ modalType: null });
     },
@@ -33,7 +32,7 @@ var SingleContractView = React.createClass({
             this.setState({modalType: type});
         }
     },
-    componentWillMount: function() {    
+    componentWillMount: function() {
         this.haltWork = this.openModal.bind(null, 'halt_work');
         this.resumeWork = this.openModal.bind(null, 'resume_work');
         this.askForReview = this.openModal.bind(null, 'ask_for_review');
@@ -59,6 +58,9 @@ var SingleContractView = React.createClass({
             default: console.warn('Invalid modal type! ', type); break;
         }
     },
+    toggleDetails: function(state) {
+        typeof(state) === 'boolean' ? this.setState({ showDetails: state }) : this.setState({ showDetails: !this.state.showDetails });
+    },
     render: function() {
         var actions = {
             haltWork: this.haltWork,
@@ -71,7 +73,12 @@ var SingleContractView = React.createClass({
         return (
             <div className='contractView'>
                 { this._selectModal(this.state.modalType) }
-                <ContractHeader currentRole={this.props.currentRole} goBack={this.props.unselectContract} actions={actions} currentContract={this.props.currentContract}/>
+                <ContractHeader currentRole={this.props.currentRole} 
+                    goBack={this.props.unselectContract} 
+                    toggleDetails={this.toggleDetails} 
+                    actions={actions} 
+                    currentContract={this.props.currentContract}/>
+                <TicketDetails hidden={!this.state.showDetails} ticket={this.props.currentContract.ticket} />
                 <CommentList comments={this.props.currentContract.ticket.comments}/>
                 <CommentBox ticket={this.props.currentContract.ticket} user={this.props.currentUser} />
             </div>

@@ -100,6 +100,11 @@ tr.ticket > td.findTalentPanel {
     cursor: pointer;
 }
 
+tr.auction > td.talentOverviewPanel {
+    width: 180px;
+    cursor: pointer;
+}
+
 tr.nomination > td.actionPanel svg,
 tr.ticket > td.findTalentPanel svg {
     cursor: pointer;
@@ -107,6 +112,14 @@ tr.ticket > td.findTalentPanel svg {
     display: block;
     margin: 0 auto;
     padding: 10px 10px 4px 10px;
+}
+
+tr.auction > td.talentOverviewPanel svg {
+    cursor: pointer;
+    height: 60px;
+    display: block;
+    margin: 0 auto;
+    padding: 0;
 }
 
 tr.ticket > td.findTalentPanel:hover {

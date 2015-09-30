@@ -13,7 +13,7 @@ var FindTalentView = React.createClass({
         currentAuction: React.PropTypes.object.isRequired,
     },
     getInitialState: function() {
-        return _.extend({ searchText: '' }, TalentStore.getState());
+        return _.extend({ searchText: '' }, TalentStore.getState(this.props.currentAuction.id));
     },
     componentDidMount: function() {
         TalentStore.addChangeListener(this._onChange);
@@ -23,7 +23,7 @@ var FindTalentView = React.createClass({
         TalentStore.removeChangeListener(this._onChange);
     },
     _onChange: function() {
-        this.setState(TalentStore.getState());
+        this.setState(TalentStore.getState(this.props.currentAuction.id));
     },
     render: function() {
         var props = {

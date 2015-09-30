@@ -280,6 +280,43 @@ var AddNewProject = React.createClass({
     }
 });
 
+var FindTalentOverview = React.createClass({
+    propTypes: {
+        width: React.PropTypes.number,
+        height: React.PropTypes.number,
+        auction: React.PropTypes.object.isRequired,
+    },
+    getDefaultProps: function() {
+        return { width: 160, height: 60, margin: 6 }
+    },
+    componentDidMount: function() {
+        var element = ReactDOM.findDOMNode(this);
+        let data = [
+            {category: 'nominated', population: this.props.auction.ticket_set.nominations.filter(n => !n.auction).length, color: '#507196'}, 
+            {category: 'offered', population: this.props.auction.approved_talents.length - this.props.auction.bids.filter(b => !b.contract).length, color: '#5FC0AA'}, 
+            {category: 'rejected', population: this.props.auction.bids.filter(b => !b.contract).length, color: '#CC6070'}
+        ];
+        Graph.donutChart.create(element, this.props, data);
+    },
+    _getNominationState: function(nomination) {
+        if (!this.props.nomination.auction) {
+            return _TalentStates.UNAPPROVED;
+        } else if (!!this.props.currentAuction.bids.every(bid => bid.contractor.id != this.props.nomination.contractor.id)) {
+            return _TalentStates.WAITING;
+        } else if (!!this.props.currentAuction.bids.some(bid => bid.contractor.id == this.props.nomination.contractor.id && bid.contract)) {
+            return _TalentStates.ACCEPTED;
+        } else {
+            return _TalentStates.REJECTED;
+        }
+    },
+    render: function() {
+        return (
+            <div className='findTalentOverview'>
+            </div>
+        );
+    }
+});
+
 var ProjectGraph = React.createClass({
     propTypes: {
         width: React.PropTypes.number,
@@ -296,7 +333,7 @@ var ProjectGraph = React.createClass({
             return Math.floor(Math.random() * (max - min + 1)) + min;
         }
         var openTickets = [0, 0, 0, 0, 0].map(e => getRandomInt(0, 12)); //horrible hack
-        var closedTickets = [1, 2, 5, 2, 4].map(e => getRandomInt(3, 11));//horrible hack
+        var closedTickets = [0, 0, 0, 0, 0].map(e => getRandomInt(3, 11));//horrible hack
         var element = ReactDOM.findDOMNode(this);
         Graph.lineChart.create(element, this.props, {openTickets: openTickets, closedTickets: closedTickets});
     },
@@ -322,4 +359,5 @@ module.exports = {
     ProfilePicture: ProfilePicture,
     AddNewProject: AddNewProject,
     ProjectGraph: ProjectGraph,
+    FindTalentOverview: FindTalentOverview,
 };

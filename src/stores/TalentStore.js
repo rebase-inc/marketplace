@@ -8,19 +8,16 @@ var UserActions = require('../actions/UserActions');
 var _ = require('underscore');
 
 //Define initial data points
-var _allNominations = [];
+var _allNominations = {};
 var _loading = false;
-var _auctionID = null;
 
 var TalentStore = _.extend({}, EventEmitter.prototype, {
     getState: function(auctionID) {
-        if (auctionID != _auctionID) {
-            _allNominations = [];
-            _loading = false;
-            _auctionID = auctionID;
+        if (!auctionID) {
+            throw 'No auction id provided!'
         }
         return {
-            allTalent: _allNominations,
+            allTalent: _allNominations[auctionID],
             loading: _loading,
         };
     },
@@ -68,7 +65,7 @@ function handleNewAuctionData(action) {
         case undefined: _loading = false; console.warn('Undefined data!'); break;
         default:
             _loading = false;
-            _allNominations = action.response.auction.ticket_set.nominations.sort(sort_nominations);
+            _allNominations[action.response.auction.id] = action.response.auction.ticket_set.nominations.sort(sort_nominations);
     }
 }
 
@@ -81,7 +78,8 @@ function handleModifiedNomination(action) {
         default:
             _loading = false;
             var modified_nomination = action.response.nomination
-            _allNominations = _allNominations.map(n => n.contractor.id == modified_nomination.contractor.id && n.ticket_set.id == modified_nomination.ticket_set.id ? modified_nomination : n);
+            let auctionID = action.response.nomination.auction.id;
+            _allNominations[auctionID] = _allNominations[auctionID].map(n => n.contractor.id == modified_nomination.contractor.id && n.ticket_set.id == modified_nomination.ticket_set.id ? modified_nomination : n);
             break;
     }
 }

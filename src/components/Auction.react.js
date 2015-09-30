@@ -1,5 +1,8 @@
 var React = require('react');
 
+// Actions
+var AuctionActions = require('../actions/AuctionActions');
+
 // Components
 var FindTalentPanel = require('../components/FindTalentPanel.react');
 var ProjectInfoPanel = require('../components/ProjectInfoPanel.react');
@@ -12,11 +15,14 @@ var Auction = React.createClass({
         selectAuction: React.PropTypes.func.isRequired,
         findTalent: React.PropTypes.func.isRequired,
     },
+    componentDidMount: function() {
+        setTimeout(AuctionActions.getAuctionDetail.bind(null, this.props.auction.id), 0);
+    },
     render: function() {
         return (
-            <tr className='ticket'>
+            <tr className='auction'>
                 { this.props.currentRole.type == 'manager' ?
-                    <FindTalentPanel handleClick={this.props.findTalent.bind(null, this.props.auction.id)} ticket={this.props.auction.ticket} /> :
+                    <td className='talentOverviewPanel'><Icons.FindTalentOverview auction={this.props.auction}/></td> :
                     <ProjectInfoPanel ticket={this.props.auction.ticket} /> }
                 <td className='titlePanel'>{this.props.auction.ticket.title}</td>
                 <td className='skillsRequiredPanel'>{this.props.auction.ticket.skillsRequired}</td>
