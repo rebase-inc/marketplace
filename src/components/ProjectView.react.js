@@ -8,9 +8,11 @@ var ImportProjectModal = require('../components/ImportProjectModal.react');
 var DeleteProjectModal = require('../components/DeleteProjectModal.react');
 
 // Stores
+var ProjectResource = require('../stores/ProjectStore');
 
 // Actions
 var UserActions = require('../actions/UserActions');
+var ProjectActions = require('../actions/ProjectActions');
 
 // Icons
 var Icons = require('../components/Icons.react');
@@ -26,7 +28,8 @@ var ProfileView = React.createClass({
     getInitialState: function() {
         return {
             addModalOpen: false,
-            deleteModalOpen: false
+            deleteModalOpen: false,
+            projectResource: ProjectResource.getState(),
         };
     },
     updateProfileSettings: function() {
@@ -38,25 +41,36 @@ var ProfileView = React.createClass({
         }
         UserActions.updateUserSettings(user);
     },
+    componentWillMount: function() {
+        ProjectActions.getProjects();
+    },
     componentDidMount: function() {
+        ProjectResource.addChangeListener(this._onChange);
         handleScrollShadows(this.refs.projectList);
         var node = ReactDOM.findDOMNode(this.refs.projectList);
         node.addEventListener('scroll', handleScrollShadows.bind(null, this.refs.projectList), false);
     },
+    componentWillUnmount: function() {
+        ProjectResource.removeChangeListener(this._onChange);
+    },
     componentDidUpdate: function() {
         handleScrollShadows(this.refs.projectList);
     },
-    _deleteProject: function(project) {
-        ProjectActions.deleteProject(project);
+    _onChange: function() {
+        this.setState(_.extend(this.state, { projectResource: ProjectResource.getState() }));
     },
-    _makeProjectElement: function(organization, project) {
+    _deleteProject: function(projectToDelete) {
+        var { project, index } = projectToDelete;
+        ProjectActions.deleteProject(project, index);
+    },
+    _makeProjectElement: function(organization, project, index) {
         return (
             <div className='project'>
                 <Icons.ProjectGraph />
                 <div className='projectDetails'>
                     <span className='orgName'>{organization.name}</span>
                     <span className='projName'>{project.name}</span>
-                    <span className='projDelete' onClick={this._toggleDeleteModal.bind(null, project)} >{'Delete Project?'}</span>
+                    <span className='projDelete' onClick={this._toggleDeleteModal.bind(null, project, index)} >{'Delete Project?'}</span>
                 </div>
             </div>
         );
@@ -64,22 +78,28 @@ var ProfileView = React.createClass({
     _toggleAddModal: function() {
         this.setState({ addModalOpen: !this.state.addModalOpen });
     },
-    _toggleDeleteModal: function(project) {
-        this.setState({
+    _toggleDeleteModal: function(project, index) {
+        this.setState(_.extend(this.state, {
             deleteModalOpen: !this.state.deleteModalOpen,
-            projectToDelete: !this.state.deleteModalOpen ? project : null
-        });
+            projectToDelete: !this.state.deleteModalOpen ? { project: project, index: index } : null
+        }));
+    },
+    _intoProjects(projects, project, index, __) {
+        projects.push(this._makeProjectElement(project.organization, project, index));
+        return projects;
     },
     render: function() {
         var projects = [];
-        // temp hack until we make managers own projects, instead of organizations
-        var role;
-        var project;
-        this.props.currentUser.roles.forEach(role => role.organization.projects.forEach(project => projects.push(this._makeProjectElement(role.organization, project))));
+        this.state.projectResource.allProjects.reduce(this._intoProjects, projects);
         return (
             <div className='projectView'>
                 { this.state.addModalOpen ? <ImportProjectModal toggleModal={this._toggleAddModal} {...this.props} /> : null }
-                { this.state.deleteModalOpen ? <DeleteProjectModal toggleModal={this._toggleDeleteModal} project={this.state.projectToDelete} {...this.props} /> : null }
+                { this.state.deleteModalOpen ? <DeleteProjectModal
+                    toggleModal={this._toggleDeleteModal}
+                    projectToDelete={this.state.projectToDelete}
+                    deleteProject={this._deleteProject}
+                    {...this.props}
+                /> : null }
                 <div className='projectInfo'>
                     <div ref='projectList' className='projectList'>
                         { projects }
