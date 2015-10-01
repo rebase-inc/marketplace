@@ -1,10 +1,10 @@
 var React = require('react');
-var Fuse = require('../utils/Fuse');
 
 // Components
 var NothingHere = require('../components/NothingHere.react');
 var LoadingAnimation = require('../components/LoadingAnimation.react');
 var Ticket = require('../components/Ticket.react');
+var Fuse = require('../utils/Fuse');
 
 function searchTickets(tickets, searchText) {
     var fuseSearch = new Fuse(tickets, {threshold: 0.35, keys: ['title', 'description', 'project.name', 'project.organization.name'], id: 'id'});
