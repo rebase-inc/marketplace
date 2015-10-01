@@ -32,18 +32,18 @@ var ApproveTalent = React.createClass({
     render: function() {
         switch (this._getNominationState()) {
             case _TalentStates.UNAPPROVED:
+                let loadingPath = !!this.props.nomination.loading ? (
+                    <g className='rotate'> 
+                        <path strokeWidth='2px' d="M0,10 A 10,10 1 0,0 10,0" stroke="#F5B651"/> 
+                    </g>
+                    ) : null;
                 return (
                     <div>
-                        <svg width="26px" height="26px" viewBox="0 0 26 26">
-                            <g id="UI" stroke="none" strokeWidth="1" fill="none" fill-rule="evenodd">
-                                <g id="Mgr-Suggested-Devs" transform="translate(-363.000000, -188.000000)" strokeLinecap="round" stroke="#BDBFBF" stroke-linejoin="round">
-                                    <g id="Long-Ticket-Copy-2" transform="translate(325.000000, 141.000000)">
-                                        <g id="Stroke-1494-+-Stroke-1495" transform="translate(39.000000, 48.000000)">
-                                            <path d="M17.04336,8.47032 L9.47776,15.53112 L6.95696,13.00952" id="Stroke-1494"></path>
-                                            <path d="M23.6,12.0016 C23.6,18.408 18.4048,23.6016 12,23.6016 C5.592,23.6016 0.4,18.408 0.4,12.0016 C0.4,5.5936 5.592,0.4016 12,0.4016 C18.4048,0.4016 23.6,5.5936 23.6,12.0016 L23.6,12.0016 Z" id="Stroke-1495"></path>
-                                        </g>
-                                    </g>
-                                </g>
+                        <svg width="20px" height="20px" x='0px' y='0px'>
+                            <g id="UI" transform="translate(10, 10)" stroke="none" strokeWidth="1" fill="none" fill-rule="evenodd">
+                                <path d="M4.04336,-4.02968 L-0.52224,3.03112 L-3.05304,0.50952" stroke="#BDBFBF"></path>
+                                <circle cx="0" cy="0" r="10" stroke="#BDBFBF"/>
+                                { loadingPath }
                             </g>
                         </svg>
                         <span>Approve</span>
@@ -55,7 +55,7 @@ var ApproveTalent = React.createClass({
                     <div>
                         <svg width="25px" height="24px" viewBox="0 0 25 24">
                             <g id="UI" stroke="none" strokeWidth="1" fill="none" fill-rule="evenodd">
-                                <g id="Mgr-Waiting-for-Dev-Response" transform="translate(-364.000000, -189.000000)" fill="#F5B651">
+                                <g transform="translate(-364.000000, -189.000000)" fill="#F5B651">
                                     <g id="Rectangle-349-+-Approved-+-Fill-2197" transform="translate(349.000000, 184.000000)">
                                         <g id="Fill-2412" transform="translate(15.000000, 5.000000)">
                                             <path d="M18.3994,17.8457 C18.3004,17.9527 18.1654,18.0077 18.0304,18.0077 C17.9094,18.0077 17.7884,17.9647 17.6924,17.8767 L11.6924,12.3767 C11.5894,12.2817 11.5304,12.1477 11.5304,12.0077 L11.5304,6.5077 C11.5304,6.2317 11.7544,6.0077 12.0304,6.0077 C12.3074,6.0077 12.5304,6.2317 12.5304,6.5077 L12.5304,11.7877 L18.3684,17.1387 C18.5724,17.3257 18.5864,17.6417 18.3994,17.8457 M12.5304,0.0077 C5.9144,0.0077 0.5304,5.3907 0.5304,12.0077 C0.5304,18.6247 5.9144,24.0077 12.5304,24.0077 C19.1474,24.0077 24.5304,18.6247 24.5304,12.0077 C24.5304,5.3907 19.1474,0.0077 12.5304,0.0077"></path>

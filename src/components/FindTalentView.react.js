@@ -32,18 +32,13 @@ var FindTalentView = React.createClass({
             selectAuction: this.props.selectAuction,
             currentRole: this.props.currentRole,
         }
-        if (this.state.loading) {
-            return <LoadingAnimation />
-        }
-        else {
-            return (
-                <table className='contentList'>
-                    <tbody>
-                        { this.state.allTalent.map(talent => <Talent key={talent.id} currentAuction={this.props.currentAuction} nomination={talent}/>) }
-                    </tbody>
-                </table>
-            );
-        }
+        return (
+            <table className='contentList'>
+                <tbody>
+                    { this.state.allTalent.map(talent => <Talent key={talent.id} currentAuction={this.props.currentAuction} nomination={talent}/>) }
+                </tbody>
+            </table>
+        );
     }
 });
 
