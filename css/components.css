@@ -54,6 +54,14 @@ table.contentList > tbody > tr {
     /*border: 1px solid hsla(165, 5%, 83%, 1);*/
 }
 
+table.contentList > tbody > tr .matchesHoverState {
+    stroke: hsla(204, 45%, 98%, 1);
+}
+
+table.contentList > tbody > tr:hover .matchesHoverState {
+    stroke: hsla(200, 30%, 96%, 1);
+}
+
 table.contentList > tbody > tr:hover {
     background-color: hsla(200, 30%, 96%, 1);
 }

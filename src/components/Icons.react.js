@@ -33,8 +33,8 @@ var ApproveTalent = React.createClass({
         switch (this._getNominationState()) {
             case _TalentStates.UNAPPROVED:
                 let loadingPath = !!this.props.nomination.loading ? (
-                    <g className='rotate'> 
-                        <path strokeWidth='2px' d="M0,10 A 10,10 1 0,0 10,0" stroke="#F5B651"/> 
+                    <g className='rotate'>
+                        <path strokeWidth='2px' d="M0,10 A 10,10 1 0,0 10,0" stroke="#F5B651"/>
                     </g>
                     ) : null;
                 return (
@@ -292,8 +292,8 @@ var FindTalentOverview = React.createClass({
     componentDidMount: function() {
         var element = ReactDOM.findDOMNode(this);
         let data = [
-            {category: 'nominated', population: this.props.auction.ticket_set.nominations.filter(n => !n.auction).length, color: '#507196'}, 
-            {category: 'offered', population: this.props.auction.approved_talents.length - this.props.auction.bids.filter(b => !b.contract).length, color: '#CBD0D4'}, 
+            {category: 'nominated', population: this.props.auction.ticket_set.nominations.filter(n => !n.auction).length, color: '#507196'},
+            {category: 'offered', population: this.props.auction.approved_talents.length - this.props.auction.bids.filter(b => !b.contract).length, color: '#CBD0D4'},
             {category: 'rejected', population: this.props.auction.bids.filter(b => !b.contract).length, color: '#CC6070'}
         ];
         Graph.donutChart.create(element, this.props, data);

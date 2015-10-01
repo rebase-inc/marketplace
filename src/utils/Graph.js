@@ -203,8 +203,8 @@ donutChart.create = function(element, props, data) {
         .attr('class', 'percentage');
 
     let path = g.append("path")
-        .attr("d", arc)
-        .style('stroke', 'hsla(204, 45%, 98%, 1)')
+        .attr('d', arc)
+        .attr('class', 'matchesHoverState')
         .style('stroke-width', '2px')
         .style("fill", d => d.data.color);
 
