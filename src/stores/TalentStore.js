@@ -8,19 +8,16 @@ var UserActions = require('../actions/UserActions');
 var _ = require('underscore');
 
 //Define initial data points
-var _allNominations = [];
+var _allNominations = {};
 var _loading = false;
-var _auctionID = null;
 
 var TalentStore = _.extend({}, EventEmitter.prototype, {
     getState: function(auctionID) {
-        if (auctionID != _auctionID) {
-            _allNominations = [];
-            _loading = false;
-            _auctionID = auctionID;
+        if (!auctionID) {
+            throw 'No auction id provided!'
         }
         return {
-            allTalent: _allNominations,
+            allTalent: _allNominations[auctionID] || [],
             loading: _loading,
         };
     },
@@ -45,18 +42,10 @@ Dispatcher.register(function(payload) {
 });
 
 function sort_nominations(n1, n2) {
-    if (n1.job_fit) {
-        if (n2.job_fit) {
-            return n1.job_fit.score - n2.job_fit.score;
-        }
-        return -1;
-    } else {
-        if (n2.job_fit) {
-            return 1;
-        }
-        return 0;
+    switch (!!n1.job_fit) {
+        case true: !!n2.job_fit ? (n1.job_fit.score - n2.job_fit.score) : -1; break;
+        case false: !!n2.job_fit ? 1 : 0; break;
     }
-    throw 'Unreachable path in sort_nominations';
 }
 
 function handleNewAuctionData(action) {
@@ -68,21 +57,27 @@ function handleNewAuctionData(action) {
         case undefined: _loading = false; console.warn('Undefined data!'); break;
         default:
             _loading = false;
-            _allNominations = action.response.auction.ticket_set.nominations.sort(sort_nominations);
+            _allNominations[action.response.auction.id] = action.response.auction.ticket_set.nominations.sort(sort_nominations);
     }
 }
 
 function handleModifiedNomination(action) {
     switch (action.status) {
-        case RequestConstants.PENDING: _loading = true; break;
         case RequestConstants.TIMEOUT: _loading = false; console.warn(action.response); break;
         case RequestConstants.ERROR: _loading = false; console.warn(action.response); break;
-        case null: _loading = false; console.warn('Null data!'); break;
-        default:
+        case RequestConstants.PENDING: 
+            _loading = true; 
+            let contractor = action.response.nomination.contractor;
+            let auction = action.response.nomination.ticket_set.auction;
+            _allNominations[auction.id].filter(nom => nom.contractor.id == contractor.id)[0].loading = true;
+            break;
+        case RequestConstants.SUCCESS:
             _loading = false;
             var modified_nomination = action.response.nomination
-            _allNominations = _allNominations.map(n => n.contractor.id == modified_nomination.contractor.id && n.ticket_set.id == modified_nomination.ticket_set.id ? modified_nomination : n);
+            let auctionID = action.response.nomination.auction.id;
+            _allNominations[auctionID] = _allNominations[auctionID].map(n => n.contractor.id == modified_nomination.contractor.id && n.ticket_set.id == modified_nomination.ticket_set.id ? modified_nomination : n);
             break;
+        default: throw 'Invalid action state!'; break;
     }
 }
 

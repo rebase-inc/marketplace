@@ -19,7 +19,7 @@ var SingleTicketView = React.createClass({
         findTalent: React.PropTypes.func.isRequired,
         modalOpen: React.PropTypes.bool.isRequired,
     },
-    getInitialState: () => ({ showDetails: false }),
+    getInitialState: () => ({ modalOpen: false, showDetails: false }),
     toggleDetails: function(state) {
         typeof(state) === 'boolean' ? this.setState({ showDetails: state }) : this.setState({ showDetails: !this.state.showDetails });
     },

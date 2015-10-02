@@ -5,6 +5,8 @@ var _ = require('underscore');
 var Fuse = require('../utils/Fuse');
 
 var Talent = require('../components/Talent.react');
+var LoadingAnimation = require('../components/LoadingAnimation.react');
+
 var TalentStore = require('../stores/TalentStore');
 var AuctionActions = require('../actions/AuctionActions');
 
@@ -13,7 +15,7 @@ var FindTalentView = React.createClass({
         currentAuction: React.PropTypes.object.isRequired,
     },
     getInitialState: function() {
-        return _.extend({ searchText: '' }, TalentStore.getState());
+        return _.extend({ searchText: '' }, TalentStore.getState(this.props.currentAuction.id));
     },
     componentDidMount: function() {
         TalentStore.addChangeListener(this._onChange);
@@ -23,26 +25,20 @@ var FindTalentView = React.createClass({
         TalentStore.removeChangeListener(this._onChange);
     },
     _onChange: function() {
-        this.setState(TalentStore.getState());
+        this.setState(TalentStore.getState(this.props.currentAuction.id));
     },
     render: function() {
         var props = {
             selectAuction: this.props.selectAuction,
             currentRole: this.props.currentRole,
         }
-        if (true) {
-            return (
-                <table className='contentList'>
-                    <tbody>
-                        { this.state.allTalent.map(talent => <Talent key={talent.id} currentAuction={this.props.currentAuction} nomination={talent}/>) }
-                    </tbody>
-                </table>
-            );
-        } else if (this.props.loading) {
-            return <LoadingAnimation />;
-        } else {
-            return <NothingHere text={'We\'re working to find some great auctions for you!'}/>;
-        }
+        return (
+            <table className='contentList'>
+                <tbody>
+                    { this.state.allTalent.map(talent => <Talent key={talent.id} currentAuction={this.props.currentAuction} nomination={talent}/>) }
+                </tbody>
+            </table>
+        );
     }
 });
 

@@ -15,6 +15,7 @@ var CommentList = require('../components/CommentList.react');
 var CommentBox = require('../components/CommentBox.react');
 var NothingHere = require('../components/NothingHere.react');
 var LoadingAnimation = require('../components/LoadingAnimation.react');
+var TicketDetails = require('../components/TicketDetails.react');
 
 // Constants
 var viewConstants = require('../constants/viewConstants');
@@ -67,6 +68,10 @@ var SingleReviewView = React.createClass({
         currentReview: React.PropTypes.object.isRequired,
         unselectReview: React.PropTypes.func.isRequired,
     },
+    getInitialState: () => ({ modalOpen: false, showDetails: false }),
+    toggleDetails: function(state) {
+        typeof(state) === 'boolean' ? this.setState({ showDetails: state }) : this.setState({ showDetails: !this.state.showDetails });
+    },
     render: function() {
         var ticket = this.props.currentReview.work.offer.ticket_snapshot.ticket;
         var makeButton = function(props) {
@@ -75,7 +80,8 @@ var SingleReviewView = React.createClass({
         this.props.currentReview.date = !!this.props.currentReview.date ? this.props.currentReview.date : 'August 12, 2015'; // temp hack
         return (
             <div className='reviewView'>
-                <TicketHeader goBack={this.props.unselectReview} title={ticket.title} className='completed' />
+                <TicketHeader goBack={this.props.unselectReview} title={ticket.title} toggleDetails={this.toggleDetails} className='completed' />
+                <TicketDetails hidden={!this.state.showDetails} ticket={ticket} />
                 <CommentList style={{height: 'calc(100% - 230px)'}} comments={ticket.comments}/>
                 <CommentBox ticket={ticket} user={this.props.currentUser} />
             </div>

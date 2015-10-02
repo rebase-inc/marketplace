@@ -16,7 +16,6 @@ function abortPendingRequests(key) {
         _pendingRequests[key].abort();
         _pendingRequests[key] = null;
     }
-
 }
 
 function makeUrl(part) {

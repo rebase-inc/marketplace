@@ -30,6 +30,7 @@ module.exports = {
         function pendingAction() {
             Dispatcher.handleRequestAction({
                 type: ActionConstants.APPROVE_NOMINATION,
+                response: {nomination: nomination},
                 status: RequestConstants.PENDING,
             });
         };
