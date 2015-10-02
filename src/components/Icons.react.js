@@ -34,7 +34,7 @@ var ApproveTalent = React.createClass({
             case _TalentStates.UNAPPROVED:
                 let loadingPath = !!this.props.nomination.loading ? (
                     <g className='rotate'>
-                        <path strokeWidth='2px' d="M0,10 A 10,10 1 0,0 10,0" stroke="#F5B651"/>
+                        <path strokeWidth='2px' d="M0,-10 A 10,10 1 0,1 10,0" stroke="#F5B651"/>
                     </g>
                     ) : null;
                 return (
