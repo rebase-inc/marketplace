@@ -142,7 +142,7 @@ var Api = {
         };
         ajax('POST', url, data, responseHandler, pendingHandler);
     },
-    deleteProject: function(project, index, responseHandler, pendingHandler) {
+    deleteProject: function(project, responseHandler, pendingHandler) {
         var url = makeUrl("/projects/"+project.id);
         pendingHandler();
         ajax('DELETE', url, null, responseHandler);

@@ -1,8 +1,10 @@
+var _ = require('underscore');
+
 var Dispatcher = require('../dispatcher/RebaseAppDispatcher');
 var EventEmitter = require('events').EventEmitter;
 var ActionConstants = require('../constants/ActionConstants');
 var RequestConstants = require('../constants/RequestConstants');
-var _ = require('underscore');
+var ProjectResource = require('../stores/ProjectStore');
 
 //Define initial data points
 var _loading = true;
@@ -15,7 +17,7 @@ var GithubStore = _.extend({}, EventEmitter.prototype, {
             loading: _loading,
         };
     },
-    emitChange: function() { this.emit('change'); },
+    emitChange: function(action_type) { this.emit('change', action_type); },
     addChangeListener: function(callback) { this.on('change', callback); },
     removeChangeListener: function(callback) { this.removeListener('change', callback); }
 });
@@ -30,7 +32,7 @@ Dispatcher.register(function(payload) {
     }
 
     // If action was responded to, emit change event
-    GithubStore.emitChange();
+    GithubStore.emitChange(action.type);
     return true;
 });
 
@@ -58,8 +60,11 @@ function handleImportRepos(action) {
         case undefined: _loading = false; console.warn('Undefined data!'); break;
         default: {
             _loading = false;
+            var _updated_repos = action.response.repos; // TODO update repository store once built
+            var _updated_orgs = action.response.orgs; // TODO update organization store once built
+            var _updated_projects = action.response.projects;
+            ProjectResource.update(action.response.projects);
         }
-
     }
 }
 

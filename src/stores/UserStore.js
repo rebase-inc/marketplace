@@ -119,7 +119,11 @@ function handleLogin(action) {
             _loading = false;
             _currentUser = action.response.user;
             _currentRole = _currentUser.roles[0];
-            _currentRole.display_name = _currentRole.type == 'manager' ? _currentRole.organization.name + '/' + _currentRole.organization.projects[0].name : 'Contractor View';
+            if (_currentRole.type == 'manager' && (_currentRole.organization.projects.length > 0)) {
+                _currentRole.display_name = _currentRole.organization.name + '/' + _currentRole.organization.name;
+            } else {
+                _currentRole.display_name = 'Contractor View';
+            }
             switch (_currentRole.type) {
                 case 'contractor': _currentView = ContractorViews[ViewTypes.OFFERED]; break;
                 case 'manager': _currentView = ManagerViews[ViewTypes.NEW]; break;

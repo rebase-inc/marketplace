@@ -60,17 +60,16 @@ var ProfileView = React.createClass({
         this.setState(_.extend(this.state, { projectResource: ProjectResource.getState() }));
     },
     _deleteProject: function(projectToDelete) {
-        var { project, index } = projectToDelete;
-        ProjectActions.deleteProject(project, index);
+        ProjectActions.deleteProject(projectToDelete);
     },
-    _makeProjectElement: function(organization, project, index) {
+    _makeProjectElement: function(organization, project) {
         return (
             <div className='project'>
                 <Icons.ProjectGraph />
                 <div className='projectDetails'>
                     <span className='orgName'>{organization.name}</span>
                     <span className='projName'>{project.name}</span>
-                    <span className='projDelete' onClick={this._toggleDeleteModal.bind(null, project, index)} >{'Delete Project?'}</span>
+                    <span className='projDelete' onClick={this._toggleDeleteModal.bind(null, project)} >{'Delete Project?'}</span>
                 </div>
             </div>
         );
@@ -78,22 +77,28 @@ var ProfileView = React.createClass({
     _toggleAddModal: function() {
         this.setState({ addModalOpen: !this.state.addModalOpen });
     },
-    _toggleDeleteModal: function(project, index) {
+    _toggleDeleteModal: function(project) {
         this.setState(_.extend(this.state, {
             deleteModalOpen: !this.state.deleteModalOpen,
-            projectToDelete: !this.state.deleteModalOpen ? { project: project, index: index } : null
+            projectToDelete: !this.state.deleteModalOpen ? project : null
         }));
     },
-    _intoProjects(projects, project, index, __) {
-        projects.push(this._makeProjectElement(project.organization, project, index));
-        return projects;
+    _addToProjects(project, project_id, _) {
+        console.log(this);
+        this.projects.push(this.component._makeProjectElement(project.organization, project));
     },
     render: function() {
         var projects = [];
-        this.state.projectResource.allProjects.reduce(this._intoProjects, projects);
+        this.state.projectResource.allProjects.forEach(function(project, project_id, _) {
+            projects.push(this._makeProjectElement(project.organization, project));
+        }, this);
         return (
             <div className='projectView'>
-                { this.state.addModalOpen ? <ImportProjectModal toggleModal={this._toggleAddModal} {...this.props} /> : null }
+                { this.state.addModalOpen ? <ImportProjectModal
+                    toggleModal={this._toggleAddModal}
+                    importedProjects={this.state.projectResource.allProjects}
+                    {...this.props}
+                /> : null }
                 { this.state.deleteModalOpen ? <DeleteProjectModal
                     toggleModal={this._toggleDeleteModal}
                     projectToDelete={this.state.projectToDelete}

@@ -4,6 +4,8 @@ var ReactDOM = require('react-dom');
 
 var LoadingAnimation = require('../components/LoadingAnimation.react');
 
+var ActionConstants = require('../constants/ActionConstants');
+
 var ModalContainer = require('../components/ModalContainer.react');
 
 var GithubActions = require('../actions/GithubActions');
@@ -14,13 +16,29 @@ var handleScrollShadows = require('../utils/Style').handleScrollShadows;
 
 var ImportProjectModal = React.createClass({
     getInitialState: function() {
-        return _.extend({projectsToImport: {}}, GithubStore.getState());
+        return {
+            projectsToImport:   {},
+            importableRepos:    [],
+            loading:            true
+        };
+    },
+    _computeImportableRepos: function(githubRepos, importedProjects) {
+        // importablesRepos = githubRepos - importedProjects
+        var _imported = new Map();
+        importedProjects.forEach(project => _imported.set(project.name, project));
+        return githubRepos.reduce(function (importable, repo) {
+            if (_imported.has(repo.name)) {
+                return importable;
+            }
+            importable.push(repo);
+            return importable;
+        }, []);
     },
     componentWillMount: function() {
         GithubActions.getAccounts();
     },
     componentDidMount: function() {
-        GithubStore.addChangeListener(this._onChange);
+        GithubStore.addChangeListener(this._onGithubChange);
         handleScrollShadows(this.refs.projectImportWrapper);
         var node = ReactDOM.findDOMNode(this.refs.projectImportWrapper);
         node.addEventListener('scroll', handleScrollShadows.bind(null, this.refs.projectImportWrapper), false);
@@ -29,10 +47,21 @@ var ImportProjectModal = React.createClass({
         handleScrollShadows(this.refs.projectImportWrapper);
     },
     componentWillUnmount: function() {
-        GithubStore.removeChangeListener(this._onChange);
+        GithubStore.removeChangeListener(this._onGithubChange);
     },
-    _onChange: function() {
-        this.setState(GithubStore.getState());
+    _onGithubChange: function(action_type) {
+        var ghState = GithubStore.getState();
+        var _repos = this._computeImportableRepos(
+            ghState.allAccounts.reduce(this._intoRepos, []),
+            this.props.importedProjects
+        );
+        this.setState(_.extend(this.state, {
+            importableRepos: _repos,
+            loading: ghState.loading
+        }));
+        if (action_type == ActionConstants.IMPORT_GITHUB_REPOS) {
+            this.props.toggleModal();
+        }
     },
     _selectRepo: function(repo, state) {
         var projects = state.projectsToImport;
@@ -75,6 +104,7 @@ var ImportProjectModal = React.createClass({
     },
     _importRepos: function() {
         GithubActions.importRepos(this.state.projectsToImport);
+        this.props.toggleModal();
     },
     render: function() {
         if (this.state.loading) {
@@ -97,7 +127,7 @@ var ImportProjectModal = React.createClass({
                 <div id='projectImportWrapper' ref='projectImportWrapper'>
                     <table>
                         <tbody>
-                            { this.state.allAccounts.reduce(this._intoRepos, []).map(this._makeProject) }
+                            { this.state.importableRepos.map(this._makeProject) }
                         </tbody>
                     </table>
                 </div>
