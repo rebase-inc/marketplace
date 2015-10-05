@@ -1,3 +1,5 @@
+var $ = require ('jquery');
+
 var ActionConstants = require('../constants/ActionConstants');
 var AuctionStore = require('../stores/AuctionStore');
 var RequestConstants = require('../constants/RequestConstants');
