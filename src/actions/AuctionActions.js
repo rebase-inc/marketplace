@@ -64,6 +64,7 @@ module.exports = {
         var pendingAction = function() {
             Dispatcher.handleRequestAction({
                 type: ActionConstants.BID_ON_AUCTION,
+                response: {auction: auction},
                 status: RequestConstants.PENDING,
             });
         };

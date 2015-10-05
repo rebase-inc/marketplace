@@ -33,12 +33,12 @@ var Contract = React.createClass({
                 break;
         }
         return (
-            <tr className='ticket'>
+            <tr className='ticket noselect' onClick={this.props.selectContract.bind(null, this.props.contract.id)}>
                 <td className={'statusPanel ' + className}></td>
                 <ProjectInfoPanel ticket={ticket} />
                 <td className='titlePanel'>{ticket.title}</td>
                 <td className='skillsRequiredPanel'>{ticket.skillsRequired}</td>
-                <td className='commentsPanel' onClick={this.props.selectContract.bind(null, this.props.contract.id)}>
+                <td className='commentsPanel'>
                     <Icons.Comment/>
                     <span>{ticket.comments.length} Comments</span>
                 </td>

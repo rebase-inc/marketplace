@@ -43,6 +43,7 @@ Dispatcher.register(function(payload) {
         case ActionConstants.ADD_COMMENT_TO_TICKET: handleNewComment(action); break;
         case ActionConstants.BID_ON_AUCTION: handleModifiedAuction(action); break;
         case ActionConstants.GET_COMMENT_DETAIL: handleCommentDetail(action); break;
+        case ActionConstants.APPROVE_NOMINATION: handleModifiedNomination(action); break;
         default: return true;
     }
     AuctionStore.emitChange();
@@ -113,13 +114,32 @@ function handleModifiedAuction(action) {
         case RequestConstants.PENDING: _loading = true; break;
         case RequestConstants.TIMEOUT: _loading = false; console.warn(action.response); break;
         case RequestConstants.ERROR: _loading = false; console.warn(action.response); break;
-        case null: _loading = false; console.warn('Null data!'); break;
-        default:
+        case RequestConstants.SUCCESS:
             _loading = false;
             var modified_auction = action.response.auction;
             _allAuctions = _allAuctions.map(auction => auction.id == modified_auction.id ? addSyntheticProperties(modified_auction) : auction);
             _currentAuction = _currentAuction.id == modified_auction.id ? addSyntheticProperties(modified_auction) : _currentAuction;
             break;
+        default: throw 'Invalid status: ' + action.status; break;
+    }
+}
+
+function handleModifiedNomination(action) {
+    switch (action.status) {
+        case RequestConstants.TIMEOUT: _loading = false; console.warn(action.response); break;
+        case RequestConstants.ERROR: _loading = false; console.warn(action.response); break;
+        case RequestConstants.PENDING: _loading = true; break;
+        case RequestConstants.SUCCESS:
+            _loading = true; 
+            let auction = action.response.nomination.ticket_set.auction;
+            let contractor = action.response.nomination.contractor;
+            let nomination = action.response.nomination;
+            let newAuction = _allAuctions.filter(a => a.id == auction.id)[0];
+            newAuction.ticket_set.nominations = newAuction.ticket_set.nominations.map(nom => nom.contractor.id == contractor.id ? nomination : nom);
+            newAuction.approved_talents.push(nomination);
+            _allAuctions = _allAuctions.map(a => a.id == newAuction.id ? newAuction : a);
+            break;
+        default: throw 'Invalid action state!'; break;
     }
 }
 

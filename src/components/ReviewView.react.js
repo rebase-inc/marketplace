@@ -16,6 +16,7 @@ var CommentBox = require('../components/CommentBox.react');
 var NothingHere = require('../components/NothingHere.react');
 var LoadingAnimation = require('../components/LoadingAnimation.react');
 var TicketDetails = require('../components/TicketDetails.react');
+var RatingStars = require('../components/RatingStars.react');
 
 // Constants
 var viewConstants = require('../constants/viewConstants');
@@ -153,21 +154,6 @@ var ProjectInfoPanel = React.createClass({
             <span>{projectName}</span>
             <RatingStars rating={this.props.ticket.project.rating || 3} />
             </td>
-        );
-    }
-});
-
-var RatingStars = React.createClass({
-    render: function() {
-        var nearestHalf = Math.round(this.props.rating*2)/2;
-        var fullStars = Math.floor(nearestHalf);
-        var showHalfStar = (nearestHalf != fullStars);
-        return (
-            <div className='rating'>
-                { _.range(fullStars).map(function(el, ind) { return <img key={'full-' + ind} src='img/star-10px.svg' /> }) }
-                { showHalfStar ? <img key='half' src='img/half-star-10px.svg' /> : null }
-                { _.range(5 - fullStars - showHalfStar).map(function(el, ind) { return <img key={'empty-' + ind} src='img/empty-star-10px.svg' /> }) }
-            </div>
         );
     }
 });
