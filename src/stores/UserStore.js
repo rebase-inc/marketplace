@@ -42,7 +42,29 @@ var UserStore = _.extend({}, EventEmitter.prototype, {
     },
     emitChange: function() { this.emit('change'); },
     addChangeListener: function(callback) { this.on('change', callback); },
-    removeChangeListener: function(callback) { this.removeListener('change', callback); }
+    removeChangeListener: function(callback) { this.removeListener('change', callback); },
+    addProjectRoles: function(new_projects) {
+        // current user just imported new projects into Rebase, let's add the corresponding roles
+        new_projects.forEach(function(new_project) {
+            _currentUser.roles.push({
+                id: 10000+new_project.id,
+                type: 'manager',
+                organization: {
+                    id: new_project.organization.id,
+                    name: new_project.organization.name,
+                    projects: [new_project],
+                },
+            });
+        });
+        this.emitChange();
+    },
+    removeProjectRole: function(project_id) {
+        var role_index = _currentUser.roles.findIndex(function(role) {
+            return role.organization.projects[0].id == project_id;
+        });
+        _currentUser.roles.splice(role_index,1);
+        this.emitChange();
+    },
 });
 
 UserStore.dispatchToken = Dispatcher.register(function(payload) {
@@ -83,6 +105,33 @@ function handleCreateAuction(action) {
     }
 }
 
+function createOneRolePerProject(user) {
+    // This is a hack that will go away once we have refactored the Manager role on the backend
+    // It returns a user whose 'roles' fields has been modified in such way that for each project
+    // in an organization in which this user is a manager, we add a fake new role with the same organization
+    // and a single project for this org.
+    user.roles = user.roles.reduce(function(new_roles, role) {
+        if (role.type == 'manager') {
+            if (role.organization.projects.length == 0) {
+                return new_roles;
+            } else {
+                role.organization.projects.forEach(function(project) {
+                    var _new_role = Object.assign({}, role);
+                    _new_role.id = _new_role.id+10000+project.id;
+                    _new_role.organization = Object.assign({}, _new_role.organization);
+                    _new_role.organization.projects = [project];
+                    new_roles.push(_new_role);
+                });
+            }
+        } else {
+            new_roles.push(role);
+        }
+        return new_roles;
+    }, []);
+
+    return user;
+};
+
 function updateUserDetail(action) {
     switch (action.status) {
         case RequestConstants.PENDING: _loading = true; break;
@@ -91,7 +140,7 @@ function updateUserDetail(action) {
         case null: _loading = false; console.warn('Undefined data!');
         default:
             _loading = false;
-            _currentUser = action.response.user;
+            _currentUser = createOneRolePerProject(action.response.user);
             Cookies.set('user', JSON.stringify(_currentUser), 1);
     }
 }
