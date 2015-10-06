@@ -5,10 +5,10 @@ var RatingStars = require('../components/RatingStars.react');
 
 var ProjectInfoPanel = React.createClass({
     render: function() {
-        var projectName = this.props.ticket.project.organization.name + '/' + this.props.ticket.project.name;
         return (
             <td onClick={this.handleClick} className='projectInfoPanel'>
-            <span>{projectName}</span>
+            <span>{this.props.ticket.project.name}</span>
+            <span>{this.props.ticket.project.organization.name}</span>
             <RatingStars rating={this.props.ticket.project.rating || 3} />
             </td>
         );

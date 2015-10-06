@@ -17,6 +17,7 @@ var NothingHere = require('../components/NothingHere.react');
 var LoadingAnimation = require('../components/LoadingAnimation.react');
 var TicketDetails = require('../components/TicketDetails.react');
 var RatingStars = require('../components/RatingStars.react');
+var ProjectInfoPanel = require('../components/ProjectInfoPanel.react');
 
 // Constants
 var viewConstants = require('../constants/viewConstants');
@@ -146,17 +147,4 @@ var Review = React.createClass({
     }
 });
 
-var ProjectInfoPanel = React.createClass({
-    render: function() {
-        var projectName = this.props.ticket.project.organization.name + '/' + this.props.ticket.project.name;
-        return (
-            <td onClick={this.handleClick} className='projectInfoPanel'>
-            <span>{projectName}</span>
-            <RatingStars rating={this.props.ticket.project.rating || 3} />
-            </td>
-        );
-    }
-});
-
 module.exports = ReviewView;
-

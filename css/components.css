@@ -161,11 +161,11 @@ tr.auction > td.findTalentPanel:hover {
     display: inline-block;
 }
 
-.ratingStars.dynamic > img {
+.ratingStars.dynamic > svg {
     cursor: pointer;
 }
 
-.ratingStars > img, .ratingStars > span {
+.ratingStars > svg, .ratingStars > span {
     height: 10px;
     padding: 2px;
     font-size: 10px;
@@ -181,7 +181,7 @@ tr.auction > td.findTalentPanel:hover {
     padding-top: 10px;
 }
 
-#modalDialog .ratingStars > img, #modalDialog .ratingStars > span {
+#modalDialog .ratingStars > svg, #modalDialog .ratingStars > span {
     display: inline-block;
     height: 15px;
     line-height: 15px;
