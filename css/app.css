@@ -274,7 +274,26 @@ html, body {
 }
 
 .skillsRequiredPanel {
+    color: hsla(215, 15%, 67%, 1);
     font-size: 12px;
+}
+
+.skillsRequiredPanel > .skills {
+    overflow-x: auto;
+    width: 250px;
+}
+
+.skillsRequiredPanel .skill {
+    display: inline-block;
+    background-color: #B6C3D4;
+    padding: 2px 6px 2px 6px;
+    border-radius: 4px;
+    margin: 2px;
+    color: #F7FAFC;
+}
+
+.skillsRequiredPanel .skill:hover {
+    background-color: #7996BA;
 }
 
 .projectInfoPanel {
@@ -305,9 +324,6 @@ html, body {
     color: hsla(212, 22%, 33%, 1);
 }
 
-.skillsRequiredPanel {
-    color: hsla(215, 15%, 67%, 1);
-}
 
 .commentsPanel {
     cursor: pointer;

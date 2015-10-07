@@ -28,7 +28,7 @@ var RatingStars = React.createClass({
                 height="10px" viewBox="0 0 10 10"
                 onMouseOver={this.mockRating.bind(null, ratingNumber)}
                 onClick={this.setRating.bind(null, ratingNumber)}>
-                <g stroke="none" stroke-width="1" fill="#CFD9E6" fill-rule="evenodd" transform='translate(5,5)'>
+                <g stroke="none" strokeWidth="1" fill="#CFD9E6" fill-rule="evenodd" transform='translate(5,5)'>
                     <circle id="One-star-3-Copy-4" cx="0" cy="0" r="5"></circle>
                 </g>
             </svg>

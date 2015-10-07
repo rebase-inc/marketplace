@@ -11,6 +11,8 @@ var ActionConstants = require('../constants/ActionConstants');
 var RequestConstants = require('../constants/RequestConstants');
 var viewConstants = require('../constants/viewConstants');
 
+var FakeSkills = ['Python', 'SQLAlchemy', 'unittest', 'Marshmallow', 'JavaScript', 'ReactJS', 'D3JS'];
+
 var _allTickets = [];
 var _currentTicket = null;
 var _loading = false;
@@ -63,6 +65,7 @@ function handleNewTicketData(action) {
         default:
             _loading = false;
             _allTickets = action.response.tickets;
+            _allTickets.forEach(ticket => ticket.skillsRequired = _.sample(FakeSkills, _.random(3, 6)));
     }
 }
 
