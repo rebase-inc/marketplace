@@ -46,8 +46,9 @@ var ReviewView = React.createClass({
     selectReview: function(reviewID) {
         ReviewActions.selectReview(reviewID);
     },
-    // this is probably not how we should be handling the searchText
-    //handleUserInput: function(searchText) { this.setState({ searchText: searchText }); },
+    handleUserInput: function(searchText) {
+        this.setState({ searchText: searchText });
+    },
     render: function() {
         if (!!this.state.currentReview) {
             return <SingleReviewView {...this.props} {...this.state} unselectReview={this.selectReview.bind(null, null)} />;
@@ -55,7 +56,7 @@ var ReviewView = React.createClass({
             var props = _.extend({ selectReview: this.selectReview }, this.state, this.props);
             return (
                 <div className='reviewView'>
-                    <SearchBar searchText={this.state.searchText} onUserInput={this.handleSearchInput}/>
+                    <SearchBar searchText={this.state.searchText} onUserInput={this.handleUserInput}/>
                     <ReviewList {...props} />
                 </div>
             );

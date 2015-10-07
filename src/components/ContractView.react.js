@@ -35,16 +35,17 @@ var ContractView = React.createClass({
     selectContract: function(contractID) {
         ContractActions.selectContract(contractID);
     },
-    // this is probably not how we should be handling the searchText
-    //handleUserInput: function(searchText) { this.setState({ searchText: searchText }); },
+    handleUserInput: function(searchText) {
+        this.setState({ searchText: searchText });
+    },
     render: function() {
         if (!!this.state.currentContract) {
             return <SingleContractView {...this.props} {...this.state} unselectContract={this.selectContract.bind(null, null)} />;
         } else {
-            var props = _.extend({ selectContract: this.selectContract }, this.state, this.props);
+            var props = _.extend({ selectContract: this.selectContract, onUserInput: this.handleUserInput }, this.state, this.props);
             return (
                 <div className='contractView'>
-                    <SearchBar searchText={this.state.searchText} onUserInput={this.handleSearchInput}/>
+                    <SearchBar searchText={this.state.searchText} onUserInput={this.handleUserInput}/>
                     <ContractList {...props} />
                 </div>
             );
