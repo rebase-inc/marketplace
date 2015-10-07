@@ -7,7 +7,7 @@ var Ticket = require('../components/Ticket.react');
 var Fuse = require('../utils/Fuse');
 
 function searchTickets(tickets, searchText) {
-    var fuseSearch = new Fuse(tickets, {threshold: 0.35, keys: ['title', 'description', 'project.name', 'project.organization.name'], id: 'id'});
+    var fuseSearch = new Fuse(tickets, {threshold: 0.35, keys: ['title', 'description', 'skillsRequired', 'project.name', 'project.organization.name'], id: 'id'});
     return fuseSearch.search(searchText.substring(0, 32));
 }
 
@@ -23,6 +23,7 @@ var TicketList = React.createClass({
             selectTicket: this.props.selectTicket,
             currentRole: this.props.currentRole,
             findTalent: this.props.findTalent,
+            changeSearchText: this.props.changeSearchText,
         }
         var makeTicketElement = function(ticket) { return <Ticket ticket={ticket} key={ticket.id} {...props} />; }.bind(props);
         var ticketIDs = !!this.props.searchText ? searchTickets(this.props.allTickets, this.props.searchText) : this.props.allTickets.map(a => a.id);

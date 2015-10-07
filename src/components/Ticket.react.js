@@ -5,6 +5,10 @@ var FindTalentPanel = require('../components/FindTalentPanel.react');
 var Icons = require('../components/Icons.react');
 
 var Ticket = React.createClass({
+    changeSearchText: function(skill, event) {
+        this.props.changeSearchText(skill);
+        event.stopPropagation();
+    },
     render: function() {
         var role = this.props.currentRole;
         return (
@@ -13,7 +17,8 @@ var Ticket = React.createClass({
                 <td className='titlePanel'>{this.props.ticket.title}</td>
                 <td className='skillsRequiredPanel'>
                     <div className='skills'>
-                        { this.props.ticket.skillsRequired.map((skill) => <div className='skill'>{skill}</div>) }
+                        { this.props.ticket.skillsRequired.map((skill) => 
+                           <div className='skill' onClick={this.changeSearchText.bind(null, skill)}>{skill}</div>) }
                     </div>
                 </td>
                 <td className='spacerPanel'></td>

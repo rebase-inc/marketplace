@@ -64,6 +64,7 @@ var TicketView = React.createClass({
                 props.selectTicket = TicketActions.selectTicket;
                 props.searchText = this.state.searchText;
                 props.findTalent = this.findTalent;
+                props.changeSearchText = this.handleUserInput;
                 return (
                     <div className='ticketView'>
                         <SearchBar searchText={this.state.searchText} onUserInput={this.handleUserInput}/>
