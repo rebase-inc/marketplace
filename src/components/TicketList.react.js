@@ -24,6 +24,7 @@ var TicketList = React.createClass({
             currentRole: this.props.currentRole,
             findTalent: this.props.findTalent,
             changeSearchText: this.props.changeSearchText,
+            searchText: this.props.searchText,
         }
         var makeTicketElement = function(ticket) { return <Ticket ticket={ticket} key={ticket.id} {...props} />; }.bind(props);
         var ticketIDs = !!this.props.searchText ? searchTickets(this.props.allTickets, this.props.searchText) : this.props.allTickets.map(a => a.id);

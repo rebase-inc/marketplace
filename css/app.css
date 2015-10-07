@@ -705,9 +705,8 @@ img.profilePicture {
     position: absolute;
     top: 7px;
     left: 7px;
-    right: 7px;
     bottom: 7px;
-    width: 486px; /* cant figure out why i have to do this... */
+    width: 250px;
     padding-left: 25px;
 }
 
@@ -759,6 +758,21 @@ img.profilePicture {
     height: 16px;
     top: 12px;
     left: 12px;
+}
+
+#searchBox #clearSearchImg {
+    cursor: pointer;
+    opacity: 1;
+    transition: opacity 300ms;
+    position: absolute;
+    top: 12px;
+    height: 16px;
+    left: 250px;
+}
+
+#searchBox #clearSearchImg.hidden {
+    opacity: 0;
+    transition: opacity 300ms;
 }
 
 #searchBox.focused #searchImg {
