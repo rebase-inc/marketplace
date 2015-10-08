@@ -24,6 +24,7 @@ var AuctionList = React.createClass({
             selectAuction: this.props.selectAuction,
             currentRole: this.props.currentRole,
             findTalent: this.props.findTalent,
+            changeSearchText: this.props.changeSearchText,
         }
         var makeTicketElement = function(auction) { return <Auction auction={auction} key={auction.id} {...props} />; }.bind(props);
         var auctionIDs = !!this.props.searchText ? searchAuctions(this.props.allAuctions, this.props.searchText) : this.props.allAuctions.map(a => a.id);

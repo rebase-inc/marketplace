@@ -24,7 +24,8 @@ var RatingStars = React.createClass({
     },
     _makeEmptyStar: function(color, ratingNumber) {
         return (
-            <svg width="10px"
+            <svg key={'star-' + ratingNumber}
+                width="10px"
                 height="10px" viewBox="0 0 10 10"
                 onMouseOver={this.mockRating.bind(null, ratingNumber)}
                 onClick={this.setRating.bind(null, ratingNumber)}>
@@ -36,7 +37,8 @@ var RatingStars = React.createClass({
     },
     _makeHalfStar: function(color, ratingNumber) {
         return (
-            <svg width="10px"
+            <svg key={'star-' + ratingNumber}
+                width="10px"
                 height="10px" viewBox="0 0 10 10"
                 onMouseOver={this.mockRating.bind(null, ratingNumber)}
                 onClick={this.setRating.bind(null, ratingNumber)}>
@@ -49,7 +51,8 @@ var RatingStars = React.createClass({
     },
     _makeStar: function(color, ratingNumber) {
         return (
-            <svg width="10px"
+            <svg key={'star-' + ratingNumber}
+                width="10px"
                 height="10px" viewBox="0 0 10 10"
                 onMouseOver={this.mockRating.bind(null, ratingNumber)}
                 onClick={this.setRating.bind(null, ratingNumber)}>

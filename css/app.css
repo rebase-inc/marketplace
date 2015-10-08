@@ -273,17 +273,20 @@ html, body {
     font-size: 16px;
 }
 
-.skillsRequiredPanel {
+.skillsRequiredPanel,
+.skillSetPanel {
     color: hsla(215, 15%, 67%, 1);
     font-size: 12px;
 }
 
-.skillsRequiredPanel > .skills {
+.skillsRequiredPanel > .skills,
+.skillSetPanel > .skills {
     overflow-x: auto;
     width: 250px;
 }
 
-.skillsRequiredPanel .skill {
+.skillsRequiredPanel .skill,
+.skillSetPanel .skill {
     display: inline-block;
     background-color: #B6C3D4;
     padding: 2px 6px 2px 6px;
@@ -292,7 +295,8 @@ html, body {
     color: #F7FAFC;
 }
 
-.skillsRequiredPanel .skill:hover {
+.skillsRequiredPanel .skill:hover,
+.skillSetPanel .skill:hover {
     background-color: #7996BA;
 }
 

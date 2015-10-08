@@ -20,8 +20,8 @@ var Ticket = React.createClass({
                 <td className='titlePanel'>{this.props.ticket.title}</td>
                 <td className='skillsRequiredPanel'>
                     <div className='skills'>
-                        { this.props.ticket.skillsRequired.map((skill) =>
-                           <div className='skill' onClick={this.changeSearchText.bind(null, skill)}>{skill}</div>) }
+                        { Object.keys(this.props.ticket.skill_requirement.skills).map((skill) =>
+                           <div key={skill} className='skill' onClick={this.changeSearchText.bind(null, skill)}>{skill}</div>) }
                     </div>
                 </td>
                 <td className='spacerPanel'></td>
