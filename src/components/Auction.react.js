@@ -36,10 +36,17 @@ var Auction = React.createClass({
                            <div key={skill} className='skill' onClick={this.changeSearchText.bind(null, skill)}>{skill}</div>) }
                     </div>
                 </td>
-                <td className='commentsPanel'>
-                    <Icons.Comment/>
-                    <span>{this.props.auction.ticket.comments.length} Comments</span>
-                </td>
+                { this.props.currentRole.type == 'manager' ?
+                    <td className='budgetPanel'>
+                        <span>BUDGET</span>
+                        <span>{'$' + this.props.auction.ticket_set.bid_limits[0].price}</span>
+                    </td> :
+                    <td className='commentsPanel'>
+                        <Icons.Comment/>
+                        <span>{this.props.auction.ticket.comments.length} Comments</span>
+                    </td>
+                }
+
             </tr>
         );
     }
