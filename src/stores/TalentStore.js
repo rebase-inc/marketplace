@@ -42,10 +42,7 @@ Dispatcher.register(function(payload) {
 });
 
 function sort_nominations(n1, n2) {
-    switch (!!n1.job_fit) {
-        case true: !!n2.job_fit ? (n1.job_fit.score - n2.job_fit.score) : -1; break;
-        case false: !!n2.job_fit ? 1 : 0; break;
-    }
+    return (!!n2.job_fit ? n2.job_fit.score : -1) - (!!n1.job_fit ? n1.job_fit.score : -1)
 }
 
 function handleNewAuctionData(action) {
