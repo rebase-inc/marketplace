@@ -32,7 +32,7 @@ var Auction = React.createClass({
                 { this.props.currentRole.type == 'manager' ? <td className='talentOverviewPanel'><Icons.FindTalentOverview auction={this.props.auction}/></td> : null }
                 <td className='skillsRequiredPanel'>
                     <div className='skills'>
-                        { Object.keys(this.props.auction.ticket.skill_requirement.skills).map((skill) =>
+                        { Object.keys(!!this.props.auction.ticket.skill_requirement ? this.props.auction.ticket.skill_requirement.skills : {} ).map((skill) =>
                            <div key={skill} className='skill' onClick={this.changeSearchText.bind(null, skill)}>{skill}</div>) }
                     </div>
                 </td>
