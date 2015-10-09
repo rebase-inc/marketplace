@@ -17,55 +17,57 @@ var ManagerViews = require('../constants/ViewConstants').ManagerViews;
 
 // Actions
 var UserActions = require('../actions/UserActions');
+var ManagerActions = require('../actions/ManagerActions');
+
+// Stores
+var ManagerStore = require('../stores/ManagerStore');
+var ContractorStore = require('../stores/ContractorStore');
 
 var _userCookie = Cookies.get('user');
-var _currentUser = null;
-var _loggedIn = null;
-var _currentView = null;
-var _currentRole = null;
-var _loading = false;
-var _error = null;
+
+var _userState = {
+    currentUser: null,
+    loggedIn: null,
+    currentView: null,
+    currentRole: null,
+    currentUserManagerRoles: [],
+    currentUserContractorRoles: [],
+    loading: false,
+    error: null,
+};
 
 !!_userCookie ? handleLogin({response: {user: JSON.parse(_userCookie)}}) : null;
-!!_currentUser ? UserActions.getUserDetail(_currentUser.id) : null;
+!!_userState.currentUser ? UserActions.getUserDetail(_userState.currentUser.id) : null;
 
 var UserStore = _.extend({}, EventEmitter.prototype, {
     getState: function() {
-        return {
-            currentUser: _currentUser,
-            loggedIn: _loggedIn,
-            currentView: _currentView,
-            currentRole: _currentRole,
-            loading: _loading,
-            error: _error,
-        };
+        return _userState;
     },
-    emitChange: function() { this.emit('change'); },
+    emitChange: function(actionType) { this.emit('change', actionType); },
     addChangeListener: function(callback) { this.on('change', callback); },
     removeChangeListener: function(callback) { this.removeListener('change', callback); },
-    addProjectRoles: function(new_projects) {
-        // current user just imported new projects into Rebase, let's add the corresponding roles
-        new_projects.forEach(function(new_project) {
-            _currentUser.roles.push({
-                id: 10000+new_project.id,
-                type: 'manager',
-                organization: {
-                    id: new_project.organization.id,
-                    name: new_project.organization.name,
-                    projects: [new_project],
-                },
-            });
-        });
-        this.emitChange();
-    },
-    removeProjectRole: function(project_id) {
-        var role_index = _currentUser.roles.findIndex(function(role) {
-            return role.organization.projects[0].id == project_id;
-        });
-        _currentUser.roles.splice(role_index,1);
-        this.emitChange();
-    },
 });
+
+function updateRoles(roleStore, allRolesField, rolesField) {
+    var state = roleStore.getState();
+    
+    if (state.loading) {
+        return;
+    }
+    _userState[rolesField] = [];
+    state[allRolesField].forEach(function (role) {
+        if (role.user.id == _userState.currentUser.id) {
+            _userState[rolesField].push(role);
+        }
+        if (role.id == _userState.currentRole.id) {
+            _userState.currentRole = role;
+        }
+    });
+    UserStore.emitChange();
+};
+
+ManagerStore.addChangeListener(updateRoles.bind(null, ManagerStore, 'allManagers', 'currentUserManagerRoles'));
+ContractorStore.addChangeListener(updateRoles.bind(null, ContractorStore, 'allContractors', 'currentUserContractorRoles'));
 
 UserStore.dispatchToken = Dispatcher.register(function(payload) {
     var action = payload.action;
@@ -74,7 +76,7 @@ UserStore.dispatchToken = Dispatcher.register(function(payload) {
         case ActionConstants.LOGOUT: handleLogout(action); break;
         case ActionConstants.CREATE_AUCTION: handleCreateAuction(action); break;
         case ActionConstants.SELECT_VIEW: handleSelectView(action.viewType); break;
-        case ActionConstants.SELECT_ROLE: handleSelectRole(action.roleID); break;
+        case ActionConstants.SELECT_ROLE: updateUserDetail(action); break;
         case ActionConstants.GET_USER_DETAIL: updateUserDetail(action); break;
         case ActionConstants.UPDATE_PROFILE_PHOTO: updateUserDetail(action); break;
         case ActionConstants.UPDATE_USER_SETTINGS: updateUserDetail(action); break;
@@ -82,21 +84,22 @@ UserStore.dispatchToken = Dispatcher.register(function(payload) {
     }
 
     // If action was responded to, emit change event
-    UserStore.emitChange();
+    UserStore.emitChange(action.type);
     return true;
 });
 
 function handleCreateAuction(action) {
     switch (action.status) {
-        case RequestConstants.PENDING: _loading = true; break;
-        case RequestConstants.TIMEOUT: _loading = false; console.warn(action.response); break;
-        case RequestConstants.ERROR: _loading = false; console.warn(action.response); break;
-        case null: _loading = false; console.warn('Undefined data!');
+        case RequestConstants.PENDING: _userState.loading = true; break;
+        case RequestConstants.TIMEOUT: _userState.loading = false; console.warn(action.response); break;
+        case RequestConstants.ERROR: _userState.loading = false; console.warn(action.response); break;
+        case null: _userState.loading = false; console.warn('Undefined data!');
         case RequestConstants.SUCCESS:
-            _loading = false;
-            switch(_currentRole.type) {
+            _userState.loading = false;
+            switch(_userState.currentRole.type) {
                 case 'contractor': console.warn('Invalid action CREATE_AUCTION for contractor role'); break;
-                case 'manager': _currentView = ManagerViews[ViewTypes.OFFERED]; break;
+                case 'manager': _userState.currentView = ManagerViews[ViewTypes.OFFERED]; break;
+                case 'owner': console.warn('Invalid action CREATE_AUCTION for owner role'); break;
             }
             break;
         default:
@@ -105,95 +108,69 @@ function handleCreateAuction(action) {
     }
 }
 
-function createOneRolePerProject(user) {
-    // This is a hack that will go away once we have refactored the Manager role on the backend
-    // It returns a user whose 'roles' fields has been modified in such way that for each project
-    // in an organization in which this user is a manager, we add a fake new role with the same organization
-    // and a single project for this org.
-    user.roles = user.roles.reduce(function(new_roles, role) {
-        if (role.type == 'manager') {
-            if (role.organization.projects.length == 0) {
-                return new_roles;
-            } else {
-                role.organization.projects.forEach(function(project) {
-                    var _new_role = Object.assign({}, role);
-                    _new_role.id = _new_role.id+10000+project.id;
-                    _new_role.organization = Object.assign({}, _new_role.organization);
-                    _new_role.organization.projects = [project];
-                    new_roles.push(_new_role);
-                });
-            }
-        } else {
-            new_roles.push(role);
-        }
-        return new_roles;
-    }, []);
-
-    return user;
-};
-
 function updateUserDetail(action) {
     switch (action.status) {
-        case RequestConstants.PENDING: _loading = true; break;
-        case RequestConstants.TIMEOUT: _loading = false; console.warn(action.response); break;
-        case RequestConstants.ERROR: _loading = false; console.warn(action.response); break;
-        case null: _loading = false; console.warn('Undefined data!');
+        case RequestConstants.PENDING: _userState.loading = true; break;
+        case RequestConstants.TIMEOUT: _userState.loading = false; console.warn(action.response); break;
+        case RequestConstants.ERROR: _userState.loading = false; console.warn(action.response); break;
+        case null: _userState.loading = false; console.warn('Undefined data!');
         default:
-            _loading = false;
-            _currentUser = createOneRolePerProject(action.response.user);
-            Cookies.set('user', JSON.stringify(_currentUser), 1);
+            _userState.loading = false;
+            _userState.currentUser = action.response.user;
+            Cookies.set('user', JSON.stringify(_userState.currentUser), 1);
     }
 }
 
 function handleLogin(action) {
     switch (action.status) {
-        case RequestConstants.PENDING: _loading = true; break;
-        case RequestConstants.TIMEOUT: _loading = false; _error='Timeout'; console.warn('Timeout during login.'); break;
+        case RequestConstants.PENDING: _userState.loading = true; break;
+        case RequestConstants.TIMEOUT: _userState.loading = false; _userState.error='Timeout'; console.warn('Timeout during login.'); break;
         case RequestConstants.ERROR: {
-            _loading = false;
+            _userState.loading = false;
             switch (action.response.status) {
                 case 401: {
-                    _error = 'Wrong credentials.';
+                    _userState.error = 'Wrong credentials.';
                     console.log(action.response.responseJSON);
                 } break;
                 default: {
-                    _error = action.response.responseText;
+                    _userState.error = action.response.responseText;
                     console.log(action.response);
                 }
             }
 
         } break;
-        case null: _loading = false; console.warn('Undefined data!');
+        case null: _userState.loading = false; console.warn('Undefined data!');
         default:
-            _loading = false;
-            _currentUser = action.response.user;
-            _currentRole = _currentUser.roles[0];
-            if (_currentRole.type == 'manager' && (_currentRole.organization.projects.length > 0)) {
-                _currentRole.display_name = _currentRole.organization.name + '/' + _currentRole.organization.name;
+            _userState.loading = false;
+            _userState.currentUser = action.response.user;
+            _userState.currentRole = _userState.currentUser.current_role;
+            if (_userState.currentRole.type == 'manager' ) {
+                _userState.currentRole.display_name = 'Manager View (loading)';
             } else {
-                _currentRole.display_name = 'Contractor View';
+                _userState.currentRole.display_name = 'Contractor View';
             }
-            switch (_currentRole.type) {
-                case 'contractor': _currentView = ContractorViews[ViewTypes.OFFERED]; break;
-                case 'manager': _currentView = ManagerViews[ViewTypes.NEW]; break;
+            switch (_userState.currentRole.type) {
+                case 'contractor': _userState.currentView = ContractorViews[ViewTypes.OFFERED]; break;
+                case 'manager': _userState.currentView = ManagerViews[ViewTypes.NEW]; break;
+                case 'owner': _userState.currentView = ManagerViews[ViewTypes.NEW]; break;
             }
-            _loggedIn = !!_currentUser;
-            Cookies.set('user', JSON.stringify(_currentUser), 1);
+            _userState.loggedIn = !!_userState.currentUser;
+            Cookies.set('user', JSON.stringify(_userState.currentUser), 1);
     }
 }
 
 function handleLogout(action) {
     switch (action.status) {
-        case RequestConstants.PENDING: _loading = true; break;
-        case RequestConstants.TIMEOUT: _loading = false; console.warn(action.response); break;
-        case RequestConstants.ERROR: _loading = false; console.warn(action.response); break;
-        case null: _loading = false; console.warn('Undefined data!');
+        case RequestConstants.PENDING: _userState.loading = true; break;
+        case RequestConstants.TIMEOUT: _userState.loading = false; console.warn(action.response); break;
+        case RequestConstants.ERROR: _userState.loading = false; console.warn(action.response); break;
+        case null: _userState.loading = false; console.warn('Undefined data!');
         default:
-            _loading = false;
-            _currentUser = null;
-            _currentRole = null;
-            _loggedIn = null;
-            _error = null;
+            _userState.loading = false;
+            _userState.currentUser = null;
+            _userState.currentRole = null;
+            _userState.loggedIn = null;
+            _userState.error = null;
             Cookies.erase('user');
     }
 }
@@ -203,14 +180,11 @@ function handleSelectView(viewType) {
         console.warn("Invalid view selected", viewType);
         return;
     }
-    switch(_currentRole.type) {
-        case 'contractor': _currentView = ContractorViews[viewType] || {type: viewType}; break;
-        case 'manager': _currentView = ManagerViews[viewType] || {type: viewType}; break;
+    switch(_userState.currentRole.type) {
+        case 'contractor': _userState.currentView = ContractorViews[viewType] || {type: viewType}; break;
+        case 'manager': _userState.currentView = ManagerViews[viewType] || {type: viewType}; break;
+        case 'owner': _userState.currentView = ManagerViews[viewType] || {type: viewType}; break;
     }
-}
-
-function handleSelectRole(roleID) {
-    _currentRole = _currentUser.roles.filter(role => role.id == roleID)[0] || _currentRole;
 }
 
 module.exports = UserStore;

@@ -153,6 +153,16 @@ var Api = {
         pendingHandler();
         ajax('GET', url, null, responseHandler);
     },
+    getManagers: function(responseHandler, pendingHandler) {
+        var url = makeUrl("/managers");
+        pendingHandler();
+        ajax('GET', url, null, responseHandler);
+    },
+    getContractors: function(responseHandler, pendingHandler) {
+        var url = makeUrl("/contractors");
+        pendingHandler();
+        ajax('GET', url, null, responseHandler);
+    },
     bidOnAuction: function(user, auction, price, responseHandler, pendingHandler) {
         var url = makeUrl("/auctions/" + auction.id + '/bid_events');
         var data = {

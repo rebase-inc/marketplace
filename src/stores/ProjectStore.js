@@ -2,7 +2,6 @@ var _ = require('underscore');
 
 var ActionConstants = require('../constants/ActionConstants');
 var RequestConstants = require('../constants/RequestConstants');
-var UserStore = require('../stores/UserStore');
 var Store = require('../utils/Store');
 
 var _projectData = {
@@ -27,7 +26,6 @@ function successDeleteProject(action) {
     _projectData.loading = false;
     var [project] = action.args;
     _projectData.allProjects.delete(project.id);
-    UserStore.removeProjectRole(project.id);
 };
 
 Store.registerDispatcher(
@@ -37,7 +35,7 @@ Store.registerDispatcher(
     Store.defaultPendingAndErrorHandler.bind(_projectData)
 );
 
-function _intoMap(map, project, _) {
+function _intoMap(map, project) {
     return map.set(project.id, project);
 };
 

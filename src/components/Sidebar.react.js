@@ -46,6 +46,8 @@ var SidebarNav = React.createClass({
         var roleProps = {
             currentUser: this.props.currentUser,
             currentRole: this.props.currentRole,
+            currentUserManagerRoles: this.props.currentUserManagerRoles,
+            currentUserContractorRoles: this.props.currentUserContractorRoles,
             selectRole: this.props.selectRole,
         }
         var allViews = [];
@@ -136,35 +138,42 @@ var RoleSelector = React.createClass({
     toggleDropdown: function() {
         this.setState({ open: !this.state.open });
     },
+    roleName: function(role) {
+        switch(role.type) {
+            case 'manager': {
+                if (role.hasOwnProperty('project')) {
+                    return role.project.organization.name+'/'+role.project.name;
+                } else {
+                    return 'Manager View';
+                }
+            }; break;
+            case 'contractor': return 'Contractor View';
+            case 'owner': return 'Owner View';
+        };
+    },
     render: function() {
         return (
             <div id='roleSelector' className={this.state.open ? 'open' : ''} onClick={this.toggleDropdown}>
-            <span> { this.props.currentRole.type == 'contractor' ? 'Contractor View' : this.props.currentRole.organization.projects[0].name } </span>
+                <span> {this.roleName(this.props.currentRole)} </span>
             <Icons.Dropdown />
-            { this.state.open ? <RoleSelectorDropdown {...this.props} /> : null }
+            { this.state.open ? <RoleSelectorDropdown {...this.props} roleName={this.roleName} /> : null }
             </div>
         );
     }
 });
 
+function makeRoleElement (role) {
+    return (
+        <li className={role == this.props.currentRole ? 'selected': ''} onClick={this.props.selectRole.bind(null, this.props.currentUser, role.id)} key={role.id}>
+            { this.props.roleName(role) }
+        </li>
+    );
+};
+
 var RoleSelectorDropdown = React.createClass({
     render: function() {
-        var managerRoles = this.props.currentUser.roles.filter(function(el) { return el.type == 'manager'; });
-        var contractorRoles = this.props.currentUser.roles.filter(function(el) { return el.type == 'contractor'; });
-        var managerRoleElements = managerRoles.map(function(role) {
-            return (
-                <li className={role == this.props.currentRole ? 'selected': ''} onClick={this.props.selectRole.bind(null, role.id)} key={role.id}>
-                    {role.organization.projects[0].name}
-                </li>
-            );
-        }.bind(this));
-        var contractorRoleElements = contractorRoles.map(function(role) {
-            return (
-                <li className={role == this.props.currentRole ? 'selected': ''} onClick={this.props.selectRole.bind(null, role.id)} key={role.id}>
-                    {'Contractor View'}
-                </li>
-            );
-        }.bind(this));
+        var managerRoleElements = this.props.currentUserManagerRoles.map(makeRoleElement.bind(this));
+        var contractorRoleElements = this.props.currentUserContractorRoles.map(makeRoleElement.bind(this));
         !!managerRoleElements.length ? managerRoleElements.unshift(<li className='header' key='manager-header'>Manager</li>) : null;
         !!contractorRoleElements.length ? contractorRoleElements.unshift(<li className='header' key='contractor-header'>Contractor</li>) : null;
         return (

@@ -100,10 +100,10 @@ module.exports = {
         };
         Api.updateProfilePhoto(file, responseHandler, pendingHandler);
     },
-    selectRole: function(roleID) {
-        Dispatcher.handleRequestAction({
-            type: ActionConstants.SELECT_ROLE,
-            roleID: roleID,
+    selectRole: function(user, role_id) {
+        this.updateUserSettings({
+            id: user.id,
+            current_role: { id: role_id }
         });
     },
     selectView: function(viewType) {

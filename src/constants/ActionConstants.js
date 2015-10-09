@@ -13,6 +13,8 @@ module.exports = keyMirror({
     GET_CONTRACT_DATA: null,
     GET_TALENT_DATA: null,
     GET_REVIEW_DATA: null,
+    GET_MANAGERS: null,
+    GET_CONTRACTORS: null,
     SELECT_VIEW: null,
     SELECT_ROLE: null,
     SELECT_AUCTION: null,
