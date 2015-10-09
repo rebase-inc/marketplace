@@ -25,9 +25,9 @@ var RebaseApp = React.createClass({
         return _.extend({ modalIsOpen: false }, UserStore.getState());
     },
     componentDidMount: function() {
-        UserStore.addChangeListener(this._onChange);
     },
     componentWillMount: function() {
+        UserStore.addChangeListener(this._onChange);
         ManagerActions.getManagers();
         ContractorActions.getContractors();
     },

@@ -59,7 +59,7 @@ function updateRoles(roleStore, allRolesField, rolesField) {
         if (role.user.id == _userState.currentUser.id) {
             _userState[rolesField].push(role);
         }
-        if (role.id == _userState.currentRole.id) {
+        if (role.id == _userState.currentUser.current_role.id) {
             _userState.currentRole = role;
         }
     });
@@ -108,6 +108,33 @@ function handleCreateAuction(action) {
     }
 }
 
+function updateCurrentRoleAndView() {
+    var role = _userState.currentUser.current_role
+    switch (role.type) {
+        case 'contractor': {
+            _userState.currentView = ContractorViews[ViewTypes.OFFERED];
+            var contractors = ContractorStore.getState().allContractors;
+            if (contractors.has(role.id)) {
+                role = contractors.get(role.id);
+            }
+            break;
+        }
+        case 'manager': {
+            _userState.currentView = ManagerViews[ViewTypes.NEW];
+            var managers = ManagerStore.getState().allManagers;
+            if (managers.has(role.id)) {
+                role = managers.get(role.id);
+            }
+            break;
+        }
+        case 'owner': {
+            _userState.currentView = ManagerViews[ViewTypes.NEW];
+            break;
+        }
+    }
+    _userState.currentRole = role;
+}
+
 function updateUserDetail(action) {
     switch (action.status) {
         case RequestConstants.PENDING: _userState.loading = true; break;
@@ -117,6 +144,8 @@ function updateUserDetail(action) {
         default:
             _userState.loading = false;
             _userState.currentUser = action.response.user;
+            updateCurrentRoleAndView();
+            
             Cookies.set('user', JSON.stringify(_userState.currentUser), 1);
     }
 }
@@ -143,18 +172,8 @@ function handleLogin(action) {
         default:
             _userState.loading = false;
             _userState.currentUser = action.response.user;
-            _userState.currentRole = _userState.currentUser.current_role;
-            if (_userState.currentRole.type == 'manager' ) {
-                _userState.currentRole.display_name = 'Manager View (loading)';
-            } else {
-                _userState.currentRole.display_name = 'Contractor View';
-            }
-            switch (_userState.currentRole.type) {
-                case 'contractor': _userState.currentView = ContractorViews[ViewTypes.OFFERED]; break;
-                case 'manager': _userState.currentView = ManagerViews[ViewTypes.NEW]; break;
-                case 'owner': _userState.currentView = ManagerViews[ViewTypes.NEW]; break;
-            }
             _userState.loggedIn = !!_userState.currentUser;
+            updateCurrentRoleAndView();
             Cookies.set('user', JSON.stringify(_userState.currentUser), 1);
     }
 }
