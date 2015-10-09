@@ -101,10 +101,29 @@ module.exports = {
         Api.updateProfilePhoto(file, responseHandler, pendingHandler);
     },
     selectRole: function(user, role_id) {
-        this.updateUserSettings({
-            id: user.id,
-            current_role: { id: role_id }
-        });
+        // we need to make 2 ajax calls, the 2nd one made if the response to the 1st one is successful.
+        function pendingHandler() {
+            Dispatcher.handleRequestAction({
+                type: ActionConstants.SELECT_ROLE,
+                status: RequestConstants.PENDING,
+            });
+        };
+        
+        function usersResponseHandler(usersResponse, usersStatus) {
+            function ticketsResponseHandler(ticketsResponse, ticketsStatus) {
+                Dispatcher.handleRequestAction({
+                    type: ActionConstants.SELECT_ROLE,
+                    status: status,
+                    response: {
+                        user: usersResponse.user,
+                        tickets: ticketsResponse.tickets
+                    }
+                });
+            }
+            Api.getTicketData(ticketsResponseHandler, pendingHandler);
+        };
+        Api.updateUserSettings({ id: user.id, current_role: { id: role_id } }, usersResponseHandler, pendingHandler);
+        
     },
     selectView: function(viewType) {
         Dispatcher.handleRequestAction({
