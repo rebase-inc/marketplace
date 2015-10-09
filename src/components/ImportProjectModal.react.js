@@ -82,7 +82,7 @@ var ImportProjectModal = React.createClass({
     },
     _makeProject: function(repo, ind) {
         return (
-            <tr className='githubProject'>
+            <tr className='githubProject' key={ind}>
                 <td className='checkbox'>
                     <input onChange={this.addProject.bind(null, repo)} type='checkbox' id={'checkbox' + ind} />
                     <label htmlFor={'checkbox' + ind} />

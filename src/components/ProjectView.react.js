@@ -64,7 +64,7 @@ var ProfileView = React.createClass({
     },
     _makeProjectElement: function(organization, project) {
         return (
-            <div className='project'>
+            <div className='project' key={project.id}>
                 <Icons.ProjectGraph />
                 <div className='projectDetails'>
                     <span className='orgName'>{organization.name}</span>
@@ -84,12 +84,11 @@ var ProfileView = React.createClass({
         }));
     },
     _addToProjects(project, project_id, _) {
-        console.log(this);
         this.projects.push(this.component._makeProjectElement(project.organization, project));
     },
     render: function() {
         var projects = [];
-        this.state.projectResource.allProjects.forEach(function(project, project_id, _) {
+        this.state.projectResource.allProjects.forEach(function(project) {
             projects.push(this._makeProjectElement(project.organization, project));
         }, this);
         return (
