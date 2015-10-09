@@ -108,7 +108,7 @@ var Api = {
     },
     commentOnTicket: function(user, ticket, text, responseHandler, pendingHandler) {
         var url = makeUrl("/comments");
-        var data = {ticket: ticket, content: text};
+        var data = {user: {id: user.id, first_name: user.first_name, last_name: user.last_name}, ticket: {id: ticket.id}, content: text};
         pendingHandler();
         ajax('POST', url, data, responseHandler);
     },

@@ -101,12 +101,12 @@ function handleNewComment(action) {
         case RequestConstants.PENDING: _loading = true; break;
         case RequestConstants.TIMEOUT: _loading = false; console.warn(action.response); break;
         case RequestConstants.ERROR: _loading = false; console.warn(action.response); break;
-        case null: _loading = false; console.warn('Null data!');
-        default:
+        case RequestConstants.SUCCESS:
             _loading = false;
             var new_comment = action.response.comment;
             _allAuctions.forEach(auction => { if (auction.ticket.id == new_comment.ticket.id) { auction.ticket.comments.push(new_comment) } });
             break;
+        default: _loading = false; console.warn('Null data!');
     }
 }
 

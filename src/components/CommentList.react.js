@@ -43,7 +43,7 @@ var CommentList = React.createClass({
             all_comments.push(
                 <div className='comment' key={comment.id}>
                     <div className='photo'>
-                        <ProfilePicture user={comment.user || {first_name: 'A', last_name: 'M'}}/>
+                        <ProfilePicture user={comment.user}/>
                     </div>
                     <div className='content'>
                         <div className='name'>{!!comment.user ? comment.user.first_name + ' ' + comment.user.last_name : 'Unknown User'}</div>

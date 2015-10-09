@@ -42,7 +42,7 @@ Dispatcher.register(function(payload) {
         case ActionConstants.SELECT_VIEW: _currentTicket = null; break;
         case ActionConstants.SELECT_TICKET: handleSelectedTicket(action.ticketID); break;
         case ActionConstants.GET_TICKET_DATA: handleNewTicketData(action); break;
-        case ActionConstants.ADD_COMMENT_TO_TICKET: handleNewComment(action.response); break;
+        case ActionConstants.ADD_COMMENT_TO_TICKET: handleNewComment(action); break;
         case ActionConstants.GET_COMMENT_DETAIL: handleCommentDetail(action); break;
         default: return true;
     }
@@ -69,16 +69,16 @@ function handleNewTicketData(action) {
     }
 }
 
-function handleNewComment(data) {
-    switch (data) {
+function handleNewComment(action) {
+    switch (action.status) {
         case RequestConstants.PENDING: _loading = true; break;
-        case RequestConstants.TIMEOUT: _loading = false; console.warn(data); break;
-        case RequestConstants.ERROR: _loading = false; console.warn(data); break;
-        case null: _loading = false; console.warn('Null data!');
-        default:
+        case RequestConstants.TIMEOUT: _loading = false; console.warn(action.response); break;
+        case RequestConstants.ERROR: _loading = false; console.warn(action.response); break;
+        case RequestConstants.SUCCESS:
             _loading = false;
-            _allTickets.forEach(ticket => { if (ticket.id == data.comment.ticket.id) { ticket.comments.push(data.comment) } });
+            _allTickets.forEach(ticket => { if (ticket.id == action.response.comment.ticket.id) { ticket.comments.push(action.response.comment) } });
             break;
+        default: _loading = false; throw 'Invalid status ' + action.status
     }
 }
 
