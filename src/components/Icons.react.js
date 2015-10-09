@@ -94,6 +94,67 @@ var ApproveTalent = React.createClass({
     }
 });
 
+var Timer = React.createClass({
+    propTypes: {
+        minutesRemaining: React.PropTypes.number.isRequired,
+    },
+    render: function() {
+        let wholeDaysRemaining = Math.floor(this.props.minutesRemaining / (60*24));
+        let wholeHoursRemaining = Math.floor((this.props.minutesRemaining % (60*24)) / 60);
+        let wholeMinutesRemaining = Math.floor(this.props.minutesRemaining % 60);
+        wholeDaysRemaining = (wholeDaysRemaining < 10) ? '0' + wholeDaysRemaining : wholeDaysRemaining;
+        wholeHoursRemaining = (wholeHoursRemaining < 10) ? '0' + wholeHoursRemaining : wholeHoursRemaining;
+        wholeMinutesRemaining = (wholeMinutesRemaining < 10) ? '0' + wholeMinutesRemaining : wholeMinutesRemaining;
+        return (
+            <svg width="128px" height="41px" viewBox="0 0 128 41">
+                <g stroke="none" strokeWidth="1" fill="none" fill-rule="evenodd">
+                    <g transform="translate(-1.000000, 0.000000)" fill="#2C4568">
+                        <text opacity="0.5" fontSize="10">
+                            <tspan x="58" y="8" textAnchor='middle'>AUCTION ENDS</tspan>
+                        </text>
+                        <g transform="translate(0.000000, 12.000000)">
+                            <g>
+                                <text opacity="0.5" fontSize="7">
+                                    <tspan x="12" y="28" textAnchor='middle'>DAYS</tspan>
+                                </text>
+                                <text fontSize="22">
+                                    <tspan x="12" y="18" textAnchor='middle'>{wholeDaysRemaining}</tspan>
+                                </text>
+                            </g>
+                            <g transform="translate(23.000000, 0.000000)">
+                                <text fontSize="22" opacity='0.5'>
+                                    <tspan x="12" y="19">:</tspan>
+                                </text>
+                            </g>
+                            <g transform="translate(46.000000, 0.000000)">
+                                <text opacity="0.5" fontSize="7">
+                                    <tspan x="12" y="28" textAnchor='middle'>HOURS</tspan>
+                                </text>
+                                <text fontSize="22">
+                                    <tspan x="12" y="18" textAnchor='middle'>{wholeHoursRemaining}</tspan>
+                                </text>
+                            </g>
+                            <g transform="translate(69.000000, 0.000000)">
+                                <text fontSize="22" opacity='0.5'>
+                                    <tspan x="12" y="19">:</tspan>
+                                </text>
+                            </g>
+                            <g transform="translate(92.000000, 0.000000)">
+                                <text opacity="0.5" fontSize="7">
+                                    <tspan x="12" y="28" textAnchor='middle'>MINUTES</tspan>
+                                </text>
+                                <text id="32" fontSize="22">
+                                    <tspan x="12" y="18" textAnchor='middle'>{wholeMinutesRemaining}</tspan>
+                                </text>
+                            </g>
+                        </g>
+                    </g>
+                </g>
+            </svg>
+        );
+    }
+});
+
 var ProfilePicture = React.createClass({
     propTypes: {
         user: React.PropTypes.object,
@@ -360,4 +421,5 @@ module.exports = {
     AddNewProject: AddNewProject,
     ProjectGraph: ProjectGraph,
     FindTalentOverview: FindTalentOverview,
+    Timer: Timer,
 };

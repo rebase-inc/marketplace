@@ -8,6 +8,10 @@ var FindTalentPanel = require('../components/FindTalentPanel.react');
 var ProjectInfoPanel = require('../components/ProjectInfoPanel.react');
 var Icons = require('../components/Icons.react');
 
+var MonthNames = ['January', 'February', 'March', 'April', 'May',
+    'June', 'July', 'August', 'September', 'October', 'November', 'December']
+
+
 var Auction = React.createClass({
     propTypes: {
         currentRole: React.PropTypes.object.isRequired,
@@ -23,11 +27,15 @@ var Auction = React.createClass({
         event.stopPropagation();
     },
     render: function() {
+        let now = new Date();
+        let expires = new Date(this.props.auction.expires);
+        let minutesRemaining = (expires - now) / (1000*60);
         return (
             <tr className='auction' onClick={this.props.selectAuction.bind(null, this.props.auction.id)}>
                 { this.props.currentRole.type == 'manager' ?
-                    <FindTalentPanel /> :
-                    <ProjectInfoPanel ticket={this.props.auction.ticket} /> }
+                    <td className='timeRemainingPanel'><Icons.Timer minutesRemaining={minutesRemaining}/></td> :
+                    <ProjectInfoPanel ticket={this.props.auction.ticket} />
+                }
                 <td className='titlePanel'>{this.props.auction.ticket.title}</td>
                 { this.props.currentRole.type == 'manager' ? <td className='talentOverviewPanel'><Icons.FindTalentOverview auction={this.props.auction}/></td> : null }
                 <td className='skillsRequiredPanel'>

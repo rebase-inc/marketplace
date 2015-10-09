@@ -4,6 +4,9 @@ var React = require('react');
 var FindTalentPanel = require('../components/FindTalentPanel.react');
 var Icons = require('../components/Icons.react');
 
+var MonthNames = ['January', 'February', 'March', 'April', 'May', 
+    'June', 'July', 'August', 'September', 'October', 'November', 'December']
+
 var Ticket = React.createClass({
     changeSearchText: function(skill, event) {
         switch (event.shiftKey) {
@@ -13,11 +16,18 @@ var Ticket = React.createClass({
         event.stopPropagation();
     },
     render: function() {
-        var role = this.props.currentRole;
+        let date = new Date(this.props.ticket.created);
+        let dateString = MonthNames[date.getMonth()] + ' ' + date.getDate(); 
+        let role = this.props.currentRole;
         return (
             <tr className='ticket' onClick={this.props.selectTicket.bind(null, this.props.ticket.id)}>
-                <FindTalentPanel onClick={this.props.findTalent.bind(null, this.props.ticket.id)} />
-                <td className='titlePanel'>{this.props.ticket.title}</td>
+                <td className='datePanel'>
+                    <span>Created</span> 
+                    <span>{dateString}</span>
+                </td>
+                <td className='titlePanel'>
+                    <span>{this.props.ticket.title}</span>
+                </td>
                 <td className='skillsRequiredPanel'>
                     <div className='skills'>
                         { Object.keys(this.props.ticket.skill_requirement.skills).map((skill) =>

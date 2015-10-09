@@ -266,6 +266,24 @@ html, body {
     font-size: 16px;
 }
 
+.datePanel {
+    text-transform: uppercase;
+    opacity: 0.5;
+    font-size: 10px;
+    width: 100px;
+}
+
+.timeRemainingPanel svg {
+    width: 100px;
+    padding-left: 10px;
+}
+
+.datePanel span {
+    display: block;
+    text-align: center;
+    margin: 0 auto;
+}
+
 .skillsRequiredPanel,
 .skillSetPanel {
     color: hsla(215, 15%, 67%, 1);
