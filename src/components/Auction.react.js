@@ -26,24 +26,30 @@ var Auction = React.createClass({
         }
         event.stopPropagation();
     },
+    getInitialState: () => ({currentDateTime: new Date()}),
+    componentDidMount: function() {
+        this._timer = setInterval(() => this.setState({currentDateTime : new Date()}), 4000);
+    },
+    componentWillUnmount: function() {
+        clearInterval(this._timer);
+    },
     render: function() {
-        let now = new Date();
         let expires = new Date(this.props.auction.expires);
-        let minutesRemaining = (expires - now) / (1000*60);
+        let minutesRemaining = (expires - this.state.currentDateTime) / (1000*60);
         return (
             <tr className='auction' onClick={this.props.selectAuction.bind(null, this.props.auction.id)}>
-                { this.props.currentRole.type == 'manager' ?
-                    <td className='timeRemainingPanel'><Icons.Timer minutesRemaining={minutesRemaining}/></td> :
-                    <ProjectInfoPanel ticket={this.props.auction.ticket} />
-                }
-                <td className='titlePanel'>{this.props.auction.ticket.title}</td>
                 { this.props.currentRole.type == 'manager' ? <td className='talentOverviewPanel'><Icons.FindTalentOverview auction={this.props.auction}/></td> : null }
+                <td className='titlePanel'>{this.props.auction.ticket.title}</td>
                 <td className='skillsRequiredPanel'>
                     <div className='skills'>
                         { Object.keys(!!this.props.auction.ticket.skill_requirement ? this.props.auction.ticket.skill_requirement.skills : {} ).map((skill) =>
                            <div key={skill} className='skill' onClick={this.changeSearchText.bind(null, skill)}>{skill}</div>) }
                     </div>
                 </td>
+                { this.props.currentRole.type == 'manager' ?
+                    <td className='timeRemainingPanel'><span>AUCTION ENDS</span><Icons.Timer minutesRemaining={minutesRemaining}/></td> :
+                    <ProjectInfoPanel ticket={this.props.auction.ticket} />
+                }
                 { this.props.currentRole.type == 'manager' ?
                     <td className='budgetPanel'>
                         <span>BUDGET</span>

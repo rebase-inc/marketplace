@@ -73,6 +73,7 @@ function handleNewAuctionData(action) {
             _loading = false;
             _allAuctions = action.response.auctions;
             _allAuctions.forEach(auction => addSyntheticProperties(auction));
+            _allAuctions.sort((a1, a2) => new Date(a1.expires) - new Date(a2.expires));
     }
 }
 

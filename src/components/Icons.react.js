@@ -106,45 +106,42 @@ var Timer = React.createClass({
         wholeHoursRemaining = (wholeHoursRemaining < 10) ? '0' + wholeHoursRemaining : wholeHoursRemaining;
         wholeMinutesRemaining = (wholeMinutesRemaining < 10) ? '0' + wholeMinutesRemaining : wholeMinutesRemaining;
         return (
-            <svg width="128px" height="41px" viewBox="0 0 128 41">
+            <svg width="92px" height="24px">
                 <g stroke="none" strokeWidth="1" fill="none" fill-rule="evenodd">
-                    <g transform="translate(-1.000000, 0.000000)" fill="#2C4568">
-                        <text opacity="0.5" fontSize="10">
-                            <tspan x="58" y="8" textAnchor='middle'>AUCTION ENDS</tspan>
-                        </text>
-                        <g transform="translate(0.000000, 12.000000)">
+                    <g fill="#2C4568">
+                        <g transform="translate(2.0, 12.0)">
                             <g>
-                                <text opacity="0.5" fontSize="7">
-                                    <tspan x="12" y="28" textAnchor='middle'>DAYS</tspan>
+                                <text opacity="0.5" fontSize="8">
+                                    <tspan x="12" y="12" textAnchor='middle'>DAYS</tspan>
                                 </text>
-                                <text fontSize="22">
-                                    <tspan x="12" y="18" textAnchor='middle'>{wholeDaysRemaining}</tspan>
-                                </text>
-                            </g>
-                            <g transform="translate(23.000000, 0.000000)">
-                                <text fontSize="22" opacity='0.5'>
-                                    <tspan x="12" y="19">:</tspan>
+                                <text fontSize="18">
+                                    <tspan x="12" y="3" textAnchor='middle'>{wholeDaysRemaining}</tspan>
                                 </text>
                             </g>
-                            <g transform="translate(46.000000, 0.000000)">
-                                <text opacity="0.5" fontSize="7">
-                                    <tspan x="12" y="28" textAnchor='middle'>HOURS</tspan>
-                                </text>
-                                <text fontSize="22">
-                                    <tspan x="12" y="18" textAnchor='middle'>{wholeHoursRemaining}</tspan>
+                            <g transform="translate(16.5, 0.0)">
+                                <text fontSize="18" opacity='0.5'>
+                                    <tspan x="12" y="2" textAnchor='middle'>:</tspan>
                                 </text>
                             </g>
-                            <g transform="translate(69.000000, 0.000000)">
-                                <text fontSize="22" opacity='0.5'>
-                                    <tspan x="12" y="19">:</tspan>
+                            <g transform="translate(33.0, 0.0)">
+                                <text opacity="0.5" fontSize="8">
+                                    <tspan x="12" y="12" textAnchor='middle'>HRS</tspan>
+                                </text>
+                                <text fontSize="18">
+                                    <tspan x="12" y="3" textAnchor='middle'>{wholeHoursRemaining}</tspan>
                                 </text>
                             </g>
-                            <g transform="translate(92.000000, 0.000000)">
-                                <text opacity="0.5" fontSize="7">
-                                    <tspan x="12" y="28" textAnchor='middle'>MINUTES</tspan>
+                            <g transform="translate(49.5, 0.0)">
+                                <text fontSize="18" opacity='0.5'>
+                                    <tspan x="12" y="2" textAnchor='middle'>:</tspan>
                                 </text>
-                                <text id="32" fontSize="22">
-                                    <tspan x="12" y="18" textAnchor='middle'>{wholeMinutesRemaining}</tspan>
+                            </g>
+                            <g transform="translate(66.000000, 0.000000)">
+                                <text opacity="0.5" fontSize="8">
+                                    <tspan x="12" y="12" textAnchor='middle'>MINS</tspan>
+                                </text>
+                                <text id="32" fontSize="18">
+                                    <tspan x="12" y="3" textAnchor='middle'>{wholeMinutesRemaining}</tspan>
                                 </text>
                             </g>
                         </g>
