@@ -41,6 +41,7 @@ function _intoMap(map, project) {
 
 function successGetProjects(action) {
     _projectData.loading = false;
+    _projectData.allProjects.clear();
     _projectData.allProjects = action.response.projects.reduce(_intoMap, _projectData.allProjects);
 };
 
