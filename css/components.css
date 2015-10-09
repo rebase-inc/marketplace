@@ -100,6 +100,14 @@ table.contentList > tbody > tr > td.warning {
     background-color: hsla(351, 50%, 50%, 1);
 }
 
+table.contentList > tbody > tr > td:first-child {
+    padding-left: 20px;
+}
+
+table.contentList > tbody > tr > td:last-child {
+    padding-right: 20px;
+}
+
 tr.nomination > td.actionPanel,
 tr.ticket > td.findTalentPanel,
 tr.auction > td.findTalentPanel {
@@ -112,6 +120,7 @@ tr.auction > td.findTalentPanel {
 
 tr.auction > td.talentOverviewPanel {
     width: 180px;
+    padding-left: 10px;
     cursor: pointer;
 }
 

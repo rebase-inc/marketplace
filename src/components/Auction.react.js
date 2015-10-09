@@ -38,7 +38,10 @@ var Auction = React.createClass({
         let minutesRemaining = (expires - this.state.currentDateTime) / (1000*60);
         return (
             <tr className='auction' onClick={this.props.selectAuction.bind(null, this.props.auction.id)}>
-                { this.props.currentRole.type == 'manager' ? <td className='talentOverviewPanel'><Icons.FindTalentOverview auction={this.props.auction}/></td> : null }
+                { this.props.currentRole.type == 'manager' ?
+                    <td className='talentOverviewPanel'><Icons.FindTalentOverview auction={this.props.auction}/></td>
+                    : <ProjectInfoPanel ticket={this.props.auction.ticket} />
+                }
                 <td className='titlePanel'>{this.props.auction.ticket.title}</td>
                 <td className='skillsRequiredPanel'>
                     <div className='skills'>
@@ -47,8 +50,7 @@ var Auction = React.createClass({
                     </div>
                 </td>
                 { this.props.currentRole.type == 'manager' ?
-                    <td className='timeRemainingPanel'><span>AUCTION ENDS</span><Icons.Timer minutesRemaining={minutesRemaining}/></td> :
-                    <ProjectInfoPanel ticket={this.props.auction.ticket} />
+                    <td className='timeRemainingPanel'><span>AUCTION ENDS</span><Icons.Timer minutesRemaining={minutesRemaining}/></td> : null
                 }
                 { this.props.currentRole.type == 'manager' ?
                     <td className='budgetPanel'>
