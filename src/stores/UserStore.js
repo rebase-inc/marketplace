@@ -64,7 +64,7 @@ function updateRoles(roleStore, allRolesField, rolesField) {
         }
     });
     UserStore.emitChange();
-};
+}
 
 ManagerStore.addChangeListener(updateRoles.bind(null, ManagerStore, 'allManagers', 'currentUserManagerRoles'));
 ContractorStore.addChangeListener(updateRoles.bind(null, ContractorStore, 'allContractors', 'currentUserContractorRoles'));

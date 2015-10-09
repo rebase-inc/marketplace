@@ -20,7 +20,11 @@ _.extend(ManagerStore, {
             _managerData.allManagers.set(manager.id, manager);
         });
         ManagerStore.emitChange();
-    }
+    },
+    add: function(managers) {
+        managers.forEach( mgr => _managerData.allManagers.set(mgr.id, mgr) );
+        this.emitChange();
+    },
 });
 
 function _intoMap(map, manager) {

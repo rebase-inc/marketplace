@@ -3,7 +3,8 @@ var _ = require('underscore');
 var Store = require('../utils/Store');
 var ActionConstants = require('../constants/ActionConstants');
 var RequestConstants = require('../constants/RequestConstants');
-var ProjectResource = require('../stores/ProjectStore');
+var ProjectStore = require('../stores/ProjectStore');
+var ManagerStore = require('../stores/ManagerStore');
 
 
 //Define initial data points
@@ -33,7 +34,8 @@ function successImportRepos(action) {
     var _updated_repos = action.response.repos; // TODO update repository store once built
     var _updated_orgs = action.response.orgs; // TODO update organization store once built
     var _updated_projects = action.response.projects;
-    ProjectResource.update(action.response.projects);
+    ProjectStore.update(action.response.projects);
+    ManagerStore.add(action.response.managers);
 };
 
 Store.registerDispatcher(
