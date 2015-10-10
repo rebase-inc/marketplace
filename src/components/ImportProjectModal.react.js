@@ -51,13 +51,15 @@ var ImportProjectModal = React.createClass({
     },
     _onGithubChange: function(action_type) {
         var ghState = GithubStore.getState();
+        var _no_github_account = ghState.allAccounts.length == 0;
         var _repos = this._computeImportableRepos(
             ghState.allAccounts.reduce(this._intoRepos, []),
             this.props.importedProjects
         );
         this.setState(_.extend(this.state, {
             importableRepos: _repos,
-            loading: ghState.loading
+            loading: ghState.loading,
+            no_github_account: _no_github_account
         }));
         if (action_type == ActionConstants.IMPORT_GITHUB_REPOS) {
             this.props.toggleModal();
@@ -108,32 +110,32 @@ var ImportProjectModal = React.createClass({
     },
     render: function() {
         if (this.state.loading) {
-        return (
-            <ModalContainer>
-                <div onClick={this.props.toggleModal} id='modalClose'>
-                    <img src='img/modal-close.svg'/>
-                </div>
-                <h3>Select Project(s) to Import</h3>
-                <LoadingAnimation/>
-            </ModalContainer>
-        );
+            return (
+                <ModalContainer toggleModal={this.props.toggleModal}>
+                    <h3>Select Project(s) to Import</h3>
+                    <LoadingAnimation/>
+                </ModalContainer>
+                );
+        } else if (this.state.no_github_account) {
+            return (
+                <ModalContainer toggleModal={this.props.toggleModal}>
+                    <h3>You must authorize a Github account first!</h3>
+                </ModalContainer>
+                );
         } else {
-        return (
-            <ModalContainer>
-                <div onClick={this.props.toggleModal} id='modalClose'>
-                    <img src='img/modal-close.svg'/>
-                </div>
-                <h3>Select Project(s) to Import</h3>
-                <div id='projectImportWrapper' ref='projectImportWrapper'>
-                    <table>
-                        <tbody>
-                            { this.state.importableRepos.map(this._makeProject) }
-                        </tbody>
-                    </table>
-                </div>
-                <button onClick={this._importRepos}>Import Selected</button>
-            </ModalContainer>
-        );
+            return (
+                <ModalContainer toggleModal={this.props.toggleModal}>
+                    <h3>Select Project(s) to Import</h3>
+                    <div id='projectImportWrapper' ref='projectImportWrapper'>
+                        <table>
+                            <tbody>
+                                { this.state.importableRepos.map(this._makeProject) }
+                            </tbody>
+                        </table>
+                    </div>
+                    <button onClick={this._importRepos}>Import Selected</button>
+                </ModalContainer>
+                );
         }
     }
 });

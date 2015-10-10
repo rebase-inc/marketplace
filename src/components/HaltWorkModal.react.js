@@ -18,10 +18,7 @@ var HaltWorkModal = React.createClass({
     },
     render: function() {
         return (
-            <ModalContainer>
-                <div onClick={this.props.closeModal} id='modalClose'>
-                    <img src='img/modal-close.svg'/>
-                </div>
+            <ModalContainer toggleModal={this.props.closeModal}>
                 <h3>Blocked?</h3>
                 <h4>Let the client know you need something to continue</h4>
                 <textarea required ref='comment' placeholder='Please leave a comment describing why you are blocked.'/>

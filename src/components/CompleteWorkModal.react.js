@@ -20,10 +20,7 @@ var CompleteWorkModal = React.createClass({
     },
     render: function() {
         return (
-            <ModalContainer>
-                <div onClick={this.props.closeModal} id='modalClose'>
-                    <img src='img/modal-close.svg'/>
-                </div>
+            <ModalContainer toggleModal={this.props.closeModal}>
                 <h3>Rate Developer Work</h3>
                 <RatingStars rating={this.state.rating} setRating={this.setRating} labeled={true} />
                 <textarea required ref='comment' placeholder="Leave a short review of the developer's work (optional)"/>

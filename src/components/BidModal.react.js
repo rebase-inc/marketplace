@@ -40,10 +40,7 @@ var BidModal = React.createClass({
     render: function() {
         if (!this.state.priceSubmitted || this.props.loading) {
             return (
-                <ModalContainer>
-                    <div onClick={this.props.toggleModal} id='modalClose'>
-                        <img src='img/modal-close.svg'/>
-                    </div>
+                <ModalContainer toggleModal={this.props.toggleModal}>
                     <h3>Choose your price</h3>
                     <h4>to work on this task</h4>
                     <input style={{width: this.props.width + 'px', margin: '10px'}} defaultValue={this.state.price} type='range' min={this.state.minimum_price} max={this.state.maximum_price} step={20} onChange={this.setPrice} />
@@ -54,10 +51,7 @@ var BidModal = React.createClass({
         } else if (this.props.currentAuction.state == 'waiting_for_bids') {
             var remainingTickets = AuctionStore.getState().allAuctions.filter(function(auction) { return auction.type == viewConstants.ViewTypes.OFFERED; });
             return (
-                <ModalContainer>
-                    <div onClick={this.props.toggleModal} id='modalClose'>
-                        <img src='img/modal-close.svg'/>
-                    </div>
+                <ModalContainer toggleModal={this.props.toggleModal}>
                     <h3>Your bid was not accepted.</h3>
                     <h4>{'But there are ' + remainingTickets.length + ' more tasks waiting for you!'}</h4>
                     <button onClick={this.returnToAuctions}>Show tasks</button>
@@ -65,10 +59,7 @@ var BidModal = React.createClass({
             );
         } else if (this.props.currentAuction.state == 'ended') {
             return (
-                <ModalContainer>
-                    <div onClick={this.props.toggleModal} id='modalClose'>
-                        <img src='img/modal-close.svg'/>
-                    </div>
+                <ModalContainer toggleModal={this.props.toggleModal}>
                     <h3>Your bid was accepted!</h3>
                     <h4>Get started by cloning and running the tests</h4>
                     <div className='infoOrInput cloneInstructions'> $ git clone git@github.com:airpool/ios <br/> $ cd api && python deploy.py && python tests/run.py </div>

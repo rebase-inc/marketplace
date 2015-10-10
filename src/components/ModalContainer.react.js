@@ -5,6 +5,9 @@ var ModalContainer = React.createClass({
         return (
             <div id='modalView' className='noselect'>
                 <div id='modalDialog' onChange={this.handleInput} onKeyPress={this.handleKeyPress}>
+                    <div onClick={this.props.toggleModal} id='modalClose'>
+                        <img src='img/modal-close.svg'/>
+                    </div>
                     {this.props.children}
                 </div>
             </div>

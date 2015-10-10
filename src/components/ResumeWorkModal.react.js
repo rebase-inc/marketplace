@@ -19,10 +19,7 @@ var ResumeWorkModal = React.createClass({
     },
     render: function() {
         return (
-            <ModalContainer>
-                <div onClick={this.props.closeModal} id='modalClose'>
-                    <img src='img/modal-close.svg'/>
-                </div>
+            <ModalContainer toggleModal={this.props.closeModal}>
                 <h3>Not blocked anymore?</h3>
                 <h4>You'll be able to resume work on this task</h4>
                 <textarea required ref='comment' placeholder='Please leave a comment describing why you are no longer blocked.'/>

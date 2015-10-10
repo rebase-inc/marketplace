@@ -17,10 +17,7 @@ var DisputeWorkModal = React.createClass({
     },
     render: function() {
         return (
-            <ModalContainer>
-                <div onClick={this.props.closeModal} id='modalClose'>
-                    <img src='img/modal-close.svg'/>
-                </div>
+            <ModalContainer toggleModal={this.props.closeModal}>
                 <h3>Dispute Developer Work</h3>
                 <textarea required ref='comment' placeholder="Leave a comment explaining why the work isn't yet complete."/>
                 <button className='warning' onClick={this.disputeCompletion}>Dispute</button>

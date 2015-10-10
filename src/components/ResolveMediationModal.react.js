@@ -40,10 +40,7 @@ var ResolveMediationModal = React.createClass({
         switch (this.state.view) {
             case ModalStates.NEW:
                 return (
-                    <ModalContainer>
-                        <div onClick={this.props.closeModal} id='modalClose'>
-                            <img src='img/modal-close.svg'/>
-                        </div>
+                    <ModalContainer toggleModal={this.props.closeModal}>
                         <h3>How should the developer continue?</h3>
                         <textarea required ref='comment' placeholder="Leave a comment explaining your decision." value={this.state.text} onChange={this.handleInput}/>
                         <button className='warning' onClick={this.changeModalView.bind(null, ModalStates.GIVE_UP)}>Give Up</button>
@@ -54,10 +51,7 @@ var ResolveMediationModal = React.createClass({
                 break;
             case ModalStates.GIVE_UP:
                 return (
-                    <ModalContainer>
-                        <div onClick={this.props.closeModal} id='modalClose'>
-                            <img src='img/modal-close.svg'/>
-                        </div>
+                    <ModalContainer toggleModal={this.props.closeModal}>
                         <h3>Mark the developer's work failed?</h3>
                         <h4>If agreed upon, the developer will not be paid.</h4>
                         <textarea required ref='comment' placeholder="Leave a comment explaining why you don't think it's worth continuing." value={this.state.text} onChange={this.handleInput}/>
@@ -68,10 +62,7 @@ var ResolveMediationModal = React.createClass({
                 break;
             case ModalStates.BACK_TO_WORK:
                 return (
-                    <ModalContainer>
-                        <div onClick={this.props.closeModal} id='modalClose'>
-                            <img src='img/modal-close.svg'/>
-                        </div>
+                    <ModalContainer toggleModal={this.props.closeModal}>
                         <h3>Have the developer go back to work?</h3>
                         <h4>If agreed upon, the developer will continue to work on the task.</h4>
                         <textarea required ref='comment' placeholder="Leave a comment explaining your decision." value={this.state.text} onChange={this.handleInput}/>
@@ -82,10 +73,7 @@ var ResolveMediationModal = React.createClass({
                 break;
             case ModalStates.COMPLETE:
                 return (
-                    <ModalContainer>
-                        <div onClick={this.props.closeModal} id='modalClose'>
-                            <img src='img/modal-close.svg'/>
-                        </div>
+                    <ModalContainer toggleModal={this.props.closeModal}>
                         <h3>Mark the work finished?</h3>
                         <h4>The work will immediately be marked complete.</h4>
                         <textarea required ref='comment' placeholder="Leave a comment explaining what changed your mind." value={this.state.text} onChange={this.handleInput}/>

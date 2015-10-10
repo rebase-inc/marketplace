@@ -16,11 +16,8 @@ var DeleteProjectModal = React.createClass({
     },
     render: function() {
         return (
-            <ModalContainer>
+            <ModalContainer toggleModal={this.props.toggleModal}>
                 <h3>Are you sure you want to delete this project?</h3>
-                <div onClick={this.props.toggleModal} id='modalClose'>
-                    <img src='img/modal-close.svg'/>
-                </div>
                 <button onClick={this._deleteProject}>Delete</button>
             </ModalContainer>
         );
