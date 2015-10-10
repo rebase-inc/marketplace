@@ -32,10 +32,6 @@ var SearchBar = React.createClass({
                         ref='filterTextInput'/>
                     <img src='img/clear-search.svg' id='clearSearchImg' onClick={this.props.onUserInput.bind(null, '')} className={!this.props.searchText[0] ? 'hidden' : ''}/>
                 </div>
-                <div id='sortOptions'>
-                    <span>Sort</span>
-                    <Icons.Dropdown/>
-                </div>
             </form>
        );
     }

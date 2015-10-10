@@ -100,11 +100,11 @@ table.contentList > tbody > tr > td.warning {
     background-color: hsla(351, 50%, 50%, 1);
 }
 
-table.contentList > tbody > tr > td:first-child {
+table.contentList > tbody > tr > td:not(.statusPanel):first-of-type {
     padding-left: 20px;
 }
 
-table.contentList > tbody > tr > td:last-child {
+table.contentList > tbody > tr > td:not(.statusPanel):last-of-type {
     padding-right: 20px;
 }
 
