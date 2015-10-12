@@ -104,18 +104,16 @@ function handleLogin(action) {
             _loading = false;
             switch (action.response.status) {
                 case 401: {
-                    _error = 'Wrong credentials.';
-                    console.log(action.response.responseJSON);
+                    _error = 'Invalid credentials';
                 } break;
                 default: {
-                    _error = action.response.responseText;
-                    console.log(action.response);
+                    _error = 'Server error';
+                    console.warn(action.response);
                 }
             }
 
         } break;
-        case null: _loading = false; console.warn('Undefined data!');
-        default:
+        case RequestConstants.SUCCESS:
             _loading = false;
             _currentUser = action.response.user;
             _currentRole = _currentUser.roles[0];
@@ -126,6 +124,8 @@ function handleLogin(action) {
             }
             _loggedIn = !!_currentUser;
             Cookies.set('user', JSON.stringify(_currentUser), 1);
+            break;
+        default: console.warn('Invalid status: ' + action.status); break;
     }
 }
 

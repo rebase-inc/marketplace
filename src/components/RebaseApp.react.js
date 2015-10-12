@@ -86,7 +86,7 @@ var LoginDialog = React.createClass({
         UserActions.login(email, password);
     },
     attemptSignup: function() {
-        alert('not implemented!');
+        console.warn('not implemented!');
         return;
         UserActions.login(this.state.email, this.state.password);
     },
