@@ -48,36 +48,21 @@ var UserStore = _.extend({}, EventEmitter.prototype, {
     removeChangeListener: function(callback) { this.removeListener('change', callback); },
 });
 
-function updateRoles(roleStore, allRolesField, rolesField) {
-    var state = roleStore.getState();
-    
-    if (state.loading) {
-        return;
-    }
-    _userState[rolesField] = [];
-    state[allRolesField].forEach(function (role) {
-        if (role.user.id == _userState.currentUser.id) {
-            _userState[rolesField].push(role);
-        }
-        if (role.id == _userState.currentUser.current_role.id) {
-            _userState.currentRole = role;
-        }
-    });
-    UserStore.emitChange();
-}
-
-ManagerStore.addChangeListener(updateRoles.bind(null, ManagerStore, 'allManagers', 'currentUserManagerRoles'));
-ContractorStore.addChangeListener(updateRoles.bind(null, ContractorStore, 'allContractors', 'currentUserContractorRoles'));
-
 UserStore.dispatchToken = Dispatcher.register(function(payload) {
     var action = payload.action;
     switch(action.type) {
         case ActionConstants.LOGIN: handleLogin(action); break;
+        case ActionConstants.LOGIN_AS_CONTRACTOR: handleLogin(action); break;
+        case ActionConstants.LOGIN_AS_MANAGER: handleLogin(action); break;
+        case ActionConstants.LOGIN_AS_OWNER: handleLogin(action); break;
         case ActionConstants.LOGOUT: handleLogout(action); break;
         case ActionConstants.CREATE_AUCTION: handleCreateAuction(action); break;
         case ActionConstants.SELECT_VIEW: handleSelectView(action.viewType); break;
         case ActionConstants.SELECT_ROLE: updateUserDetail(action); break;
         case ActionConstants.GET_USER_DETAIL: updateUserDetail(action); break;
+        case ActionConstants.GET_USER_DETAIL_AS_MANAGER: updateUserDetail(action); break;
+        case ActionConstants.GET_USER_DETAIL_AS_CONTRACTOR: updateUserDetail(action); break;
+        case ActionConstants.GET_USER_DETAIL_AS_OWNER: updateUserDetail(action); break;
         case ActionConstants.UPDATE_PROFILE_PHOTO: updateUserDetail(action); break;
         case ActionConstants.UPDATE_USER_SETTINGS: updateUserDetail(action); break;
         default: return true;

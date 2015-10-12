@@ -1,18 +1,23 @@
 // External
 var React = require('react');
+var _ = require('underscore');
 
 // Components
 var Icons = require('../components/Icons.react');
 
 // Actions
 var UserActions = require('../actions/UserActions');
+var ManagerActions = require('../actions/ManagerActions');
+
+//Stores
+var ManagerStore = require('../stores/ManagerStore');
+var ContractorStore = require('../stores/ContractorStore');
 
 // Constants
 var ViewTypes = require('../constants/ViewConstants').ViewTypes;
 var ContractorViews = require('../constants/ViewConstants').ContractorViews;
 var ManagerViews = require('../constants/ViewConstants').ManagerViews;
 
-var UserStore = require('../stores/UserStore');
 
 var Sidebar = React.createClass({
     propTypes: {
@@ -46,8 +51,6 @@ var SidebarNav = React.createClass({
         var roleProps = {
             currentUser: this.props.currentUser,
             currentRole: this.props.currentRole,
-            currentUserManagerRoles: this.props.currentUserManagerRoles,
-            currentUserContractorRoles: this.props.currentUserContractorRoles,
             selectRole: this.props.selectRole,
         }
         var allViews = [];
@@ -133,10 +136,28 @@ var RoleSelector = React.createClass({
         selectRole: React.PropTypes.func.isRequired,
     },
     getInitialState: function() {
-        return { open: false }
+        return {
+            open: false,
+            allManagers: ManagerStore.getState().allManagers,
+            allContractors: ContractorStore.getState().allContractors,
+        }
+    },
+    componentWillMount: function() {
+        ManagerStore.addChangeListener(this._onManagerChange);
+        ContractorStore.addChangeListener(this._onContractorChange);
+    },
+    componentWillUnmount: function() {
+        ManagerStore.removeChangeListener(this._onManagerChange);
+        ContractorStore.removeChangeListener(this._onContractorChange);
+    },
+    _onManagerChange: function() {
+        this.setState(_.extend(this.state, ManagerStore.getState()));
+    },
+    _onContractorChange: function() {
+        this.setState(_.extend(this.state, ContractorStore.getState()));
     },
     toggleDropdown: function() {
-        this.setState({ open: !this.state.open });
+        this.setState(_.extend(this.state, { open: !this.state.open }));
     },
     roleName: function(role) {
         switch(role.type) {
@@ -156,7 +177,7 @@ var RoleSelector = React.createClass({
             <div id='roleSelector' className={this.state.open ? 'open' : ''} onClick={this.toggleDropdown}>
                 <span> {this.roleName(this.props.currentRole)} </span>
             <Icons.Dropdown />
-            { this.state.open ? <RoleSelectorDropdown {...this.props} roleName={this.roleName} /> : null }
+            { this.state.open ? <RoleSelectorDropdown {...this.props} roleName={this.roleName} allManagers={this.state.allManagers} allContractors={this.state.allContractors}/> : null }
             </div>
         );
     }
@@ -171,9 +192,15 @@ function makeRoleElement (role) {
 };
 
 var RoleSelectorDropdown = React.createClass({
+    propTypes: {
+        allManagers: React.PropTypes.object.isRequired,
+        allContractors: React.PropTypes.object.isRequired,
+    },
     render: function() {
-        var managerRoleElements = this.props.currentUserManagerRoles.map(makeRoleElement.bind(this));
-        var contractorRoleElements = this.props.currentUserContractorRoles.map(makeRoleElement.bind(this));
+        var currentUserMgrRoles = Array.from(this.props.allManagers.values()).filter(mgr => mgr.user.id == this.props.currentUser.id);
+        var currentUserContractorRoles = Array.from(this.props.allContractors.values()).filter(contractor=> contractor.user.id==this.props.currentUser.id);
+        var managerRoleElements = currentUserMgrRoles.map(mgr => makeRoleElement.bind(this)(mgr));
+        var contractorRoleElements = currentUserContractorRoles.map(contractor=> makeRoleElement.bind(this)(contractor));
         !!managerRoleElements.length ? managerRoleElements.unshift(<li className='header' key='manager-header'>Manager</li>) : null;
         !!contractorRoleElements.length ? contractorRoleElements.unshift(<li className='header' key='contractor-header'>Contractor</li>) : null;
         return (

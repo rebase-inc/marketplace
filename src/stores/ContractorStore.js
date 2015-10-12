@@ -9,9 +9,7 @@ var _contractorData = {
     allContractors:    new Map(), // Map contractor.id => contractor
 };
 
-var ContractorStore = Store.newStore(function() {
-    return _contractorData;
-});
+var ContractorStore = Store.newStore(() => _contractorData);
 
 _.extend(ContractorStore, {
     update: function(contractors) {
@@ -34,6 +32,20 @@ function successGetContractors(action) {
 Store.registerDispatcher(
     ContractorStore,
     ActionConstants.GET_CONTRACTORS,
+    successGetContractors,
+    Store.defaultPendingAndErrorHandler.bind(_contractorData)
+);
+
+Store.registerDispatcher(
+    ContractorStore,
+    ActionConstants.LOGIN_AS_CONTRACTOR,
+    successGetContractors,
+    Store.defaultPendingAndErrorHandler.bind(_contractorData)
+);
+
+Store.registerDispatcher(
+    ContractorStore,
+    ActionConstants.GET_USER_DETAIL_AS_CONTRACTOR,
     successGetContractors,
     Store.defaultPendingAndErrorHandler.bind(_contractorData)
 );

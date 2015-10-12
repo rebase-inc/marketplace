@@ -7,8 +7,6 @@ var TicketStore = require('../stores/TicketStore');
 var UserStore = require('../stores/UserStore');
 var viewConstants = require('../constants/ViewConstants');
 var UserActions = require('../actions/UserActions');
-var ManagerActions = require('../actions/ManagerActions');
-var ContractorActions = require('../actions/ContractorActions');
 
 var TicketView = require('../components/TicketView.react');
 var AuctionView = require('../components/AuctionView.react');
@@ -28,8 +26,6 @@ var RebaseApp = React.createClass({
     },
     componentWillMount: function() {
         UserStore.addChangeListener(this._onChange);
-        ManagerActions.getManagers();
-        ContractorActions.getContractors();
     },
     componentWillUnmount: function() {
         UserStore.removeChangeListener(this._onChange);
@@ -42,8 +38,6 @@ var RebaseApp = React.createClass({
             currentUser: this.state.currentUser,
             currentView: this.state.currentView,
             currentRole: this.state.currentRole,
-            currentUserManagerRoles: this.state.currentUserManagerRoles,
-            currentUserContractorRoles: this.state.currentUserContractorRoles,
             selectRole: this.selectRole,
         };
         var modalProps = {

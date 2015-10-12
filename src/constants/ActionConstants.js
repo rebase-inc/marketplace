@@ -2,6 +2,9 @@ var keyMirror = require('keymirror');
 
 module.exports = keyMirror({
     LOGIN: null,
+    LOGIN_AS_CONTRACTOR: null,
+    LOGIN_AS_MANAGER: null,
+    LOGIN_AS_OWNER: null,
     LOGOUT: null,
     UPDATE_USER_SETTINGS: null,
     UPDATE_PROFILE_PHOTO: null,
@@ -23,6 +26,9 @@ module.exports = keyMirror({
     SELECT_REVIEW: null,
     GET_COMMENT_DETAIL: null,
     GET_USER_DETAIL: null,
+    GET_USER_DETAIL_AS_MANAGER: null,
+    GET_USER_DETAIL_AS_CONTRACTOR: null,
+    GET_USER_DETAIL_AS_OWNER: null,
     BID_ON_AUCTION: null,
     COMMENT_ON_TICKET: null,
     ADD_COMMENT_TO_AUCTION: null,

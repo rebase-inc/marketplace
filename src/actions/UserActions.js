@@ -2,23 +2,62 @@ var Dispatcher = require('../dispatcher/RebaseAppDispatcher');
 var ActionConstants = require('../constants/ActionConstants');
 var RequestConstants = require('../constants/RequestConstants');
 var Api = require('../utils/Api');
+var _ = require('underscore');
+
+function userResponseHandler(initialActionType, actionTypes, pendingAction, userResponse, status) {
+    var actionType = null;
+    var responseHandler = function(actionType, response, status) {
+        Dispatcher.handleRequestAction({
+            type: actionType,
+            status: status || RequestConstants.ERROR,
+            response: _.extend(response, {user: userResponse.user}),
+        });
+    };
+    var user = userResponse.user;
+    actionType = actionTypes.get(user.current_role.type);
+    switch(user.current_role.type) {
+        case 'manager': {
+            Api.getManagers(responseHandler.bind(null, actionType), pendingAction);
+        } break;
+        case 'contractor': {
+            Api.getContractors(responseHandler.bind(null, actionType), pendingAction);
+        } break;
+        case  'owner': {
+            console.log('TODO: implement owner store');
+            //Api.getOwners(responseHandler.bind(null, actionType), pendingAction);
+        } break;
+        default: {
+            Dispatcher.handleRequestAction({
+                type: initialActionType,
+                status: RequestConstants.ERROR,
+                response: userResponse
+            });
+        }
+    }
+};
+
+var loginActionTypes = new Map([
+    ['manager',     ActionConstants.LOGIN_AS_MANAGER],
+    ['contractor',  ActionConstants.LOGIN_AS_CONTRACTOR],
+    ['owner',       ActionConstants.LOGIN_AS_OWNER],
+]);
+
+var getUserDetailActionTypes = new Map([
+    ['manager',     ActionConstants.GET_USER_DETAIL_AS_MANAGER],
+    ['contractor',  ActionConstants.GET_USER_DETAIL_AS_CONTRACTOR],
+    ['owner',       ActionConstants.GET_USER_DETAIL_AS_OWNER],
+]);
 
 module.exports = {
     login: function(email, password) {
-        var responseAction = function(response, status) {
-            Dispatcher.handleRequestAction({
-                type: ActionConstants.LOGIN,
-                status: status || RequestConstants.ERROR,
-                response: response
-            });
-        };
+        var actionType = ActionConstants.LOGIN;
         var pendingAction = function() {
             Dispatcher.handleRequestAction({
-                type: ActionConstants.LOGIN,
+                type: actionType,
                 status: RequestConstants.PENDING,
             });
         };
-        Api.login(email, password, responseAction, pendingAction);
+        Api.login(email, password, userResponseHandler.bind(null, actionType, loginActionTypes, pendingAction), pendingAction);
     },
     logout: function() {
         var responseAction = function(response, status) {
@@ -53,20 +92,14 @@ module.exports = {
         Api.authenticateGithub(responseAction, pendingAction);
     },
     getUserDetail: function(userID) {
-        var responseAction = function(response, status) {
-            Dispatcher.handleRequestAction({
-                type: ActionConstants.GET_USER_DETAIL,
-                status: status,
-                response: response
-            });
-        };
+        var actionType = ActionConstants.GET_USER_DETAIL;
         var pendingAction = function(response) {
             Dispatcher.handleRequestAction({
-                type: ActionConstants.GET_USER_DETAIL,
-                response: RequestConstants.PENDING,
+                type: actionType,
+                status: RequestConstants.PENDING,
             });
         };
-        Api.getUserDetail(userID, responseAction, pendingAction);
+        Api.getUserDetail(userID, userResponseHandler.bind(null, actionType, getUserDetailActionTypes, pendingAction), pendingAction);
     },
     updateUserSettings: function(user) {
         function responseHandler(response, status) {
