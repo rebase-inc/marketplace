@@ -93,16 +93,14 @@ var ImportProjectModal = React.createClass({
                     <span>{repo.name}</span>
                 </td>
                 <td className='organization'>
-                    <span>{repo.org.login}</span>
+                    <span>{repo.project.organization.login}</span>
                 </td>
             </tr>
         );
     },
     _intoRepos: function(Repos, account, _, __) {
         // reduces an array of GithubAccounts into an array of GithubRepositories
-        return Repos.concat(
-            account.orgs.reduce(function(result, org, _, __) { return result.concat(org.repos); }, [])
-        );
+        return Repos.concat(account.orgs.reduce((arr, org_account) => arr.concat(org_account.org.projects.reduce((repos, project) => repos.concat(project.code_repository), [])), []));
     },
     _importRepos: function() {
         GithubActions.importRepos(this.state.projectsToImport);
