@@ -672,10 +672,6 @@ img.profilePicture {
 #nothingHere {
     background: url('../img/desk-contents.svg') no-repeat center, url('../img/desk-background.svg') repeat-x bottom;
     background-size: auto 90%, auto 100%;
-    height: calc(100% - 40px);
-    width: 100%;
-    bottom: 0;
-    position: absolute;
 }
 
 #opacityMask {

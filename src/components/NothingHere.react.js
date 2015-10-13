@@ -16,10 +16,7 @@ var NothingHere = React.createClass({
             <div id='nothingHere'>
                 <div id='opacityMask' className={!!this.state.mounted ? 'fade-away' : ''} />
                 <div id='content'>
-                    <h3>In order to get some work done, you first need some tasks</h3>
-                    <button onClick={UserActions.selectView.bind(null, ViewTypes.PROJECTS)}>Import GitHub Project</button>
-                    <span>OR</span>
-                    <button className='notification'>Add a Sample Task</button>
+                    {this.props.children}
                 </div>
            </div>
         );
