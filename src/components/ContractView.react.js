@@ -3,16 +3,21 @@ var _ = require('underscore');
 var React = require('react');
 var ReactDOM = require('react-dom');
 
+// Constants
+var ViewTypes = require('../constants/ViewConstants').ViewTypes;
+
 // Stores
 var ContractStore = require('../stores/ContractStore');
 
 // Actions
 var ContractActions = require('../actions/ContractActions');
+var UserActions = require('../actions/UserActions');
 
 // Components
 var SearchBar = require('../components/SearchBar.react');
 var ContractList = require('../components/ContractList.react');
 var SingleContractView = require('../components/SingleContractView.react');
+var NothingHere = require('../components/NothingHere.react');
 
 var ContractView = React.createClass({
     propTypes: {
@@ -35,19 +40,31 @@ var ContractView = React.createClass({
     selectContract: function(contractID) {
         ContractActions.selectContract(contractID);
     },
-    // this is probably not how we should be handling the searchText
-    //handleUserInput: function(searchText) { this.setState({ searchText: searchText }); },
+    handleUserInput: function(searchText) {
+        this.setState({ searchText: searchText });
+    },
     render: function() {
-        if (!!this.state.currentContract) {
-            return <SingleContractView {...this.props} {...this.state} unselectContract={this.selectContract.bind(null, null)} />;
-        } else {
-            var props = _.extend({ selectContract: this.selectContract }, this.state, this.props);
+        if (!this.state.allContracts.length && !this.state.loading) {
             return (
-                <div className='contractView'>
-                    <SearchBar searchText={this.state.searchText} onUserInput={this.handleSearchInput}/>
-                    <ContractList {...props} />
-                </div>
+                <NothingHere>
+                    <h3>You don't have any in progress tickets</h3>
+                    <button onClick={UserActions.selectView.bind(null, ViewTypes.OFFERED)}>View Offered Tickets</button>
+                </NothingHere>
             );
+        }
+        switch (!!this.state.currentReview) {
+            case true:
+                return <SingleContractView {...this.props} {...this.state} unselectContract={this.selectContract.bind(null, null)} />;
+                break;
+            case false:
+                var props = _.extend({ selectContract: this.selectContract, onUserInput: this.handleUserInput }, this.state, this.props);
+                return (
+                    <div className='contractView'>
+                        <SearchBar searchText={this.state.searchText} onUserInput={this.handleUserInput}/>
+                        <ContractList {...props} />
+                    </div>
+                );
+                break;
         }
     }
 });

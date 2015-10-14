@@ -18,9 +18,14 @@ var Talent = React.createClass({
                     <span>{this.props.nomination.contractor.user.first_name + ' ' + this.props.nomination.contractor.user.last_name}</span>
                     <RatingStars rating={this.props.nomination.contractor.rating} />
                 </td>
-                <td className='reasonSelectedPanel'> No information yet </td>
+                <td className='skillSetPanel'>
+                    <div className='skills'>
+                        { Object.keys(this.props.nomination.contractor.skill_set.skills).map((skill) =>
+                           <div key={skill} className='skill'>{skill}</div>) }
+                    </div>
+                </td>
                 <td className='scorePanel'>
-                    <Icons.TalentScore score={this.props.nomination.job_fit ? this.props.nomination.job_fit.score/100 : 1} />
+                    <Icons.TalentScore score={this.props.nomination.job_fit ? this.props.nomination.job_fit.score : -0.1} />
                 </td>
             </tr>
         );

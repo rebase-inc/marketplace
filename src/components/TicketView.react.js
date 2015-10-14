@@ -2,16 +2,21 @@
 var React = require('react');
 var _ = require('underscore');
 
+// Constants
+var ViewTypes = require('../constants/ViewConstants').ViewTypes;
+
 // Stores
 var TicketStore = require('../stores/TicketStore');
 
 // Actions
 var TicketActions = require('../actions/TicketActions');
+let UserActions = require('../actions/UserActions');
 
 // Components
 var SingleTicketView = require('../components/SingleTicketView.react');
 var TicketList = require('../components/TicketList.react');
 var SearchBar = require('../components/SearchBar.react');
+var NothingHere = require('../components/NothingHere.react');
 
 var TicketView = React.createClass({
     propTypes: {
@@ -49,6 +54,18 @@ var TicketView = React.createClass({
             currentRole: this.props.currentRole,
             searchText: this.state.searchText,
         }
+        // If there aren't any tickets to display and we're not in the process of finding any,
+        // display the nothing here screen, with some actions to help the user get out of this state.
+        if (!this.state.allTickets.length && !this.state.loading) {
+            return (
+                <NothingHere>
+                    <h3>In order to get some work done, you first need some tasks</h3>
+                    <button onClick={UserActions.selectView.bind(null, ViewTypes.PROJECTS)}>Import Another Project</button>
+                    <span>OR</span>
+                    <button className='notification'>Add a Task</button>
+                </NothingHere>
+            );
+        }
         switch (!!this.state.currentTicket) {
             case true:
                 props.unselectTicket = TicketActions.selectTicket.bind(null, null);
@@ -59,11 +76,12 @@ var TicketView = React.createClass({
                 props.toggleModal = this.toggleModal;
                 return <SingleTicketView {...props} />;
                 break;
-            default:
+            case false:
                 props.allTickets = this.state.allTickets;
                 props.selectTicket = TicketActions.selectTicket;
                 props.searchText = this.state.searchText;
                 props.findTalent = this.findTalent;
+                props.changeSearchText = this.handleUserInput;
                 return (
                     <div className='ticketView'>
                         <SearchBar searchText={this.state.searchText} onUserInput={this.handleUserInput}/>

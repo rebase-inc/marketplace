@@ -2,16 +2,21 @@
 var React = require('react');
 var _ = require('underscore');
 
+// Constants
+var ViewTypes = require('../constants/ViewConstants').ViewTypes;
+
 // Stores
 var AuctionStore = require('../stores/AuctionStore');
 
 // Actions
 var AuctionActions = require('../actions/AuctionActions');
+let UserActions = require('../actions/UserActions');
 
 // Components
 var SearchBar = require('../components/SearchBar.react');
 var AuctionList = require('../components/AuctionList.react');
 var SingleAuctionView = require('../components/SingleAuctionView.react');
+var NothingHere = require('../components/NothingHere.react');
 
 var AuctionView = React.createClass({
     propTypes: {
@@ -50,6 +55,16 @@ var AuctionView = React.createClass({
             currentUser: this.props.currentUser,
             currentRole: this.props.currentRole,
             searchText: this.state.searchText,
+        }
+        // If there aren't any auctions to display and we're not in the process of finding any,
+        // display the nothing here screen, with some actions to help the user get out of this state.
+        if (!this.state.allAuctions.length && !this.state.loading) {
+            return (
+                <NothingHere>
+                    <h3>You don't have any offered tickets</h3>
+                    <button onClick={UserActions.selectView.bind(null, ViewTypes.NEW)}>View New Tickets</button>
+                </NothingHere>
+            );
         }
         switch (!!this.state.currentAuction) {
             case true:

@@ -2,11 +2,15 @@
 var React = require('react');
 var _ = require('underscore');
 
+// Constants
+var ViewTypes = require('../constants/ViewConstants').ViewTypes;
+
 // Stores
 var ReviewStore = require('../stores/ReviewStore');
 
 // Actions
 var ReviewActions = require('../actions/ReviewActions');
+let UserActions = require('../actions/UserActions');
 
 // Components
 var SearchBar = require('../components/SearchBar.react');
@@ -16,6 +20,8 @@ var CommentBox = require('../components/CommentBox.react');
 var NothingHere = require('../components/NothingHere.react');
 var LoadingAnimation = require('../components/LoadingAnimation.react');
 var TicketDetails = require('../components/TicketDetails.react');
+var RatingStars = require('../components/RatingStars.react');
+var ProjectInfoPanel = require('../components/ProjectInfoPanel.react');
 
 // Constants
 var viewConstants = require('../constants/viewConstants');
@@ -44,19 +50,30 @@ var ReviewView = React.createClass({
     selectReview: function(reviewID) {
         ReviewActions.selectReview(reviewID);
     },
-    // this is probably not how we should be handling the searchText
-    //handleUserInput: function(searchText) { this.setState({ searchText: searchText }); },
+    handleUserInput: function(searchText) {
+        this.setState({ searchText: searchText });
+    },
     render: function() {
-        if (!!this.state.currentReview) {
-            return <SingleReviewView {...this.props} {...this.state} unselectReview={this.selectReview.bind(null, null)} />;
-        } else {
-            var props = _.extend({ selectReview: this.selectReview }, this.state, this.props);
+        if (!this.state.allReviews.length && !this.state.loading) {
             return (
-                <div className='reviewView'>
-                    <SearchBar searchText={this.state.searchText} onUserInput={this.handleSearchInput}/>
-                    <ReviewList {...props} />
-                </div>
+                <NothingHere>
+                    <h3>You don't have any completed tickets</h3>
+                    <button onClick={UserActions.selectView.bind(null, ViewTypes.IN_PROGRESS)}>View In Progress Tickets</button>
+                </NothingHere>
             );
+        }
+        switch (!!this.state.currentReview) {
+            case true:
+                return <SingleReviewView {...this.props} {...this.state} unselectReview={this.selectReview.bind(null, null)} />;
+                break;
+            case false:
+                var props = _.extend({ selectReview: this.selectReview }, this.state, this.props);
+                return (
+                    <div className='reviewView'>
+                        <SearchBar searchText={this.state.searchText} onUserInput={this.handleUserInput}/>
+                        <ReviewList {...props} />
+                    </div>
+                );
         }
     }
 });
@@ -96,30 +113,27 @@ var ReviewList = React.createClass({
         selectReview: React.PropTypes.func.isRequired,
     },
     render: function() {
-        var props = {
+        let props = {
             selectReview: this.props.selectReview,
             currentRole: this.props.currentRole,
         }
-        var titleMatchesText = function(review) {
+        if (!!this.props.loadingReviewData) {
+            return <LoadingAnimation />
+        }
+        let titleMatchesText = function(review) {
             return true; // until we make this actually work
             return review.title.indexOf(this.props.searchText) != -1;
         }.bind(this);
-        var makeTicketElement = function(review) {
+        let makeTicketElement = function(review) {
             return <Review review={review} key={review.id} {...props} />;
         }.bind(props);
-        if (!!this.props.allReviews.length) {
-            return (
-                <table className='contentList'>
-                    <tbody>
-                        { this.props.allReviews.filter(titleMatchesText).map(makeTicketElement) }
-                    </tbody>
-                </table>
-            );
-        } else if (this.props.loadingReviewData) {
-            return <LoadingAnimation />;
-        } else {
-            return <NothingHere text={'You don\'t have any in progress work right now. Check out offered tickets to find some!'}/>;
-        }
+        return (
+            <table className='contentList'>
+                <tbody>
+                    { this.props.allReviews.filter(titleMatchesText).map(makeTicketElement) }
+                </tbody>
+            </table>
+        );
     }
 });
 
@@ -145,32 +159,4 @@ var Review = React.createClass({
     }
 });
 
-var ProjectInfoPanel = React.createClass({
-    render: function() {
-        var projectName = this.props.ticket.project.organization.name + '/' + this.props.ticket.project.name;
-        return (
-            <td onClick={this.handleClick} className='projectInfoPanel'>
-            <span>{projectName}</span>
-            <RatingStars rating={this.props.ticket.project.rating || 3} />
-            </td>
-        );
-    }
-});
-
-var RatingStars = React.createClass({
-    render: function() {
-        var nearestHalf = Math.round(this.props.rating*2)/2;
-        var fullStars = Math.floor(nearestHalf);
-        var showHalfStar = (nearestHalf != fullStars);
-        return (
-            <div className='rating'>
-                { _.range(fullStars).map(function(el, ind) { return <img key={'full-' + ind} src='img/star-10px.svg' /> }) }
-                { showHalfStar ? <img key='half' src='img/half-star-10px.svg' /> : null }
-                { _.range(5 - fullStars - showHalfStar).map(function(el, ind) { return <img key={'empty-' + ind} src='img/empty-star-10px.svg' /> }) }
-            </div>
-        );
-    }
-});
-
 module.exports = ReviewView;
-

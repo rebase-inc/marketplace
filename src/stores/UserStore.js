@@ -143,12 +143,11 @@ function handleLogin(action) {
             _userState.loading = false;
             switch (action.response.status) {
                 case 401: {
-                    _userState.error = 'Wrong credentials.';
-                    console.log(action.response.responseJSON);
+                    _userState.error = 'Invalid credentials';
                 } break;
                 default: {
-                    _userState.error = action.response.responseText;
-                    console.log(action.response);
+                    _userState.error = 'Server error';
+                    console.warn(action.response);
                 }
             }
 

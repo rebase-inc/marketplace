@@ -34,7 +34,7 @@ var ApproveTalent = React.createClass({
             case _TalentStates.UNAPPROVED:
                 let loadingPath = !!this.props.nomination.loading ? (
                     <g className='rotate'>
-                        <path strokeWidth='2px' d="M0,10 A 10,10 1 0,0 10,0" stroke="#F5B651"/>
+                        <path strokeWidth='2px' d="M0,-10 A 10,10 1 0,1 10,0" stroke="#F5B651"/>
                     </g>
                     ) : null;
                 return (
@@ -91,6 +91,64 @@ var ApproveTalent = React.createClass({
                 break;
             default: throw 'invalid state'; break;
         }
+    }
+});
+
+var Timer = React.createClass({
+    propTypes: {
+        minutesRemaining: React.PropTypes.number.isRequired,
+    },
+    render: function() {
+        let wholeDaysRemaining = Math.floor(this.props.minutesRemaining / (60*24));
+        let wholeHoursRemaining = Math.floor((this.props.minutesRemaining % (60*24)) / 60);
+        let wholeMinutesRemaining = Math.floor(this.props.minutesRemaining % 60);
+        wholeDaysRemaining = (wholeDaysRemaining < 10) ? '0' + wholeDaysRemaining : wholeDaysRemaining;
+        wholeHoursRemaining = (wholeHoursRemaining < 10) ? '0' + wholeHoursRemaining : wholeHoursRemaining;
+        wholeMinutesRemaining = (wholeMinutesRemaining < 10) ? '0' + wholeMinutesRemaining : wholeMinutesRemaining;
+        return (
+            <svg width="92px" height="24px">
+                <g stroke="none" strokeWidth="1" fill="none" fill-rule="evenodd">
+                    <g fill="#2C4568">
+                        <g transform="translate(2.0, 12.0)">
+                            <g>
+                                <text opacity="0.5" fontSize="8">
+                                    <tspan x="12" y="12" textAnchor='middle'>DAYS</tspan>
+                                </text>
+                                <text fontSize="18">
+                                    <tspan x="12" y="3" textAnchor='middle'>{wholeDaysRemaining}</tspan>
+                                </text>
+                            </g>
+                            <g transform="translate(16.5, 0.0)">
+                                <text fontSize="18" opacity='0.5'>
+                                    <tspan x="12" y="2" textAnchor='middle'>:</tspan>
+                                </text>
+                            </g>
+                            <g transform="translate(33.0, 0.0)">
+                                <text opacity="0.5" fontSize="8">
+                                    <tspan x="12" y="12" textAnchor='middle'>HRS</tspan>
+                                </text>
+                                <text fontSize="18">
+                                    <tspan x="12" y="3" textAnchor='middle'>{wholeHoursRemaining}</tspan>
+                                </text>
+                            </g>
+                            <g transform="translate(49.5, 0.0)">
+                                <text fontSize="18" opacity='0.5'>
+                                    <tspan x="12" y="2" textAnchor='middle'>:</tspan>
+                                </text>
+                            </g>
+                            <g transform="translate(66.000000, 0.000000)">
+                                <text opacity="0.5" fontSize="8">
+                                    <tspan x="12" y="12" textAnchor='middle'>MINS</tspan>
+                                </text>
+                                <text id="32" fontSize="18">
+                                    <tspan x="12" y="3" textAnchor='middle'>{wholeMinutesRemaining}</tspan>
+                                </text>
+                            </g>
+                        </g>
+                    </g>
+                </g>
+            </svg>
+        );
     }
 });
 
@@ -360,4 +418,5 @@ module.exports = {
     AddNewProject: AddNewProject,
     ProjectGraph: ProjectGraph,
     FindTalentOverview: FindTalentOverview,
+    Timer: Timer,
 };
