@@ -44,6 +44,7 @@ Dispatcher.register(function(payload) {
         case ActionConstants.GET_TICKET_DATA: handleNewTicketData(action); break;
         case ActionConstants.ADD_COMMENT_TO_TICKET: handleNewComment(action); break;
         case ActionConstants.GET_COMMENT_DETAIL: handleCommentDetail(action); break;
+        case ActionConstants.SELECT_ROLE: handleNewTicketData(action); break;
         default: return true;
     }
 

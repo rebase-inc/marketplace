@@ -1,22 +1,8 @@
-var Dispatcher = require('../dispatcher/RebaseAppDispatcher');
+var Action = require('../utils/Action');
 var ActionConstants = require('../constants/ActionConstants');
-var RequestConstants = require('../constants/RequestConstants');
 var Api = require('../utils/Api');
 
 module.exports = {
-    getRepoData: function() {
-        function responseAction(response) {
-            Dispatcher.handleRequestAction({
-                type: ActionConstants.GET_GITHUB_REPOS,
-                response: response
-            });
-        };
-        function pendingAction(response) {
-            Dispatcher.handleRequestAction({
-                type: ActionConstants.GET_GITHUB_REPOS,
-                response: RequestConstants.PENDING,
-            });
-        };
-        Api.getRepoData(responseAction, pendingAction);
-    },
+    getAccounts: Action.create(ActionConstants.GET_GITHUB_ACCOUNTS,   Api.getGithubAccounts),
+    importRepos: Action.create(ActionConstants.IMPORT_GITHUB_REPOS,   Api.importGithubRepos),
 };

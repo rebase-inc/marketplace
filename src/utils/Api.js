@@ -1,3 +1,5 @@
+var $ = require ('jquery');
+
 var ActionConstants = require('../constants/ActionConstants');
 var AuctionStore = require('../stores/AuctionStore');
 var RequestConstants = require('../constants/RequestConstants');
@@ -128,8 +130,36 @@ var Api = {
         pendingHandler();
         ajax('GET', url, null, responseHandler);
     },
-    getRepoData: function(responseHandler, pendingHandler) {
-        var url = makeUrl("/github/user/repos");
+    getGithubAccounts: function(responseHandler, pendingHandler) {
+        var url = makeUrl("/github_accounts");
+        pendingHandler();
+        ajax('GET', url, null, responseHandler);
+    },
+    importGithubRepos: function(selectedRepos, responseHandler, pendingHandler) {
+        var url = makeUrl("/github/import_repos");
+        pendingHandler();
+        var data = {
+            repos: selectedRepos
+        };
+        ajax('POST', url, data, responseHandler, pendingHandler);
+    },
+    deleteProject: function(project, responseHandler, pendingHandler) {
+        var url = makeUrl("/projects/"+project.id);
+        pendingHandler();
+        ajax('DELETE', url, null, responseHandler);
+    },
+    getProjects: function(responseHandler, pendingHandler) {
+        var url = makeUrl("/projects");
+        pendingHandler();
+        ajax('GET', url, null, responseHandler);
+    },
+    getManagers: function(responseHandler, pendingHandler) {
+        var url = makeUrl("/managers");
+        pendingHandler();
+        ajax('GET', url, null, responseHandler);
+    },
+    getContractors: function(responseHandler, pendingHandler) {
+        var url = makeUrl("/contractors");
         pendingHandler();
         ajax('GET', url, null, responseHandler);
     },

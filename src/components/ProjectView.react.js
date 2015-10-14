@@ -5,12 +5,14 @@ var _ = require('underscore');
 
 // Components
 var ImportProjectModal = require('../components/ImportProjectModal.react');
+var DeleteProjectModal = require('../components/DeleteProjectModal.react');
 
 // Stores
-var UserStore = require('../stores/UserStore');
+var ProjectResource = require('../stores/ProjectStore');
 
 // Actions
 var UserActions = require('../actions/UserActions');
+var ProjectActions = require('../actions/ProjectActions');
 
 // Icons
 var Icons = require('../components/Icons.react');
@@ -24,7 +26,11 @@ var ProfileView = React.createClass({
         currentRole: React.PropTypes.object.isRequired,
     },
     getInitialState: function() {
-        return { modalOpen: false };
+        return {
+            addModalOpen: false,
+            deleteModalOpen: false,
+            projectResource: ProjectResource.getState(),
+        };
     },
     updateProfileSettings: function() {
         var user = {
@@ -35,51 +41,78 @@ var ProfileView = React.createClass({
         }
         UserActions.updateUserSettings(user);
     },
+    componentWillMount: function() {
+        ProjectActions.getProjects();
+    },
     componentDidMount: function() {
+        ProjectResource.addChangeListener(this._onChange);
         handleScrollShadows(this.refs.projectList);
         var node = ReactDOM.findDOMNode(this.refs.projectList);
         node.addEventListener('scroll', handleScrollShadows.bind(null, this.refs.projectList), false);
     },
+    componentWillUnmount: function() {
+        ProjectResource.removeChangeListener(this._onChange);
+    },
     componentDidUpdate: function() {
         handleScrollShadows(this.refs.projectList);
     },
+    _onChange: function() {
+        this.setState(_.extend(this.state, { projectResource: ProjectResource.getState() }));
+    },
+    _deleteProject: function(projectToDelete) {
+        ProjectActions.deleteProject(projectToDelete);
+    },
     _makeProjectElement: function(organization, project) {
         return (
-            <div className='project'>
+            <div className='project' key={project.id}>
                 <Icons.ProjectGraph />
                 <div className='projectDetails'>
                     <span className='orgName'>{organization.name}</span>
                     <span className='projName'>{project.name}</span>
-                    <span className='projDelete'>{'Delete Project?'}</span>
+                    <span className='projDelete' onClick={this._toggleDeleteModal.bind(null, project)} >{'Delete Project?'}</span>
                 </div>
             </div>
         );
     },
-    toggleModal: function() {
-        this.setState({ modalOpen: !this.state.modalOpen });
+    _toggleAddModal: function() {
+        this.setState({ addModalOpen: !this.state.addModalOpen });
+    },
+    _toggleDeleteModal: function(project) {
+        this.setState(_.extend(this.state, {
+            deleteModalOpen: !this.state.deleteModalOpen,
+            projectToDelete: !this.state.deleteModalOpen ? project : null
+        }));
+    },
+    _addToProjects(project, project_id, _) {
+        this.projects.push(this.component._makeProjectElement(project.organization, project));
     },
     render: function() {
         var projects = [];
-        // temp hack until we make managers own projects, instead of organizations
-        var role;
-        var project;
-        this.props.currentUser.roles.forEach(role => role.organization.projects.forEach(project => projects.push(this._makeProjectElement(role.organization, project))));
-        projects.push(this._makeProjectElement({name: 'rebase'}, {name: 'api'}));
-        projects.push(this._makeProjectElement({name: 'rebase'}, {name: 'react-app'}));
-        projects.push(this._makeProjectElement({name: 'rebase'}, {name: 'models'}));
+        this.state.projectResource.allProjects.forEach(function(project) {
+            projects.push(this._makeProjectElement(project.organization, project));
+        }, this);
         return (
             <div className='projectView'>
-                { this.state.modalOpen ? <ImportProjectModal toggleModal={this.toggleModal} {...this.props} /> : null }
+                { this.state.addModalOpen ? <ImportProjectModal
+                    toggleModal={this._toggleAddModal}
+                    importedProjects={this.state.projectResource.allProjects}
+                    {...this.props}
+                /> : null }
+                { this.state.deleteModalOpen ? <DeleteProjectModal
+                    toggleModal={this._toggleDeleteModal}
+                    projectToDelete={this.state.projectToDelete}
+                    deleteProject={this._deleteProject}
+                    {...this.props}
+                /> : null }
                 <div className='projectInfo'>
                     <div ref='projectList' className='projectList'>
                         { projects }
                     </div>
-                    <Icons.AddNewProject onClick={this.toggleModal} />
+                    <Icons.AddNewProject onClick={this._toggleAddModal} />
                 </div>
             </div>
         );
     }
 });
 
-//<button onClick={window.open.bind(null, '/github/', '_blank')}>Authenticate GitHub</button>
 module.exports = ProfileView;

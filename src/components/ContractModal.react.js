@@ -29,10 +29,7 @@ var ContractModal = React.createClass({
         switch (this.props.currentContract.work.state) {
             case 'markComplete':
                 return (
-                    <ModalContainer>
-                        <div onClick={this.props.closeModal} id='modalClose'>
-                            <img src='img/modal-close.svg'/>
-                        </div>
+                    <ModalContainer toggleModal={this.props.closeModal}>
                         <h3>All done?</h3>
                         <h4>The task will be sent to the client for approval.</h4>
                         <textarea className={this.state.missingInput ? 'error' : null} ref='comment' placeholder='Leave a short comment describing the work you did (optional)'/>
@@ -42,10 +39,7 @@ var ContractModal = React.createClass({
                 break;
             case 'markBlocked':
                 return (
-                    <ModalContainer>
-                        <div onClick={this.props.closeModal} id='modalClose'>
-                            <img src='img/modal-close.svg'/>
-                        </div>
+                    <ModalContainer toggleModal={this.props.closeModal}>
                         <h3>Blocked?</h3>
                         <h4>Let the client know you need something to continue</h4>
                         <textarea className={this.state.missingInput ? 'error' : null} ref='comment' placeholder='Please leave a comment describing why you are blocked.'/>
@@ -55,10 +49,7 @@ var ContractModal = React.createClass({
                 break;
             case 'blocked':
                 return (
-                    <ModalContainer>
-                        <div onClick={this.props.closeModal} id='modalClose'>
-                            <img src='img/modal-close.svg'/>
-                        </div>
+                    <ModalContainer toggleModal={this.props.closeModal}>
                         <h3>Not blocked anymore?</h3>
                         <h4>You'll be able to resume work on this task</h4>
                         <textarea className={this.state.missingInput ? 'error' : null} ref='comment' placeholder='Please leave a comment describing why you are no longer blocked.'/>
@@ -68,10 +59,7 @@ var ContractModal = React.createClass({
                 break;
             case 'resolveMediation':
                 return (
-                    <ModalContainer>
-                        <div onClick={this.props.closeModal} id='modalClose'>
-                            <img src='img/modal-close.svg'/>
-                        </div>
+                    <ModalContainer toggleModal={this.props.closeModal}>
                         <h3>The client doesn't agree that you're finished with the work.</h3>
                         <h4>How do you want to resolve? You should discuss with the client before making a final decision.</h4>
                         <textarea className={this.state.missingInput ? 'error' : null} ref='comment' placeholder='Leave a comment explaining your decision'/>
