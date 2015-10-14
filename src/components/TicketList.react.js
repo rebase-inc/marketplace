@@ -7,7 +7,7 @@ var Ticket = require('../components/Ticket.react');
 var Fuse = require('../utils/Fuse');
 
 function searchTickets(tickets, searchText) {
-    var fuseSearch = new Fuse(tickets, {threshold: 0.35, keys: ['title', 'description', 'skillsRequired', 'project.name', 'project.organization.name'], id: 'id'});
+    var fuseSearch = new Fuse(tickets, {threshold: 0.35, keys: ['title', 'skillsRequired', 'project.name', 'project.organization.name'], id: 'id'});
     return fuseSearch.search(searchText.substring(0, 32));
 }
 

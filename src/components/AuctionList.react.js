@@ -7,7 +7,7 @@ var Auction = require('../components/Auction.react');
 var Fuse = require('../utils/Fuse');
 
 function searchAuctions(tickets, searchText) {
-    var fuseSearch = new Fuse(tickets, {threshold: 0.35, keys: ['ticket.title', 'ticket.description', 'ticket.project.name', 'ticket.project.organization.name'], id: 'id'});
+    var fuseSearch = new Fuse(tickets, {threshold: 0.35, keys: ['ticket.title', 'ticket.project.name', 'ticket.project.organization.name'], id: 'id'});
     return fuseSearch.search(searchText.substring(0, 32));
 }
 
