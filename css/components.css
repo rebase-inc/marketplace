@@ -9,13 +9,22 @@ input[type=checkbox] {
     display: none;
 }
 
+.checkbox {
+    height: 20px;
+    cursor: pointer;
+}
+
 input[type=checkbox] + label {
     width: 20px;
     height: 20px;
-    display: block;
+    display: inline-block;
     background: url('../img/checkbox-unchecked.svg');
     background-size: contain;
     cursor: pointer;
+}
+
+td > input[type=checkbox] + label {
+    display: block;
 }
 
 input[type=checkbox]:checked + label {

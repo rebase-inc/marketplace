@@ -20,8 +20,8 @@ var SearchBar = React.createClass({
     },
     render: function() {
         return (
-            <form id='ticketSearchBar'>
-                <div id='searchBox' className={this.state.focused ? 'focused' : null}>
+            <div id='ticketSearchBar'>
+                <form id='searchBox' className={this.state.focused ? 'focused' : null}>
                     <img src='img/search.svg' id='searchImg' />
                     <input type='text'
                         onFocus={this.onSearchFocus}
@@ -31,8 +31,9 @@ var SearchBar = React.createClass({
                         placeholder='Search tickets'
                         ref='filterTextInput'/>
                     <img src='img/clear-search.svg' id='clearSearchImg' onClick={this.props.onUserInput.bind(null, '')} className={!this.props.searchText[0] ? 'hidden' : ''}/>
-                </div>
-            </form>
+                </form>
+                { !!this.props.children ? <div id='searchBarExtras'>{this.props.children}</div> : null }
+            </div>
        );
     }
 });

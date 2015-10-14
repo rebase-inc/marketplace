@@ -1,10 +1,11 @@
 var React = require('react');
+var ReactDOM = require('react-dom');
 
-// Components
 var NothingHere = require('../components/NothingHere.react');
 var LoadingAnimation = require('../components/LoadingAnimation.react');
 var Ticket = require('../components/Ticket.react');
 var Fuse = require('../utils/Fuse');
+var handleScrollShadows = require('../utils/Style').handleScrollShadows;
 
 function searchTickets(tickets, searchText) {
     var fuseSearch = new Fuse(tickets, {threshold: 0.35, keys: ['title', 'description', 'skillsRequired', 'project.name', 'project.organization.name'], id: 'id'});
@@ -31,7 +32,7 @@ var TicketList = React.createClass({
         if (!!this.props.allTickets.length) {
             return (
                 <table id='ticketList' className='contentList'>
-                    <tbody>
+                    <tbody ref='tableBody'>
                         { this.props.allTickets.filter(ticket => ticketIDs.indexOf(ticket.id) != -1).map(makeTicketElement) }
                     </tbody>
                 </table>

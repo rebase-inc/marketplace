@@ -14,9 +14,11 @@ let UserActions = require('../actions/UserActions');
 
 // Components
 var SingleTicketView = require('../components/SingleTicketView.react');
+var NewTicketModal = require('../components/NewTicketModal.react');
 var TicketList = require('../components/TicketList.react');
 var SearchBar = require('../components/SearchBar.react');
 var NothingHere = require('../components/NothingHere.react');
+var Icons = require('../components/Icons.react');
 
 var TicketView = React.createClass({
     propTypes: {
@@ -82,10 +84,14 @@ var TicketView = React.createClass({
                 props.searchText = this.state.searchText;
                 props.findTalent = this.findTalent;
                 props.changeSearchText = this.handleUserInput;
+                props.modalOpen = this.state.modalOpen;
+                props.toggleModal = this.toggleModal;
+                console.log(this.props.currentRole);
                 return (
                     <div className='ticketView'>
-                        <SearchBar searchText={this.state.searchText} onUserInput={this.handleUserInput}/>
+                        <SearchBar searchText={this.state.searchText} onUserInput={this.handleUserInput}><Icons.AddTicket onClick={this.toggleModal}/></SearchBar>
                         <TicketList {...props} />
+                        { !!this.state.modalOpen ? <NewTicketModal organization={this.props.currentRole.organization} toggleModal={this.toggleModal} /> : null }
                     </div>
                 );
                 break;
