@@ -1,6 +1,9 @@
 var React = require('react');
 
 var ModalContainer = React.createClass({
+    propTypes: {
+        toggleModal: React.PropTypes.func.isRequired,
+    },
     render: function() {
         return (
             <div id='modalView' className='noselect'>

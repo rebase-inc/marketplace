@@ -86,12 +86,11 @@ var TicketView = React.createClass({
                 props.changeSearchText = this.handleUserInput;
                 props.modalOpen = this.state.modalOpen;
                 props.toggleModal = this.toggleModal;
-                console.log(this.props.currentRole);
                 return (
                     <div className='ticketView'>
                         <SearchBar searchText={this.state.searchText} onUserInput={this.handleUserInput}><Icons.AddTicket onClick={this.toggleModal}/></SearchBar>
                         <TicketList {...props} />
-                        { !!this.state.modalOpen ? <NewTicketModal organization={this.props.currentRole.organization} toggleModal={this.toggleModal} /> : null }
+                        { !!this.state.modalOpen ? <NewTicketModal project={this.props.currentRole.project} toggleModal={this.toggleModal} /> : null }
                     </div>
                 );
                 break;

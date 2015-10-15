@@ -223,6 +223,15 @@ var Api = {
         }
         ajax('POST', url, data, responseHandler);
     },
+    createInternalTicket: function(project, title, responseHandler, pendingHandler) {
+        pendingHandler();
+        let url = makeUrl('/internal_tickets');
+        let data = {
+            project: { 'id': project.id },
+            title: { 'title': title },
+        }
+        ajax('POST', url, data, responseHandler);
+    },
     approveNomination: function(nomination, responseHandler, pendingHandler) {
         var url = makeUrl('/nominations/' + nomination.contractor.id + '/' + nomination.ticket_set.id);
         if (pendingHandler) { pendingHandler(); }

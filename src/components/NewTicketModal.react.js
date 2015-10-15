@@ -5,44 +5,40 @@ var ReactDOM = require('react-dom');
 var ModalContainer = require('../components/ModalContainer.react');
 var Icons = require('../components/Icons.react');
 
-var GithubActions = require('../actions/GithubActions');
-
-var GithubStore = require('../stores/GithubStore');
+var TicketActions = require('../actions/TicketActions');
 
 var viewConstants = require('../constants/viewConstants');
 var handleScrollShadows = require('../utils/Style').handleScrollShadows;
 
-var ImportProjectModal = React.createClass({
-    propTypes: {
-        organization: React.PropTypes.object.isRequired,
-    },
-    getInitialState: () => ({ githubSync: true }),
-    toggleGithubSync: function() {
+class ImportProjectModal extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = { githubSync: true };
+        this.toggleGithubSync = this.toggleGithubSync.bind(this);
+        this._createTicket = this._createTicket.bind(this);
+    }
+    toggleGithubSync() {
         this.setState({ githubSync: !this.state.githubSync });
-    },
-    _createTicket: () => {
+    }
+    _createTicket() {
         let title = ReactDOM.findDOMNode(this.refs.ticketTitle).value;
-        let project = this.props.organization.projects[0];
         if (this.state.githubSync) {
-            TicketActions.createGithubTicket(project, title);
+            TicketActions.createGithubTicket(this.props.project, title);
         } else {
-            TicketActions.createInternalTicket(project, title);
+            TicketActions.createInternalTicket(this.props.project, title);
         }
-    },
-    render: function() {
+    }
+    render() {
         return (
-            <ModalContainer>
-                <div onClick={this.props.toggleModal} id='modalClose'>
-                    <img src='img/modal-close.svg'/>
-                </div>
+            <ModalContainer toggleModal={this.props.toggleModal}>
                 <h3>Create New Ticket</h3>
-                <h4>{`${this.props.organization.projects[0].name} (${this.props.organization.name})`}</h4>
+                <h4>{`${this.props.project.name} (${this.props.project.organization.name})`}</h4>
                 <Icons.Checkbox toggle={this.toggleGithubSync} checked={this.state.githubSync} label='Sync with GitHub'/>
                 <textarea required ref='ticketTitle' placeholder="Give your ticket a title" />
-                <button>Create Ticket</button>
+                <button onClick={this._createTicket}>Create Ticket</button>
             </ModalContainer>
         );
     }
-});
+}
 
 module.exports = ImportProjectModal;

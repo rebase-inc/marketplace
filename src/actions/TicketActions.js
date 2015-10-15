@@ -4,6 +4,12 @@ var RequestConstants = require('../constants/RequestConstants');
 var Api = require('../utils/Api');
 
 module.exports = {
+    createInternalTicket: function(project, title) {
+        let actionType = ActionConstants.CREATE_INTERNAL_TICKET;
+        let responseAction = (res, status) => Dispatcher.handleRequestAction({ type: actionType, status: status, response: res });
+        let pendingAction = (res, status) => Dispatcher.handleRequestAction({ type: actionType, status: status, response: res });
+        Api.createInternalTicket(project, title, responseAction, pendingAction);
+    },
     getTicketData: function() {
         var pendingAction = function() {
             Dispatcher.handleRequestAction({
