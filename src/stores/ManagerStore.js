@@ -22,6 +22,14 @@ ManagerStore = _.extend(ManagerStore, {
         managers.forEach( mgr => _managerData.allManagers.set(mgr.id, mgr) );
         this.emitChange();
     },
+    rm_project: function(project_id) {
+        _managerData.allManagers.forEach(function(mgr, mgr_id) {
+            if (mgr.project.id==project_id) {
+                _managerData.allManagers.delete(mgr_id);
+            }
+        });
+        this.emitChange();
+    },
 });
 
 function _intoMap(map, manager) {
