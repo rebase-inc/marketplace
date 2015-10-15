@@ -14,14 +14,6 @@ var ModalContainer = require('../components/ModalContainer.react');
 var LoadingAnimation = require('../components/LoadingAnimation.react');
 var Icons = require('../components/Icons.react');
 
-
-
-
-// GithubAccount : {
-//     orgs: [
-//          { org: { projects: [ { name: 'rebase-inc' code_repository: { repo_id: 'some data' } } ] } }
-//     ]
-// }
 var ImportProjectModal = React.createClass({
     getInitialState: () => _.extend({ projectsToImport: new Set() }, GithubStore.getState()),
     componentWillMount: () => GithubActions.getAccounts(),
