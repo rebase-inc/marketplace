@@ -63,13 +63,15 @@ var ProfileView = React.createClass({
         ProjectActions.deleteProject(projectToDelete);
     },
     _makeProjectElement: function(organization, project) {
+        var deleteSpan = this.props.currentRole.project.id != project.id ? (<span className='projDelete' onClick={this._toggleDeleteModal.bind(null, project)} >{'Delete Project?'}</span>) : (<span className='projDelete'/>);
+                    
         return (
             <div className='project' key={project.id}>
                 <Icons.ProjectGraph />
                 <div className='projectDetails'>
                     <span className='orgName'>{organization.name}</span>
                     <span className='projName'>{project.name}</span>
-                    <span className='projDelete' onClick={this._toggleDeleteModal.bind(null, project)} >{'Delete Project?'}</span>
+                    {deleteSpan}
                 </div>
             </div>
         );
