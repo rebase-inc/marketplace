@@ -1,48 +1,58 @@
 var _ = require('underscore');
+var EventEmitter = require('events').EventEmitter;
 
-var Store = require('../utils/Store');
+// Dispatcher
+var Dispatcher = require('../dispatcher/RebaseAppDispatcher');
+
 var ActionConstants = require('../constants/ActionConstants');
 var RequestConstants = require('../constants/RequestConstants');
 var ProjectStore = require('../stores/ProjectStore');
 var ManagerStore = require('../stores/ManagerStore');
 
-
 //Define initial data points
-var _githubData = {
-    loading:        true,
-    allAccounts:    [],
-}
 
-var GithubStore = Store.newStore(function() {
-    return _githubData;
+let _loading = false;
+let _allAccounts = [];
+let _allRepos = [];
+
+let GithubStore = _.extend({}, EventEmitter.prototype, {
+    getState: () => ({ loading: _loading, allAccounts: _allAccounts, allRepos: _allRepos }),
+    emitChange: (actionType) => GithubStore.emit('change', actionType),
+    addChangeListener: (callback) => GithubStore.on('change', callback),
+    removeChangeListener: (callback) => GithubStore.removeListener('change', callback),
 });
 
-function successGetAccounts(action) {
-    _githubData.loading = false;
-    _githubData.allAccounts = action.response.github_accounts;
+function handleNewAccounts(action) {
+    switch (action.status) {
+        case RequestConstants.PENDING: _loading = true; break;
+        case RequestConstants.TIMEOUT: _loading = false; console.warn(action.response); break;
+        case RequestConstants.ERROR: _loading = false; console.warn(action.response); break;
+        case RequestConstants.SUCCESS:
+            _loading = false;
+            _allAccounts = action.response.github_accounts;
+            _allRepos = [];
+            for ( let account of _allAccounts ) {
+                for ( let organization of account.orgs ) {
+                    for ( let project of organization.org.projects ) {
+                        _allRepos.push(project.code_repository);
+                    }
+                }
+            }
+            break;
+        default: console.warn('Invalid status: ' + action.status); break;
+    }
 };
 
-Store.registerDispatcher(
-    GithubStore,
-    ActionConstants.GET_GITHUB_ACCOUNTS,
-    successGetAccounts,
-    Store.defaultPendingAndErrorHandler.bind(_githubData)
-);
-
-function successImportRepos(action) {
-    _githubData.loading = false;
-    var _updated_repos = action.response.repos; // TODO update repository store once built
-    var _updated_orgs = action.response.orgs; // TODO update organization store once built
-    var _updated_projects = action.response.projects;
-    ProjectStore.update(action.response.projects);
-    ManagerStore.add(action.response.managers);
-};
-
-Store.registerDispatcher(
-    GithubStore,
-    ActionConstants.IMPORT_GITHUB_REPOS,
-    successImportRepos,
-    Store.defaultPendingAndErrorHandler.bind(_githubData)
-);
+GithubStore.dispatchToken = Dispatcher.register(function(payload) {
+    var action = payload.action;
+    switch(action.type) {
+        case ActionConstants.GET_GITHUB_ACCOUNTS: handleNewAccounts(action); break;
+        case ActionConstants.IMPORT_GITHUB_REPOS: _loading = false; break;
+        default: return true;
+    }
+    // If action was responded to, emit change event
+    GithubStore.emitChange(action.type);
+    return true;
+});
 
 module.exports = GithubStore;

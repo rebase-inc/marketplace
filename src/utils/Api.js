@@ -136,11 +136,11 @@ var Api = {
         ajax('GET', url, null, responseHandler);
     },
     importGithubRepos: function(selectedRepos, responseHandler, pendingHandler) {
-        var url = makeUrl("/github/import_repos");
+        let url = makeUrl("/github/import_repos");
         pendingHandler();
-        var data = {
-            repos: selectedRepos
-        };
+        let repos = {};
+        Array.from(selectedRepos).forEach((repo) => repos[repo.id] = repo); // hack because api expects weird data format
+        let data = { repos: repos };
         ajax('POST', url, data, responseHandler, pendingHandler);
     },
     deleteProject: function(project, responseHandler, pendingHandler) {
