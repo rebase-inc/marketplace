@@ -228,7 +228,7 @@ var Api = {
         let url = makeUrl('/internal_tickets');
         let data = {
             project: { 'id': project.id },
-            title: { 'title': title },
+            title: title,
         }
         ajax('POST', url, data, responseHandler);
     },
