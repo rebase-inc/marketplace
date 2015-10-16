@@ -9,10 +9,6 @@ var Icons = require('../components/Icons.react');
 var UserActions = require('../actions/UserActions');
 var ManagerActions = require('../actions/ManagerActions');
 
-//Stores
-var ManagerStore = require('../stores/ManagerStore');
-var ContractorStore = require('../stores/ContractorStore');
-
 // Constants
 var ViewTypes = require('../constants/ViewConstants').ViewTypes;
 var ContractorViews = require('../constants/ViewConstants').ContractorViews;
@@ -135,81 +131,40 @@ var RoleSelector = React.createClass({
         currentRole: React.PropTypes.object.isRequired,
         selectRole: React.PropTypes.func.isRequired,
     },
-    getInitialState: function() {
-        return {
-            open: false,
-            allManagers: ManagerStore.getState().allManagers,
-            allContractors: ContractorStore.getState().allContractors,
-        }
-    },
-    componentWillMount: function() {
-        ManagerStore.addChangeListener(this._onManagerChange);
-        ContractorStore.addChangeListener(this._onContractorChange);
-    },
-    componentWillUnmount: function() {
-        ManagerStore.removeChangeListener(this._onManagerChange);
-        ContractorStore.removeChangeListener(this._onContractorChange);
-    },
-    _onManagerChange: function() {
-        this.setState(_.extend(this.state, ManagerStore.getState()));
-    },
-    _onContractorChange: function() {
-        this.setState(_.extend(this.state, ContractorStore.getState()));
-    },
+    getInitialState: () => ({ open: false }),
     toggleDropdown: function() {
-        this.setState(_.extend(this.state, { open: !this.state.open }));
-    },
-    roleName: function(role) {
-        switch(role.type) {
-            case 'manager': {
-                if (role.hasOwnProperty('project')) {
-                    return role.project.organization.name+'/'+role.project.name;
-                } else {
-                    return 'Manager View';
-                }
-            }; break;
-            case 'contractor': return 'Contractor View';
-            case 'owner': return 'Owner View';
-        };
+        this.setState({ open: !this.state.open })
     },
     render: function() {
+        let dropdown = <RoleSelectorDropdown selectRole={this.props.selectRole.bind(null, this.props.currentUser)} roles={this.props.currentUser.roles} />;
         return (
             <div id='roleSelector' className={this.state.open ? 'open' : ''} onClick={this.toggleDropdown}>
-                <span> {this.roleName(this.props.currentRole)} </span>
+                <span>{ this.props.currentRole.type == 'manager' ? this.props.currentRole.project.name : this.props.currentRole.type }</span>
             <Icons.Dropdown />
-            { this.state.open ? <RoleSelectorDropdown {...this.props} roleName={this.roleName} allManagers={this.state.allManagers} allContractors={this.state.allContractors}/> : null }
+            { !!this.state.open ? dropdown : null }
             </div>
         );
     }
 });
 
-function makeRoleElement (role) {
+let RoleSelectorDropdown = (props) => {
     return (
-        <li className={role == this.props.currentRole ? 'selected': ''} onClick={this.props.selectRole.bind(null, this.props.currentUser, role.id)} key={role.id}>
-            { this.props.roleName(role) }
+        <div id='roleSelectorDropdown'>
+            <ul>
+                { props.roles.map((role) => <RoleSelection selectRole={props.selectRole.bind(null, role.id)} role={role} />) }
+            </ul>
+        </div>
+    );
+}
+
+let RoleSelection = (props) => {
+    let className = props.role == props.currentRole ? 'selected' : '';
+    return (
+        <li className={className} key={props.role.id} onClick={props.selectRole.bind(null, props.role.id)}>
+            { props.role.type == 'manager' ? props.role.project.name : props.role.type }
         </li>
     );
-};
-
-var RoleSelectorDropdown = React.createClass({
-    propTypes: {
-        allManagers: React.PropTypes.object.isRequired,
-        allContractors: React.PropTypes.object.isRequired,
-    },
-    render: function() {
-        var currentUserMgrRoles = Array.from(this.props.allManagers.values()).filter(mgr => mgr.user.id == this.props.currentUser.id);
-        var currentUserContractorRoles = Array.from(this.props.allContractors.values()).filter(contractor=> contractor.user.id==this.props.currentUser.id);
-        var managerRoleElements = currentUserMgrRoles.map(mgr => makeRoleElement.bind(this)(mgr));
-        var contractorRoleElements = currentUserContractorRoles.map(contractor=> makeRoleElement.bind(this)(contractor));
-        !!managerRoleElements.length ? managerRoleElements.unshift(<li className='header' key='manager-header'>Manager</li>) : null;
-        !!contractorRoleElements.length ? contractorRoleElements.unshift(<li className='header' key='contractor-header'>Contractor</li>) : null;
-        return (
-            <div id='roleSelectorDropdown'>
-                <ul> { managerRoleElements } { contractorRoleElements } </ul>
-            </div>
-        );
-    }
-});
+}
 
 var ViewSelection = React.createClass({
     render: function() {

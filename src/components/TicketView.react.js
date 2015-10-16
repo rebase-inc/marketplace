@@ -42,7 +42,6 @@ var TicketView = React.createClass({
         this.setState({ searchText: searchText });
     },
     findTalent: function(ticketID) {
-        console.log('finding talent for ticket id ', ticketID);
         if (!!ticketID) {  TicketActions.selectTicket(ticketID); }
         this.setState({ modalOpen: true });
     },

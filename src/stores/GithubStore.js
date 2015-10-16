@@ -6,8 +6,6 @@ var Dispatcher = require('../dispatcher/RebaseAppDispatcher');
 
 var ActionConstants = require('../constants/ActionConstants');
 var RequestConstants = require('../constants/RequestConstants');
-var ProjectStore = require('../stores/ProjectStore');
-var ManagerStore = require('../stores/ManagerStore');
 
 //Define initial data points
 
