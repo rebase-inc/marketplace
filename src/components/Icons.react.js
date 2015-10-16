@@ -188,6 +188,7 @@ var Checkbox = React.createClass({
         toggle: React.PropTypes.func,
         label: React.PropTypes.string,
     },
+    getDefaultProps: () => ({ label: '' }),
     getInitialState: () => ({ width: 20 }),
     componentDidMount: function() {
         // After mounting, resize the svg to fit the label, if there is one

@@ -2,6 +2,7 @@ var _ = require('underscore');
 
 var ActionConstants = require('../constants/ActionConstants');
 var RequestConstants = require('../constants/RequestConstants');
+var ManagerStore = require('../stores/ManagerStore');
 var Store = require('../utils/Store');
 
 var _projectData = {
@@ -26,6 +27,7 @@ function successDeleteProject(action) {
     _projectData.loading = false;
     var [project] = action.args;
     _projectData.allProjects.delete(project.id);
+    ManagerStore.rm_project(project.id);
 };
 
 Store.registerDispatcher(
