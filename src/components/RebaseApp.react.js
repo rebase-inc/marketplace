@@ -16,9 +16,6 @@ var ProfileView = require('../components/ProfileView.react');
 var ProjectView = require('../components/ProjectView.react');
 
 var RebaseApp = React.createClass({
-    selectRole: function(user, roleID) {
-        UserActions.selectRole(user, roleID);
-    },
     getInitialState: function() {
         return _.extend({ modalIsOpen: false }, UserStore.getState());
     },

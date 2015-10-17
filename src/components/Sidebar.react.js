@@ -20,7 +20,6 @@ var Sidebar = React.createClass({
         currentUser: React.PropTypes.object.isRequired,
         currentRole: React.PropTypes.object.isRequired,
         currentView: React.PropTypes.object.isRequired,
-        selectRole: React.PropTypes.func.isRequired,
     },
     render: function() {
         return (
@@ -38,7 +37,6 @@ var SidebarNav = React.createClass({
         currentUser: React.PropTypes.object.isRequired,
         currentRole: React.PropTypes.object.isRequired,
         currentView: React.PropTypes.object.isRequired,
-        selectRole: React.PropTypes.func.isRequired,
     },
     render: function() {
         var viewProps = {
@@ -47,7 +45,6 @@ var SidebarNav = React.createClass({
         var roleProps = {
             currentUser: this.props.currentUser,
             currentRole: this.props.currentRole,
-            selectRole: this.props.selectRole,
         }
         var allViews = [];
         // the views are pushed explicitly, because javascript implementations don't guarantee object key order
@@ -129,7 +126,6 @@ var RoleSelector = React.createClass({
     propTypes: {
         currentUser: React.PropTypes.object.isRequired,
         currentRole: React.PropTypes.object.isRequired,
-        selectRole: React.PropTypes.func.isRequired,
     },
     getInitialState: () => ({ open: false }),
     toggleDropdown: function(state) {
@@ -143,20 +139,20 @@ var RoleSelector = React.createClass({
         let tableHeight = !!this.state.open ? 40*(roles.length + 1) + 'px' : '40px';
         return (
             <div id='roleSelector' style={{height: tableHeight}} onClick={this.toggleDropdown} onMouseLeave={this.toggleDropdown.bind(null, false)}>
-                { <RoleElement role={this.props.currentRole} selected={true} /> }
-                { roles.map(role => <RoleElement role={role} select={this.props.selectRole} />) }
+                { <RoleElement role={this.props.currentRole} selected={true} currentUser={this.props.currentUser} /> }
+                { roles.map(role => <RoleElement role={role} currentUser={this.props.currentUser} />) }
             </div>
         );
     }
 });
 
 let RoleElement = (props) => {
-    let selectRole = !!props.select ? props.select.bind(null, props.role.id) : null;
     if (props.role.type == 'owner') {
         throw 'Owner is an invalid role type for RoleElement component';
     }
+    let select = !!props.selected ? null : UserActions.selectRole.bind(null, {id: props.currentUser.id}, props.role.id);
     return (
-        <div className={props.selected ? 'selected role' : 'role'} key={props.role.id} onClick={selectRole}>
+        <div className={props.selected ? 'selected role' : 'role'} key={props.role.id} onClick={select}>
             <div>{ props.role.type == 'manager' ? props.role.project.name : 'Contractor View'}</div>
             { props.role.type == 'manager' ? <div>{props.role.project.organization.name}</div> : null }
         </div>

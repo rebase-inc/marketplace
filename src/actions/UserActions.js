@@ -82,6 +82,9 @@ module.exports = {
         Api.updateProfilePhoto(file, responseHandler, pendingHandler);
     },
     selectRole: function(user, role_id) {
+        if (typeof(user) != 'object' || typeof(role_id) != 'number') {
+            throw 'Invalid types for user and role_id: ' + typeof(user) + ' and ' + typeof(role_id);
+        }
         let actionType = ActionConstants.SELECT_ROLE;
         let pendingAction = () => Dispatcher.handleRequestAction({ type: actionType, status: RequestConstants.PENDING });
         let responseAction = (res, status) => Dispatcher.handleRequestAction({ type: actionType, status: status, response: res });

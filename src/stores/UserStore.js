@@ -19,19 +19,13 @@ var ManagerViews = require('../constants/ViewConstants').ManagerViews;
 var UserActions = require('../actions/UserActions');
 var ManagerActions = require('../actions/ManagerActions');
 
-// Stores
-var ManagerStore = require('../stores/ManagerStore');
-var ContractorStore = require('../stores/ContractorStore');
-
 var _userCookie = Cookies.get('user');
 
 var _userState = {
+    loggedIn: false,
     currentUser: null,
-    loggedIn: null,
     currentView: null,
     currentRole: null,
-    currentUserManagerRoles: [],
-    currentUserContractorRoles: [],
     loading: false,
     error: null,
 };
@@ -87,37 +81,8 @@ function handleCreateAuction(action) {
                 case 'owner': console.warn('Invalid action CREATE_AUCTION for owner role'); break;
             }
             break;
-        default:
-            console.log(action);
-            throw 'Invalid status from action CREATE_AUCTION: ' + action.status;
+        default: throw 'Invalid status from action CREATE_AUCTION: ' + action.status;
     }
-}
-
-function updateCurrentRoleAndView() {
-    var role = _userState.currentUser.current_role
-    switch (role.type) {
-        case 'contractor': {
-            _userState.currentView = ContractorViews[ViewTypes.OFFERED];
-            var contractors = ContractorStore.getState().allContractors;
-            if (contractors.has(role.id)) {
-                role = contractors.get(role.id);
-            }
-            break;
-        }
-        case 'manager': {
-            _userState.currentView = ManagerViews[ViewTypes.NEW];
-            var managers = ManagerStore.getState().allManagers;
-            if (managers.has(role.id)) {
-                role = managers.get(role.id);
-            }
-            break;
-        }
-        case 'owner': {
-            _userState.currentView = ManagerViews[ViewTypes.NEW];
-            break;
-        }
-    }
-    _userState.currentRole = role;
 }
 
 function updateUserDetail(action) {
@@ -126,11 +91,9 @@ function updateUserDetail(action) {
         case RequestConstants.TIMEOUT: _userState.loading = false; console.warn(action.response); break;
         case RequestConstants.ERROR: _userState.loading = false; console.warn(action.response); break;
         case null: _userState.loading = false; console.warn('Undefined data!');
-        default:
+        case RequestConstants.SUCCESS:
+            _.extend(_userState.currentUser, action.response.user);
             _userState.loading = false;
-            _userState.currentUser = action.response.user;
-            updateCurrentRoleAndView();
-            
             Cookies.set('user', JSON.stringify(_userState.currentUser), 1);
     }
 }
@@ -152,12 +115,20 @@ function handleLogin(action) {
             }
 
         } break;
-        case null: _userState.loading = false; console.warn('Undefined data!');
-        default:
+        case RequestConstants.SUCCESS:
             _userState.loading = false;
             _userState.currentUser = action.response.user;
             _userState.loggedIn = !!_userState.currentUser;
-            updateCurrentRoleAndView();
+            // hack because code everywhere expects the role to be in a different place than it is
+            Object.defineProperty(_userState, 'currentRole', {
+                get: () => _userState.currentUser.current_role,
+                configurable: true, // a hack to let us repeatedly set the property so we don't have to be careful
+            });
+            switch (_userState.currentRole.type) {
+                case 'manager': _userState.currentView = ManagerViews[ViewTypes.NEW]; break;
+                case 'contractor': _userState.currentView = ContractorViews[ViewTypes.OFFERED]; break;
+                case 'owner': throw 'Owner is an invalid current role type!'; break;
+            }
             Cookies.set('user', JSON.stringify(_userState.currentUser), 1);
     }
 }
