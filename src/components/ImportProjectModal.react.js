@@ -15,10 +15,15 @@ var LoadingAnimation = require('../components/LoadingAnimation.react');
 var Icons = require('../components/Icons.react');
 
 var ImportProjectModal = React.createClass({
+    propTypes: {
+        importedProjects: React.PropTypes.object.isRequired,
+    },
     getInitialState: () => _.extend({ projectsToImport: new Set() }, GithubStore.getState()),
-    componentWillMount: () => GithubActions.getAccounts(),
-    componentDidMount: function() {
+    componentWillMount: function() {
         GithubStore.addChangeListener(this._onChange);
+        GithubActions.getAccounts();
+    },
+    componentDidMount: function() {
         handleScrollShadows(this.refs.projectImportWrapper);
         var node = ReactDOM.findDOMNode(this.refs.projectImportWrapper);
         node.addEventListener('scroll', handleScrollShadows.bind(null, this.refs.projectImportWrapper), false);
@@ -30,6 +35,7 @@ var ImportProjectModal = React.createClass({
         GithubStore.removeChangeListener(this._onChange);
     },
     _onChange: function() {
+        console.log('calling on change');
         this.setState(GithubStore.getState());
     },
     toggleProject: function(project) {
@@ -39,6 +45,10 @@ var ImportProjectModal = React.createClass({
         }
     },
     _makeProjectElement: function(repo) {
+        let managerRoles = this.props.currentUser.roles.filter(role => role.type == 'manager');
+        if (managerRoles.filter(role => role.project.name == repo.name && repo.project.organization.login).length) {
+            return null;
+        }
         return (
             <tr className='githubProject' key={repo.repo_id}>
                 <td className='checkbox'>
@@ -57,7 +67,11 @@ var ImportProjectModal = React.createClass({
         GithubActions.importRepos(this.state.projectsToImport);
         this.props.toggleModal();
     },
+    addGithubAccount: function() {
+        window.location.assign('/github', '_blank')
+    },
     render: function() {
+        console.log('rendering with loading: ', this.state.loading);
         if (this.state.loading) {
             return (
                 <ModalContainer toggleModal={this.props.toggleModal}>
@@ -69,6 +83,7 @@ var ImportProjectModal = React.createClass({
             return (
                 <ModalContainer toggleModal={this.props.toggleModal}>
                     <h3>You must authorize a Github account first!</h3>
+                    <button onClick={this.addGithubAccount}>Add Github Account</button>
                 </ModalContainer>
             );
         } else {
@@ -78,7 +93,7 @@ var ImportProjectModal = React.createClass({
                     <div id='projectImportWrapper' ref='projectImportWrapper'>
                         <table>
                             <tbody>
-                                { this.state.allRepos.filter(r => !this.props.importedProjects.has(r.name)).map(this._makeProjectElement) }
+                                { this.state.allRepos.map(this._makeProjectElement) }
                             </tbody>
                         </table>
                     </div>

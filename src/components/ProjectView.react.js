@@ -69,7 +69,7 @@ var ProfileView = React.createClass({
         let modal;
         switch (this.state.modalType) {
             case ModalTypes.ADD_PROJECT:
-                modal = <ImportProjectModal toggleModal={() => this.setState({ modalType: ModalTypes.CLOSED })} importedProjects={[]} {...this.props}/>;
+                modal = <ImportProjectModal toggleModal={() => this.setState({ modalType: ModalTypes.CLOSED })} {...this.props}/>;
                 break;
             case ModalTypes.DELETE_PROJECT:
                 modal = <DeleteProjectModal toggleModal={() => this.setState({ modalType: ModalTypes.CLOSED })} />;
@@ -78,7 +78,6 @@ var ProfileView = React.createClass({
                 modal = null;
                 break;
         }
-        console.log(this.props.currentUser);
         return (
             <div className='projectView'>
                 { modal }

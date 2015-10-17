@@ -13,11 +13,7 @@ var AuctionStore = require('../stores/AuctionStore');
 var viewConstants = require('../constants/viewConstants');
 var Graph = require('../utils/Graph');
 
-var _ModalStates = keyMirror({ NEW: null, SUBMITTED: null, CONFIRMED: null });
 var CreateAuctionModal = React.createClass({
-    getInitialState: function() {
-        return {view: _ModalStates.NEW}
-    },
     createAuction: function() {
         AuctionActions.createAuction(this.props.ticket, this.state.cutoff_price);
         this.props.toggleModal();

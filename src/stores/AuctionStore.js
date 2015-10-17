@@ -131,7 +131,7 @@ function handleModifiedNomination(action) {
         case RequestConstants.ERROR: _loading = false; console.warn(action.response); break;
         case RequestConstants.PENDING: _loading = true; break;
         case RequestConstants.SUCCESS:
-            _loading = true; 
+            _loading = true;
             let auction = action.response.nomination.ticket_set.auction;
             let contractor = action.response.nomination.contractor;
             let nomination = action.response.nomination;

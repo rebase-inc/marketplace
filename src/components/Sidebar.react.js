@@ -132,37 +132,34 @@ var RoleSelector = React.createClass({
         selectRole: React.PropTypes.func.isRequired,
     },
     getInitialState: () => ({ open: false }),
-    toggleDropdown: function() {
-        this.setState({ open: !this.state.open })
+    toggleDropdown: function(state) {
+        switch (typeof(state)) {
+            case 'boolean': this.setState({ open: state }); break;
+            default: this.setState({ open: !this.state.open }); break;
+        }
     },
     render: function() {
-        let dropdown = <RoleSelectorDropdown selectRole={this.props.selectRole.bind(null, this.props.currentUser)} roles={this.props.currentUser.roles} />;
+        let roles = this.props.currentUser.roles.filter(r => r.id != this.props.currentRole.id && r.type != 'owner');
+        let tableHeight = !!this.state.open ? 40*(roles.length + 1) + 'px' : '40px';
         return (
-            <div id='roleSelector' className={this.state.open ? 'open' : ''} onClick={this.toggleDropdown}>
-                <span>{ this.props.currentRole.type == 'manager' ? this.props.currentRole.project.name : this.props.currentRole.type }</span>
-            <Icons.Dropdown />
-            { !!this.state.open ? dropdown : null }
+            <div id='roleSelector' style={{height: tableHeight}} onClick={this.toggleDropdown} onMouseLeave={this.toggleDropdown.bind(null, false)}>
+                { <RoleElement role={this.props.currentRole} selected={true} /> }
+                { roles.map(role => <RoleElement role={role} select={this.props.selectRole} />) }
             </div>
         );
     }
 });
 
-let RoleSelectorDropdown = (props) => {
+let RoleElement = (props) => {
+    let selectRole = !!props.select ? props.select.bind(null, props.role.id) : null;
+    if (props.role.type == 'owner') {
+        throw 'Owner is an invalid role type for RoleElement component';
+    }
     return (
-        <div id='roleSelectorDropdown'>
-            <ul>
-                { props.roles.map((role) => <RoleSelection selectRole={props.selectRole.bind(null, role.id)} role={role} />) }
-            </ul>
+        <div className={props.selected ? 'selected role' : 'role'} key={props.role.id} onClick={selectRole}>
+            <div>{ props.role.type == 'manager' ? props.role.project.name : 'Contractor View'}</div>
+            { props.role.type == 'manager' ? <div>{props.role.project.organization.name}</div> : null }
         </div>
-    );
-}
-
-let RoleSelection = (props) => {
-    let className = props.role == props.currentRole ? 'selected' : '';
-    return (
-        <li className={className} key={props.role.id} onClick={props.selectRole.bind(null, props.role.id)}>
-            { props.role.type == 'manager' ? props.role.project.name : props.role.type }
-        </li>
     );
 }
 

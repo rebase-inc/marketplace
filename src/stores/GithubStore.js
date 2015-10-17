@@ -14,7 +14,10 @@ let _allAccounts = [];
 let _allRepos = [];
 
 let GithubStore = _.extend({}, EventEmitter.prototype, {
-    getState: () => ({ loading: _loading, allAccounts: _allAccounts, allRepos: _allRepos }),
+    getState: () => {
+        console.log('returning get state with loading' , _loading);
+        return { loading: _loading, allAccounts: _allAccounts, allRepos: _allRepos }
+    },
     emitChange: (actionType) => GithubStore.emit('change', actionType),
     addChangeListener: (callback) => GithubStore.on('change', callback),
     removeChangeListener: (callback) => GithubStore.removeListener('change', callback),
@@ -39,6 +42,7 @@ function handleNewAccounts(action) {
             break;
         default: console.warn('Invalid status: ' + action.status); break;
     }
+    console.log('set loading to ', _loading);
 };
 
 GithubStore.dispatchToken = Dispatcher.register(function(payload) {
@@ -49,7 +53,8 @@ GithubStore.dispatchToken = Dispatcher.register(function(payload) {
         default: return true;
     }
     // If action was responded to, emit change event
-    GithubStore.emitChange(action.type);
+    console.log('emitting change');
+    GithubStore.emitChange();
     return true;
 });
 

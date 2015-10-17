@@ -26,9 +26,6 @@ var ProfileView = React.createClass({
         }
         UserActions.updateUserSettings(user);
     },
-    addGithubAccount: function() {
-        window.location.assign('/github')
-    },
     render: function() {
         return (
             <div className='profileView'>
@@ -39,7 +36,6 @@ var ProfileView = React.createClass({
                     <input ref='email' defaultValue={this.props.currentUser.email}/>
                     <input ref='location' defaultValue='Seattle, WA'/>
                     <button onClick={this.updateProfileSettings}>Update Profile Settings</button>
-                    <button onClick={this.addGithubAccount}>Add Github Account</button>
                 </div>
             </div>
         );
