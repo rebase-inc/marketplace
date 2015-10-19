@@ -52,7 +52,7 @@ var ContractView = React.createClass({
                 </NothingHere>
             );
         }
-        switch (!!this.state.currentReview) {
+        switch (!!this.state.currentContract) {
             case true:
                 return <SingleContractView {...this.props} {...this.state} unselectContract={this.selectContract.bind(null, null)} />;
                 break;
