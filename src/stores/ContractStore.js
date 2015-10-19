@@ -36,7 +36,7 @@ Dispatcher.register(function(payload) {
         case ActionConstants.SELECT_VIEW: _currentContractId = null; break;
         case ActionConstants.GET_CONTRACT_DATA: handleNewContractData(action); break;
         case ActionConstants.SELECT_CONTRACT: handleSelectedContract(action.contractID); break;
-        case ActionConstants.ADD_COMMENT_TO_TICKET: handleNewComment(action.response); break;
+        case ActionConstants.ADD_COMMENT_TO_TICKET: handleNewComment(action); break;
         case ActionConstants.GET_COMMENT_DETAIL: handleCommentDetail(action); break;
         case ActionConstants.SUBMIT_WORK: handleWorkDetail(action); break;
         case ActionConstants.MARK_WORK_COMPLETE: handleWorkDetail(action); break;
@@ -85,13 +85,14 @@ function getCurrentContract(id) {
     return _allContracts.filter(contract => contract.id == id)[0];
 }
 
-function handleNewComment(data) {
-    switch (data) {
+function handleNewComment(action) {
+    let data = action.response;
+    switch (action.status) {
         case RequestConstants.PENDING: _loading = true; break;
         case RequestConstants.TIMEOUT: _loading = false; console.warn(data); break;
         case RequestConstants.ERROR: _loading = false; console.warn(data); break;
         case null: _loading = false; console.warn('Null data!');
-        default:
+        case RequestConstants.SUCCESS:
             _loading = false;
             _allContracts.forEach(contract => { if (contract.ticket.id == data.comment.id) { contract.ticket.comments.push(data.comment) } });
             break;
