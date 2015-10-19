@@ -32,7 +32,7 @@ var ContractList = React.createClass({
                 </table>
             );
         } else if (this.props.loadingContractData) {
-            return <LoadingAnimation />;
+            return <div className='contentList'><LoadingAnimation /></div>;
         } else {
             return <NothingHere text={'You don\'t have any in progress work right now. Check out offered tickets to find some!'}/>;
         }

@@ -118,7 +118,7 @@ var ReviewList = React.createClass({
             currentRole: this.props.currentRole,
         }
         if (!!this.props.loadingReviewData) {
-            return <LoadingAnimation />
+            return <div className='contentList'><LoadingAnimation /></div>;
         }
         let titleMatchesText = function(review) {
             return true; // until we make this actually work

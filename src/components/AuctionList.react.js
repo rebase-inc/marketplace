@@ -37,7 +37,7 @@ var AuctionList = React.createClass({
                 </table>
             );
         } else if (this.props.loading) {
-            return <LoadingAnimation />;
+            return <div className='contentList'><LoadingAnimation /></div>;
         } else {
             return <NothingHere text={'We\'re working to find some great auctions for you!'}/>;
         }
