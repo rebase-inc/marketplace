@@ -30,7 +30,7 @@ var _userState = {
     error: null,
 };
 
-!!_userCookie ? handleLogin({response: {user: JSON.parse(_userCookie)}}) : null;
+!!_userCookie ? handleLogin({response: {user: JSON.parse(_userCookie)}, status: RequestConstants.SUCCESS}) : null;
 !!_userState.currentUser ? UserActions.getUserDetail(_userState.currentUser.id) : null;
 
 var UserStore = _.extend({}, EventEmitter.prototype, {
@@ -121,7 +121,7 @@ function handleLogin(action) {
             _userState.loggedIn = !!_userState.currentUser;
             // hack because code everywhere expects the role to be in a different place than it is
             Object.defineProperty(_userState, 'currentRole', {
-                get: () => _userState.currentUser.current_role,
+                get: () => _userState.currentUser != null ? _userState.currentUser.current_role : null,
                 configurable: true, // a hack to let us repeatedly set the property so we don't have to be careful
             });
             switch (_userState.currentRole.type) {
@@ -142,7 +142,6 @@ function handleLogout(action) {
         default:
             _userState.loading = false;
             _userState.currentUser = null;
-            _userState.currentRole = null;
             _userState.loggedIn = null;
             _userState.error = null;
             Cookies.erase('user');

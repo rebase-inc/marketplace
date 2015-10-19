@@ -52,7 +52,7 @@ var ProfileView = React.createClass({
         this.setState({ modalType: ModalTypes.ADD_PROJECT, selectedProject: null });
     },
     _makeProjectElement: function(role) {
-        if (role.type == 'manager') {
+        if (role.type == 'manager' && role.project.imported) {
             return (
                 <div className='project' key={role.id}>
                     <Icons.ProjectGraph />

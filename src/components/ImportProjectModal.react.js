@@ -45,8 +45,11 @@ var ImportProjectModal = React.createClass({
         }
     },
     _makeProjectElement: function(repo) {
+        if (repo.project.imported) {
+            return null;
+        }
         let managerRoles = this.props.currentUser.roles.filter(role => role.type == 'manager');
-        if (managerRoles.filter(role => role.project.name == repo.name && repo.project.organization.login).length) {
+        if (managerRoles.filter(role => role.project.name == repo.name && repo.project.organization.name).length) {
             return null;
         }
         return (
