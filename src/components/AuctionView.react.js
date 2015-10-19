@@ -62,7 +62,7 @@ var AuctionView = React.createClass({
             return (
                 <NothingHere>
                     <h3>You don't have any offered tickets</h3>
-                    <button onClick={UserActions.selectView.bind(null, ViewTypes.NEW)}>View New Tickets</button>
+                    { this.props.currentRole.type == 'manager' ?  <button onClick={UserActions.selectView.bind(null, ViewTypes.NEW)}>View New Tickets</button> : null }
                 </NothingHere>
             );
         }
