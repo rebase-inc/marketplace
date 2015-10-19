@@ -76,7 +76,10 @@ var ImportProjectModal = React.createClass({
             return (
                 <ModalContainer toggleModal={this.props.toggleModal}>
                     <h3>Select Project(s) to Import</h3>
-                    <LoadingAnimation/>
+                    <div id='projectImportWrapper' ref='projectImportWrapper'>
+                        <LoadingAnimation />
+                    </div>
+                    <button onClick={this.importSelectedProjects}>Import Selected</button>
                 </ModalContainer>
                 );
         } else if (!this.state.allAccounts.length) {
@@ -93,7 +96,7 @@ var ImportProjectModal = React.createClass({
                     <div id='projectImportWrapper' ref='projectImportWrapper'>
                         <table>
                             <tbody>
-                                { this.state.allRepos.map(this._makeProjectElement) }
+                            { this.state.allRepos.map(this._makeProjectElement) }
                             </tbody>
                         </table>
                     </div>

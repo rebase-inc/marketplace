@@ -208,10 +208,10 @@ html, body {
 }
 
 #roleSelector > .role > div {
-    display: inline-block;
-    float: left;
-    width: 50%;
-    line-height: 40px;
+    display: block;
+    text-align: center;
+    width: 90%;
+    margin: 0 auto;
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
@@ -219,21 +219,19 @@ html, body {
 }
 
 #roleSelector .role > div:first-child {
-    padding-left: 10px;
-    padding-right: 2px;
+    padding-top: 5px;
+    line-height: 20px;
     font-size: 16px;
-    text-align: right;
 }
 
 #roleSelector .role > div:last-child {
-    padding-right: 10px;
-    padding-left: 2px;
+    line-height: 10px;
     font-size: 10px;
-    text-align: left;
     opacity: 0.5;
 }
 
 #roleSelector .role > div:only-child {
+    line-height: 40px;
     text-align: center;
     width: 100%;
 }
@@ -1022,7 +1020,7 @@ img.profilePicture {
 }
 
 #modalDialog #projectImportWrapper {
-    max-height: 300px;
+    max-height: 160px;
     overflow: scroll;
 }
 

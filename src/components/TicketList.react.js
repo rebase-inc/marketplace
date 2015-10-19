@@ -31,14 +31,18 @@ var TicketList = React.createClass({
         var ticketIDs = !!this.props.searchText ? searchTickets(this.props.allTickets, this.props.searchText) : this.props.allTickets.map(a => a.id);
         if (!!this.props.allTickets.length) {
             return (
-                <table id='ticketList' className='contentList'>
+                <table className='contentList'>
                     <tbody ref='tableBody'>
                         { this.props.allTickets.filter(ticket => ticketIDs.indexOf(ticket.id) != -1).map(makeTicketElement) }
                     </tbody>
                 </table>
             );
         } else if (this.props.loading) {
-            return <LoadingAnimation />;
+            return (
+                <div className='contentList'>
+                    <LoadingAnimation />
+                </div>
+            );
         } else {
             return <NothingHere text={'You don\'t have any tickets! Import some from GitHub!'}/>;
         }
