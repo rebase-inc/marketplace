@@ -45,7 +45,7 @@ let DeveloperViewAuction = React.createClass({
         return (
             <tr className='auction' onClick={this.props.selectAuction.bind(null, this.props.auction.id)}>
                 <ProjectInfoPanel ticket={this.props.auction.ticket} />
-                <td className='titlePanel'>{this.props.auction.ticket.title}</td>
+                <td ref='titlePanel' className='titlePanel'>{this.props.auction.ticket.title}</td>
                 <td className='skillsRequiredPanel'>
                     <div className='skills'>
                         { Object.keys(!!this.props.auction.ticket.skill_requirement ? this.props.auction.ticket.skill_requirement.skills : {} ).map((skill) =>
