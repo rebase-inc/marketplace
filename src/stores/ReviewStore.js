@@ -10,6 +10,11 @@ var _allReviews = [];
 var _currentReview = null;
 var _loading = false;
 
+function clearStore() {
+    _allReviews = [];
+    _currentReview = null;
+}
+
 var _shouldBeVisible = function(review) {
     return review.work.state == 'complete'; // hack because the api is creating unnecessary reviews
 }
@@ -42,6 +47,7 @@ RebaseAppDispatcher.register(function(payload) {
         case ActionConstants.SELECT_REVIEW: handleSelectedReview(action.reviewID); break;
         case ActionConstants.ADD_COMMENT_TO_TICKET: handleNewComment(action); break;
         case ActionConstants.GET_COMMENT_DETAIL: handleCommentDetail(action); break;
+        case ActionConstants.LOGOUT: clearStore(); break;
         default: return true;
     }
 

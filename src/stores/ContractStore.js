@@ -16,6 +16,11 @@ var _shouldBeVisible = function(contract) {
     return contract.work.state != 'complete' || !contract.work.review; // hack because the api doesnt automatically add reviews yet
 }
 
+function clearStore() {
+    _allContracts = [];
+    _currentContractId = null;
+}
+
 var ContractStore = _.extend({}, EventEmitter.prototype, {
     getState: function() {
         return {
@@ -42,6 +47,7 @@ Dispatcher.register(function(payload) {
         case ActionConstants.MARK_WORK_COMPLETE: handleWorkDetail(action); break;
         case ActionConstants.MARK_WORK_BLOCKED: handleWorkDetail(action); break;
         case ActionConstants.MARK_WORK_UNBLOCKED: handleWorkDetail(action); break;
+        case ActionConstants.LOGOUT: clearStore(); break;
         default: return true;
     }
 

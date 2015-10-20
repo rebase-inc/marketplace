@@ -17,6 +17,11 @@ var _allTickets = [];
 var _currentTicket = null;
 var _loading = false;
 
+function clearStore() {
+    _allTickets = [];
+    _currentTicket = null;
+}
+
 function _shouldBeVisible(ticket) {
     return !ticket.snapshots.some(snap => !!snap.bid_limit.ticket_set.auction)
 }
@@ -44,7 +49,8 @@ Dispatcher.register(function(payload) {
         case ActionConstants.GET_TICKET_DATA: handleNewTicketData(action); break;
         case ActionConstants.ADD_COMMENT_TO_TICKET: handleNewComment(action); break;
         case ActionConstants.GET_COMMENT_DETAIL: handleCommentDetail(action); break;
-        case ActionConstants.SELECT_ROLE: _allTickets = []; _currentTicket = null; break;
+        case ActionConstants.SELECT_ROLE: clearStore(); break;
+        case ActionConstants.LOGOUT: clearStore(); break;
         default: return true;
     }
 

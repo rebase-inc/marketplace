@@ -23,6 +23,11 @@ let GithubStore = _.extend({}, EventEmitter.prototype, {
     removeChangeListener: (callback) => GithubStore.removeListener('change', callback),
 });
 
+function clearStore() {
+    _allAccounts = [];
+    _allRepos = [];
+}
+
 function handleNewAccounts(action) {
     switch (action.status) {
         case RequestConstants.PENDING: _loading = true; break;
@@ -50,6 +55,7 @@ GithubStore.dispatchToken = Dispatcher.register(function(payload) {
     switch(action.type) {
         case ActionConstants.GET_GITHUB_ACCOUNTS: handleNewAccounts(action); break;
         case ActionConstants.IMPORT_GITHUB_REPOS: _loading = false; break;
+        case ActionConstants.LOGOUT: clearStore(); break;
         default: return true;
     }
     // If action was responded to, emit change event

@@ -16,6 +16,11 @@ var _currentAuction = null;
 var _bidPending = false;
 var _loading = false;
 
+function clearStore() {
+    _allAuctions = [];
+    _currentAuction = null;
+}
+
 function _shouldBeVisible(auction) {
     return (auction.state == 'created' || auction.state == 'waiting_for_bids')
 }
@@ -44,6 +49,7 @@ Dispatcher.register(function(payload) {
         case ActionConstants.BID_ON_AUCTION: handleModifiedAuction(action); break;
         case ActionConstants.GET_COMMENT_DETAIL: handleCommentDetail(action); break;
         case ActionConstants.APPROVE_NOMINATION: handleModifiedNomination(action); break;
+        case ActionConstants.LOGOUT: clearStore(); break;
         default: return true;
     }
     AuctionStore.emitChange();

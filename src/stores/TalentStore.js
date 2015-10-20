@@ -11,6 +11,11 @@ var _ = require('underscore');
 var _allNominations = {};
 var _loading = false;
 
+function clearStore() {
+    _allNominations = {};
+    _loading = false;
+}
+
 var TalentStore = _.extend({}, EventEmitter.prototype, {
     getState: function(auctionID) {
         if (!auctionID) {
@@ -33,6 +38,7 @@ Dispatcher.register(function(payload) {
         case ActionConstants.GET_AUCTION_DETAIL: handleNewAuctionData(action); break;
         case ActionConstants.APPROVE_NOMINATION: handleModifiedNomination(action); break;
         case ActionConstants.SELECT_AUCTION: TalentStore.getState(-1); break;
+        case ActionConstants.LOGOUT: clearStore(); break;
         default: return true;
     }
 
