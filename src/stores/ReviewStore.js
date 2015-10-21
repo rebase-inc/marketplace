@@ -40,6 +40,7 @@ var ReviewStore = _.extend({}, EventEmitter.prototype, {
 
 // Register callback with Dispatcher
 RebaseAppDispatcher.register(function(payload) {
+    console.log('review store responding to action: ', payload.action.type);
     var action = payload.action;
     switch(action.type) {
         case ActionConstants.SELECT_VIEW: _currentReview = null; break;

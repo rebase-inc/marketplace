@@ -36,6 +36,7 @@ var ContractStore = _.extend({}, EventEmitter.prototype, {
 
 // Register callback with Dispatcher
 Dispatcher.register(function(payload) {
+    console.log('contract store responding to action: ', payload.action.type);
     var action = payload.action;
     switch(action.type) {
         case ActionConstants.SELECT_VIEW: _currentContractId = null; break;

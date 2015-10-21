@@ -135,6 +135,11 @@ var Api = {
         pendingHandler();
         ajax('GET', url, null, responseHandler);
     },
+    getImportableGithubRepos: function(account_id, responseHandler, pendingHandler) {
+        var url = makeUrl("/github_accounts/"+account_id+"/importable_repos");
+        pendingHandler();
+        ajax('GET', url, null, responseHandler);
+    },
     importGithubRepos: function(selectedRepos, responseHandler, pendingHandler) {
         let url = makeUrl("/github/import_repos");
         pendingHandler();

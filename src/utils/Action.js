@@ -16,6 +16,7 @@ var Action = {
                 Dispatcher.handleRequestAction({
                     type: typeConstant,
                     status: RequestConstants.PENDING,
+                    args: args
                 });
             };
             apiFunction(...args, responseAction, pendingAction);

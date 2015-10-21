@@ -43,6 +43,7 @@ var UserStore = _.extend({}, EventEmitter.prototype, {
 });
 
 UserStore.dispatchToken = Dispatcher.register(function(payload) {
+    console.log('user store responding to action: ', payload.action.type);
     var action = payload.action;
     switch(action.type) {
         case ActionConstants.LOGIN: handleLogin(action); break;

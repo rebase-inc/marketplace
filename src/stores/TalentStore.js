@@ -33,6 +33,7 @@ var TalentStore = _.extend({}, EventEmitter.prototype, {
 
 // Register callback with Dispatcher
 Dispatcher.register(function(payload) {
+    console.log('talent store responding to action: ', payload.action.type);
     var action = payload.action;
     switch(action.type) {
         case ActionConstants.GET_AUCTION_DETAIL: handleNewAuctionData(action); break;
