@@ -49,7 +49,7 @@ GithubStore.dispatchToken = Dispatcher.register(function(payload) {
             handleNewAccounts(action); break;
         case ActionConstants.IMPORT_GITHUB_REPOS: _loading = false; break;
         case ActionConstants.LOGOUT: clearStore(); break;
-        default:  return true;
+        default: return true;
     }
     GithubStore.emitChange();
     return true;

@@ -36,6 +36,7 @@ var ImportProjectModal = React.createClass({
                 <ModalContainer toggleModal={this.props.toggleModal}>
                     <h3>Select Project(s) to Import</h3>
                     <LoadingAnimation />
+                    <button disabled>Import Selected</button>
                 </ModalContainer>
                 );
         } else if (!this.state.allAccounts.length) {
@@ -89,22 +90,18 @@ var ImportableReposView = React.createClass({
         this.props.toggleModal();
     },
     render: function() {
-        let _toggle = this.toggleProject;
-        let _projectsToImport = this.state.projectsToImport;
-        let ManyListsOfRepos = this.props.accounts.map(function(account) {
-            return (
-                <ImportableReposList
-                    account_id={account.id}
-                    key={account.id}
-                    toggleProject={_toggle}
-                    projectsToImport={_projectsToImport}
-                />
-            );
-        });
         return (
             <div id='importableReposView' ref='projectImportWrapper'>
                 <table>
-                    {ManyListsOfRepos}
+                    {this.props.accounts.map(account => 
+                                             <ImportableReposList
+                                                 account_id={account.id}
+                                                 key={account.id}
+                                                 toggleProject={this.toggleProject}
+                                                 projectsToImport={this.state.projectsToImport}
+                                             />
+                                             )
+                    }
                 </table>
                 <button onClick={this.importSelectedProjects}>Import Selected</button>
             </div>
