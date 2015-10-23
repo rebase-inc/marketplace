@@ -57,8 +57,10 @@ UserStore.dispatchToken = Dispatcher.register(function(payload) {
         case ActionConstants.GET_USER_DETAIL_AS_MANAGER: updateUserDetail(action); break;
         case ActionConstants.GET_USER_DETAIL_AS_CONTRACTOR: updateUserDetail(action); break;
         case ActionConstants.GET_USER_DETAIL_AS_OWNER: updateUserDetail(action); break;
+        case ActionConstants.DELETE_MANAGER: deleteManager(action); break;
         case ActionConstants.UPDATE_PROFILE_PHOTO: updateUserDetail(action); break;
         case ActionConstants.UPDATE_USER_SETTINGS: updateUserDetail(action); break;
+        case ActionConstants.IMPORT_GITHUB_REPOS: handleNewRoles(action); break;
         default: return true;
     }
 
@@ -95,6 +97,33 @@ function updateUserDetail(action) {
             _.extend(_userState.currentUser, action.response.user);
             _userState.loading = false;
             Cookies.set('user', JSON.stringify(_userState.currentUser), 1);
+    }
+}
+
+function deleteManager(action) {
+    switch (action.status) {
+        case RequestConstants.PENDING: _userState.loading = true; break;
+        case RequestConstants.TIMEOUT: _userState.loading = false; console.warn(action.response); break;
+        case RequestConstants.ERROR: _userState.loading = false; console.warn(action.response); break;
+        case null: _userState.loading = false; console.warn('Undefined data!');
+        case RequestConstants.SUCCESS:
+            _userState.currentUser.roles = _userState.currentUser.roles.filter((role) => role.id != action.manager_id);
+            _userState.loading = false;
+            Cookies.set('user', JSON.stringify(_userState.currentUser), 1);
+    }
+}
+
+function handleNewRoles(action) {
+    switch (action.status) {
+        case RequestConstants.PENDING: _userState.loading = true; break;
+        case RequestConstants.TIMEOUT: _userState.loading = false; console.warn(action.response); break;
+        case RequestConstants.ERROR: _userState.loading = false; console.warn(action.response); break;
+        case null: _userState.loading = false; console.warn('Undefined data!');
+        case RequestConstants.SUCCESS: {
+            _userState.currentUser.roles = _userState.currentUser.roles.concat(action.response.roles);
+            _userState.loading = false;
+            Cookies.set('user', JSON.stringify(_userState.currentUser), 1);
+        }
     }
 }
 

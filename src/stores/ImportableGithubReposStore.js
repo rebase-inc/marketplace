@@ -10,49 +10,46 @@ var RequestConstants = require('../constants/RequestConstants');
 //Define initial data points
 
 let _loading = false;
-let _allAccounts = [];
+let _allImportableRepos = new Map();
 
-let GithubStore = _.extend({}, EventEmitter.prototype, {
+let ImportableGithubRepos = _.extend({}, EventEmitter.prototype, {
     getState: () => {
         return {
             loading: _loading,
-            allAccounts: _allAccounts,
+            allImportableRepos: _allImportableRepos
         }
     },
-    emitChange: (actionType) => { GithubStore.emit('change', actionType); },
-    addChangeListener: (callback) => GithubStore.on('change', callback),
-    removeChangeListener: (callback) => GithubStore.removeListener('change', callback),
+    emitChange: (actionType) => { ImportableGithubRepos.emit('change', actionType);  },
+    addChangeListener: (callback) => ImportableGithubRepos.on('change', callback),
+    removeChangeListener: (callback) => ImportableGithubRepos.removeListener('change', callback),
 });
 
 function clearStore() {
-    _allAccounts = [];
+    _allImportableRepos = new Map();
 }
 
-function handleNewAccounts(action) {
+function handleImportableRepos(action) {
     switch (action.status) {
         case RequestConstants.PENDING: _loading = true; break;
         case RequestConstants.TIMEOUT: _loading = false; console.warn(action.response); break;
         case RequestConstants.ERROR: _loading = false; console.warn(action.response); break;
-        case RequestConstants.SUCCESS: {
+        case RequestConstants.SUCCESS:
             _loading = false;
-            _allAccounts = action.response.github_accounts;
+            _allImportableRepos.set(action.account_id, action.response.repos);
             break;
-        }
         default: console.warn('Invalid status: ' + action.status); break;
     }
 };
 
-GithubStore.dispatchToken = Dispatcher.register(function(payload) {
+ImportableGithubRepos.dispatchToken = Dispatcher.register(function(payload) {
     var action = payload.action;
     switch(action.type) {
-        case ActionConstants.GET_GITHUB_ACCOUNTS: 
-            handleNewAccounts(action); break;
-        case ActionConstants.IMPORT_GITHUB_REPOS: _loading = false; break;
+        case ActionConstants.GET_IMPORTABLE_GITHUB_REPOS: handleImportableRepos(action); break;
         case ActionConstants.LOGOUT: clearStore(); break;
-        default: return true;
+        default:  return true;
     }
-    GithubStore.emitChange();
+    ImportableGithubRepos.emitChange();
     return true;
 });
 
-module.exports = GithubStore;
+module.exports = ImportableGithubRepos;

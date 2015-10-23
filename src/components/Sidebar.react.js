@@ -135,7 +135,7 @@ var RoleSelector = React.createClass({
         }
     },
     render: function() {
-        let roles = this.props.currentUser.roles.filter(r => r.id != this.props.currentRole.id && r.type != 'owner' && r.project.imported );
+        let roles = this.props.currentUser.roles.filter(r => r.id != this.props.currentRole.id && r.type != 'owner');
         let tableHeight = !!this.state.open ? 40*(roles.length + 1) + 'px' : '40px';
         return (
             <div id='roleSelector' style={{height: tableHeight}} onClick={this.toggleDropdown} onMouseLeave={this.toggleDropdown.bind(null, false)}>

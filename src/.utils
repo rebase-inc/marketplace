@@ -1,5 +1,5 @@
 search () {
-	grep -rn --include $1 --color=auto "$2" src
+	grep -rn --include $1 --color=auto "$2" .
 }
 
 js () {

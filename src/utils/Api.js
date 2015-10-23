@@ -135,6 +135,11 @@ var Api = {
         pendingHandler();
         ajax('GET', url, null, responseHandler);
     },
+    getImportableGithubRepos: function(account_id, responseHandler, pendingHandler) {
+        var url = makeUrl("/github_accounts/"+account_id+"/importable_repos");
+        pendingHandler();
+        ajax('GET', url, null, responseHandler);
+    },
     importGithubRepos: function(selectedRepos, responseHandler, pendingHandler) {
         let url = makeUrl("/github/import_repos");
         pendingHandler();
@@ -246,6 +251,11 @@ var Api = {
         var url = makeUrl('/users/' + user.id);
         if (pendingHandler) { pendingHandler(); }
         ajax('PUT', url, user, responseHandler);
+    },
+    deleteManager: function(manager_id, responseHandler, pendingHandler) {
+        var url = makeUrl('/managers/' + manager_id);
+        if (pendingHandler) { pendingHandler(); }
+        ajax('DELETE', url, null, responseHandler);
     },
 };
 
