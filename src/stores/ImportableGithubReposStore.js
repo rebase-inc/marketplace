@@ -35,8 +35,7 @@ function handleImportableRepos(action) {
         case RequestConstants.ERROR: _loading = false; console.warn(action.response); break;
         case RequestConstants.SUCCESS:
             _loading = false;
-            let [account_id] = action.args;
-            _allImportableRepos.set(account_id, action.response.repos);
+            _allImportableRepos.set(action.account_id, action.response.repos);
             break;
         default: console.warn('Invalid status: ' + action.status); break;
     }
