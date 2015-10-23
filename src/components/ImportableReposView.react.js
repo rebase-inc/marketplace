@@ -24,16 +24,14 @@ var ImportableReposView = React.createClass({
         GithubStore.addChangeListener(this._onChange);
     },
     componentDidMount: function() {
-        console.log('view mounted');
         handleScrollShadows(this.refs.projectImportWrapper);
         var node = ReactDOM.findDOMNode(this.refs.projectImportWrapper);
-        node.addEventViewener('scroll', handleScrollShadows.bind(null, this.refs.projectImportWrapper), false);
+        node.addEventListener('scroll', handleScrollShadows.bind(null, this.refs.projectImportWrapper), false);
     },
     componentDidUpdate: function() {
         handleScrollShadows(this.refs.projectImportWrapper);
     },
     componentWillUnmount: function() {
-        console.log('view unmounted');
         GithubStore.removeChangeListener(this._onChange);
     },
     _onChange: function() {
@@ -67,6 +65,7 @@ var ImportableReposView = React.createClass({
                 <table>
                     {ManyListsOfRepos}
                 </table>
+                <button onClick={this.importSelectedProjects}>Import Selected</button>
             </div>
         );
     }

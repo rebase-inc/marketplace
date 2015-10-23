@@ -45,21 +45,21 @@ var ProfileView = React.createClass({
     componentDidUpdate: function() {
         handleScrollShadows(this.refs.projectList);
     },
-    openDeleteProjectModal: function(projectToDelete) {
-        this.setState({ modalType: ModalTypes.DELETE_PROJECT, selectedProject: projectToDelete });
+    openDeleteProjectModal: function(roleToDelete) {
+        this.setState({ modalType: ModalTypes.DELETE_PROJECT, selectedProject: roleToDelete });
     },
     openAddProjectModal: function(projectToDelete) {
         this.setState({ modalType: ModalTypes.ADD_PROJECT, selectedProject: null });
     },
     _makeProjectElement: function(role) {
-        if (role.type == 'manager' && role.project.imported) {
+        if (role.type == 'manager') {
             return (
                 <div className='project' key={role.id}>
                     <Icons.ProjectGraph />
                     <div className='projectDetails'>
                         <span className='orgName'>{role.project.organization.name}</span>
                         <span className='projName'>{role.project.name}</span>
-                        <span className='projDelete' onClick={this.openDeleteProjectModal.bind(null, role.project)}>Delete Project?</span>
+                        <span className='projDelete' onClick={this.openDeleteProjectModal.bind(null, role)}>Delete Project?</span>
                     </div>
                 </div>
             );
@@ -72,7 +72,7 @@ var ProfileView = React.createClass({
                 modal = <ImportProjectModal toggleModal={() => this.setState({ modalType: ModalTypes.CLOSED })} {...this.props}/>;
                 break;
             case ModalTypes.DELETE_PROJECT:
-                modal = <DeleteProjectModal toggleModal={() => this.setState({ modalType: ModalTypes.CLOSED })} />;
+                modal = <DeleteProjectModal projectToDelete={this.state.selectedProject} toggleModal={() => this.setState({ modalType: ModalTypes.CLOSED })} />;
                 break;
             case ModalTypes.CLOSED:
                 modal = null;

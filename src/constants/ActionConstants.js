@@ -50,4 +50,5 @@ module.exports = keyMirror({
     CREATE_GITHUB_TICKET: null,
     DELETE_PROJECT: null,
     GET_PROJECTS: null,
+    DELETE_MANAGER: null,
 });

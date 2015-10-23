@@ -49,7 +49,7 @@ var ImportProjectModal = React.createClass({
             return (
                 <ModalContainer toggleModal={this.props.toggleModal}>
                     <h3>Select Project(s) to Import</h3>
-                    <ImportableReposView accounts={this.state.allAccounts} />
+                    <ImportableReposView accounts={this.state.allAccounts} toggleModal={this.props.toggleModal}/>
                 </ModalContainer>
             );
         }

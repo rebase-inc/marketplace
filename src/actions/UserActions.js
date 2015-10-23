@@ -96,4 +96,21 @@ module.exports = {
             viewType: viewType,
         });
     },
+    deleteManager: function(id) {
+        function responseHandler(response, status) {
+            Dispatcher.handleRequestAction({
+                type: ActionConstants.DELETE_MANAGER,
+                status: status,
+                response: response,
+                manager_id: id
+            });
+        };
+        function pendingHandler() {
+            Dispatcher.handleRequestAction({
+                type: ActionConstants.DELETE_MANAGER,
+                status: RequestConstants.PENDING,
+            });
+        };
+        Api.deleteManager(id, responseHandler, pendingHandler);
+    },
 };

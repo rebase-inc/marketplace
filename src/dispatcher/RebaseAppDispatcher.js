@@ -16,7 +16,6 @@ AppDispatcher.handleAction = function(action) {
 // Convenience method to handle dispatch requests
 AppDispatcher.handleRequestAction = function(action) {
     if (!action.type) { throw 'No action type provided!' }
-    console.log('dispatching action ', action);
     this.dispatch({
         source: 'REQUEST_ACTION',
         action: action,

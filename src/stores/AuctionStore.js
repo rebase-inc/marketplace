@@ -39,7 +39,6 @@ var AuctionStore = _.extend({}, EventEmitter.prototype, {
 });
 
 Dispatcher.register(function(payload) {
-    console.log('auction store responding to action: ', payload.action.type);
     var action = payload.action;
     switch(action.type) {
         case ActionConstants.SELECT_VIEW: _currentAuction = null; break;

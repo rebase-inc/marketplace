@@ -6,12 +6,12 @@ var LoadingAnimation = require('../components/LoadingAnimation.react');
 
 var ModalContainer = require('../components/ModalContainer.react');
 
-var ProjectActions = require('../actions/ProjectActions');
+var UserActions = require('../actions/UserActions');
 
 
 var DeleteProjectModal = React.createClass({
     _deleteProject: function() {
-        this.props.deleteProject(this.props.projectToDelete);
+        UserActions.deleteManager(this.props.projectToDelete.id);
         this.props.toggleModal();
     },
     render: function() {

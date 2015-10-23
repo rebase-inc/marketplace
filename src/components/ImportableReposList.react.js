@@ -1,6 +1,6 @@
 var React = require('react');
 
-var GithubStore = require('../stores/GithubStore');
+var ImportableGithubReposStore = require('../stores/ImportableGithubReposStore');
 
 var GithubActions = require('../actions/GithubActions');
 
@@ -16,18 +16,18 @@ var ImportableReposView = React.createClass({
         projectsToImport:   React.PropTypes.object.isRequired,
         toggleProject:      React.PropTypes.func.isRequired,
     },
-    getInitialState: () => GithubStore.getState(),
+    getInitialState: () => ImportableGithubReposStore.getState(),
     componentDidMount: function() {
         setTimeout(() => GithubActions.getImportableRepos(this.props.account_id), 0);
     },
     componentWillMount: function() {
-        GithubStore.addChangeListener(this._onChange);
+        ImportableGithubReposStore.addChangeListener(this._onChange);
     },
     componentWillUnmount: function() {
-        GithubStore.removeChangeListener(this._onChange);
+        ImportableGithubReposStore.removeChangeListener(this._onChange);
     },
     _onChange: function() {
-        this.setState(GithubStore.getState());
+        this.setState(ImportableGithubReposStore.getState());
     },
     _makeProjectElement: function(repo) {
         return (
@@ -45,8 +45,17 @@ var ImportableReposView = React.createClass({
         );
     },
     render: function() {
+        let body;
+        if (this.state.loading) {
+            body = <LoadingAnimation />;
+        } else {
+            if(this.state.allImportableRepos.has(this.props.account_id)) {
+                body = this.state.allImportableRepos.get(this.props.account_id).map(this._makeProjectElement);
+            }
+        }
         return (
             <tbody key={this.props.account_id}>
+                {body}
             </tbody>
         );
     }

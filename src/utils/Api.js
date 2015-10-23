@@ -252,6 +252,11 @@ var Api = {
         if (pendingHandler) { pendingHandler(); }
         ajax('PUT', url, user, responseHandler);
     },
+    deleteManager: function(manager_id, responseHandler, pendingHandler) {
+        var url = makeUrl('/managers/' + manager_id);
+        if (pendingHandler) { pendingHandler(); }
+        ajax('DELETE', url, null, responseHandler);
+    },
 };
 
 
