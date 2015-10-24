@@ -6,7 +6,9 @@ export default function roles(roles = {isFetching: false, items: []}, action) {
         case ActionConstants.LOGIN: {
             switch (action.status) {
                 case PENDING: return Object.assign({}, roles, { isFetching: true }); break;
-                case SUCCESS: return Object.assign({}, roles, { isFetching: false }, { items: action.response.user.roles }); break;
+                case SUCCESS:
+                    const newRoles = new Map(action.response.user.roles.map(role => [role.id, role]));
+                    return Object.assign({}, roles, { isFetching: false }, { items: newRoles }); break;
             }
         }
         default:

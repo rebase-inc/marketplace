@@ -2,25 +2,28 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import { Logo, ProfilePicture } from './Icons.react';
+import { Logo, ProfilePicture, Dropdown } from './Icons.react';
 
 import UserActions from '../actions/UserActions';
 import ManagerActions from '../actions/ManagerActions';
 
 import { ViewTypes, ContractorViews, ManagerViews } from '../constants/ViewConstants';
+import { PROFILE, PROJECTS, WORK_HISTORY, BILLING_AND_PAYMENTS } from '../constants/ViewConstants';
 
 export default class Sidebar extends Component {
     static propTypes = {
         user: PropTypes.object.isRequired,
         roles: PropTypes.object.isRequired,
+        views: PropTypes.object.isRequired,
     };
 
     render() {
-        const { user, roles } = this.props;
+        const { user, roles, views } = this.props;
         return (
             <div id='sidebar' className='noselect'>
                 <Logo />
-                <SidebarNav user={user} roles={roles} />
+                <SidebarNav user={user} roles={roles} views={views} />
+                <SidebarProfile user={user} />
             </div>
         );
     }
@@ -30,42 +33,32 @@ class SidebarNav extends Component {
     static propTypes = {
         user: PropTypes.object.isRequired,
         roles: PropTypes.object.isRequired,
+        views: PropTypes.object.isRequired,
     };
 
     render() {
-        const { user, roles } = this.props;
+        const { user, roles, views } = this.props;
         var allViews = [];
-        console.log('in sidebar nav, user is ', user);
-        switch (user.current_role.type) {
-            case 'contractor':
-                allViews.push(<ViewSelection view={ContractorViews[ViewTypes.OFFERED]} key='dev0'/>);
-                allViews.push(<ViewSelection view={ContractorViews[ViewTypes.IN_PROGRESS]} key='dev1'/>);
-                allViews.push(<ViewSelection view={ContractorViews[ViewTypes.COMPLETED]} key='dev2' />);
-            break;
-            case 'manager':
-                allViews.push(<ViewSelection view={ManagerViews[ViewTypes.NEW]} key='man0' />);
-                allViews.push(<ViewSelection view={ManagerViews[ViewTypes.OFFERED]} key='man1' />);
-                allViews.push(<ViewSelection view={ManagerViews[ViewTypes.IN_PROGRESS]} key='man2' />);
-                allViews.push(<ViewSelection view={ManagerViews[ViewTypes.COMPLETED]} key='man3' />);
-            break;
-        }
         return (
             <div id='sidebarNav'>
-                <RoleSelector user={user} role={user.current_role} roles={roles.items}/>
+                <RoleSelector user={user} role={user.current_role} roles={Array.from(roles.items.values())}/>
                 <div id='viewList'>
-                    { allViews }
+                    { Array.from(views.items.values()).map(view => <ViewSelection view={view} />) }
                 </div>
             </div>
         );
     }
 }
 
-var SidebarProfile = React.createClass({
-    propTypes: {
-        user: React.PropTypes.object.isRequired,
-    },
-    getInitialState: () => ({ optionsOpen: false }),
-    render: function() {
+class SidebarProfile extends Component {
+    static propTypes = { user: PropTypes.object.isRequired }
+
+    constructor(props, context) {
+        super(props, context);
+        this.state = { optionsOpen: false }
+    }
+
+    render() {
         const { user } = this.props;
         return (
             <div id='sidebarProfile'>
@@ -78,11 +71,10 @@ var SidebarProfile = React.createClass({
             </div>
        );
     }
-});
+}
 
 var ProfileOptions = React.createClass({
     propTypes: {
-        currentUser: React.PropTypes.object.isRequired,
         isOpen: React.PropTypes.bool.isRequired,
     },
     selectOption: function(option) {
@@ -93,11 +85,11 @@ var ProfileOptions = React.createClass({
         return (
             <div id='profileOptions' className={this.props.isOpen ? 'open' : null}>
                 <ul>
-                    <li onClick={this.selectOption.bind(null, ViewTypes.PROFILE)}>Profile</li>
-                    <li onClick={this.selectOption.bind(null, ViewTypes.PROJECTS)}>Projects</li>
-                    <li onClick={this.selectOption.bind(null, ViewTypes.WORK_HISTORY)}>Work History</li>
-                    <li onClick={this.selectOption.bind(null, ViewTypes.BILLING_AND_PAYMENTS)}>Billing and Payments</li>
-                    <li onClick={UserActions.logout}>Sign Out</li>
+                    <li onClick={this.selectOption.bind(null, PROFILE)}>Profile</li>
+                    <li onClick={this.selectOption.bind(null, PROJECTS)}>Projects</li>
+                    <li onClick={this.selectOption.bind(null, WORK_HISTORY)}>Work History</li>
+                    <li onClick={this.selectOption.bind(null, BILLING_AND_PAYMENTS)}>Billing and Payments</li>
+                    <li>Sign Out</li>
                 </ul>
             </div>
         );
@@ -151,7 +143,7 @@ export class ViewSelection extends Component {
     render() {
         const { view, selected, onSelect } = this.props;
         return (
-            <div className={'viewSelection' + (selected ? ' selected' : '')} onClick={onSelect}>
+            <div className={selected ? 'viewSelection selected' : 'viewSelection'} onClick={onSelect}>
                 <span className='viewIcon'>
                     <img src={view.icon}/>
                 </span>

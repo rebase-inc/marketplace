@@ -17,14 +17,13 @@ import * as UserActions from '../actions/UserActions';
 
 class RebaseApp extends Component {
   render() {
-    const { user, view, roles, actions } = this.props;
-    console.log('in rebase app, this.props is ', this.props);
+    const { user, view, views, roles, actions } = this.props;
     if (!user.email) {
         return <LoginDialog onLogin={actions.login} />
     } else {
         return (
             <div id='app'>
-                <Sidebar user={user} roles={roles}/>
+                <Sidebar user={user} roles={roles} views={views}/>
                 {
                     () => { return null;
                         switch (view.type) {
@@ -44,6 +43,6 @@ class RebaseApp extends Component {
   }
 }
 
-let mapStateToProps = state => ({ user: state.user, roles: state.roles, view: state.view }); 
-let mapDispatch = dispatch => ({ actions: bindActionCreators(UserActions, dispatch)});
-export default connect(mapStateToProps, mapDispatch)(RebaseApp);
+let mapStateToProps = state => ({ user: state.user, roles: state.roles, view: state.view, views: state.views });
+let mapDispatchToProps = dispatch => ({ actions: bindActionCreators(UserActions, dispatch)});
+export default connect(mapStateToProps, mapDispatchToProps)(RebaseApp);
