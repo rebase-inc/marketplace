@@ -1,6 +1,6 @@
 var keyMirror = require('keymirror');
 
-module.exports = keyMirror({
+let ActionConstants = keyMirror({
     LOGIN: null,
     LOGIN_AS_CONTRACTOR: null,
     LOGIN_AS_MANAGER: null,
@@ -50,3 +50,5 @@ module.exports = keyMirror({
     DELETE_PROJECT: null,
     GET_PROJECTS: null,
 });
+
+export default ActionConstants;

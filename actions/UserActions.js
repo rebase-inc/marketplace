@@ -6,25 +6,30 @@
 
 import fetch from 'isomorphic-fetch';
 
-import { LOGIN } from '../constants/ActionConstants';
-import { ERROR, PENDING, SUCCESS } from '../constants/ActionConstants';
+import ActionConstants from '../constants/ActionConstants';
+import { ERROR, PENDING, SUCCESS } from '../constants/RequestConstants';
 
-//export function login(email, password) {
-    //if (typeof(email) != 'string' || typeof(password) != 'string') {
-        //console.warn('Invalid values for email, password: ', email, password);
-    //}
-    //return {
-        //type: ActionConstants.LOGIN,
-        //user: { email: email },
-    //};
-//}
+function handleStatus(response) {
+    if (response.status >= 200 && response.status < 300) {
+        return Promise.resolve(response)
+    } else {
+        return Promise.reject(new Error(response.statusText))
+    }
+}
+
 
 export function login(email, password) {
     return function(dispatch) {
-        dispatch({ type: LOGIN, status: PENDING });
-        return fetch('http://localhost:5000/auth', { method: 'POST' })
+        dispatch({ type: ActionConstants.LOGIN, status: PENDING });
+        let data = { user: { email: email }, password: password, };
+        return fetch('http://localhost:5000/auth', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json; charset=utf-8'},
+                body: JSON.stringify(data) })
+            .then(handleStatus)
             .then(response => response.json())
-            .then(json => dispatch({ type: LOGIN, status: SUCCESS, response: json }));
+            .then(json => dispatch({ type: ActionConstants.LOGIN, status: SUCCESS, response: json }))
+            .catch(json => dispatch({ type: ActionConstants.LOGIN, status: ERROR, response: json }));
     };
 }
 

@@ -1,8 +1,4 @@
-var keyMirror = require('keymirror');
-
-module.exports = keyMirror({
-    ERROR: null,
-    PENDING: null,
-    SUCCESS: null,
-    TIMEOUT: null,
-});
+export const ERROR = 'ERROR';
+export const PENDING = 'PENDING';
+export const SUCCESS = 'SUCCESS';
+export const TIMEOUT = 'TIMEOUT';
