@@ -1,2 +1,2 @@
 export { default as user } from './user';
-export { default as role } from './role';
+export { default as roles } from './roles';

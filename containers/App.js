@@ -8,10 +8,10 @@ import { Provider } from 'react-redux';
 import thunkMiddleware from 'redux-thunk';
 import createLogger from 'redux-logger';
 import { user as userReducer } from '../reducers';
-import { role as roleReducer } from '../reducers';
+import { roles as rolesReducer } from '../reducers';
 
 
-const reducer = combineReducers({user: userReducer, role: roleReducer});
+const reducer = combineReducers({user: userReducer, roles: rolesReducer});
 
 let store;
 switch (process.env.NODE_ENV) {

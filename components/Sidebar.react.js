@@ -12,15 +12,15 @@ import { ViewTypes, ContractorViews, ManagerViews } from '../constants/ViewConst
 export default class Sidebar extends Component {
     static propTypes = {
         user: PropTypes.object.isRequired,
-        role: PropTypes.object.isRequired,
+        roles: PropTypes.object.isRequired,
     };
 
     render() {
-        const { user, role } = this.props;
+        const { user, roles } = this.props;
         return (
             <div id='sidebar' className='noselect'>
                 <Logo />
-                <SidebarNav user={user} role={role} />
+                <SidebarNav user={user} roles={roles} />
             </div>
         );
     }
@@ -29,16 +29,14 @@ export default class Sidebar extends Component {
 class SidebarNav extends Component {
     static propTypes = {
         user: PropTypes.object.isRequired,
-        role: PropTypes.object.isRequired,
+        roles: PropTypes.object.isRequired,
     };
 
     render() {
-        const { user, role } = this.props;
+        const { user, roles } = this.props;
         var allViews = [];
-        // the views are pushed explicitly, because javascript implementations don't guarantee object key order
-        // so a map or similar operation cannot be used. Probably should switch to storing the data in array, then.
-        // That would also allow for dynamic generation of the keys (dev0, man0, etc).
-        switch (role.type) {
+        console.log('in sidebar nav, user is ', user);
+        switch (user.current_role.type) {
             case 'contractor':
                 allViews.push(<ViewSelection view={ContractorViews[ViewTypes.OFFERED]} key='dev0'/>);
                 allViews.push(<ViewSelection view={ContractorViews[ViewTypes.IN_PROGRESS]} key='dev1'/>);
@@ -53,7 +51,7 @@ class SidebarNav extends Component {
         }
         return (
             <div id='sidebarNav'>
-                <RoleSelector user={user} role={role} roles={[]}/>
+                <RoleSelector user={user} role={user.current_role} roles={roles.items}/>
                 <div id='viewList'>
                     { allViews }
                 </div>
@@ -136,7 +134,7 @@ export class RoleSelector extends Component {
 
 let RoleElement = (props) => {
     return (
-        <div className={props.selected ? 'selected role' : 'role'} key={props.role.id} onClick={select}>
+        <div className={props.selected ? 'selected role' : 'role'} key={props.role.id} onClick={props.select}>
             <div>{ props.role.type == 'manager' ? props.role.project.name : 'Contractor View'}</div>
             { props.role.type == 'manager' ? <div>{props.role.project.organization.name}</div> : null }
         </div>

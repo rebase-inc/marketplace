@@ -17,7 +17,6 @@ function handleStatus(response) {
     }
 }
 
-
 export function login(email, password) {
     return function(dispatch) {
         dispatch({ type: ActionConstants.LOGIN, status: PENDING });
