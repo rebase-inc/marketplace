@@ -61,7 +61,7 @@ var TicketView = React.createClass({
             return (
                 <NothingHere>
                     <h3>In order to get some work done, you first need some tasks</h3>
-                    <button onClick={UserActions.selectView.bind(null, ViewTypes.PROJECTS)}>Import Another Project</button>
+                    <button>Import Another Project</button>
                     <span>OR</span>
                     <button className='notification'>Add a Task</button>
                 </NothingHere>

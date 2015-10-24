@@ -15,6 +15,8 @@ import Sidebar from '../components/Sidebar.react';
 
 import * as UserActions from '../actions/UserActions';
 
+import { NEW, OFFERED, IN_PROGRESS, COMPLETED, PROFILE, PROJECTS } from '../constants/ViewConstants';
+
 class RebaseApp extends Component {
   render() {
     const { user, view, views, roles, actions } = this.props;
@@ -25,17 +27,17 @@ class RebaseApp extends Component {
             <div id='app'>
                 <Sidebar user={user} roles={roles} views={views}/>
                 {
-                    () => { return null;
+                    () => {
                         switch (view.type) {
-                            case viewConstants.ViewTypes.NEW: return <TicketView />; break;
-                            case viewConstants.ViewTypes.OFFERED: return <AuctionView />; break;
-                            case viewConstants.ViewTypes.IN_PROGRESS: return <ContractView />; break;
-                            case viewConstants.ViewTypes.COMPLETED: return <ReviewView />; break;
-                            case viewConstants.ViewTypes.PROFILE: return <ProfileView />; break;
-                            case viewConstants.ViewTypes.PROJECTS: return <ProjectView />; break;
+                            case NEW: return <TicketView />; break;
+                            case OFFERED: return <AuctionView />; break;
+                            case IN_PROGRESS: return <ContractView />; break;
+                            case COMPLETED: return <ReviewView />; break;
+                            case PROFILE: return <ProfileView />; break;
+                            case PROJECTS: return <ProjectView />; break;
                             default: throw 'Invalid view ' + view; break;
                         }
-                    }
+                    }()
                 }
             </div>
         );

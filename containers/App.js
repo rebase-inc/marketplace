@@ -10,9 +10,10 @@ import createLogger from 'redux-logger';
 import { user as userReducer } from '../reducers';
 import { roles as rolesReducer } from '../reducers';
 import { views as viewsReducer } from '../reducers';
+import { view as viewReducer } from '../reducers';
 
 
-const reducer = combineReducers({user: userReducer, roles: rolesReducer, views: viewsReducer });
+const reducer = combineReducers({user: userReducer, roles: rolesReducer, views: viewsReducer, view: viewReducer });
 
 let store;
 switch (process.env.NODE_ENV) {
@@ -33,7 +34,7 @@ switch (process.env.NODE_ENV) {
 
 if (module.hot) {
     // the hot swap of the reducers needs to be done explicitly
-    //module.hot.accept('../reducers', () => store.replaceReducer(combineReducers(require('../reducers'))));
+    module.hot.accept('../reducers', () => store.replaceReducer(combineReducers(require('../reducers'))));
 }
 
 export default class App extends Component {
