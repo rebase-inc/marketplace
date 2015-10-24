@@ -1,7 +1,7 @@
-var React = require('react');
-var ReactDOM = require('react-dom');
+import React, { Component } from 'react';
+import ReactDOM from 'react-dom';
+
 var keymirror = require('keymirror');
-var UserActions = require('../actions/UserActions');
 var Graph = require('../utils/Graph');
 
 function _dataURItoBlob(dataURI) {
@@ -211,77 +211,70 @@ var Checkbox = React.createClass({
     }
 });
 
+export class ProfilePicture extends Component {
+    static propTypes = { user: React.PropTypes.object, dynamic: React.PropTypes.bool };
+    static defaultProps = { dynamic: false }; 
+    
+    openFileDialog() {
+        if (!this.props.dynamic) { return; }
+        let fileInput = ReactDOM.findDOMNode(this.refs.fileInput);
+        fileInput.value = null;
+        fileInput.click();
+    }
+    
+    handleFile(event) {
+        let MAX_DIMENSION = 600;
+        let fileToUpload = event.target.files[0];
 
-var ProfilePicture = React.createClass({
-    propTypes: {
-        user: React.PropTypes.object,
-        dynamic: React.PropTypes.bool,
-    },
-    getDefaultProps: function() {
-        return { dynamic: false };
-    },
-    openFileDialog: function() {
-        if (this.props.dynamic) {
-            var fileInput = ReactDOM.findDOMNode(this.refs.fileInput);
-            fileInput.value = null;
-            fileInput.click();
-        }
-    },
-    handleFile: function(event) {
-        var MAX_DIMENSION = 600;
-        var fileToUpload = event.target.files[0];
-
-        var img = document.createElement('img');
+        let img = document.createElement('img');
         img.src = window.URL.createObjectURL(fileToUpload);
-        var canvas = document.createElement('canvas');
+        let canvas = document.createElement('canvas');
         canvas.height = MAX_DIMENSION;
         canvas.width = MAX_DIMENSION;
-        var ctx = canvas.getContext("2d");
+        let ctx = canvas.getContext("2d");
         ctx.drawImage(img, 0, 0);
 
-        img.onload = function() {
-            var size = Math.min(img.width, img.height);
-            var sourceX = (img.width - size)/2;
-            var sourceY = (img.height - size)/2;
+        img.onload = () => {
+            let size = Math.min(img.width, img.height);
+            let sourceX = (img.width - size)/2;
+            let sourceY = (img.height - size)/2;
             ctx.drawImage(img, sourceX, sourceY, size, size, 0, 0, MAX_DIMENSION, MAX_DIMENSION);
-            var imgUrl = canvas.toDataURL('image/jpeg');
+            let imgUrl = canvas.toDataURL('image/jpeg');
             this.setState({ photo: imgUrl });
             UserActions.updateProfilePhoto(_dataURItoBlob(imgUrl));
-        }.bind(this);
-    },
-    render: function() {
-        if (!!this.props.user.photo) {
+        }        
+    }
+    
+    render() {
+        const { user, dynamic } = this.props;
+        if (!!user.photo) {
             return (
                 <div>
-                    <img ref='imgNode' className='profilePicture' onClick={this.openFileDialog} src={this.props.user.photo}/>
-                    {!!this.props.dynamic ? <h5 onClick={this.openFileDialog}>Change profile picture</h5> : null }
+                    <img ref='imgNode' className='profilePicture' onClick={this.openFileDialog} src={user.photo}/>
+                    { !!dynamic ? <h5 onClick={this.openFileDialog}>Change profile picture</h5> : null }
                     <input type='file' ref='fileInput' style={{ display: 'none' }} onChange={this.handleFile} />
                 </div>
             );
         }
         else {
-            var initials = this.props.user.first_name.charAt(0) + this.props.user.last_name.charAt(0);
+            let initials = user.first_name.charAt(0) + user.last_name.chartAt(0);
             return (
                 <div>
                     <svg onClick={this.openFileDialog} className='profilePicture' width="140px" height="140px" viewBox="0 0 140 140" version="1.1">
                         <g id="UI" stroke="none" strokeWidth="1" fill="none" fill-rule="evenodd">
-                            <g id="UX-Profile-Copy" transform="translate(-494.000000, -334.000000)">
-                                <g id="Oval-276-+-AM" transform="translate(494.000000, 334.000000)">
-                                    <circle id="Oval-276" fill="#718296" cx="70" cy="70" r="70"></circle>
-                                    <text id="intials" x='70' y='70' fontFamily="Gotham Rounded" fontSize="54px" dy="18px" fill="#F5F7FA" textAnchor='middle'>
-                                        {initials}
-                                    </text>
-                                </g>
-                            </g>
+                            <circle id="Oval-276" fill="#718296" cx="70" cy="70" r="70"></circle>
+                            <text id="intials" x='70' y='70' fontFamily="Gotham Rounded" fontSize="54px" dy="18px" fill="#F5F7FA" textAnchor='middle'>
+                                {initials}
+                            </text>
                         </g>
                     </svg>
-                    {!!this.props.dynamic ? <h5>Change profile picture</h5> : null }
+                    {!!dynamic ? <h5>Change profile picture</h5> : null }
                     <input type='file' ref='fileInput' style={{ display: 'none' }} onChange={this.handleFile} />
                 </div>
             );
         }
     }
-});
+}
 
 
 var TalentScore = React.createClass({
@@ -461,18 +454,34 @@ var ProjectGraph = React.createClass({
     }
 });
 
-module.exports = {
-    Dropdown: Dropdown,
-    Comment: Comment,
-    FindTalent: FindTalent,
-    Dropback: Dropback,
-    ApproveTalent: ApproveTalent,
-    TalentScore: TalentScore,
-    ProfilePicture: ProfilePicture,
-    AddNewProject: AddNewProject,
-    ProjectGraph: ProjectGraph,
-    FindTalentOverview: FindTalentOverview,
-    Timer: Timer,
-    AddTicket: AddTicket,
-    Checkbox: Checkbox,
+export class Logo extends Component {
+    render() {
+        return (
+            <svg width="59px" height="49px" viewBox="0 0 59 49">
+                <g stroke="none" strokeWidth="1" fill="none">
+                    <path d="M39.4328849,0.332707025 L39.4328849,14.0498069 L19.9125,25.9848489 L19.9125,11.8787876 L39.4328849,0.332707025 Z" fill="#8499B1"></path>
+                    <path d="M19.9125,11.8787879 L19.9125,25.9848485 L0,38.0924593 L0,24.3753594 L19.9125,11.8787879 Z" fill="#8499B1"></path>
+                    <path d="M39.0875,37.1212121 L39.0875,23.7575765 L19.9125,11.8787868 L19.9585938,25.4726274 L39.0875,37.1212121 Z" fill="#A1BAD6"></path>
+                    <path d="M39.4328849,0.332707025 L39.4328849,14.0498069 L59,25.9848489 L59,11.8787876 L39.4328849,0.332707025 Z" fill="#8499B1"></path>
+                    <path d="M39.0874996,37.1212121 L39.0875,23.7575761 L59,11.8787868 L59,25.9848485 C59,26.0393159 39.0874996,37.1212121 39.0874996,37.1212121 Z"></path>
+                    <path d="M58.7421396,49 L58.7421396,35.2829001 L39.0875,23.7575758 L39.0875,37.1212118 L58.7421396,49 Z" fill="#A1BAD6"></path>
+                </g>
+            </svg>
+        );
+    }
 };
+
+//module.exports = {
+    //Dropdown: Dropdown,
+    //Comment: Comment,
+    //FindTalent: FindTalent,
+    //Dropback: Dropback,
+    //ApproveTalent: ApproveTalent,
+    //TalentScore: TalentScore,
+    //AddNewProject: AddNewProject,
+    //ProjectGraph: ProjectGraph,
+    //FindTalentOverview: FindTalentOverview,
+    //Timer: Timer,
+    //AddTicket: AddTicket,
+    //Checkbox: Checkbox,
+//};

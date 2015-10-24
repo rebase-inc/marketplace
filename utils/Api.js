@@ -4,7 +4,6 @@ var ActionConstants = require('../constants/ActionConstants');
 var AuctionStore = require('../stores/AuctionStore');
 var RequestConstants = require('../constants/RequestConstants');
 var AppDispatcher = require('../dispatcher/RebaseAppDispatcher');
-var MockData = require('../MockData');
 var _ = require('underscore');
 
 var API_URL = 'http://localhost:5000';
