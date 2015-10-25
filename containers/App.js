@@ -11,9 +11,11 @@ import { user as userReducer } from '../reducers';
 import { roles as rolesReducer } from '../reducers';
 import { views as viewsReducer } from '../reducers';
 import { view as viewReducer } from '../reducers';
+import { tickets as ticketsReducer } from '../reducers';
 
 
-const reducer = combineReducers({user: userReducer, roles: rolesReducer, views: viewsReducer, view: viewReducer });
+// there is a method in the redux library for doing this without specifying each by hand...TODO: Use it
+const reducer = combineReducers({user: userReducer, roles: rolesReducer, views: viewsReducer, view: viewReducer, tickets: ticketsReducer });
 
 let store;
 switch (process.env.NODE_ENV) {

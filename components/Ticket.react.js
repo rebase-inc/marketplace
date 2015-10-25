@@ -1,47 +1,77 @@
-var React = require('react');
+import React, { Component, PropTypes } from 'react';
 
-// Components
-var FindTalentPanel = require('../components/FindTalentPanel.react');
-var Icons = require('../components/Icons.react');
+import FindTalentPanel from './FindTalentPanel.react';
+import { Comment } from './Icons.react';
 
-var MonthNames = ['January', 'February', 'March', 'April', 'May', 
+const MonthNames = ['January', 'February', 'March', 'April', 'May',
     'June', 'July', 'August', 'September', 'October', 'November', 'December']
 
-var Ticket = React.createClass({
-    changeSearchText: function(skill, event) {
-        switch (event.shiftKey) {
-            case true: this.props.changeSearchText(this.props.searchText + ' ' + skill); break;
-            case false: this.props.changeSearchText(skill); break;
-        }
-        event.stopPropagation();
-    },
-    render: function() {
-        let date = new Date(this.props.ticket.created);
-        let dateString = MonthNames[date.getMonth()] + ' ' + date.getDate(); 
-        let role = this.props.currentRole;
+export default class Ticket extends Component {
+    render() {
+        const { ticket } = this.props;
         return (
-            <tr className='ticket' onClick={this.props.selectTicket.bind(null, this.props.ticket.id)}>
-                <td className='datePanel'>
-                    <span>Created</span> 
-                    <span>{dateString}</span>
-                </td>
-                <td className='titlePanel'>
-                    <span>{this.props.ticket.title}</span>
-                </td>
-                <td className='skillsRequiredPanel'>
-                    <div className='skills'>
-                        { Object.keys(this.props.ticket.skill_requirement.skills).map((skill) =>
-                           <div key={skill} className='skill' onClick={this.changeSearchText.bind(null, skill)}>{skill}</div>) }
-                    </div>
-                </td>
-                <td className='spacerPanel'></td>
-                <td className='commentsPanel'>
-                    <Icons.Comment/>
-                    <span>{this.props.ticket.comments.length} Comments</span>
-                </td>
+            <tr className='ticket'>
+                <DatePanel text={'Created'} date={ticket.created} />
+                <TitlePanel text={ticket.title} />
+                <SkillsRequiredPanel skills={ticket.skill_requirement.skills} />
+                <SpacerPanel />
+                <CommentsPanel comments={ticket.comments} />
             </tr>
         );
     }
-});
+};
+
+class DatePanel extends Component {
+    render() {
+        const { text, date } = this.props;
+        let dateString = (date) => { return MonthNames[date.getMonth()] + ' ' + date.getDate(); }(new Date(date));
+        return (
+            <td className='datePanel'>
+                <span>{text}</span>
+                <span>{dateString}</span>
+            </td>
+        );
+    }
+}
+
+class TitlePanel extends Component {
+    render() {
+        return (
+            <td className='titlePanel'>
+                <span>{this.props.text}</span>
+            </td>
+        );
+    }
+}
+
+class SkillsRequiredPanel extends Component {
+    render() {
+        const { skills } = this.props;
+        return (
+            <td className='skillsRequiredPanel'>
+                <div className='skills'>
+                    { Object.keys(skills).map(s => <div key={s} className='skill'>{s}</div>) }
+                </div>
+            </td>
+        );
+    }
+}
+
+class CommentsPanel extends Component {
+    render() {
+       const { comments } = this.props;
+       return (
+            <td className='commentsPanel'>
+                <Comment/>
+                <span>{comments.length} Comments</span>
+            </td>
+       );
+    }
+}
+
+// This problem can almost certainly be solved with CSS
+class SpacerPanel extends Component {
+    render() { return <td className='spacerPanel'/> }
+}
 
 module.exports = Ticket;

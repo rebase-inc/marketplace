@@ -1,52 +1,31 @@
-var React = require('react');
-var ReactDOM = require('react-dom');
+import React, { Component, PropTypes } from 'react';
+import ReactDOM from 'react-dom';
 
-var NothingHere = require('../components/NothingHere.react');
-var LoadingAnimation = require('../components/LoadingAnimation.react');
-var Ticket = require('../components/Ticket.react');
-var Fuse = require('../utils/Fuse');
-var handleScrollShadows = require('../utils/Style').handleScrollShadows;
+import LoadingAnimation from './LoadingAnimation.react';
+import Ticket from './Ticket.react';
+
+import Fuse from '../utils/Fuse';
+import { handleScrollShadows } from '../utils/Style';
 
 function searchTickets(tickets, searchText) {
     var fuseSearch = new Fuse(tickets, {threshold: 0.35, keys: ['title', 'skillsRequired', 'project.name', 'project.organization.name'], id: 'id'});
     return fuseSearch.search(searchText.substring(0, 32));
 }
 
-var TicketList = React.createClass({
-    propTypes: {
-        currentUser: React.PropTypes.object.isRequired,
-        currentRole: React.PropTypes.object.isRequired,
-        selectTicket: React.PropTypes.func.isRequired,
-        findTalent: React.PropTypes.func.isRequired,
-    },
-    render: function() {
-        var props = {
-            selectTicket: this.props.selectTicket,
-            currentRole: this.props.currentRole,
-            findTalent: this.props.findTalent,
-            changeSearchText: this.props.changeSearchText,
-            searchText: this.props.searchText,
-        }
-        var makeTicketElement = function(ticket) { return <Ticket ticket={ticket} key={ticket.id} {...props} />; }.bind(props);
-        var ticketIDs = !!this.props.searchText ? searchTickets(this.props.allTickets, this.props.searchText) : this.props.allTickets.map(a => a.id);
-        if (!!this.props.allTickets.length) {
-            return (
-                <table className='contentList'>
-                    <tbody ref='tableBody'>
-                        { this.props.allTickets.filter(ticket => ticketIDs.indexOf(ticket.id) != -1).map(makeTicketElement) }
-                    </tbody>
-                </table>
-            );
-        } else if (this.props.loading) {
-            return (
-                <div className='contentList'>
-                    <LoadingAnimation />
-                </div>
-            );
-        } else {
-            return <NothingHere text={'You don\'t have any tickets! Import some from GitHub!'}/>;
-        }
+export default class TicketList extends Component {
+    static propTypes = {
+        tickets: PropTypes.array.isRequired,
     }
-});
-
-module.exports = TicketList;
+    render() {
+        const { tickets } = this.props;
+        let searchResults = !!this.props.searchText ? searchTickets(tickets, this.props.searchText) : tickets.map(t => t.id);
+        return (
+            <table className='contentList'>
+                <tbody ref='tableBody'>
+                    { tickets.filter(t => searchResults.indexOf(t.id) != -1).map(t => <Ticket ticket={t} key={t.id} />) }
+                    { this.props.loading ? <LoadingAnimation /> : null }
+                </tbody>
+            </table>
+        );
+    }
+};

@@ -1,63 +1,51 @@
-// External
-var React = require('react');
-var _ = require('underscore');
-
-// Constants
-var ViewTypes = require('../constants/ViewConstants').ViewTypes;
-
-// Stores
-var TicketStore = require('../stores/TicketStore');
-
-// Actions
-var TicketActions = require('../actions/TicketActions');
-let UserActions = require('../actions/UserActions');
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 
 // Components
-var SingleTicketView = require('../components/SingleTicketView.react');
-var NewTicketModal = require('../components/NewTicketModal.react');
-var TicketList = require('../components/TicketList.react');
-var SearchBar = require('../components/SearchBar.react');
-var NothingHere = require('../components/NothingHere.react');
-var Icons = require('../components/Icons.react');
+import SingleTicketView from './SingleTicketView.react';
+import NewTicketModal from './NewTicketModal.react';
+import TicketList from './TicketList.react';
+import SearchBar from './SearchBar.react';
+import NothingHere from './NothingHere.react';
 
-var TicketView = React.createClass({
-    propTypes: {
-        currentUser: React.PropTypes.object.isRequired,
-        currentRole: React.PropTypes.object.isRequired,
-    },
-    getInitialState: function() {
-        return _.extend({ searchText: '', modalOpen: false }, TicketStore.getState());
-    },
-    _onChange: function() {
-        this.setState(TicketStore.getState());
-    },
-    componentDidMount: function() {
-        TicketStore.addChangeListener(this._onChange);
-        setTimeout(TicketActions.getTicketData, 0);
-    },
-    componentWillUnmount: function() {
-        TicketStore.removeChangeListener(this._onChange);
-    },
-    handleUserInput: function(searchText) {
+import { AddTicket } from './Icons.react';
+
+import * as TicketActions from '../actions/TicketActions';
+
+export default class TicketView extends Component {
+    static propTypes = {
+        user: React.PropTypes.object.isRequired,
+        roles: React.PropTypes.object.isRequired,
+    }
+    constructor(props, context) {
+        super(props, context);
+        this.state = { searchText: '', modalOpen: false };
+        
+        // TODO: Look into autobinding. React-redux examples projects have it, but not sure what they use
+        this.findTalent = this.findTalent.bind(this);
+        this.handleUserInput = this.handleUserInput.bind(this);
+        this.toggleModal = this.toggleModal.bind(this);
+        this.componentWillMount = this.componentWillMount.bind(this);
+    }
+    componentWillMount() {
+        this.props.actions.getTickets()
+    }
+    handleUserInput(searchText) {
         this.setState({ searchText: searchText });
-    },
-    findTalent: function(ticketID) {
-        if (!!ticketID) {  TicketActions.selectTicket(ticketID); }
+    }
+    findTalent(ticketID) {
+        //if (!!ticketID) {  TicketActions.selectTicket(ticketID); }
         this.setState({ modalOpen: true });
-    },
-    toggleModal: function() {
+    }
+    toggleModal() {
         this.setState({ modalOpen: !this.state.modalOpen });
-    },
-    render: function() {
-        var props = {
-            loading: this.state.loading,
-            currentUser: this.props.currentUser,
-            currentRole: this.props.currentRole,
-            searchText: this.state.searchText,
-        }
+    }
+    render() {
+        const { ticket, tickets, user, roles } = this.props;
         // If there aren't any tickets to display and we're not in the process of finding any,
         // display the nothing here screen, with some actions to help the user get out of this state.
-        if (!this.state.allTickets.length && !this.state.loading) {
+        if (!tickets.items.length && !tickets.isFetching) {
             return (
                 <NothingHere>
                     <h3>In order to get some work done, you first need some tasks</h3>
@@ -67,35 +55,26 @@ var TicketView = React.createClass({
                 </NothingHere>
             );
         }
-        switch (!!this.state.currentTicket) {
-            case true:
-                props.unselectTicket = TicketActions.selectTicket.bind(null, null);
-                props.currentTicket = this.state.currentTicket;
-                props.findTalent = this.findTalent;
-                props.viewingTalent = this.state.viewingTalent;
-                props.modalOpen = this.state.modalOpen;
-                props.toggleModal = this.toggleModal;
+        switch (!!this.props.ticket) {
+            case true: 
+                return <div>temp single ticket view</div>; 
                 return <SingleTicketView {...props} />;
                 break;
             case false:
-                props.allTickets = this.state.allTickets;
-                props.selectTicket = TicketActions.selectTicket;
-                props.searchText = this.state.searchText;
-                props.findTalent = this.findTalent;
-                props.changeSearchText = this.handleUserInput;
-                props.modalOpen = this.state.modalOpen;
-                props.toggleModal = this.toggleModal;
                 return (
                     <div className='ticketView'>
-                        <SearchBar searchText={this.state.searchText} onUserInput={this.handleUserInput}><Icons.AddTicket onClick={this.toggleModal}/></SearchBar>
-                        <TicketList {...props} />
+                        <SearchBar searchText={this.state.searchText} onUserInput={this.handleUserInput}>
+                            <AddTicket onClick={this.toggleModal}/>
+                        </SearchBar>
+                        <TicketList tickets={Array.from(tickets.items.values())} />
                         { !!this.state.modalOpen ? <NewTicketModal project={this.props.currentRole.project} toggleModal={this.toggleModal} /> : null }
                     </div>
                 );
                 break;
         }
     }
-});
+};
 
-
-module.exports = TicketView;
+let mapStateToProps = state => ({ tickets: state.tickets, ticket: state.ticket });
+let mapDispatchToProps = dispatch => ({ actions: bindActionCreators(TicketActions, dispatch)});
+export default connect(mapStateToProps, mapDispatchToProps)(TicketView);

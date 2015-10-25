@@ -2,7 +2,7 @@ import ActionConstants from '../constants/ActionConstants';
 import { PENDING, SUCCESS, ERROR } from '../constants/RequestConstants';
 import { NEW, OFFERED, IN_PROGRESS, COMPLETED } from '../constants/ViewConstants';
 
-export default function views(view = {}, action) {
+export default function view(view = {}, action) {
     switch (action.type) {
         case ActionConstants.LOGIN: {
             switch (action.status) {
@@ -13,10 +13,11 @@ export default function views(view = {}, action) {
                         case 'manager': newView.type = NEW; break;
                         case 'contractor': newView.type = OFFERED; break;
                     }
-                    return Object.assign({}, view, { isFetching: false }, newView); break;
+                    return Object.assign({}, view, { isFetching: false }, newView);
+                    break;
             }
         }
         default:
-            return views;
+            return view;
     }
 }

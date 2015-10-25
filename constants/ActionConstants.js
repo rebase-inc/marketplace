@@ -1,16 +1,19 @@
 var keyMirror = require('keymirror');
 
-let ActionConstants = keyMirror({
+let UserActions = keyMirror({
     LOGIN: null,
-    LOGIN_AS_CONTRACTOR: null,
-    LOGIN_AS_MANAGER: null,
-    LOGIN_AS_OWNER: null,
     LOGOUT: null,
+});
+
+let TicketActions = keyMirror({
+    GET_TICKETS: null
+});
+
+let __ActionConstants = keyMirror({
     UPDATE_USER_SETTINGS: null,
     UPDATE_PROFILE_PHOTO: null,
     APPROVE_NOMINATION: null,
     AUTHENTICATE_GITHUB: null,
-    GET_TICKET_DATA: null,
     GET_AUCTION_DATA: null,
     GET_AUCTION_DETAIL: null,
     GET_CONTRACT_DATA: null,
@@ -51,4 +54,4 @@ let ActionConstants = keyMirror({
     GET_PROJECTS: null,
 });
 
-export default ActionConstants;
+export default Object.assign({}, UserActions, TicketActions);
