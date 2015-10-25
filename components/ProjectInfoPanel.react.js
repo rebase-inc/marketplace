@@ -1,18 +1,15 @@
-var React = require('react');
+import React, { Component, PropTypes } from 'react';
 
-// Components
-var RatingStars = require('../components/RatingStars.react');
+import RatingStars from './RatingStars.react';
 
-var ProjectInfoPanel = React.createClass({
-    render: function() {
+export default class ProjectInfoPanel extends Component {
+    render() {
         return (
             <td onClick={this.handleClick} className='projectInfoPanel'>
-            <span>{this.props.ticket.project.name}</span>
-            <span>{this.props.ticket.project.organization.name}</span>
-            <RatingStars rating={this.props.ticket.project.rating || 3} />
+                <span>{this.props.ticket.project.name}</span>
+                <span>{this.props.ticket.project.organization.name}</span>
+                <RatingStars rating={this.props.ticket.project.rating || 3} />
             </td>
         );
     }
-});
-
-module.exports = ProjectInfoPanel;
+};

@@ -7,15 +7,10 @@ import { DevTools, DebugPanel, LogMonitor } from 'redux-devtools/lib/react';
 import { Provider } from 'react-redux';
 import thunkMiddleware from 'redux-thunk';
 import createLogger from 'redux-logger';
-import { user as userReducer } from '../reducers';
-import { roles as rolesReducer } from '../reducers';
-import { views as viewsReducer } from '../reducers';
-import { view as viewReducer } from '../reducers';
-import { tickets as ticketsReducer } from '../reducers';
-
+import * as reducers from '../reducers';
 
 // there is a method in the redux library for doing this without specifying each by hand...TODO: Use it
-const reducer = combineReducers({user: userReducer, roles: rolesReducer, views: viewsReducer, view: viewReducer, tickets: ticketsReducer });
+const reducer = combineReducers(reducers);
 
 let store;
 switch (process.env.NODE_ENV) {

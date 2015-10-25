@@ -1,47 +1,32 @@
-var React = require('react');
+import React, { Component, PropTypes } from 'react';
+import ReactDOM from 'react-dom';
 
-// Components
-var NothingHere = require('../components/NothingHere.react');
-var LoadingAnimation = require('../components/LoadingAnimation.react');
-var Auction = require('../components/Auction.react');
-var Fuse = require('../utils/Fuse');
+import LoadingAnimation from './LoadingAnimation.react';
+import Auction from './Auction.react';
 
-function searchAuctions(tickets, searchText) {
-    var fuseSearch = new Fuse(tickets, {threshold: 0.35, keys: ['ticket.title', 'ticket.project.name', 'ticket.project.organization.name'], id: 'id'});
+import Fuse from '../utils/Fuse';
+
+function searchAuctions(auctions, searchText) {
+    var fuseSearch = new Fuse(auctions, {threshold: 0.35, keys: ['ticket.title', 'ticket.project.name', 'ticket.project.organization.name'], id: 'id'});
     return fuseSearch.search(searchText.substring(0, 32));
 }
 
-var AuctionList = React.createClass({
-    propTypes: {
-        currentUser: React.PropTypes.object.isRequired,
-        currentRole: React.PropTypes.object.isRequired,
-        selectAuction: React.PropTypes.func.isRequired,
-        searchText: React.PropTypes.string.isRequired,
-        findTalent: React.PropTypes.func.isRequired,
-    },
-    render: function() {
-        var props = {
-            selectAuction: this.props.selectAuction,
-            currentRole: this.props.currentRole,
-            findTalent: this.props.findTalent,
-            changeSearchText: this.props.changeSearchText,
-        }
-        var makeTicketElement = function(auction) { return <Auction auction={auction} key={auction.id} {...props} />; }.bind(props);
-        var auctionIDs = !!this.props.searchText ? searchAuctions(this.props.allAuctions, this.props.searchText) : this.props.allAuctions.map(a => a.id);
-        if (!!this.props.allAuctions.length) {
-            return (
-                <table className='contentList'>
-                    <tbody>
-                        { this.props.allAuctions.filter(auction => auctionIDs.indexOf(auction.id) != -1).map(makeTicketElement) }
-                    </tbody>
-                </table>
-            );
-        } else if (this.props.loading) {
-            return <div className='contentList'><LoadingAnimation /></div>;
-        } else {
-            return <NothingHere text={'We\'re working to find some great auctions for you!'}/>;
-        }
+export default class AuctionList extends Component {
+    static propTypes = {
+        auctions: PropTypes.array.isRequired,
+        roles: PropTypes.object.isRequired,
+        user: PropTypes.object.isRequired,
     }
-});
-
-module.exports = AuctionList;
+    render() {
+        const { auctions, user, roles } = this.props;
+        let searchResults = !!this.props.searchText ? searchAuctions(auctions, this.props.searchText) : auctions.map(a => a.id);
+        return (
+            <table className='contentList'>
+                <tbody ref='tableBody'>
+                    { auctions.filter(a => searchResults.indexOf(a.id) != -1).map(a => <Auction user={user} roles={roles} auction={a} key={a.id} />) }
+                    { this.props.loading ? <LoadingAnimation /> : null }
+                </tbody>
+            </table>
+        );
+    }
+};

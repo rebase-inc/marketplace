@@ -25,13 +25,13 @@ class RebaseApp extends Component {
     } else {
         return (
             <div id='app'>
-                <Sidebar user={user} roles={roles} views={views}/>
+                <Sidebar user={user} roles={roles} view={view} views={views} actions={actions}/>
                 {
                     () => {
                         switch (view.type) {
-                            case NEW: return <TicketView user={user} />; break;
-                            case OFFERED: return <AuctionView user={user} />; break;
-                            case IN_PROGRESS: return <ContractView user={user} />; break;
+                            case NEW: return <TicketView user={user} roles={roles} />; break;
+                            case OFFERED: return <AuctionView user={user} roles={roles} />; break;
+                            case IN_PROGRESS: return <ContractView user={user} roles={roles} />; break;
                             case COMPLETED: return <ReviewView user={user} />; break;
                             case PROFILE: return <ProfileView user={user} />; break;
                             case PROJECTS: return <ProjectView user={user} />; break;

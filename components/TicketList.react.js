@@ -5,7 +5,6 @@ import LoadingAnimation from './LoadingAnimation.react';
 import Ticket from './Ticket.react';
 
 import Fuse from '../utils/Fuse';
-import { handleScrollShadows } from '../utils/Style';
 
 function searchTickets(tickets, searchText) {
     var fuseSearch = new Fuse(tickets, {threshold: 0.35, keys: ['title', 'skillsRequired', 'project.name', 'project.organization.name'], id: 'id'});

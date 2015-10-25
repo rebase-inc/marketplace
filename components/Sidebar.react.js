@@ -14,15 +14,17 @@ export default class Sidebar extends Component {
     static propTypes = {
         user: PropTypes.object.isRequired,
         roles: PropTypes.object.isRequired,
+        view: PropTypes.object.isRequired,
         views: PropTypes.object.isRequired,
+        actions: PropTypes.object.isRequired,
     };
 
     render() {
-        const { user, roles, views } = this.props;
+        const { user, roles, view, views, actions } = this.props;
         return (
             <div id='sidebar' className='noselect'>
                 <Logo />
-                <SidebarNav user={user} roles={roles} views={views} />
+                <SidebarNav user={user} roles={roles} view={view} views={views} actions={actions} />
                 <SidebarProfile user={user} />
             </div>
         );
@@ -33,17 +35,19 @@ class SidebarNav extends Component {
     static propTypes = {
         user: PropTypes.object.isRequired,
         roles: PropTypes.object.isRequired,
+        view: PropTypes.object.isRequired,
         views: PropTypes.object.isRequired,
+        actions: PropTypes.object.isRequired,
     };
 
     render() {
-        const { user, roles, views } = this.props;
+        const { user, roles, view, views, actions } = this.props;
         var allViews = [];
         return (
             <div id='sidebarNav'>
                 <RoleSelector user={user} role={user.current_role} roles={Array.from(roles.items.values())}/>
                 <div id='viewList'>
-                    { Array.from(views.items.values()).map(view => <ViewSelection view={view} />) }
+                    { Array.from(views.items.values()).map(v => <ViewSelection view={v} onSelect={() => actions.selectView(v.type)} selected={v.type == view.type} />) }
                 </div>
             </div>
         );

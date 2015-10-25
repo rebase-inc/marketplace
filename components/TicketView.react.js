@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-// Components
 import SingleTicketView from './SingleTicketView.react';
 import NewTicketModal from './NewTicketModal.react';
 import TicketList from './TicketList.react';
@@ -55,7 +54,7 @@ export default class TicketView extends Component {
                 </NothingHere>
             );
         }
-        switch (!!this.props.ticket) {
+        switch (!!ticket) {
             case true: 
                 return <div>temp single ticket view</div>; 
                 return <SingleTicketView {...props} />;

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
+import d3 from 'd3';
 
 var keymirror = require('keymirror');
 var Graph = require('../utils/Graph');
@@ -124,14 +125,23 @@ export class AddTicket extends Component {
     }
 };
 
-var Timer = React.createClass({
-    propTypes: {
-        minutesRemaining: React.PropTypes.number.isRequired,
-    },
-    render: function() {
-        let wholeDaysRemaining = Math.floor(this.props.minutesRemaining / (60*24));
-        let wholeHoursRemaining = Math.floor((this.props.minutesRemaining % (60*24)) / 60);
-        let wholeMinutesRemaining = Math.floor(this.props.minutesRemaining % 60);
+export class Timer extends Component {
+    static propTypes = { expires: React.PropTypes.string.isRequired }
+    constructor(props, context) {
+        super(props, context);
+        this.state = { currentDateTime: new Date() };
+        this._timer = setInterval(() => this.setState({currentDateTime : new Date()}), 2000);
+        this.componentWillUnmount = this.componentWillUnmount.bind(this);
+    }
+    componentWillUnmount() {
+        clearInterval(this._timer);
+    }
+    render() {
+        let expires = new Date(this.props.expires);
+        let minutesRemaining = Math.max(0, (expires - this.state.currentDateTime) / (1000*60));
+        let wholeDaysRemaining = Math.floor(minutesRemaining / (60*24));
+        let wholeHoursRemaining = Math.floor((minutesRemaining % (60*24)) / 60);
+        let wholeMinutesRemaining = Math.floor(minutesRemaining % 60);
         wholeDaysRemaining = (wholeDaysRemaining < 10) ? '0' + wholeDaysRemaining : wholeDaysRemaining;
         wholeHoursRemaining = (wholeHoursRemaining < 10) ? '0' + wholeHoursRemaining : wholeHoursRemaining;
         wholeMinutesRemaining = (wholeMinutesRemaining < 10) ? '0' + wholeMinutesRemaining : wholeMinutesRemaining;
@@ -180,7 +190,7 @@ var Timer = React.createClass({
             </svg>
         );
     }
-});
+};
 
 var Checkbox = React.createClass({
     propTypes: {
@@ -298,8 +308,8 @@ var TalentScore = React.createClass({
     },
 });
 
-var FindTalent = React.createClass({
-    render: function() {
+export class FindTalent extends Component {
+    render() {
         return (
             <svg width="25px" height="22px" viewBox="0 0 25 22" version="1.1">
                 <g id="UI" stroke="none" strokeWidth="1" fill="none" fill-rule="evenodd">
@@ -321,7 +331,7 @@ var FindTalent = React.createClass({
             </svg>
         );
     }
-});
+};
 
 export class Comment extends Component {
     render() {
@@ -367,42 +377,35 @@ var AddNewProject = React.createClass({
     }
 });
 
-var FindTalentOverview = React.createClass({
-    propTypes: {
+export class FindTalentOverview extends Component {
+    static propTypes = {
+        auction: React.PropTypes.object.isRequired,
         width: React.PropTypes.number,
         height: React.PropTypes.number,
-        auction: React.PropTypes.object.isRequired,
-    },
-    getDefaultProps: function() {
-        return { width: 160, height: 60, margin: 6 }
-    },
-    componentDidMount: function() {
-        var element = ReactDOM.findDOMNode(this);
+        margin: React.PropTypes.number,
+    }
+    static defaultProps = { width: 160, height: 60, margin: 6 }
+
+    constructor(props, context) {
+        super(props, context);
+        this.componentDidMount = this.componentDidMount.bind(this);
+    }
+    
+    componentDidMount() {
+        console.log('making graph');
+        const { auction } = this.props;
+        let element = ReactDOM.findDOMNode(this);
         let data = [
-            {category: 'nominated', population: this.props.auction.ticket_set.nominations.filter(n => !n.auction).length, color: '#507196'},
-            {category: 'offered', population: this.props.auction.approved_talents.length - this.props.auction.bids.filter(b => !b.contract).length, color: '#CBD0D4'},
-            {category: 'rejected', population: this.props.auction.bids.filter(b => !b.contract).length, color: '#CC6070'}
+            {category: 'nominated', population: auction.ticket_set.nominations.filter(n => !n.auction).length, color: '#507196'},
+            {category: 'offered', population: auction.approved_talents.length - auction.bids.filter(b => !b.contract).length, color: '#CBD0D4'},
+            {category: 'rejected', population: auction.bids.filter(b => !b.contract).length, color: '#CC6070'}
         ];
         Graph.donutChart.create(element, this.props, data);
-    },
-    _getNominationState: function(nomination) {
-        if (!this.props.nomination.auction) {
-            return _TalentStates.UNAPPROVED;
-        } else if (!!this.props.currentAuction.bids.every(bid => bid.contractor.id != this.props.nomination.contractor.id)) {
-            return _TalentStates.WAITING;
-        } else if (!!this.props.currentAuction.bids.some(bid => bid.contractor.id == this.props.nomination.contractor.id && bid.contract)) {
-            return _TalentStates.ACCEPTED;
-        } else {
-            return _TalentStates.REJECTED;
-        }
-    },
-    render: function() {
-        return (
-            <div className='findTalentOverview'>
-            </div>
-        );
     }
-});
+    render() {
+        return <div className='findTalentOverview'/>;
+    }
+};
 
 var ProjectGraph = React.createClass({
     propTypes: {

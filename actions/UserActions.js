@@ -32,6 +32,13 @@ export function login(email, password) {
     };
 }
 
+export function selectView(viewType) {
+    return {
+        type: ActionConstants.SELECT_VIEW,
+        response: { viewType },
+        status: SUCCESS
+    }
+}
 
 //module.exports = {
     ////login: function(email, password) {
@@ -124,12 +131,6 @@ export function login(email, password) {
         //let pendingAction = () => Dispatcher.handleRequestAction({ type: actionType, status: RequestConstants.PENDING });
         //let responseAction = (res, status) => Dispatcher.handleRequestAction({ type: actionType, status: status, response: res });
         //Api.updateUserSettings({ id: user.id, current_role: { id: role_id } }, responseAction, pendingAction);
-    //},
-    //selectView: function(viewType) {
-        //Dispatcher.handleRequestAction({
-            //type: ActionConstants.SELECT_VIEW,
-            //viewType: viewType,
-        //});
     //},
 //};
 

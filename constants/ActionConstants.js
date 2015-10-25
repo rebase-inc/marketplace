@@ -3,10 +3,16 @@ var keyMirror = require('keymirror');
 let UserActions = keyMirror({
     LOGIN: null,
     LOGOUT: null,
+    SELECT_VIEW: null,
+    SELECT_ROLE: null,
 });
 
 let TicketActions = keyMirror({
     GET_TICKETS: null
+});
+
+let AuctionActions = keyMirror({
+    GET_AUCTIONS: null
 });
 
 let __ActionConstants = keyMirror({
@@ -14,15 +20,12 @@ let __ActionConstants = keyMirror({
     UPDATE_PROFILE_PHOTO: null,
     APPROVE_NOMINATION: null,
     AUTHENTICATE_GITHUB: null,
-    GET_AUCTION_DATA: null,
     GET_AUCTION_DETAIL: null,
     GET_CONTRACT_DATA: null,
     GET_TALENT_DATA: null,
     GET_REVIEW_DATA: null,
     GET_MANAGERS: null,
     GET_CONTRACTORS: null,
-    SELECT_VIEW: null,
-    SELECT_ROLE: null,
     SELECT_AUCTION: null,
     SELECT_TICKET: null,
     SELECT_CONTRACT: null,
@@ -54,4 +57,4 @@ let __ActionConstants = keyMirror({
     GET_PROJECTS: null,
 });
 
-export default Object.assign({}, UserActions, TicketActions);
+export default Object.assign({}, UserActions, TicketActions, AuctionActions);

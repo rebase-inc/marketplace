@@ -1,16 +1,14 @@
-var React = require('react');
+import React, { Component, PropTypes } from 'react';
 
-var Icons = require('../components/Icons.react');
+import { FindTalent } from './Icons.react';
 
-var FindTalentPanel = React.createClass({
-    render: function() {
+export default class FindTalentPanel extends Component {
+    render() {
         return (
-            <td onClick={this.props.onClick} className='findTalentPanel'>
-                <Icons.FindTalent/>
+            <td className='findTalentPanel'>
+                <FindTalent/>
                 <span>Find Talent</span>
             </td>
         );
     }
-});
-
-module.exports = FindTalentPanel;
+};
