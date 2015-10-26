@@ -18,14 +18,16 @@ export default class TicketView extends Component {
         roles: React.PropTypes.object.isRequired,
     }
     constructor(props, context) {
+        console.log('constructing ticket view');
         super(props, context);
         this.state = { searchText: '', modalOpen: false };
-        
+
         // TODO: Look into autobinding. React-redux examples projects have it, but not sure what they use
         this.findTalent = this.findTalent.bind(this);
         this.handleUserInput = this.handleUserInput.bind(this);
         this.toggleModal = this.toggleModal.bind(this);
         this.componentWillMount = this.componentWillMount.bind(this);
+        console.log('done constructing ticket view');
     }
     componentWillMount() {
         this.props.actions.getTickets()
@@ -41,6 +43,8 @@ export default class TicketView extends Component {
         this.setState({ modalOpen: !this.state.modalOpen });
     }
     render() {
+        let date = new Date();
+        console.log('rendering ticket view at ', date.getSeconds(), date.getMilliseconds());
         const { ticket, tickets, user, roles } = this.props;
         // If there aren't any tickets to display and we're not in the process of finding any,
         // display the nothing here screen, with some actions to help the user get out of this state.
@@ -55,8 +59,8 @@ export default class TicketView extends Component {
             );
         }
         switch (!!ticket) {
-            case true: 
-                return <div>temp single ticket view</div>; 
+            case true:
+                return <div>temp single ticket view</div>;
                 return <SingleTicketView {...props} />;
                 break;
             case false:

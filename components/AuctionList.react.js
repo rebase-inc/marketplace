@@ -13,20 +13,25 @@ function searchAuctions(auctions, searchText) {
 
 export default class AuctionList extends Component {
     static propTypes = {
-        auctions: PropTypes.array.isRequired,
+        auctions: PropTypes.object.isRequired,
         roles: PropTypes.object.isRequired,
         user: PropTypes.object.isRequired,
     }
     render() {
         const { auctions, user, roles } = this.props;
-        let searchResults = !!this.props.searchText ? searchAuctions(auctions, this.props.searchText) : auctions.map(a => a.id);
-        return (
-            <table className='contentList'>
-                <tbody ref='tableBody'>
-                    { auctions.filter(a => searchResults.indexOf(a.id) != -1).map(a => <Auction user={user} roles={roles} auction={a} key={a.id} />) }
-                    { this.props.loading ? <LoadingAnimation /> : null }
-                </tbody>
-            </table>
-        );
+        const auctionList = Array.from(auctions.items.values())
+        let searchResults = !!this.props.searchText ? searchAuctions(auctionList, this.props.searchText) : auctionList.map(a => a.id);
+        switch (auctions.isFetching) {
+            case true: return <div className='contentList'><LoadingAnimation /></div>; break;
+            case false:
+                return (
+                    <table className='contentList'>
+                        <tbody ref='tableBody'>
+                            { auctionList.filter(a => searchResults.indexOf(a.id) != -1).map(a => <Auction user={user} roles={roles} auction={a} key={a.id} />) }
+                        </tbody>
+                    </table>
+                );
+                break;
+        }
     }
 };

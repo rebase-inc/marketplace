@@ -21,9 +21,9 @@ export default class AuctionView extends Component {
         // TODO: Look into autobinding. React-redux examples projects have it, but not sure what they use
         this.findTalent = this.findTalent.bind(this);
         this.handleUserInput = this.handleUserInput.bind(this);
-        this.componentWillMount = this.componentWillMount.bind(this);
+        this.componentDidMount = this.componentDidMount.bind(this);
     }
-    componentWillMount() {
+    componentDidMount() {
         this.props.actions.getAuctions()
     }
     handleUserInput(searchText) {
@@ -50,7 +50,7 @@ export default class AuctionView extends Component {
             return (
                 <div className='auctionView'>
                     <SearchBar searchText={this.state.searchText} onUserInput={this.handleUserInput} />
-                    <AuctionList user={user} roles={roles} auctions={Array.from(auctions.items.values())} />
+                    <AuctionList user={user} roles={roles} auctions={auctions} />
                 </div>
             );
         }

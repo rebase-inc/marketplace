@@ -146,6 +146,8 @@ export class ViewSelection extends Component {
 
     render() {
         const { view, selected, onSelect } = this.props;
+        let date = new Date();
+        console.log('re rendering view selection ' + view.type, ' at ', date.getSeconds(), date.getMilliseconds(), ' with selected state ', selected);
         return (
             <div className={selected ? 'viewSelection selected' : 'viewSelection'} onClick={onSelect}>
                 <span className='viewIcon'>

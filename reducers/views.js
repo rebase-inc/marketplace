@@ -26,7 +26,7 @@ export default function views(views = {items: [], isFetching: false }, action) {
                         case 'manager': newViews = ManagerViews; break;
                         case 'contractor': newViews = ContractorViews; break;
                     }
-                    return Object.assign({}, views, { isFetching: false }, { items: newViews }); break;
+                    return Object.assign({}, { isFetching: false }, { items: newViews }); break;
             }
         }
         default:
