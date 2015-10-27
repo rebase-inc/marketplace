@@ -12,7 +12,6 @@ var DeleteProjectModal = require('../components/DeleteProjectModal.react');
 
 // Actions
 var UserActions = require('../actions/UserActions');
-var ProjectActions = require('../actions/ProjectActions');
 
 // Icons
 var Icons = require('../components/Icons.react');

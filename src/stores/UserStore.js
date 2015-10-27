@@ -17,7 +17,6 @@ var ManagerViews = require('../constants/ViewConstants').ManagerViews;
 
 // Actions
 var UserActions = require('../actions/UserActions');
-var ManagerActions = require('../actions/ManagerActions');
 
 var _userCookie = Cookies.get('user');
 

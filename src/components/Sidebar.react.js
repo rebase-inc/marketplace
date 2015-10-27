@@ -7,7 +7,6 @@ var Icons = require('../components/Icons.react');
 
 // Actions
 var UserActions = require('../actions/UserActions');
-var ManagerActions = require('../actions/ManagerActions');
 
 // Constants
 var ViewTypes = require('../constants/ViewConstants').ViewTypes;
