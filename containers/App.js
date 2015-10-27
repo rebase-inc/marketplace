@@ -35,7 +35,8 @@ if (module.hot) {
 }
 
 export default class App extends Component {
-  static propTypes = { debug: false }
+  static defaultProps = { debug: false }
+
   render() {
     return (
       <div>

@@ -15,22 +15,28 @@ function _dataURItoBlob(dataURI) {
 }
 
 var _TalentStates = keymirror({ UNAPPROVED: null, WAITING: null, REJECTED: null, ACCEPTED: null });
-var ApproveTalent = React.createClass({
-    propTypes: {
-        approved: React.PropTypes.string,
-    },
-    _getNominationState: function() {
+
+export class ApproveTalent extends Component {
+    static propTypes = { nomination: React.PropTypes.string.isRequired }
+
+    constructor(props, context) {
+        super(props, context);
+        this._getNominationState = this._getNominationState.bind(this);
+    }
+    _getNominationState() {
         if (!this.props.nomination.auction) {
             return _TalentStates.UNAPPROVED;
-        } else if (!!this.props.currentAuction.bids.every(bid => bid.contractor.id != this.props.nomination.contractor.id)) {
+        } else if (!!this.props.nomination.auction.bids.every(bid => bid.contractor.id != this.props.nomination.contractor.id)) {
             return _TalentStates.WAITING;
-        } else if (!!this.props.currentAuction.bids.some(bid => bid.contractor.id == this.props.nomination.contractor.id && bid.contract)) {
+        } else if (!!this.props.nomination.auction.bids.some(bid => bid.contractor.id == this.props.nomination.contractor.id && bid.contract)) {
             return _TalentStates.ACCEPTED;
         } else {
             return _TalentStates.REJECTED;
         }
-    },
-    render: function() {
+    }
+
+    render() {
+        // TODO: Abstract out the svgs nested in this component
         switch (this._getNominationState()) {
             case _TalentStates.UNAPPROVED:
                 let loadingPath = !!this.props.nomination.loading ? (
@@ -93,7 +99,7 @@ var ApproveTalent = React.createClass({
             default: throw 'invalid state'; break;
         }
     }
-});
+};
 
 export class AddTicket extends Component {
     render() {
@@ -223,15 +229,15 @@ var Checkbox = React.createClass({
 
 export class ProfilePicture extends Component {
     static propTypes = { user: React.PropTypes.object, dynamic: React.PropTypes.bool };
-    static defaultProps = { dynamic: false }; 
-    
+    static defaultProps = { dynamic: false };
+
     openFileDialog() {
         if (!this.props.dynamic) { return; }
         let fileInput = ReactDOM.findDOMNode(this.refs.fileInput);
         fileInput.value = null;
         fileInput.click();
     }
-    
+
     handleFile(event) {
         let MAX_DIMENSION = 600;
         let fileToUpload = event.target.files[0];
@@ -252,9 +258,9 @@ export class ProfilePicture extends Component {
             let imgUrl = canvas.toDataURL('image/jpeg');
             this.setState({ photo: imgUrl });
             UserActions.updateProfilePhoto(_dataURItoBlob(imgUrl));
-        }        
+        }
     }
-    
+
     render() {
         const { user, dynamic } = this.props;
         if (!!user.photo) {
@@ -287,26 +293,30 @@ export class ProfilePicture extends Component {
 }
 
 
-var TalentScore = React.createClass({
-    propTypes: {
-        score: React.PropTypes.number.isRequired,
-    },
-    render: function() {
-        var bgColor;
-        var text;
-        if ( this.props.score >= 0.97 ) { bgColor = '#25AE90'; text = 'perfect match'; }
-        else if ( this.props.score >= 0.90 ) { bgColor = '#25AE90'; text = 'great match'; }
-        else if (this.props.score >= 0.75 ) { bgColor = '#25AE90'; text = 'good match'; }
-        else if (this.props.score >= 0.5 ) { bgColor = '#F5B651'; text = 'okay match'; }
+export class TalentScore extends Component {
+    static propTypes = { score: React.PropTypes.number.isRequired, }
+
+    render() {
+        let bgColor;
+        let text;
+
+        const { score } = this.props;
+
+        // TODO: refactor this if else
+        if ( score >= 0.97 ) { bgColor = '#25AE90'; text = 'perfect match'; }
+        else if ( score >= 0.90 ) { bgColor = '#25AE90'; text = 'great match'; }
+        else if ( score >= 0.75 ) { bgColor = '#25AE90'; text = 'good match'; }
+        else if ( score >= 0.5 ) { bgColor = '#F5B651'; text = 'okay match'; }
         else { bgColor = '#CC6070'; text = 'poor match'; }
+
         return (
             <div className='talentScore' style={{backgroundColor: bgColor}}>
                 <span className='score'>{ Math.round(100*this.props.score) + '%' }</span>
                 <span className='text'>{text}</span>
             </div>
         );
-    },
-});
+    }
+};
 
 export class FindTalent extends Component {
     render() {
@@ -389,7 +399,7 @@ export class FindTalentOverview extends Component {
         super(props, context);
         this.componentDidMount = this.componentDidMount.bind(this);
     }
-    
+
     componentDidMount() {
         const { auction } = this.props;
         let element = ReactDOM.findDOMNode(this);

@@ -4,6 +4,7 @@ import TicketHeader from './TicketHeader.react';
 import TicketDetails from './TicketDetails.react';
 import CommentList from './CommentList.react';
 import CommentBox from './CommentBox.react';
+import FindTalentView from './FindTalentView.react';
 
 export default class SingleAuctionView extends Component {
     static propTypes = {
@@ -15,7 +16,7 @@ export default class SingleAuctionView extends Component {
 
     constructor(props, context) {
         super(props, context);
-        this.state = { modalOpen: false, detailsOpen: false }
+        this.state = { modalOpen: false, detailsOpen: false, showTalent: true }
         this.toggleDetails = this.toggleDetails.bind(this);
     }
 
@@ -29,17 +30,23 @@ export default class SingleAuctionView extends Component {
 
     render() {
         const { user, roles, auction, unselect } = this.props;
-        console.log('single auction view auction is ', auction);
+
         // TODO: refactor this so that TicketHeader and TicketDetails are in the same component. Current setup doesn't make sense.
         // That would also allow for a more sensical method for closing and opening the TicketDetails
+        // TODO: Deal with all of the states below more cleanly. Probably requires a refactor into multiple components
+        // TODO: Only display 'View Talent' button when not showing the FindTalentView
         return (
             <div className='ticketView'>
-                <TicketHeader unselect={unselect} title={auction.ticket.title} toggleDetails={this.toggleDetails}>
-                    { roles.items.get(user.current_role.id).type == 'manager' ? <button>View Talent</button> : <button>Bid Now</button> }
+                <TicketHeader
+                    title={auction.ticket.title}
+                    unselect={this.state.showTalent ? () => this.setState({ showTalent: false }) : unselect}
+                    toggleDetails={this.toggleDetails}>
+                    { roles.items.get(user.current_role.id).type == 'manager' ? <button onClick={() => this.setState({ showTalent: true })}>View Talent</button> : <button>Bid Now</button> }
                 </TicketHeader>
                 <TicketDetails hidden={!this.state.detailsOpen} ticket={auction.ticket} />
-                <CommentList comments={auction.ticket.comments}/>
-                <CommentBox submit={alert} />
+                { this.state.showTalent ? <FindTalentView auction={auction} /> : null }
+                { this.state.showTalent ? null : <CommentList comments={auction.ticket.comments}/> }
+                { this.state.showTalent ? null : <CommentBox submit={alert} /> }
             </div>
         );
     }

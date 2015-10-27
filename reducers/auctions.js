@@ -38,5 +38,8 @@ function addSyntheticProperties(auction) {
     Object.defineProperty(newAuction, 'contract', {
         get: function() { return newAuction.bids[0].contract; },
     });
+    Object.defineProperty(newAuction, 'nominations', {
+        get: function() { return newAuction.ticket_set.nominations; },
+    });
     return newAuction;
 }

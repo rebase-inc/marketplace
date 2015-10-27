@@ -23,9 +23,10 @@ export default function tickets(tickets = initialTickets, action) {
                 case PENDING: return Object.assign({}, tickets, { isFetching: true }); break;
                 case ERROR: return Object.assign({}, tickets, { isFetching: false }); break;
                 case SUCCESS:
-                    return Object.assign({}, tickets); // temp hack
-                    const newTickets = tickets.filter(ticket => ticket.id != action.response.ticket.id);
-                    return { isFetching: false, items: newTickets };
+                    // this is kind of hacky...TODO: Think of a cleaner way to remove an auctioned ticket from the state
+                    const newTickets = Array.from(tickets.items.values()).filter(ticket => 
+                            ticket.id != action.response.auction.ticket_set.bid_limits[0].ticket_snapshot.ticket.id);
+                    return { isFetching: false, items: new Map(newTickets.map(t => [t.id, t])) };
                     break;
             }
         }

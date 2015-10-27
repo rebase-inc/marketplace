@@ -1,45 +1,22 @@
-var React = require('react');
-var _ = require('underscore');
+import React, { Component, PropTypes } from 'react';
 
-// Utils
-var Fuse = require('../utils/Fuse');
+import Talent from './Talent.react';
 
-var Talent = require('../components/Talent.react');
-var LoadingAnimation = require('../components/LoadingAnimation.react');
+// Maybe this could be done in the auction reducer?
+function sort_nominations(n1, n2) {
+    return (!!n2.job_fit ? n2.job_fit.score : -1) - (!!n1.job_fit ? n1.job_fit.score : -1)
+}
 
-var TalentStore = require('../stores/TalentStore');
-var AuctionActions = require('../actions/AuctionActions');
-
-var FindTalentView = React.createClass({
-    propTypes: {
-        currentAuction: React.PropTypes.object.isRequired,
-    },
-    getInitialState: function() {
-        return _.extend({ searchText: '' }, TalentStore.getState(this.props.currentAuction.id));
-    },
-    componentDidMount: function() {
-        TalentStore.addChangeListener(this._onChange);
-        setTimeout(AuctionActions.getAuctionDetail.bind(null, this.props.currentAuction.id), 0);
-    },
-    componentWillUnmount: function() {
-        TalentStore.removeChangeListener(this._onChange);
-    },
-    _onChange: function() {
-        this.setState(TalentStore.getState(this.props.currentAuction.id));
-    },
-    render: function() {
-        var props = {
-            selectAuction: this.props.selectAuction,
-            currentRole: this.props.currentRole,
-        }
+export default class FindTalentView extends Component {
+    static propTypes = { auction: PropTypes.object.isRequired }
+    render() {
+        const { auction } = this.props;
         return (
             <table className='contentList'>
                 <tbody>
-                    { this.state.allTalent.map(talent => <Talent key={talent.id} currentAuction={this.props.currentAuction} nomination={talent}/>) }
+                    { auction.nominations.sort(sort_nominations).map(talent => <Talent key={talent.id} nomination={talent}/>) }
                 </tbody>
             </table>
         );
     }
-});
-
-module.exports = FindTalentView;
+};
