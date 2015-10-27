@@ -8,11 +8,13 @@ let UserActions = keyMirror({
 });
 
 let TicketActions = keyMirror({
-    GET_TICKETS: null
+    GET_TICKETS: null,
+    SELECT_TICKET: null,
 });
 
 let AuctionActions = keyMirror({
-    GET_AUCTIONS: null
+    GET_AUCTIONS: null,
+    SELECT_AUCTION: null,
 });
 
 let __ActionConstants = keyMirror({
@@ -26,8 +28,6 @@ let __ActionConstants = keyMirror({
     GET_REVIEW_DATA: null,
     GET_MANAGERS: null,
     GET_CONTRACTORS: null,
-    SELECT_AUCTION: null,
-    SELECT_TICKET: null,
     SELECT_CONTRACT: null,
     SELECT_REVIEW: null,
     GET_COMMENT_DETAIL: null,

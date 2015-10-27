@@ -34,7 +34,7 @@ export default class AuctionView extends Component {
         //this.setState({ viewingTalent: true });
     }
     render() {
-        const { auction, auctions, user, roles } = this.props;
+        const { auction, auctions, user, roles, actions } = this.props;
         if (!auctions.items.size && !auctions.isFetching) {
             return (
                 <NothingHere>
@@ -44,13 +44,13 @@ export default class AuctionView extends Component {
             );
         }
 
-        if (!!auction) {
-            return <SingleAuctionView auction={auction} />;
+        if (!!auction.id) {
+            return <SingleAuctionView auction={auctions.items.get(auction.id)} unselect={actions.selectAuction.bind(null, null)} user={user} roles={roles}/>;
         } else {
             return (
                 <div className='auctionView'>
                     <SearchBar searchText={this.state.searchText} onUserInput={this.handleUserInput} />
-                    <AuctionList user={user} roles={roles} auctions={auctions} />
+                    <AuctionList select={actions.selectAuction} user={user} roles={roles} auctions={Array.from(auctions.items.values())} />
                 </div>
             );
         }

@@ -1,17 +1,17 @@
 import ActionConstants from '../constants/ActionConstants';
 import { PENDING, SUCCESS, ERROR } from '../constants/RequestConstants';
 
-let initialTicket = { id: null, isFetching: false };
+let initialAuction = { id: null, isFetching: false };
 
-export default function ticket(ticket = initialTicket, action) {
+export default function auction(auction = initialAuction, action) {
     switch (action.type) {
-        case ActionConstants.SELECT_TICKET: {
+        case ActionConstants.SELECT_AUCTION: {
             switch (action.status) {
                 case SUCCESS:
-                    return { isFetching: false, id: action.response.ticketId }
+                    return { isFetching: false, id: action.response.auctionId }
             }
         }
         default:
-            return ticket;
+            return auction;
     }
 }

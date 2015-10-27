@@ -23,7 +23,8 @@ export default class TicketList extends Component {
         return (
             <table className='contentList'>
                 <tbody ref='tableBody'>
-                    { tickets.filter(t => searchResults.indexOf(t.id) != -1).map(t => <Ticket ticket={t} select={select.bind(null, t.id)} key={t.id} />) }
+                    { tickets.filter(t => searchResults.indexOf(t.id) != -1).map(t =>
+                         <Ticket ticket={t} select={select.bind(null, t.id)} key={t.id} />) }
                 </tbody>
             </table>
         );

@@ -54,22 +54,20 @@ export default class TicketView extends Component {
                 </NothingHere>
             );
         }
-        switch (!!ticket.id) {
-            case true:
-                return <SingleTicketView ticket={tickets.items.get(ticket.id)} unselect={actions.selectTicket.bind(null, null)} user={user} roles={roles} />;
-                break;
-            case false:
-                return (
-                    <div className='ticketView'>
-                        <SearchBar searchText={this.state.searchText} onUserInput={this.handleUserInput}>
-                            <AddTicket onClick={this.toggleModal}/>
-                        </SearchBar>
-                        <TicketList select={actions.selectTicket} tickets={Array.from(tickets.items.values())} />
-                        { !!this.state.modalOpen ? <NewTicketModal project={this.props.currentRole.project} toggleModal={this.toggleModal} /> : null }
-                    </div>
-                );
-                break;
+        if (!!ticket.id) {
+            return <SingleTicketView ticket={tickets.items.get(ticket.id)} unselect={actions.selectTicket.bind(null, null)} user={user} roles={roles} />;
+        } else {
+            return (
+                <div className='ticketView'>
+                    <SearchBar searchText={this.state.searchText} onUserInput={this.handleUserInput}>
+                        <AddTicket onClick={this.toggleModal}/>
+                    </SearchBar>
+                    <TicketList select={actions.selectTicket} tickets={Array.from(tickets.items.values())} />
+                    { !!this.state.modalOpen ? <NewTicketModal project={this.props.currentRole.project} toggleModal={this.toggleModal} /> : null }
+                </div>
+            );
         }
+
     }
 };
 

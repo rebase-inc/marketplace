@@ -22,6 +22,14 @@ export function getAuctions() {
     };
 }
 
+export function selectAuction(auctionId) {
+    return {
+        type: ActionConstants.SELECT_AUCTION,
+        response: { auctionId: auctionId },
+        status: SUCCESS
+    }
+}
+
 //module.exports = {
     //createAuction: function(ticket, max_price) {
         //function responseHandler(response, status) {
