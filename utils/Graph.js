@@ -12,7 +12,6 @@ d3Chart.create = function(element, props, state) {
 };
 
 d3Chart.update = function(element, props, state) {
-
     var maxYData = Math.max(d3.max(state.openTickets), d3.max(state.closedTickets));
     var scale = {
         x: d3.scale.linear().domain([0, state.openTickets.length - 1]).range([0, props.width]),
@@ -96,169 +95,185 @@ var _yVals = [0.00481007105373589, 0.00588403333648915, 0.0071611532738489, 0.00
     0.0245525052753891, 0.0209073257351149, 0.0177127245897184, 0.0149298851255644, 0.0125202146382633, 0.0104460306085229,
     0.00867111659092601, 0.00716115327384891, 0.00588403333648916, 0.0048100710537359]
 
-var bellCurve = {}
+let _BellCurveData = _xVals.map((x, ind) => ({ x: x, y: _yVals[ind] }));
 
-bellCurve.create = function(element, props, state) {
-    var graph = d3.select(element).insert("svg:svg", ':first-child')
-        .attr("width", props.width + 2*props.margin)
-        .attr("height", props.height + 2*props.margin)
-        .append("svg:g")
-        .attr("transform", "translate(" + props.margin + "," + props.margin + ")");
-    this.data = _xVals.map((x, i) => ({ q: x, p: _yVals[i]}));
-    var scale = {
-        x: d3.scale.linear().domain(d3.extent(_xVals)).range([0, props.width]),
-        y: d3.scale.linear().domain(d3.extent(_yVals)).range([props.height, 0]),
+export class BellCurve {
+    constructor(element, dimensions, defaultValue) {
+        dimensions.width = dimensions.width || 240;
+        dimensions.height = dimensions.height || 50;
+        dimensions.margin = dimensions.margin || 18;
+        
+        this.min = dimensions.min || 100;
+        this.max = dimensions.max || 2000;
+
+        this.data = _BellCurveData;
+        
+        let graph = d3.select(element).insert("svg:svg", ':first-child')
+            .attr("width", dimensions.width + 2*dimensions.margin)
+            .attr("height", dimensions.height + 2*dimensions.margin)
+            .append("svg:g")
+            .attr("transform", "translate(" + dimensions.margin + "," + dimensions.margin + ")");
+        this.graph = d3.select(element).select('g');
+    
+        let scale = {
+            x: d3.scale.linear().domain(d3.extent(_xVals)).range([0, dimensions.width]),
+            y: d3.scale.linear().domain(d3.extent(_yVals)).range([dimensions.height, 0]),
+        }
+
+        // Add some text
+        graph.append('svg:text')
+            .attr('x', scale.x(0))
+            .attr('y', scale.y(0) + 10)
+            .attr('text-anchor', 'middle')
+            .attr('font-size', '8px')
+            .text('developer talent pool');
+        graph.append('svg:text')
+            .attr('x', scale.x(-4))
+            .attr('y', scale.y(0) + 10)
+            .attr('text-anchor', 'start')
+            .attr('font-size', '10px')
+            .text('novice');
+        graph.append('svg:text')
+            .attr('x', scale.x(4))
+            .attr('y', scale.y(0) + 10)
+            .attr('text-anchor', 'end')
+            .attr('font-size', '10px')
+            .text('expert');
+        
+        // Figure out the current cutoff in our coordinate system
+        this.cutoff = -4 + Math.round(10*8*(defaultValue - this.min)/(this.max - this.min))/10;
+        
+        // Create the line plot 
+        this.line = d3.svg.line().x(data => scale.x(data.x)).y(data => scale.y(data.y));
+
+        // Create the area plot...Not sure if all three of these elements are needed. TODO: Clean up
+        this.area = d3.svg.area().x(data => scale.x(data.x)).y0(data => scale.y(0)).y1(data => scale.y(data.y));
+        this.areaElement = this.graph.selectAll('path.area');
+        this.areaBorder = this.graph.selectAll('path.areaBorder');
+   
+        // Make the area fill stop at the cutoff 
+        this.areaElement.data([this.data.filter(data => data.x <= this.cutoff)]).enter().append('path')
+            .attr("class", "area")
+            .attr("d", this.area)
+            .attr('fill', 'grey');
+        this.areaBorder.data([[{x: this.cutoff, y: 0}, this.data.filter(data => Math.abs(data.x - this.cutoff) <= 0.0001)[0]]]).enter().append('path')
+            .attr("class", "areaBorder")
+            .attr("d", this.line)
+            .attr('fill', 'none')
+            .attr('stroke-width', '2px')
+            .attr('stroke', 'black');
+
+        // Update the data 
+        this.update(defaultValue);
+
+        this.graph.append("path")
+            .datum(this.data)
+            .attr("class", "line")
+            .attr("d", this.line)
+            .attr('fill', 'none')
+            .attr('stroke-width', '2px')
+            .attr('stroke', 'black');
     }
-    graph.append('svg:text')
-        .attr('x', scale.x(0))
-        .attr('y', scale.y(0) + 10)
-        .attr('text-anchor', 'middle')
-        .attr('font-size', '8px')
-        .text('developer talent pool');
-    graph.append('svg:text')
-        .attr('x', scale.x(-4))
-        .attr('y', scale.y(0) + 10)
-        .attr('text-anchor', 'start')
-        .attr('font-size', '10px')
-        .text('novice');
-    graph.append('svg:text')
-        .attr('x', scale.x(4))
-        .attr('y', scale.y(0) + 10)
-        .attr('text-anchor', 'end')
-        .attr('font-size', '10px')
-        .text('expert');
-    this.line = d3.svg.line().x(d => scale.x(d.q)).y(d => scale.y(d.p));
-    this.area = d3.svg.area().x(d => scale.x(d.q)).y0(d => scale.y(0)).y1(d => scale.y(d.p));
-    this.graph = d3.select(element).select('g');
 
-    this.cutoff = -4 + Math.round(10*8*(state.cutoff_price - state.minimum_price)/(state.maximum_price - state.minimum_price))/10;
-    this.areaElement = this.graph.selectAll('path.area');
-    this.areaBorder = this.graph.selectAll('path.areaBorder');
-    this.areaElement.data([this.data.filter(d => d.q <= this.cutoff)]).enter().append('path')
-        .attr("class", "area")
-        .attr("d", this.area)
-        .attr('fill', 'grey');
-    this.areaBorder.data([[{q: this.cutoff, p: 0}, this.data.filter(d => Math.abs(d.q - this.cutoff) <= 0.0001)[0]]]).enter().append('path')
-        .attr("class", "areaBorder")
-        .attr("d", this.line)
-        .attr('fill', 'none')
-        .attr('stroke-width', '2px')
-        .attr('stroke', 'black');
+    update(value) {
+        // Update the cutoff
+        this.cutoff = -4 + Math.round(10*8*(value - this.min)/(this.max - this.min))/10;
 
-    this.update(element, props, state);
-
-    this.graph.append("path")
-        .datum(this.data)
-        .attr("class", "line")
-        .attr("d", this.line)
-        .attr('fill', 'none')
-        .attr('stroke-width', '2px')
-        .attr('stroke', 'black');
+        // Update the area fill
+        this.graph.selectAll('path.area').data([this.data.filter(data => data.x <= this.cutoff + 0.0001)]).attr('d', this.area);
+       
+        // Update the area border 
+        this.graph.selectAll('path.areaBorder').data([[{x: this.cutoff, y: 0}, this.data.filter(data => Math.abs(data.x - this.cutoff) <= 0.0001)[0]]]).attr('d', this.line);
+    }
 
 };
 
-bellCurve.update = function(element, props, state) {
-    this.cutoff = -4 + Math.round(10*8*(state.cutoff_price - state.minimum_price)/(state.maximum_price - state.minimum_price))/10;
-    this.graph.selectAll('path.area').data([this.data.filter(d => d.q <= this.cutoff + 0.0001)]).attr('d', this.area);
-    this.graph.selectAll('path.areaBorder').data([[{q: this.cutoff, p: 0}, this.data.filter(d => Math.abs(d.q - this.cutoff) <= 0.0001)[0]]]).attr('d', this.line);
-};
+export class DonutChart {
+    constructor(element, props, data) {
+        let totalDevelopers = data.reduce((pv, cv) => pv + cv.population, 0);
 
-let donutChart = {}
-donutChart.create = function(element, props, data) {
+        let radius = props.height / 2;
+        let arcWidth = props.height / 5;
 
-    let totalDevelopers = data.reduce((pv, cv) => pv + cv.population, 0);
+        let arc = d3.svg.arc()
+            .outerRadius(d => d.data.category == 'offered' ? radius - arcWidth / 3 : radius)
+            .innerRadius(d => d.data.category == 'offered' ? radius - arcWidth *2/3 : radius - arcWidth);
 
-    let radius = props.height / 2;
-    let arcWidth = props.height / 5;
+        let pie = d3.layout.pie().sort(null).value(function(d) { return d.population; });
 
-    let arc = d3.svg.arc()
-        .outerRadius(d => d.data.category == 'offered' ? radius - arcWidth / 3 : radius)
-        .innerRadius(d => d.data.category == 'offered' ? radius - arcWidth *2/3 : radius - arcWidth);
+        let svg = d3.select(element).insert("svg:svg", ':first-child')
+            .attr("width", props.width + 2*props.margin)
+            .attr("height", props.height + 2*props.margin)
+            .append("svg:g")
+            .attr("transform", "translate(" + props.height / 2 + "," + props.height / 2 + ")");
 
-    let pie = d3.layout.pie().sort(null).value(function(d) { return d.population; });
+        if (!!totalDevelopers) {
+            var g = svg.selectAll(".arc")
+                .data(pie(data))
+                .enter().append("g")
+                .attr("class", "arc");
+        } else {
+            var g = svg.selectAll('.arc')
+                .data(pie([{color: '#F5B651', population: 999}]))
+                .enter().append('g')
+                .attr('class', 'arc');
+        }
 
-    let svg = d3.select(element).insert("svg:svg", ':first-child')
-        .attr("width", props.width + 2*props.margin)
-        .attr("height", props.height + 2*props.margin)
-        .append("svg:g")
-        .attr("transform", "translate(" + props.height / 2 + "," + props.height / 2 + ")");
+        g.append('text')
+            .attr('text-anchor', 'middle')
+            .attr('font-size', '14px')
+            .attr('fill', 'transparent')
+            .attr('dy', '4px')
+            .attr('class', 'percentage');
 
-    if (!!totalDevelopers) {
-        var g = svg.selectAll(".arc")
-            .data(pie(data))
-            .enter().append("g")
-            .attr("class", "arc");
-    } else {
-        var g = svg.selectAll('.arc')
-            .data(pie([{color: '#F5B651', population: 999}]))
-            .enter().append('g')
-            .attr('class', 'arc');
+        let path = g.append("path")
+            .attr('d', arc)
+            .attr('class', 'matchesHoverState')
+            .style('stroke-width', '2px')
+            .style("fill", d => d.data.color);
+
+        let legendSize = 8;
+        let legendSpacing = 8;
+        let legend = svg.selectAll('.legend')
+            .data(data)
+            .enter()
+            .append('g')
+            .attr('class', 'legend')
+            .attr('transform', function(d, i) {
+                var height = legendSize + legendSpacing;
+                var offset =  height * 3 / 2;
+                var x = props.height - legendSize;
+                var y = i * height - offset;
+                return 'translate(' + x + ',' + y + ')';
+            });
+
+        legend.append('rect')
+            .attr('width', legendSize)
+            .attr('height', legendSize)
+            .style('fill', d => d.color)
+            .style('stroke', d => d.color);
+
+        let fontSize = props.height / 6;
+        legend.append('text')
+            .text(d => d.population + ' ' + d.category)
+            .attr('font-size', fontSize)
+            .style('fill', d => d.color)
+            .attr('transform', () => 'translate(' + (legendSize + fontSize) + ',' + legendSize + ')');
+
+        let hoverableElements = svg.selectAll('path,.legend');
+        hoverableElements.on('mouseover', function(d,i) {
+            var parentData = d.data || d;
+            svg.selectAll('path,.legend').transition().style('opacity',function (data) {
+                let childCategory = !!data.data ? data.data.category : data.category;
+                return (parentData.category == childCategory) ? 1.0 : 0.35;
+            });
+            let percentage = !!totalDevelopers ? Math.round(100 * parentData.population / totalDevelopers) + '%' : '';
+            svg.select('.percentage').text(percentage).attr('fill', parentData.color);
+
+        });
+        hoverableElements.on('mouseleave', function(d, i) {
+            svg.selectAll('path,.legend').transition().style('opacity', 1.0);
+            svg.select('.percentage').attr('fill', 'transparent');
+        });
     }
-
-    g.append('text')
-        .attr('text-anchor', 'middle')
-        .attr('font-size', '14px')
-        .attr('fill', 'transparent')
-        .attr('dy', '4px')
-        .attr('class', 'percentage');
-
-    let path = g.append("path")
-        .attr('d', arc)
-        .attr('class', 'matchesHoverState')
-        .style('stroke-width', '2px')
-        .style("fill", d => d.data.color);
-
-    let legendSize = 8;
-    let legendSpacing = 8;
-    let legend = svg.selectAll('.legend')
-        .data(data)
-        .enter()
-        .append('g')
-        .attr('class', 'legend')
-        .attr('transform', function(d, i) {
-            var height = legendSize + legendSpacing;
-            var offset =  height * 3 / 2;
-            var x = props.height - legendSize;
-            var y = i * height - offset;
-            return 'translate(' + x + ',' + y + ')';
-        });
-
-    legend.append('rect')
-        .attr('width', legendSize)
-        .attr('height', legendSize)
-        .style('fill', d => d.color)
-        .style('stroke', d => d.color);
-
-    let fontSize = props.height / 6;
-    legend.append('text')
-        .text(d => d.population + ' ' + d.category)
-        .attr('font-size', fontSize)
-        .style('fill', d => d.color)
-        .attr('transform', () => 'translate(' + (legendSize + fontSize) + ',' + legendSize + ')');
-
-    let hoverableElements = svg.selectAll('path,.legend');
-    hoverableElements.on('mouseover', function(d,i) {
-        var parentData = d.data || d;
-        svg.selectAll('path,.legend').transition().style('opacity',function (data) {
-            let childCategory = !!data.data ? data.data.category : data.category;
-            return (parentData.category == childCategory) ? 1.0 : 0.35;
-        });
-        let percentage = !!totalDevelopers ? Math.round(100 * parentData.population / totalDevelopers) + '%' : '';
-        svg.select('.percentage').text(percentage).attr('fill', parentData.color);
-
-    });
-    hoverableElements.on('mouseleave', function(d, i) {
-        svg.selectAll('path,.legend').transition().style('opacity', 1.0);
-        svg.select('.percentage').attr('fill', 'transparent');
-    });
-
-
-
-}
-
-
-module.exports = {
-    lineChart: d3Chart,
-    bellCurve: bellCurve,
-    donutChart: donutChart,
 }

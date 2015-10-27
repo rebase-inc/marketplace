@@ -1,14 +1,15 @@
-var React = require('react');
+import React, { Component, PropTypes } from 'react';
 
-var ModalContainer = React.createClass({
-    propTypes: {
-        toggleModal: React.PropTypes.func.isRequired,
-    },
-    render: function() {
+export default class ModalContainer extends Component {
+    static propTypes = {
+        close: PropTypes.func.isRequired
+    }
+
+    render() {
         return (
             <div id='modalView' className='noselect'>
-                <div id='modalDialog' onChange={this.handleInput} onKeyPress={this.handleKeyPress}>
-                    <div onClick={this.props.toggleModal} id='modalClose'>
+                <div id='modalDialog'>
+                    <div onClick={this.props.close} id='modalClose'>
                         <img src='img/modal-close.svg'/>
                     </div>
                     {this.props.children}
@@ -16,6 +17,4 @@ var ModalContainer = React.createClass({
             </div>
         );
     }
-});
-
-module.exports = ModalContainer;
+};

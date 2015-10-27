@@ -398,7 +398,7 @@ export class FindTalentOverview extends Component {
             {category: 'offered', population: auction.approved_talents.length - auction.bids.filter(b => !b.contract).length, color: '#CBD0D4'},
             {category: 'rejected', population: auction.bids.filter(b => !b.contract).length, color: '#CC6070'}
         ];
-        Graph.donutChart.create(element, this.props, data);
+        Graph.DonutChart.create(element, this.props, data);
     }
     render() {
         return <div className='findTalentOverview'/>;

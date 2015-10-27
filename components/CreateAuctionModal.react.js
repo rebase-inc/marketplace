@@ -1,51 +1,44 @@
-var React = require('react');
-var ReactDOM = require('react-dom');
-var keyMirror = require('keymirror');
+import React, { Component, PropTypes } from 'react';
+import ReactDOM from 'react-dom';
 
-var ModalContainer = require('../components/ModalContainer.react');
+import Slider from './Slider.react';
+import ModalContainer from './ModalContainer.react';
 
-var AuctionActions = require('../actions/AuctionActions');
-var ContractActions = require('../actions/ContractActions');
-var UserActions = require('../actions/UserActions');
+import { BellCurve } from '../utils/Graph';
 
-var AuctionStore = require('../stores/AuctionStore');
+export default class CreateAuctionModal extends Component {
+    static propTypes = {
+        ticket: PropTypes.object.isRequired,
+        closeModal: PropTypes.func.isRequired,
+    }
 
-var viewConstants = require('../constants/viewConstants');
-var Graph = require('../utils/Graph');
+    constructor(props, context) {
+        super(props, context);
+        this.state = { price: 800 };
+    }
 
-var CreateAuctionModal = React.createClass({
-    createAuction: function() {
-        AuctionActions.createAuction(this.props.ticket, this.state.cutoff_price);
-        this.props.toggleModal();
-    },
-    setPrice: function(event) {
-        this.setState({ cutoff_price: event.target.valueAsNumber });
-    },
-    componentDidUpdate: function() {
-        var element = ReactDOM.findDOMNode(this.refs.devBellCurve);
-        Graph.bellCurve.update(element, this.props, this.state);
-    },
-    getDefaultProps: function() {
-        return { width: 240, height: 50, margin: 18 }
-    },
-    getInitialState: () => ({ minimum_price: 100, maximum_price: 2000, cutoff_price: 800 }),
-    componentDidMount: function() {
-        var element = ReactDOM.findDOMNode(this.refs.devBellCurve);
-        Graph.bellCurve.create(element, this.props, this.state);
-    },
-    render: function() {
+    componentDidUpdate() {
+        var element = ReactDOM.findDOMNode(this.refs.bellCurveGraph);
+        this._bellCurve.update(this.state.price);
+    }
+
+    componentDidMount() {
+        var element = ReactDOM.findDOMNode(this.refs.bellCurveGraph);
+        this._bellCurve = new BellCurve(element, {width: 240, min: 100, max: 2000}, this.state.price);
+    }
+
+    render() {
+        const width = 240;
         return (
-            <ModalContainer toggleModal={this.props.toggleModal}>
+            <ModalContainer close={this.props.closeModal}>
                 <h3>Set your budget</h3>
                 <h4>to see recommended developers</h4>
-                <div className='devBellCurve' ref='devBellCurve'>
-                    <input style={{width: this.props.width + 'px'}} defaultValue={this.state.cutoff_price} type='range' min={this.state.minimum_price} max={this.state.maximum_price} step={20} onChange={this.setPrice} />
-                    <h3>{this.state.cutoff_price + ' USD'}</h3>
+                <div className='devBellCurve' ref='bellCurveGraph'>
+                    <Slider width={width} min={100} max={2000} value={this.state.price} onChange={(value) => this.setState({ price: value })} />
+                    <h3>{this.state.price + ' USD'}</h3>
                 </div>
-                <button onClick={this.createAuction}>Submit Budget</button>
+                <button onClick={alert.bind(null, 'heyo')}>Submit Budget</button>
             </ModalContainer>
         );
     }
-});
-
-module.exports = CreateAuctionModal;
+};
