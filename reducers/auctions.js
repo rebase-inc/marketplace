@@ -9,8 +9,8 @@ export default function auctions(auctions = initialAuctions, action) {
             switch (action.status) {
                 case PENDING: return Object.assign({}, auctions, { isFetching: true }); break;
                 case SUCCESS:
-                    const newAuctions = { items: action.response.auctions.map(a => addSyntheticProperties(a)) }
-                    return Object.assign({}, { isFetching: false }, newAuctions); break;
+                    const newAuctions = new Map(action.response.auctions.map(a => [a.id, addSyntheticProperties(a)]));
+                    return { isFetching: false, items: newAuctions };
             }
         }
         default:
