@@ -14,15 +14,16 @@ function searchTickets(tickets, searchText) {
 export default class TicketList extends Component {
     static propTypes = {
         tickets: PropTypes.array.isRequired,
+        select: PropTypes.func.isRequired,
     }
+
     render() {
-        const { tickets } = this.props;
+        const { tickets, select } = this.props;
         let searchResults = !!this.props.searchText ? searchTickets(tickets, this.props.searchText) : tickets.map(t => t.id);
         return (
             <table className='contentList'>
                 <tbody ref='tableBody'>
-                    { tickets.filter(t => searchResults.indexOf(t.id) != -1).map(t => <Ticket ticket={t} key={t.id} />) }
-                    { this.props.loading ? <LoadingAnimation /> : null }
+                    { tickets.filter(t => searchResults.indexOf(t.id) != -1).map(t => <Ticket ticket={t} select={select.bind(null, t.id)} key={t.id} />) }
                 </tbody>
             </table>
         );

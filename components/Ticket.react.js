@@ -7,10 +7,14 @@ import TitlePanel from './TitlePanel.react';
 import CommentsPanel from './CommentsPanel.react';
 
 export default class Ticket extends Component {
+    static propTypes = { 
+        ticket: PropTypes.object.isRequired,
+        select: PropTypes.func.isRequired,
+    }
     render() {
-        const { ticket } = this.props;
+        const { ticket, select } = this.props;
         return (
-            <tr className='ticket'>
+            <tr className='ticket' onClick={select}>
                 <DatePanel text={'Created'} date={ticket.created} />
                 <TitlePanel title={ticket.title} />
                 <SkillsRequiredPanel skills={ticket.skill_requirement.skills} />

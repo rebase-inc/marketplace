@@ -1,50 +1,23 @@
-var React = require('react');
+import React, { Component, PropTypes } from 'react';
 
-// Components
-var ProjectInfoPanel = require('../components/ProjectInfoPanel.react');
-var Icons = require('../components/Icons.react');
+import StatusPanel from './StatusPanel.react';
+import ProjectInfoPanel from './ProjectInfoPanel.react';
+import TitlePanel from './TitlePanel.react';
+import SkillsRequiredPanel from './SkillsRequiredPanel.react';
+import CommentsPanel from './CommentsPanel.react';
 
-var Contract = React.createClass({
-    propTypes: {
-        currentRole: React.PropTypes.object.isRequired,
-        contract: React.PropTypes.object.isRequired,
-        selectContract: React.PropTypes.func.isRequired,
-    },
-    render: function() {
-        var ticket = this.props.contract.ticket;
-        var className;
-        // this needs to be reworked...status bar color should depend on role and state combination
-        switch(this.props.currentRole.type) {
-            case 'contractor':
-                switch (this.props.contract.work.state) {
-                    case 'in_progress': className = 'neutral'; break;
-                    case 'in_review': className = 'notification'; break;
-                    case 'blocked': className = 'needsResolution'; break;
-                    case 'in_mediation': className = 'needsResolution'; break;
-                }
-                break;
-            case 'manager':
-                switch (this.props.contract.work.state) {
-                    case 'in_progress': className = 'notification'; break;
-                    case 'in_review': className = 'neutral'; break;
-                    case 'blocked': className = 'needsResolution'; break;
-                    case 'in_mediation': className = 'needsResolution'; break;
-                }
-                break;
-        }
+export default class Contract extends Component {
+    render() {
+        const { contract } = this.props;
         return (
-            <tr className='ticket noselect' onClick={this.props.selectContract.bind(null, this.props.contract.id)}>
-                <td className={'statusPanel ' + className}></td>
-                <ProjectInfoPanel ticket={ticket} />
-                <td className='titlePanel'>{ticket.title}</td>
-                <td className='skillsRequiredPanel'>{ticket.skillsRequired}</td>
-                <td className='commentsPanel'>
-                    <Icons.Comment/>
-                    <span>{ticket.comments.length} Comments</span>
-                </td>
+            <tr className='ticket'>
+                <StatusPanel state={contract.work.state} />
+                <ProjectInfoPanel ticket={contract.ticket} />
+                <TitlePanel title={contract.ticket.title} />
+                <SkillsRequiredPanel skills={contract.ticket.skill_requirement.skills} />
+                <CommentsPanel comments={contract.ticket.comments} />
             </tr>
         );
     }
-});
+};
 
-module.exports = Contract;

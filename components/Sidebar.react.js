@@ -19,6 +19,10 @@ export default class Sidebar extends Component {
         actions: PropTypes.object.isRequired,
     };
 
+    constructor(props, context) {
+        super(props, context);
+    }
+
     render() {
         const { user, roles, view, views, actions } = this.props;
         return (
@@ -47,7 +51,7 @@ class SidebarNav extends Component {
             <div id='sidebarNav'>
                 <RoleSelector user={user} role={user.current_role} roles={Array.from(roles.items.values())}/>
                 <div id='viewList'>
-                    { Array.from(views.items.values()).map(v => <ViewSelection view={v} onSelect={() => actions.selectView(v.type)} selected={v.type == view.type} />) }
+                    { Array.from(views.items.values()).map(v => <ViewSelection view={v} key={v.type} onSelect={() => actions.selectView(v.type)} selected={v.type == view.type} />) }
                 </div>
             </div>
         );
@@ -105,7 +109,6 @@ export class RoleSelector extends Component {
         role: PropTypes.object.isRequired,
         roles: PropTypes.array.isRequired,
         onSelect: PropTypes.func.isRequired,
-        selected: PropTypes.bool.isRequired,
     }
 
     constructor(props) {
@@ -122,7 +125,7 @@ export class RoleSelector extends Component {
                 style={{height: tableHeight}}
                 onClick={() => this.setState({ open: !this.state.open })}
                 onMouseLeave={() => this.setState({ open: false})}>
-                { nonOwnerRoles.map(r => <RoleElement role={r} selected={r.id == role.id} />) }
+                { nonOwnerRoles.map(r => <RoleElement key={r.id} role={r} selected={r.id == role.id} />) }
             </div>
         );
     }
@@ -143,13 +146,21 @@ export class ViewSelection extends Component {
         onSelect: PropTypes.func.isRequired,
         selected: PropTypes.bool.isRequired,
     }
+    
+    constructor(props, context) {
+        super(props, context);
+        this.shouldComponentUpdate = this.shouldComponentUpdate.bind(this);
+    }
+
+    shouldComponentUpdate(nextProps, nextState) {
+        return (nextProps.view != this.props.view) || (nextProps.selected != this.props.selected);
+    }
 
     render() {
         const { view, selected, onSelect } = this.props;
         let date = new Date();
-        console.log('re rendering view selection ' + view.type, ' at ', date.getSeconds(), date.getMilliseconds(), ' with selected state ', selected);
         return (
-            <div className={selected ? 'viewSelection selected' : 'viewSelection'} onClick={onSelect}>
+            <div className={selected ? 'viewSelection selected' : 'viewSelection'} onClick={() => {let d = new Date(); console.log('selected at ', d.getSeconds(), d.getMilliseconds()); onSelect();}}>
                 <span className='viewIcon'>
                     <img src={view.icon}/>
                 </span>

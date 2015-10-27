@@ -22,6 +22,14 @@ export function getTickets() {
     };
 }
 
+export function selectTicket(ticketId) {
+    return {
+        type: ActionConstants.SELECT_TICKET,
+        response: { ticketId: ticketId },
+        status: SUCCESS
+    }
+}
+
 
 //module.exports = {
     //createInternalTicket: function(project, title) {

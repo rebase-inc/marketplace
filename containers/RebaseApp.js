@@ -29,9 +29,8 @@ class RebaseApp extends Component {
                 {
                     () => {
                         switch (view.type) {
-                            case NEW: return <TicketView />; break;
-                            case NEW: return <TicketView user={user} roles={roles} />; break;
-                            case OFFERED: return <AuctionView user={user} roles={roles} />; break;
+                            case NEW: return <TicketView key='ticketView' user={user} roles={roles} />; break;
+                            case OFFERED: return <AuctionView key='auctionView' user={user} roles={roles} />; break;
                             case IN_PROGRESS: return <ContractView user={user} roles={roles} />; break;
                             case COMPLETED: return <ReviewView user={user} />; break;
                             case PROFILE: return <ProfileView user={user} />; break;

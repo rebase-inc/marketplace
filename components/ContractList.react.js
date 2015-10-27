@@ -1,42 +1,29 @@
-var React = require('react');
+import React, { Component, PropTypes } from 'react';
+import ReactDOM from 'react-dom';
 
-// Components
-var LoadingAnimation = require('../components/LoadingAnimation.react');
-var NothingHere = require('../components/NothingHere.react');
-var Contract = require('../components/Contract.react');
+import LoadingAnimation from './LoadingAnimation.react';
+import Contract from './Contract.react';
 
-var ContractList = React.createClass({
-    propTypes: {
-        currentUser: React.PropTypes.object.isRequired,
-        currentRole: React.PropTypes.object.isRequired,
-        selectContract: React.PropTypes.func.isRequired,
-    },
-    render: function() {
-        var props = {
-            selectContract: this.props.selectContract,
-            currentRole: this.props.currentRole,
-        }
-        var titleMatchesText = function(contract) {
-            return true; // until we make this actually work
-            return contract.title.indexOf(this.props.searchText) != -1;
-        }.bind(this);
-        var makeTicketElement = function(contract) {
-            return <Contract contract={contract} key={contract.id} {...props} />;
-        }.bind(props);
-        if (!!this.props.allContracts.length) {
-            return (
-                <table className='contentList'>
-                    <tbody>
-                        { this.props.allContracts.filter(titleMatchesText).map(makeTicketElement) }
-                    </tbody>
-                </table>
-            );
-        } else if (this.props.loadingContractData) {
-            return <div className='contentList'><LoadingAnimation /></div>;
-        } else {
-            return <NothingHere text={'You don\'t have any in progress work right now. Check out offered tickets to find some!'}/>;
-        }
+import Fuse from '../utils/Fuse';
+
+function searchContracts(contracts, searchText) {
+    var fuseSearch = new Fuse(contracts, {threshold: 0.35, keys: ['ticket.title', 'ticket.skillsRequired', 'ticket.project.name', 'ticket.project.organization.name'], id: 'id'});
+    return fuseSearch.search(searchText.substring(0, 32));
+}
+
+export default class ContractList extends Component {
+    static propTypes = {
+        contracts: PropTypes.array.isRequired,
     }
-});
-
-module.exports = ContractList;
+    render() {
+        const { contracts } = this.props;
+        let searchResults = !!this.props.searchText ? searchContracts(contracts, this.props.searchText) : contracts.map(c => c.id);
+        return (
+            <table className='contentList'>
+                <tbody ref='tableBody'>
+                    { contracts.filter(c => searchResults.indexOf(c.id) != -1).map(c => <Contract contract={c} key={c.id} />) }
+                </tbody>
+            </table>
+        );
+    }
+}

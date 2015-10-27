@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
@@ -18,7 +19,6 @@ export default class TicketView extends Component {
         roles: React.PropTypes.object.isRequired,
     }
     constructor(props, context) {
-        console.log('constructing ticket view');
         super(props, context);
         this.state = { searchText: '', modalOpen: false };
 
@@ -26,29 +26,25 @@ export default class TicketView extends Component {
         this.findTalent = this.findTalent.bind(this);
         this.handleUserInput = this.handleUserInput.bind(this);
         this.toggleModal = this.toggleModal.bind(this);
-        this.componentWillMount = this.componentWillMount.bind(this);
-        console.log('done constructing ticket view');
+        this.componentDidMount = this.componentDidMount.bind(this);
     }
-    componentWillMount() {
+    componentDidMount() {
         this.props.actions.getTickets()
     }
     handleUserInput(searchText) {
         this.setState({ searchText: searchText });
     }
     findTalent(ticketID) {
-        //if (!!ticketID) {  TicketActions.selectTicket(ticketID); }
         this.setState({ modalOpen: true });
     }
     toggleModal() {
         this.setState({ modalOpen: !this.state.modalOpen });
     }
     render() {
-        let date = new Date();
-        console.log('rendering ticket view at ', date.getSeconds(), date.getMilliseconds());
-        const { ticket, tickets, user, roles } = this.props;
+        const { ticket, tickets, user, roles, actions } = this.props;
         // If there aren't any tickets to display and we're not in the process of finding any,
         // display the nothing here screen, with some actions to help the user get out of this state.
-        if (!tickets.items.length && !tickets.isFetching) {
+        if (!tickets.items.size && !tickets.isFetching) {
             return (
                 <NothingHere>
                     <h3>In order to get some work done, you first need some tasks</h3>
@@ -58,10 +54,9 @@ export default class TicketView extends Component {
                 </NothingHere>
             );
         }
-        switch (!!ticket) {
+        switch (!!ticket.id) {
             case true:
-                return <div>temp single ticket view</div>;
-                return <SingleTicketView {...props} />;
+                return <SingleTicketView ticket={tickets.items.get(ticket.id)} unselect={actions.selectTicket.bind(null, null)} user={user} roles={roles} />;
                 break;
             case false:
                 return (
@@ -69,7 +64,7 @@ export default class TicketView extends Component {
                         <SearchBar searchText={this.state.searchText} onUserInput={this.handleUserInput}>
                             <AddTicket onClick={this.toggleModal}/>
                         </SearchBar>
-                        <TicketList tickets={Array.from(tickets.items.values())} />
+                        <TicketList select={actions.selectTicket} tickets={Array.from(tickets.items.values())} />
                         { !!this.state.modalOpen ? <NewTicketModal project={this.props.currentRole.project} toggleModal={this.toggleModal} /> : null }
                     </div>
                 );

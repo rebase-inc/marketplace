@@ -1,28 +1,23 @@
-// External
-var React = require('react');
+import React, { Component, PropTypes } from 'react';
 
-// Components
-var Icons = require('../components/Icons.react');
+import { Dropback } from './Icons.react';
 
-// Constants
-var ViewConstants = require('../constants/ViewConstants');
-var ticketTypes = ViewConstants.ticketTypes;
-
-var TicketHeader = React.createClass({
-    propTypes: {
-        title: React.PropTypes.string.isRequired,
-        goBack: React.PropTypes.func.isRequired,
-    },
-    render: function() {
+export default class TicketHeader extends Component {
+    static propTypes = {
+        title: PropTypes.string.isRequired,
+        unselect: PropTypes.func.isRequired,
+        toggleDetails: PropTypes.func.isRequired,
+    }
+    
+    render() {
+        const { title, unselect, toggleDetails, children } = this.props; 
         return (
-            <div id='itemHeader' className={this.props.className || 'neutral'}>
-                <div onClick={this.props.goBack} className='backButton'> <Icons.Dropback/> </div>
-                { this.props.children }
-                <img onClick={this.props.toggleDetails} className='details' src='img/three-dots.svg'/>
-                <span className='title'>{this.props.title}</span>
+            <div id='itemHeader'>
+                <div onClick={unselect} className='backButton'><Dropback/></div>
+                { children }
+                <img onClick={toggleDetails} className='details' src='img/three-dots.svg'/>
+                <span className='title'>{title}</span>
             </div>
         );
     }
-});
-
-module.exports = TicketHeader;
+};

@@ -22,7 +22,7 @@ switch (process.env.NODE_ENV) {
         const loggerMiddleware = createLogger();
         const debugSession = window.location.href.match(/[?&]debug_session=([^&]+)\b/);
         store = compose(
-            applyMiddleware(thunkMiddleware, loggerMiddleware),
+            applyMiddleware(thunkMiddleware),
             require('redux-devtools').devTools(),
             require('redux-devtools').persistState(debugSession)
         )(createStore)(reducer);

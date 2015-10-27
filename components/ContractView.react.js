@@ -1,72 +1,63 @@
-// External
-var _ = require('underscore');
-var React = require('react');
-var ReactDOM = require('react-dom');
+import React, { Component } from 'react';
 
-// Constants
-var ViewTypes = require('../constants/ViewConstants').ViewTypes;
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 
-// Stores
-var ContractStore = require('../stores/ContractStore');
-
-// Actions
-var ContractActions = require('../actions/ContractActions');
-var UserActions = require('../actions/UserActions');
+import * as ContractActions from '../actions/ContractActions';
 
 // Components
-var SearchBar = require('../components/SearchBar.react');
-var ContractList = require('../components/ContractList.react');
-var SingleContractView = require('../components/SingleContractView.react');
-var NothingHere = require('../components/NothingHere.react');
+import SearchBar from './SearchBar.react';
+import NothingHere from './NothingHere.react';
+import ContractList from './ContractList.react';
+import SingleContractView from './SingleContractView.react';
 
-var ContractView = React.createClass({
-    propTypes: {
-        currentUser: React.PropTypes.object.isRequired,
-        currentRole: React.PropTypes.object.isRequired,
-    },
-    getInitialState: function() {
-        return _.extend({ searchText: '' }, ContractStore.getState());
-    },
-    componentDidMount: function() {
-        ContractStore.addChangeListener(this._onChange);
-        setTimeout(ContractActions.getContractData, 0);
-    },
-    componentWillUnmount: function() {
-        ContractStore.removeChangeListener(this._onChange);
-    },
-    _onChange: function() {
-        this.setState(ContractStore.getState());
-    },
-    selectContract: function(contractID) {
-        ContractActions.selectContract(contractID);
-    },
-    handleUserInput: function(searchText) {
+export default class ContractView extends Component {
+    static propTypes = {
+        user: React.PropTypes.object.isRequired,
+        roles: React.PropTypes.object.isRequired,
+    }
+    constructor(props, context) {
+        super(props, context);
+        this.state = { searchText: '', modalOpen: false };
+
+        // TODO: Look into autobinding. React-redux examples projects have it, but not sure what they use
+        this.handleUserInput = this.handleUserInput.bind(this);
+        this.componentDidMount = this.componentDidMount.bind(this);
+    }
+    componentDidMount() {
+        this.props.actions.getContracts();
+    }
+    handleUserInput(searchText) {
         this.setState({ searchText: searchText });
-    },
-    render: function() {
-        if (!this.state.allContracts.length && !this.state.loading) {
+    }
+    render() {
+        const { contract, contracts, user, roles } = this.props;
+
+        if (!contracts.items.size && !contracts.isFetching) {
             return (
                 <NothingHere>
                     <h3>You don't have any in progress tickets</h3>
-                    <button onClick={UserActions.selectView.bind(null, ViewTypes.OFFERED)}>View Offered Tickets</button>
+                    <button>View Offered Tickets</button>
                 </NothingHere>
             );
         }
-        switch (!!this.state.currentContract) {
+        switch (!!contract) {
             case true:
-                return <SingleContractView {...this.props} {...this.state} unselectContract={this.selectContract.bind(null, null)} />;
+                return <div>temp single contract view</div>;
+                return <SingleContractView />;
                 break;
             case false:
-                var props = _.extend({ selectContract: this.selectContract, onUserInput: this.handleUserInput }, this.state, this.props);
                 return (
-                    <div className='contractView'>
-                        <SearchBar searchText={this.state.searchText} onUserInput={this.handleUserInput}/>
-                        <ContractList {...props} />
+                    <div className='ticketView'>
+                        <SearchBar searchText={this.state.searchText} onUserInput={this.handleUserInput }/>
+                        <ContractList contracts={Array.from(contracts.items.values())} />
                     </div>
                 );
                 break;
         }
     }
-});
+};
 
-module.exports = ContractView;
+let mapStateToProps = state => ({ contracts: state.contracts, contract: state.contract });
+let mapDispatchToProps = dispatch => ({ actions: bindActionCreators(ContractActions, dispatch)});
+export default connect(mapStateToProps, mapDispatchToProps)(ContractView);

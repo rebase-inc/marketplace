@@ -1,56 +1,47 @@
-var React = require('react');
-var _ = require('underscore');
+import React, { Component, PropTypes } from 'react';
 
-// Components
-var FindTalentView = require('../components/FindTalentView.react');
-var TicketHeader = require('../components/TicketHeader.react');
-var CommentList = require('../components/CommentList.react');
-var CommentBox = require('../components/CommentBox.react');
-var SearchBar = require('../components/SearchBar.react');
-var CreateAuctionModal = require('../components/CreateAuctionModal.react');
-var TicketDetails = require('../components/TicketDetails.react');
+import TicketHeader from './TicketHeader.react';
+import TicketDetails from './TicketDetails.react';
+import CommentList from './CommentList.react';
+import CommentBox from './CommentBox.react';
 
-var SingleTicketView = React.createClass({
-    propTypes: {
-        currentRole: React.PropTypes.object.isRequired,
-        currentUser: React.PropTypes.object.isRequired,
-        currentTicket: React.PropTypes.object.isRequired,
-        unselectTicket: React.PropTypes.func.isRequired,
-        findTalent: React.PropTypes.func.isRequired,
-        modalOpen: React.PropTypes.bool.isRequired,
-    },
-    getInitialState: () => ({ modalOpen: false, showDetails: false }),
-    toggleDetails: function(state) {
-        typeof(state) === 'boolean' ? this.setState({ showDetails: state }) : this.setState({ showDetails: !this.state.showDetails });
-    },
-    render: function() {
-        var buttons = [];
-        if (!!this.props.viewingTalent) {
-            return (
-                <div className='auctionView'>
-                    <SearchBar searchText={this.state.searchText} onUserInput={this.handleUserInput}/>
-                    <FindTalentView />;
-                </div>
-            );
+export default class SingleTicketView extends Component {
+    static propTypes = {
+        user: PropTypes.object.isRequired,
+        roles: PropTypes.object.isRequired,
+        ticket: PropTypes.object.isRequired,
+        unselect: PropTypes.func.isRequired,
+    }
+
+    constructor(props, context) {
+        super(props, context);
+        this.state = { modalOpen: false, detailsOpen: false }
+        this.toggleDetails = this.toggleDetails.bind(this);
+    }
+
+    toggleDetails(newState) {
+        if (typeof(newState) == 'boolean') {
+            this.setState({ detailsOpen: newState });
+        } else {
+            this.setState({ detailsOpen: !this.state.detailsOpen });
         }
-        switch (this.props.currentRole.type) {
-            case 'contractor': throw 'Invalid view for contractor role!'; break;
-            case 'manager':
-                buttons.push(<button onClick={this.props.findTalent.bind(null, null)} key='findMoreTalent'>Find Talent</button>);
-                break;
-        }
+    }
+
+    render() {
+        const { user, roles, ticket, unselect, modalOpen, detailsOpen } = this.props;
+
+        // TODO: refactor this so that TicketHeader and TicketDetails are in the same component. Current setup doesn't make sense.
+        // That would also allow for a more sensical method for closing and opening the TicketDetails
         return (
             <div className='ticketView'>
-                { this.props.modalOpen ? <CreateAuctionModal ticket={this.props.currentTicket} toggleModal={this.props.toggleModal} /> : null }
-                <TicketHeader goBack={this.props.unselectTicket} title={this.props.currentTicket.title} toggleDetails={this.toggleDetails}>
-                    {buttons}
+                { modalOpen ? <CreateAuctionModal ticket={ticket} toggleModal={() => this.setState({ modalOpen: !modalOpen })} /> : null }
+                <TicketHeader unselect={unselect} title={ticket.title} toggleDetails={this.toggleDetails}>
+                    { roles.items.get(user.current_role.id).type == 'manager' ? <button>Find Talent</button> : null}
                 </TicketHeader>
-                <TicketDetails hidden={!this.state.showDetails} ticket={this.props.currentTicket} />
-                <CommentList comments={this.props.currentTicket.comments}/>
-                <CommentBox ticket={this.props.currentTicket} user={this.props.currentUser} />
+                <TicketDetails hidden={!detailsOpen} ticket={ticket} />
+                <CommentList comments={ticket.comments}/>
+                <CommentBox submit={alert} />
             </div>
         );
     }
-});
-
-module.exports = SingleTicketView;
+};

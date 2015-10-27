@@ -35,7 +35,7 @@ export default class AuctionView extends Component {
     }
     render() {
         const { auction, auctions, user, roles } = this.props;
-        if (!auctions.items.length && !auctions.isFetching) {
+        if (!auctions.items.size && !auctions.isFetching) {
             return (
                 <NothingHere>
                     <h3>You don't have any offered tickets</h3>

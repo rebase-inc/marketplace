@@ -1,57 +1,35 @@
-// External
-var React = require('react');
-var ReactDOM = require('react-dom');
+import React, { Component, PropTypes } from 'react';
 
-// Actions
-var CommentActions = require('../actions/CommentActions');
+export default class CommentBox extends Component {
+    constructor(props, context) {
+        super(props, context);
+        this.state = { text: '', focused: false }
+        this.handleInput = this.handleInput.bind(this);
+    }
 
-var CommentBox = React.createClass({
-    getInitialState: function() {
-        return {
-            inProgress: false,
-            commentText: '',
-        }
-    },
+    handleInput() {
+        let node = ReactDOM.findDOMNode(this.refs.comment);
+        this.setState({ commentText: node.value });
+    }
 
-    startComment: function() {
-        this.setState({inProgress: true});
-    },
-
-    exitComment: function() {
-        this.setState({inProgress: false});
-    },
-    cancelComment: function() {
-        this.setState({
-            inProgress: false,
-            commentText: ''
-        });
-    },
-    submitComment: function() {
-        CommentActions.commentOnTicket(this.props.user, this.props.ticket, this.state.commentText);
-        this.cancelComment();
-    },
-    handleInput: function() {
-        this.setState({ commentText: ReactDOM.findDOMNode(this.refs.commentText).value });
-    },
-    render: function() {
-        var buttons;
-        var className;
-        if (this.state.inProgress || !!this.state.commentText) {
-            buttons = (
-                <div id='commentSubmissionButtons'>
-                    <button className='small' onClick={this.submitComment}>Comment</button>
-                    <button className='small' onClick={this.cancelComment}>Cancel</button>
-                </div>
-            );
-            className = 'inProgress';
-        }
+    render() {
+        const { submit } = this.props;
         return (
-            <div id='newCommentBox' className={className}>
-            <textarea value={this.state.commentText} ref='commentText' onFocus={this.startComment} onBlur={this.exitComment} onChange={this.handleInput} type='text' placeholder='Leave a comment' />
-            { buttons }
+            <div id='newCommentBox' className={this.state.focused || this.state.text.length}>
+            <textarea 
+                ref='comment' type='text' placeholder='Leave a comment' 
+                value={this.state.text} 
+                onFocus={() => this.setState({focused:true})} 
+                onBlur={() => this.setState({focused:false})} 
+                onChange={this.handleInput} />
+            { 
+                (this.state.focused || this.state.text.length) ? 
+                    <div id='commentSubmissionButtons'>
+                        <button className='small' onClick={submit.bind(null, this.state.text)}>Comment</button>
+                        <button className='small' onClick={() => this.setState({ focused: false, text: ''})}>Cancel</button>
+                    </div> : null
+            }
             </div>
         );
     }
-});
-
-module.exports = CommentBox;
+};
