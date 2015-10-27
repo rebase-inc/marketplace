@@ -10,7 +10,7 @@ export default function tickets(tickets = initialTickets, action) {
                 case PENDING: return Object.assign({}, tickets, { isFetching: true }); break;
                 case SUCCESS:
                     const newTickets = new Map(action.response.tickets.map(t => [t.id, t]));
-                    return Object.assign({}, tickets, { isFetching: false }, { items: newTickets }); break;
+                    return { isFetching: false, items: newTickets };
             }
         }
         default:
