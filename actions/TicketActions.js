@@ -22,6 +22,29 @@ export function getTickets() {
     };
 }
 
+export function createAuction(ticket, price) {
+    return function(dispatch) {
+        dispatch({ type: ActionConstants.CREATE_AUCTION, status: PENDING });
+        let data = {
+            ticket_set: {
+                bid_limits: [{ ticket_snapshot: { ticket: { id: ticket.id } }, price: price }]
+            },
+            term_sheet: { legalese: 'n/a' },
+            organization: ticket.project.organization,
+        }
+        return fetch('http://localhost:5000/auctions', {
+                method: 'POST',
+                credentials: 'include', // TEMPORARY CORS HACK
+                headers: { 'Content-Type': 'application/json; charset=utf-8'},
+                body: JSON.stringify(data) })
+            .then(handleStatus)
+            .then(response => response.json())
+            .then(json => dispatch({ type: ActionConstants.CREATE_AUCTION, status: SUCCESS, response: json }))
+            .catch(json => dispatch({ type: ActionConstants.CREATE_AUCTION, status: ERROR, response: json }));
+    };
+}
+
+
 export function selectTicket(ticketId) {
     return {
         type: ActionConstants.SELECT_TICKET,

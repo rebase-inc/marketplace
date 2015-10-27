@@ -55,7 +55,8 @@ export default class TicketView extends Component {
             );
         }
         if (!!ticket.id) {
-            return <SingleTicketView ticket={tickets.items.get(ticket.id)} unselect={actions.selectTicket.bind(null, null)} user={user} roles={roles} />;
+            const createAuction = actions.createAuction.bind(null, tickets.items.get(ticket.id)); // this is a hack required because API requires the ticket organization
+            return <SingleTicketView ticket={tickets.items.get(ticket.id)} createAuction={createAuction} unselect={() => actions.selectTicket(null)} user={user} roles={roles} />;
         } else {
             return (
                 <div className='ticketView'>

@@ -29,7 +29,7 @@ export default class SingleAuctionView extends Component {
 
     render() {
         const { user, roles, auction, unselect } = this.props;
-
+        console.log('single auction view auction is ', auction);
         // TODO: refactor this so that TicketHeader and TicketDetails are in the same component. Current setup doesn't make sense.
         // That would also allow for a more sensical method for closing and opening the TicketDetails
         return (

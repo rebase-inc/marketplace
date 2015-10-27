@@ -8,7 +8,7 @@ import { BellCurve } from '../utils/Graph';
 
 export default class CreateAuctionModal extends Component {
     static propTypes = {
-        ticket: PropTypes.object.isRequired,
+        create: PropTypes.func.isRequired,
         closeModal: PropTypes.func.isRequired,
     }
 
@@ -29,6 +29,7 @@ export default class CreateAuctionModal extends Component {
 
     render() {
         const width = 240;
+        const { create } = this.props;
         return (
             <ModalContainer close={this.props.closeModal}>
                 <h3>Set your budget</h3>
@@ -37,7 +38,7 @@ export default class CreateAuctionModal extends Component {
                     <Slider width={width} min={100} max={2000} value={this.state.price} onChange={(value) => this.setState({ price: value })} />
                     <h3>{this.state.price + ' USD'}</h3>
                 </div>
-                <button onClick={alert.bind(null, 'heyo')}>Submit Budget</button>
+                <button onClick={() => create(this.state.price)}>Submit Budget</button>
             </ModalContainer>
         );
     }

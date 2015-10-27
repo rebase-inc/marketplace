@@ -11,6 +11,15 @@ export default function auction(auction = initialAuction, action) {
                     return { isFetching: false, id: action.response.auctionId }
             }
         }
+        case ActionConstants.CREATE_AUCTION: {
+            switch (action.status) {
+                case PENDING: return Object.assign({}, auction, { isFetching: true }); break;
+                case ERROR: return Object.assign({}, auction, { isFetching: false }); break;
+                case SUCCESS:
+                    return { id: action.response.auction.id, isFetching: false }
+                    break;
+            }
+        }
         default:
             return auction;
     }

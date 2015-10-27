@@ -1,7 +1,7 @@
 import ActionConstants from '../constants/ActionConstants';
 import { PENDING, SUCCESS, ERROR } from '../constants/RequestConstants';
 
-let initialAuctions = { items: [], isFetching: false };
+let initialAuctions = { items: new Map(), isFetching: false };
 
 export default function auctions(auctions = initialAuctions, action) {
     switch (action.type) {
@@ -11,6 +11,17 @@ export default function auctions(auctions = initialAuctions, action) {
                 case SUCCESS:
                     const newAuctions = new Map(action.response.auctions.map(a => [a.id, addSyntheticProperties(a)]));
                     return { isFetching: false, items: newAuctions };
+            }
+        }
+        case ActionConstants.CREATE_AUCTION: {
+            switch (action.status) {
+                case PENDING: return Object.assign({}, auctions, { isFetching: true }); break;
+                case ERROR: return Object.assign({}, auctions, { isFetching: false }); break;
+                case SUCCESS:
+                    const newAuctions = new Map(auctions.items);
+                    newAuctions.set(action.response.auction.id, addSyntheticProperties(action.response.auction));
+                    return { isFetching: false, items: newAuctions };
+                    break;
             }
         }
         default:

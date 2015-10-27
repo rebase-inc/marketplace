@@ -11,6 +11,15 @@ export default function ticket(ticket = initialTicket, action) {
                     return { isFetching: false, id: action.response.ticketId }
             }
         }
+        case ActionConstants.CREATE_AUCTION: {
+            switch (action.status) {
+                case PENDING: return Object.assign(ticket, { isFetching: true }); break;
+                case ERROR: return Object.assign(ticket, { isFetching: false }); break;
+                case SUCCESS:
+                    return initialTicket;
+                    break;
+            }
+        }
         default:
             return ticket;
     }

@@ -29,6 +29,14 @@ export default function view(view = { isFetching: false, type: OFFERED }, action
                     break;
             }
         }
+        case ActionConstants.CREATE_AUCTION: {
+            switch (action.status) {
+                case PENDING: return Object.assign({}, view, { isFetching: true }); break;
+                case SUCCESS:
+                    return Object.assign({ isFetching: false }, { type: OFFERED });
+                    break;
+            }
+        }
         default:
             return view;
     }

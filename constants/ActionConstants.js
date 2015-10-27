@@ -10,6 +10,7 @@ let UserActions = keyMirror({
 let TicketActions = keyMirror({
     GET_TICKETS: null,
     SELECT_TICKET: null,
+    CREATE_AUCTION: null, // this is a ticket action as far as scoping is considered...might imply we should change the REST API endpoint
 });
 
 let AuctionActions = keyMirror({

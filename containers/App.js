@@ -35,12 +35,18 @@ if (module.hot) {
 }
 
 export default class App extends Component {
+  static propTypes = { debug: false }
   render() {
     return (
       <div>
         <Provider store={store}>
           <RebaseApp />
         </Provider>
+        { this.props.debug ?
+            <DebugPanel top left bottom>
+                <DevTools store={store} monitor={LogMonitor} visibleOnLoad={true} />
+            </DebugPanel> : null
+        }
       </div>
     );
   }
