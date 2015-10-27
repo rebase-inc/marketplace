@@ -28,17 +28,17 @@ export default class SingleTicketView extends Component {
     }
 
     render() {
-        const { user, roles, ticket, unselect, modalOpen, detailsOpen } = this.props;
+        const { user, roles, ticket, unselect } = this.props;
 
         // TODO: refactor this so that TicketHeader and TicketDetails are in the same component. Current setup doesn't make sense.
         // That would also allow for a more sensical method for closing and opening the TicketDetails
         return (
             <div className='ticketView'>
-                { modalOpen ? <CreateAuctionModal ticket={ticket} toggleModal={() => this.setState({ modalOpen: !modalOpen })} /> : null }
+                { this.state.modalOpen ? <CreateAuctionModal ticket={ticket} toggleModal={() => this.setState({ modalOpen: !modalOpen })} /> : null }
                 <TicketHeader unselect={unselect} title={ticket.title} toggleDetails={this.toggleDetails}>
                     { roles.items.get(user.current_role.id).type == 'manager' ? <button>Find Talent</button> : null}
                 </TicketHeader>
-                <TicketDetails hidden={!detailsOpen} ticket={ticket} />
+                <TicketDetails hidden={!this.state.detailsOpen} ticket={ticket} />
                 <CommentList comments={ticket.comments}/>
                 <CommentBox submit={alert} />
             </div>

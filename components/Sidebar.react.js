@@ -160,7 +160,7 @@ export class ViewSelection extends Component {
         const { view, selected, onSelect } = this.props;
         let date = new Date();
         return (
-            <div className={selected ? 'viewSelection selected' : 'viewSelection'} onClick={() => {let d = new Date(); console.log('selected at ', d.getSeconds(), d.getMilliseconds()); onSelect();}}>
+            <div className={selected ? 'viewSelection selected' : 'viewSelection'} onClick={onSelect}>
                 <span className='viewIcon'>
                     <img src={view.icon}/>
                 </span>
