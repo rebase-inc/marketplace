@@ -18,7 +18,7 @@ export function getContracts() {
             .then(handleStatus)
             .then(response => response.json())
             .then(json => dispatch({ type: ActionConstants.GET_CONTRACTS, status: SUCCESS, response: json }))
-            .catch(json => dispatch({ type: ActionConstants.GET_CONTRACTS, status: ERROR, response: json }));
+            .catch(json => { console.warn(json); return dispatch({ type: ActionConstants.GET_CONTRACTS, status: ERROR, response: json }) });
     };
 }
 

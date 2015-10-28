@@ -3,6 +3,11 @@ import { PENDING, SUCCESS, ERROR } from '../constants/RequestConstants';
 
 let initialAuctions = { items: new Map(), isFetching: false };
 
+// hack to only show available auction. TODO: Add query parameter like ?state=waiting_for_bids or equivalent to api
+function _shouldBeVisible(auction) {
+    return (auction.state == 'created' || auction.state == 'waiting_for_bids')
+}
+
 export default function auctions(auctions = initialAuctions, action) {
 
     switch (action.type) {
@@ -10,7 +15,8 @@ export default function auctions(auctions = initialAuctions, action) {
             switch (action.status) {
                 case PENDING: return Object.assign({}, auctions, { isFetching: true }); break;
                 case SUCCESS:
-                    return { isFetching: false, items: new Map(action.response.auctions.map(a => [a.id, addSyntheticProperties(a)])) };
+                    const newAuctions = new Map(action.response.auctions.filter(_shouldBeVisible).map(a => [a.id, addSyntheticProperties(a)]));
+                    return { isFetching: false, items: newAuctions };
             }
         }
         case ActionConstants.CREATE_AUCTION: {

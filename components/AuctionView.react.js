@@ -49,6 +49,7 @@ export default class AuctionView extends Component {
                 auction={auctions.items.get(auction.id)}
                 unselect={() => actions.selectAuction(null)}
                 approveNomination={actions.approveNomination.bind(null, auctions.items.get(auction.id))}
+                bid={actions.bidOnAuction.bind(null, user, auctions.items.get(auction.id))}
                 user={user} roles={roles}/>;
         } else {
             return (

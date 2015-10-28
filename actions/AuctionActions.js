@@ -38,6 +38,34 @@ export function approveNomination(auction, nomination) {
     };
 }
 
+export function bidOnAuction(user, auction, price) {
+    console.log('calling bid with user', user, 'auction ', auction, 'price', price);
+    return function(dispatch) {
+        dispatch({ type: ActionConstants.BID_ON_AUCTION, status: PENDING, response: { auction: auction } });
+        // TODO: Refactor API so bidding on auction doesn't require user object
+        let data = {
+            bid: {
+                work_offers: [{
+                    price: price,
+                    ticket_snapshot: { id: auction.ticket_set.bid_limits[0].ticket_snapshot.id },
+                    contractor: { id: user.current_role.id },
+                }],
+                contractor: { id: user.current_role.id }, // oh god this is terrible
+                auction: { id: auction.id },
+            }
+        };
+        return fetch('http://localhost:5000/auctions/' + auction.id + '/bid_events', {
+                method: 'POST',
+                credentials: 'include', // TEMPORARY CORS HACK
+                headers: { 'Content-Type': 'application/json; charset=utf-8'},
+                body: JSON.stringify(data) })
+            .then(handleStatus)
+            .then(response => response.json())
+            .then(json => dispatch({ type: ActionConstants.BID_ON_AUCTION, status: SUCCESS, response: json }))
+            .catch(json => dispatch({ type: ActionConstants.BID_ON_AUCTION, status: ERROR, response: json }));
+    };
+}
+
 export function selectAuction(auctionId) {
     return {
         type: ActionConstants.SELECT_AUCTION,

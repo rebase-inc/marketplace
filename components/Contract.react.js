@@ -12,7 +12,7 @@ export default class Contract extends Component {
         return (
             <tr className='ticket'>
                 <StatusPanel state={contract.work.state} />
-                <ProjectInfoPanel ticket={contract.ticket} />
+                <ProjectInfoPanel project={contract.ticket.project} />
                 <TitlePanel title={contract.ticket.title} />
                 <SkillsRequiredPanel skills={contract.ticket.skill_requirement.skills} />
                 <CommentsPanel comments={contract.ticket.comments} />

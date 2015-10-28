@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
@@ -32,7 +31,6 @@ export default class ContractView extends Component {
     }
     render() {
         const { contract, contracts, user, roles } = this.props;
-
         if (!contracts.items.size && !contracts.isFetching) {
             return (
                 <NothingHere>
