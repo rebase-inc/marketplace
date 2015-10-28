@@ -58,7 +58,6 @@ export default function auctions(auctions = initialAuctions, action) {
 
                     // create a list of new auctions with the modified auction replacing the appropriate one from the old list
                     newAuctions = Array.from(auctions.items.values()).map(a => a.id == modifiedAuction.id ? modifiedAuction : a);
-                    console.log('new auctions is ', newAuctions);
                     return { isFetching: false, items: new Map(newAuctions.map(a => [a.id, addSyntheticProperties(a)])) };
             }
         }

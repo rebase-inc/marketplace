@@ -37,7 +37,6 @@ export class ApproveTalent extends Component {
     }
 
     render() {
-        console.log('the nomination we got is ', this.props.nomination);
         // TODO: Abstract out the svgs nested in this component
         switch (this._getNominationState()) {
             case _TalentStates.UNAPPROVED:
