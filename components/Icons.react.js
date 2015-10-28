@@ -17,7 +17,7 @@ function _dataURItoBlob(dataURI) {
 var _TalentStates = keymirror({ UNAPPROVED: null, WAITING: null, REJECTED: null, ACCEPTED: null });
 
 export class ApproveTalent extends Component {
-    static propTypes = { nomination: React.PropTypes.string.isRequired }
+    static propTypes = { nomination: React.PropTypes.object.isRequired }
 
     constructor(props, context) {
         super(props, context);
