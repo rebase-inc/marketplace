@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import d3 from 'd3';
 
-var keymirror = require('keymirror');
-var Graph = require('../utils/Graph');
+import keymirror from 'keymirror';
+import { DonutChart } from '../utils/Graph';
 
 function _dataURItoBlob(dataURI) {
     var binary = atob(dataURI.split(',')[1]);
@@ -408,7 +408,7 @@ export class FindTalentOverview extends Component {
             {category: 'offered', population: auction.approved_talents.length - auction.bids.filter(b => !b.contract).length, color: '#CBD0D4'},
             {category: 'rejected', population: auction.bids.filter(b => !b.contract).length, color: '#CC6070'}
         ];
-        Graph.DonutChart.create(element, this.props, data);
+        new DonutChart(element, this.props, data);
     }
     render() {
         return <div className='findTalentOverview'/>;

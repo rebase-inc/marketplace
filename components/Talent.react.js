@@ -4,7 +4,7 @@ import RatingStars from './RatingStars.react';
 import { ApproveTalent, TalentScore } from './Icons.react';
 
 export default class Talent extends Component {
-    static propTypes = { nomination: PropTypes.object.isRequired, },
+    static propTypes = { nomination: PropTypes.object.isRequired, }
     render() {
         const { nomination, approve } = this.props;
 
