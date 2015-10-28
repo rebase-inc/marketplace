@@ -35,16 +35,16 @@ if (module.hot) {
 }
 
 export default class App extends Component {
-  static defaultProps = { debug: false }
 
   render() {
+    const debug = false;
     return (
       <div>
         <Provider store={store}>
           <RebaseApp />
         </Provider>
-        { this.props.debug ?
-            <DebugPanel top left bottom>
+        { debug ?
+            <DebugPanel top right bottom>
                 <DevTools store={store} monitor={LogMonitor} visibleOnLoad={true} />
             </DebugPanel> : null
         }

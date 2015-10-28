@@ -8,13 +8,16 @@ function sort_nominations(n1, n2) {
 }
 
 export default class FindTalentView extends Component {
-    static propTypes = { auction: PropTypes.object.isRequired }
+    static propTypes = {
+        auction: PropTypes.object.isRequired,
+        approveNomination: PropTypes.func.isRequired
+    }
     render() {
         const { auction } = this.props;
         return (
             <table className='contentList'>
                 <tbody>
-                    { auction.nominations.sort(sort_nominations).map(talent => <Talent key={talent.id} nomination={talent}/>) }
+                    { auction.nominations.sort(sort_nominations).map(talent => <Talent nomination={talent} key={talent.id} approve={alert.bind(null, 'approve')}/>) }
                 </tbody>
             </table>
         );

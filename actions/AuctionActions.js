@@ -22,6 +22,22 @@ export function getAuctions() {
     };
 }
 
+export function approveNomination(nomination) {
+    return function(dispatch) {
+        dispatch({ type: ActionConstants.APPROVE_NOMINATION, status: PENDING });
+        let data = { auction: nomination.ticket_set.auction };
+        return fetch('http://localhost:5000/nominations/' + nomination.contractor.id + '/' + nomination.ticket_set.id, {
+                method: 'PUT',
+                credentials: 'include', // TEMPORARY CORS HACK
+                headers: { 'Content-Type': 'application/json; charset=utf-8'},
+                body: JSON.stringify(data) })
+            .then(handleStatus)
+            .then(response => response.json())
+            .then(json => dispatch({ type: ActionConstants.APPROVE_NOMINATION, status: SUCCESS, response: json }))
+            .catch(json => dispatch({ type: ActionConstants.APPROVE_NOMINATION, status: ERROR, response: json }));
+    };
+}
+
 export function selectAuction(auctionId) {
     return {
         type: ActionConstants.SELECT_AUCTION,
