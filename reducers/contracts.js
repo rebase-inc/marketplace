@@ -12,7 +12,7 @@ export default function contracts(contracts = initialContracts, action) {
                     return Object.assign({}, contracts, { isFetching: false, items: action.response.contracts }); break;
             }
         }
-        default:
-            return contracts;
+        case ActionConstants.LOGOUT: return initialContracts; break;
+        default: return contracts; break;
     }
 }

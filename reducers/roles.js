@@ -1,7 +1,9 @@
 import ActionConstants from '../constants/ActionConstants';
 import { PENDING, SUCCESS, ERROR } from '../constants/RequestConstants';
 
-export default function roles(roles = {isFetching: false, items: []}, action) {
+const initialRoles = { isFetching: false, items: [] };
+
+export default function roles(roles = initialRoles, action) {
     switch (action.type) {
         case ActionConstants.LOGIN: {
             switch (action.status) {
@@ -11,7 +13,7 @@ export default function roles(roles = {isFetching: false, items: []}, action) {
                     return Object.assign({}, roles, { isFetching: false }, { items: newRoles }); break;
             }
         }
-        default:
-            return roles;
+        case ActionConstants.LOGOUT: return initialRoles; break;
+        default: return roles; break;
     }
 }

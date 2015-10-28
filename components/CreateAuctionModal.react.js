@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 
 import Slider from './Slider.react';
 import ModalContainer from './ModalContainer.react';
+import LoadingAnimation from './LoadingAnimation.react';
 
 import { BellCurve } from '../utils/Graph';
 
@@ -10,6 +11,7 @@ export default class CreateAuctionModal extends Component {
     static propTypes = {
         create: PropTypes.func.isRequired,
         closeModal: PropTypes.func.isRequired,
+        isLoading: PropTypes.bool.isRequired,
     }
 
     constructor(props, context) {
@@ -29,7 +31,7 @@ export default class CreateAuctionModal extends Component {
 
     render() {
         const width = 240;
-        const { create } = this.props;
+        const { create, isLoading } = this.props;
         return (
             <ModalContainer close={this.props.closeModal}>
                 <h3>Set your budget</h3>
@@ -38,7 +40,7 @@ export default class CreateAuctionModal extends Component {
                     <Slider width={width} min={100} max={2000} value={this.state.price} onChange={(value) => this.setState({ price: value })} />
                     <h3>{this.state.price + ' USD'}</h3>
                 </div>
-                <button onClick={() => create(this.state.price)}>Submit Budget</button>
+                <button onClick={() => create(this.state.price)}>{ isLoading ? <LoadingAnimation /> : 'Submit Budget'}</button>
             </ModalContainer>
         );
     }

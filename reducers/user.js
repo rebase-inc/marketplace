@@ -15,7 +15,7 @@ export default function user(user = initialUser, action) {
                     return Object.assign({}, user, { isFetching: false}, newUser); break;
             }
         }
-        default:
-            return user;
+        case ActionConstants.LOGOUT: return initialUser; break; // we should probably handle pending and success cases
+        default: return user; break;
     }
 }

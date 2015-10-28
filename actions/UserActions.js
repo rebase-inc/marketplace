@@ -17,6 +17,17 @@ function handleStatus(response) {
     }
 }
 
+export function logout() {
+    return function(dispatch) {
+        dispatch({ type: ActionConstants.LOGOUT, status: PENDING });
+        return fetch('http://localhost:5000/auth')
+            .then(handleStatus)
+            .then(response => response.json())
+            .then(json => dispatch({ type: ActionConstants.LOGOUT, status: SUCCESS, response: json }))
+            .catch(json => dispatch({ type: ActionConstants.LOGOUT, status: ERROR, response: json }));
+    };
+}
+
 export function login(email, password) {
     return function(dispatch) {
         dispatch({ type: ActionConstants.LOGIN, status: PENDING });

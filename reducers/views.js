@@ -15,7 +15,9 @@ let ContractorViews = new Map([
     { name: 'Closed', icon: 'img/completed-24px.svg', type: COMPLETED },
 ].map(view => [ view.type, view ]));
 
-export default function views(views = {items: [], isFetching: false }, action) {
+const initialViews = {items: [], isFetching: false };
+
+export default function views(views = initialViews, action) {
     switch (action.type) {
         case ActionConstants.LOGIN: {
             switch (action.status) {
@@ -29,7 +31,7 @@ export default function views(views = {items: [], isFetching: false }, action) {
                     return Object.assign({}, { isFetching: false }, { items: newViews }); break;
             }
         }
-        default:
-            return views;
+        case ActionConstants.LOGOUT: return initialViews; break;
+        default: return views; break;
     }
 }

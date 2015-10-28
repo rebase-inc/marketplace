@@ -4,6 +4,8 @@ import FindTalentPanel from './FindTalentPanel.react';
 import TitlePanel from './TitlePanel.react';
 import TimerPanel from './TimerPanel.react';
 import BudgetPanel from './BudgetPanel.react';
+import CommentsPanel from './CommentsPanel.react';
+import ProjectInfoPanel from './ProjectInfoPanel.react';
 import SkillsRequiredPanel from './SkillsRequiredPanel.react';
 import TalentOverviewPanel from './TalentOverviewPanel.react';
 

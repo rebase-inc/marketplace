@@ -30,7 +30,7 @@ export default function tickets(tickets = initialTickets, action) {
                     break;
             }
         }
-        default:
-            return tickets;
+        case ActionConstants.LOGOUT: return initialTickets; break;
+        default: return tickets; break;
     }
 }

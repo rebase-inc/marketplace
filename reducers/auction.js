@@ -20,7 +20,7 @@ export default function auction(auction = initialAuction, action) {
                     break;
             }
         }
-        default:
-            return auction;
+        case ActionConstants.LOGOUT: return initialAuction; break;
+        default: return auction;
     }
 }

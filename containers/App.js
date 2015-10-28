@@ -37,13 +37,13 @@ if (module.hot) {
 export default class App extends Component {
 
   render() {
-    const debug = true;
+    const debugTools = true;
     return (
       <div>
         <Provider store={store}>
           <RebaseApp />
         </Provider>
-        { debug ?
+        { debugTools ?
             <DebugPanel top right bottom>
                 <DevTools store={store} monitor={LogMonitor} visibleOnLoad={true} />
             </DebugPanel> : null

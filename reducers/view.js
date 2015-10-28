@@ -2,7 +2,9 @@ import ActionConstants from '../constants/ActionConstants';
 import { PENDING, SUCCESS, ERROR } from '../constants/RequestConstants';
 import { NEW, OFFERED, IN_PROGRESS, COMPLETED } from '../constants/ViewConstants';
 
-export default function view(view = { isFetching: false, type: OFFERED }, action) {
+const initialView = { isFetching: false, type: OFFERED };
+
+export default function view(view = initialView, action) {
     switch (action.type) {
         case ActionConstants.LOGIN: {
             switch (action.status) {
@@ -37,7 +39,7 @@ export default function view(view = { isFetching: false, type: OFFERED }, action
                     break;
             }
         }
-        default:
-            return view;
+        case ActionConstants.LOGOUT: return initialView; break;
+        default: return view; break;
     }
 }

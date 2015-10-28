@@ -18,7 +18,7 @@ export function getAuctions() {
             .then(handleStatus)
             .then(response => response.json())
             .then(json => dispatch({ type: ActionConstants.GET_AUCTIONS, status: SUCCESS, response: json }))
-            .catch(json => dispatch({ type: ActionConstants.GET_AUCTIONS, status: ERROR, response: json }));
+            .catch(json => { console.warn('ERROR: ', json); return dispatch({ type: ActionConstants.GET_AUCTIONS, status: ERROR, response: json }) });
     };
 }
 

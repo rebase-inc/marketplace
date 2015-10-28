@@ -61,8 +61,8 @@ export default function auctions(auctions = initialAuctions, action) {
                     return { isFetching: false, items: new Map(newAuctions.map(a => [a.id, addSyntheticProperties(a)])) };
             }
         }
-        default:
-            return auctions;
+        case ActionConstants.LOGOUT: return initialAuctions; break;
+        default: return auctions; break;
     }
 }
 

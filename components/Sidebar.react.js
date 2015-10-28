@@ -29,7 +29,7 @@ export default class Sidebar extends Component {
             <div id='sidebar' className='noselect'>
                 <Logo />
                 <SidebarNav user={user} roles={roles} view={view} views={views} actions={actions} />
-                <SidebarProfile user={user} />
+                <SidebarProfile actions={actions} user={user} />
             </div>
         );
     }
@@ -59,7 +59,10 @@ class SidebarNav extends Component {
 }
 
 class SidebarProfile extends Component {
-    static propTypes = { user: PropTypes.object.isRequired }
+    static propTypes = {
+        user: PropTypes.object.isRequired,
+        actions: PropTypes.object.isRequired
+    }
 
     constructor(props, context) {
         super(props, context);
@@ -67,7 +70,7 @@ class SidebarProfile extends Component {
     }
 
     render() {
-        const { user } = this.props;
+        const { user, actions } = this.props;
         return (
             <div id='sidebarProfile'>
                 <div id='currentProfile' onClick={() => this.setState({ optionsOpen: !this.state.optionsOpen})}>
@@ -75,7 +78,7 @@ class SidebarProfile extends Component {
                     <span>{user.first_name + ' ' + user.last_name}</span>
                     <Dropdown />
                 </div>
-                <ProfileOptions isOpen={this.state.optionsOpen} />
+                <ProfileOptions isOpen={this.state.optionsOpen} actions={actions} />
             </div>
        );
     }
@@ -84,20 +87,22 @@ class SidebarProfile extends Component {
 var ProfileOptions = React.createClass({
     propTypes: {
         isOpen: React.PropTypes.bool.isRequired,
+        actions: React.PropTypes.object.isRequired,
     },
     selectOption: function(option) {
         UserActions.selectView(option);
         this.props.toggleOptions();
     },
     render: function() {
+        const { isOpen, actions } = this.props;
         return (
             <div id='profileOptions' className={this.props.isOpen ? 'open' : null}>
                 <ul>
-                    <li onClick={this.selectOption.bind(null, PROFILE)}>Profile</li>
-                    <li onClick={this.selectOption.bind(null, PROJECTS)}>Projects</li>
-                    <li onClick={this.selectOption.bind(null, WORK_HISTORY)}>Work History</li>
-                    <li onClick={this.selectOption.bind(null, BILLING_AND_PAYMENTS)}>Billing and Payments</li>
-                    <li>Sign Out</li>
+                    <li onClick={alert.bind(null, PROFILE)}>Profile</li>
+                    <li onClick={alert.bind(null, PROJECTS)}>Projects</li>
+                    <li onClick={alert.bind(null, WORK_HISTORY)}>Work History</li>
+                    <li onClick={alert.bind(null, BILLING_AND_PAYMENTS)}>Billing and Payments</li>
+                    <li onClick={actions.logout}>Sign Out</li>
                 </ul>
             </div>
         );
@@ -146,7 +151,7 @@ export class ViewSelection extends Component {
         onSelect: PropTypes.func.isRequired,
         selected: PropTypes.bool.isRequired,
     }
-    
+
     constructor(props, context) {
         super(props, context);
         this.shouldComponentUpdate = this.shouldComponentUpdate.bind(this);
