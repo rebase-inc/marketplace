@@ -29,7 +29,7 @@ export default class SingleAuctionView extends Component {
     }
 
     render() {
-        const { user, roles, auction, unselect } = this.props;
+        const { user, roles, auction, unselect, approveNomination } = this.props;
 
         // TODO: refactor this so that TicketHeader and TicketDetails are in the same component. Current setup doesn't make sense.
         // That would also allow for a more sensical method for closing and opening the TicketDetails
@@ -44,7 +44,7 @@ export default class SingleAuctionView extends Component {
                     { roles.items.get(user.current_role.id).type == 'manager' ? <button onClick={() => this.setState({ showTalent: true })}>View Talent</button> : <button>Bid Now</button> }
                 </TicketHeader>
                 <TicketDetails hidden={!this.state.detailsOpen} ticket={auction.ticket} />
-                { this.state.showTalent ? <FindTalentView auction={auction} /> : null }
+                { this.state.showTalent ? <FindTalentView auction={auction} approveNomination={approveNomination} /> : null }
                 { this.state.showTalent ? null : <CommentList comments={auction.ticket.comments}/> }
                 { this.state.showTalent ? null : <CommentBox submit={alert} /> }
             </div>

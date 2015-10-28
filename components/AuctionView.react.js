@@ -45,7 +45,11 @@ export default class AuctionView extends Component {
         }
 
         if (!!auction.id) {
-            return <SingleAuctionView auction={auctions.items.get(auction.id)} unselect={actions.selectAuction.bind(null, null)} user={user} roles={roles}/>;
+            return <SingleAuctionView
+                auction={auctions.items.get(auction.id)}
+                unselect={() => actions.selectAuction(null)}
+                approveNomination={actions.approveNomination.bind(null, auctions.items.get(auction.id))}
+                user={user} roles={roles}/>;
         } else {
             return (
                 <div className='auctionView'>

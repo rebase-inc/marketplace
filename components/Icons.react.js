@@ -24,11 +24,12 @@ export class ApproveTalent extends Component {
         this._getNominationState = this._getNominationState.bind(this);
     }
     _getNominationState() {
-        if (!this.props.nomination.auction) {
+        const { nomination, auction} = this.props;
+        if (auction.approved_talents.every(t => t.contractor.id != nomination.contractor.id)) {
             return _TalentStates.UNAPPROVED;
-        } else if (!!this.props.nomination.auction.bids.every(bid => bid.contractor.id != this.props.nomination.contractor.id)) {
+        } else if (auction.bids.every(bid => bid.contractor.id != nomination.contractor.id)) {
             return _TalentStates.WAITING;
-        } else if (!!this.props.nomination.auction.bids.some(bid => bid.contractor.id == this.props.nomination.contractor.id && bid.contract)) {
+        } else if (auction.bids.some(bid => bid.contractor.id == nomination.contractor.id && bid.contract)) {
             return _TalentStates.ACCEPTED;
         } else {
             return _TalentStates.REJECTED;
@@ -36,10 +37,11 @@ export class ApproveTalent extends Component {
     }
 
     render() {
+        console.log('the nomination we got is ', this.props.nomination);
         // TODO: Abstract out the svgs nested in this component
         switch (this._getNominationState()) {
             case _TalentStates.UNAPPROVED:
-                let loadingPath = !!this.props.nomination.loading ? (
+                let loadingPath = !!this.props.nomination.isFetching ? (
                     <g className='rotate'>
                         <path strokeWidth='2px' d="M0,-10 A 10,10 1 0,1 10,0" stroke="#F5B651"/>
                     </g>

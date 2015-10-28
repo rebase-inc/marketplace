@@ -16,12 +16,12 @@ let TicketActions = keyMirror({
 let AuctionActions = keyMirror({
     GET_AUCTIONS: null,
     SELECT_AUCTION: null,
+    APPROVE_NOMINATION: null,
 });
 
 let __ActionConstants = keyMirror({
     UPDATE_USER_SETTINGS: null,
     UPDATE_PROFILE_PHOTO: null,
-    APPROVE_NOMINATION: null,
     AUTHENTICATE_GITHUB: null,
     GET_AUCTION_DETAIL: null,
     GET_CONTRACT_DATA: null,
@@ -51,7 +51,6 @@ let __ActionConstants = keyMirror({
     ANSWER_MEDIATION_COMPLETE: null,
     GET_GITHUB_ACCOUNTS: null,
     IMPORT_GITHUB_REPOS: null,
-    CREATE_AUCTION: null,
     CREATE_INTERNAL_TICKET: null,
     CREATE_GITHUB_TICKET: null,
     DELETE_PROJECT: null,

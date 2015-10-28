@@ -6,13 +6,13 @@ import { ApproveTalent, TalentScore } from './Icons.react';
 export default class Talent extends Component {
     static propTypes = { nomination: PropTypes.object.isRequired, }
     render() {
-        const { nomination, approve } = this.props;
+        const { nomination, approve, auction } = this.props;
 
         // TODO: Abstract out each of these panels
         return (
             <tr className='nomination'>
                 <td className='actionPanel' onClick={approve}>
-                    <ApproveTalent nomination={nomination} />
+                    <ApproveTalent auction={auction} nomination={nomination} />
                 </td>
                 <td className='talentPanel'>
                     <span>{nomination.contractor.user.first_name + ' ' + nomination.contractor.user.last_name}</span>

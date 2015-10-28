@@ -22,10 +22,10 @@ export function getAuctions() {
     };
 }
 
-export function approveNomination(nomination) {
+export function approveNomination(auction, nomination) {
     return function(dispatch) {
-        dispatch({ type: ActionConstants.APPROVE_NOMINATION, status: PENDING });
-        let data = { auction: nomination.ticket_set.auction };
+        dispatch({ type: ActionConstants.APPROVE_NOMINATION, status: PENDING, response: { auction: auction, nomination: nomination } });
+        let data = { auction: { id: auction.id } };
         return fetch('http://localhost:5000/nominations/' + nomination.contractor.id + '/' + nomination.ticket_set.id, {
                 method: 'PUT',
                 credentials: 'include', // TEMPORARY CORS HACK
@@ -33,7 +33,7 @@ export function approveNomination(nomination) {
                 body: JSON.stringify(data) })
             .then(handleStatus)
             .then(response => response.json())
-            .then(json => dispatch({ type: ActionConstants.APPROVE_NOMINATION, status: SUCCESS, response: json }))
+            .then(json => dispatch({ type: ActionConstants.APPROVE_NOMINATION, status: SUCCESS, response: Object.assign({auction}, json) }))
             .catch(json => dispatch({ type: ActionConstants.APPROVE_NOMINATION, status: ERROR, response: json }));
     };
 }

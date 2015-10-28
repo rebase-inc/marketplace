@@ -13,11 +13,11 @@ export default class FindTalentView extends Component {
         approveNomination: PropTypes.func.isRequired
     }
     render() {
-        const { auction } = this.props;
+        const { auction, approveNomination } = this.props;
         return (
             <table className='contentList'>
                 <tbody>
-                    { auction.nominations.sort(sort_nominations).map(talent => <Talent nomination={talent} key={talent.id} approve={alert.bind(null, 'approve')}/>) }
+                    { auction.nominations.sort(sort_nominations).map(talent => <Talent auction={auction} nomination={talent} key={talent.id} approve={() => approveNomination(talent)}/>) }
                 </tbody>
             </table>
         );
