@@ -94,7 +94,7 @@ function updateUserDetail(action) {
         case RequestConstants.SUCCESS:
             _.extend(_userState.currentUser, action.response.user);
             _userState.loading = false;
-            Cookies.set('user', JSON.stringify(_userState.currentUser), 1);
+            //Cookies.set('user', JSON.stringify(_userState.currentUser), 1);
     }
 }
 
@@ -129,7 +129,7 @@ function handleLogin(action) {
                 case 'contractor': _userState.currentView = ContractorViews[ViewTypes.OFFERED]; break;
                 case 'owner': throw 'Owner is an invalid current role type!'; break;
             }
-            Cookies.set('user', JSON.stringify(_userState.currentUser), 1);
+            //Cookies.set('user', JSON.stringify(_userState.currentUser), 1);
     }
 }
 

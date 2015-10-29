@@ -20,13 +20,13 @@ new WebpackDevServer(
         // by using the Flask app as the main server and redirecting any non-api
         // requests to this development server. These proxies are placed here as
         // opposed to the webpack.config file in order to be more visible.
-        proxy: {
-            '/tickets*' : '127.0.0.1:5000',
-            '/auctions*' : '127.0.0.1:5000',
-            '/contracts*' : '127.0.0.1:5000',
-            '/reviews*' : '127.0.0.1:5000',
-            '/auth*' : '127.0.0.1:5000',
-        },
+        //proxy: {
+            //'/tickets*' : '127.0.0.1:5000',
+            //'/auctions*' : '127.0.0.1:5000',
+            //'/contracts*' : '127.0.0.1:5000',
+            //'/reviews*' : '127.0.0.1:5000',
+            //'/auth*' : '127.0.0.1:5000',
+        //},
         historyApiFallback: true,
         stats: { colors: true }
     }).listen(3000, 'localhost', function (err) {
