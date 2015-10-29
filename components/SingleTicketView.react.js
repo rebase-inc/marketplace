@@ -32,7 +32,6 @@ export default class SingleTicketView extends Component {
         const { user, roles, ticket, unselect, createAuction } = this.props;
         // TODO: refactor this so that TicketHeader and TicketDetails are in the same component. Current setup doesn't make sense.
         // That would also allow for a more sensical method for closing and opening the TicketDetails
-        console.log('ticket loading ', ticket);
         return (
             <div className='ticketView'>
                 { this.state.modalOpen ? <CreateAuctionModal isLoading={ticket.isFetching} close={() => this.setState({ modalOpen: false })} create={createAuction}/> : null }
