@@ -1,69 +1,33 @@
-import fetch from 'isomorphic-fetch';
-
 import ActionConstants from '../constants/ActionConstants';
-import { ERROR, PENDING, SUCCESS } from '../constants/RequestConstants';
 
-function handleStatus(response) {
-    if (response.status >= 200 && response.status < 300) {
-        return Promise.resolve(response)
-    } else {
-        return Promise.reject(new Error(response.statusText))
-    }
-}
+import { dispatchedRequest } from '../utils/Api';
+import { SUCCESS } from '../constants/RequestConstants';
 
 export function getAuctions() {
-    return function(dispatch) {
-        dispatch({ type: ActionConstants.GET_AUCTIONS, status: PENDING });
-        return fetch('http://localhost:5000/auctions', { credentials: 'include' })
-            .then(handleStatus)
-            .then(response => response.json())
-            .then(json => dispatch({ type: ActionConstants.GET_AUCTIONS, status: SUCCESS, response: json }))
-            .catch(json => { console.warn('ERROR: ', json); return dispatch({ type: ActionConstants.GET_AUCTIONS, status: ERROR, response: json }) });
-    };
+    return dispatchedRequest('GET', '/auctions', ActionConstants.GET_AUCTIONS);
 }
 
 export function approveNomination(auction, nomination) {
-    return function(dispatch) {
-        dispatch({ type: ActionConstants.APPROVE_NOMINATION, status: PENDING, response: { auction: auction, nomination: nomination } });
-        let data = { auction: { id: auction.id } };
-        return fetch('http://localhost:5000/nominations/' + nomination.contractor.id + '/' + nomination.ticket_set.id, {
-                method: 'PUT',
-                credentials: 'include', // TEMPORARY CORS HACK
-                headers: { 'Content-Type': 'application/json; charset=utf-8'},
-                body: JSON.stringify(data) })
-            .then(handleStatus)
-            .then(response => response.json())
-            .then(json => dispatch({ type: ActionConstants.APPROVE_NOMINATION, status: SUCCESS, response: Object.assign({auction}, json) }))
-            .catch(json => dispatch({ type: ActionConstants.APPROVE_NOMINATION, status: ERROR, response: json }));
-    };
+    const url = '/nominations/' + nomination.contractor.id + '/' + nomination.ticket_set.id;
+    const data = { auction: { id: auction.id } };
+    return dispatchedRequest('PUT', url, ActionConstants.APPROVE_NOMINATION, data);
 }
 
 export function bidOnAuction(user, auction, price) {
-    console.log('calling bid with user', user, 'auction ', auction, 'price', price);
-    return function(dispatch) {
-        dispatch({ type: ActionConstants.BID_ON_AUCTION, status: PENDING, response: { auction: auction } });
-        // TODO: Refactor API so bidding on auction doesn't require user object
-        let data = {
-            bid: {
-                work_offers: [{
-                    price: price,
-                    ticket_snapshot: { id: auction.ticket_set.bid_limits[0].ticket_snapshot.id },
-                    contractor: { id: user.current_role.id },
-                }],
-                contractor: { id: user.current_role.id }, // oh god this is terrible
-                auction: { id: auction.id },
-            }
-        };
-        return fetch('http://localhost:5000/auctions/' + auction.id + '/bid_events', {
-                method: 'POST',
-                credentials: 'include', // TEMPORARY CORS HACK
-                headers: { 'Content-Type': 'application/json; charset=utf-8'},
-                body: JSON.stringify(data) })
-            .then(handleStatus)
-            .then(response => response.json())
-            .then(json => dispatch({ type: ActionConstants.BID_ON_AUCTION, status: SUCCESS, response: json }))
-            .catch(json => dispatch({ type: ActionConstants.BID_ON_AUCTION, status: ERROR, response: json }));
+    const url = '/auctions/' + auction.id + '/bid_events';
+    // TODO: Refactor API so bidding on auction doesn't require user object
+    const data = {
+        bid: {
+            work_offers: [{
+                price: price,
+                ticket_snapshot: { id: auction.ticket_set.bid_limits[0].ticket_snapshot.id },
+                contractor: { id: user.current_role.id },
+            }],
+            contractor: { id: user.current_role.id }, // oh god this is terrible
+            auction: { id: auction.id },
+        }
     };
+    return dispatchedRequest('POST', url, ActionConstants.BID_ON_AUCTION, data);
 }
 
 export function selectAuction(auctionId) {

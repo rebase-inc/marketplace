@@ -1,47 +1,21 @@
-import fetch from 'isomorphic-fetch';
-
 import ActionConstants from '../constants/ActionConstants';
-import { ERROR, PENDING, SUCCESS } from '../constants/RequestConstants';
 
-function handleStatus(response) {
-    if (response.status >= 200 && response.status < 300) {
-        return Promise.resolve(response)
-    } else {
-        return Promise.reject(new Error(response.statusText))
-    }
-}
+import { dispatchedRequest } from '../utils/Api';
+import { SUCCESS } from '../constants/RequestConstants';
 
 export function getTickets() {
-    return function(dispatch) {
-        dispatch({ type: ActionConstants.GET_TICKETS, status: PENDING });
-        return fetch('http://localhost:5000/tickets', { credentials: 'include' })
-            .then(handleStatus)
-            .then(response => response.json())
-            .then(json => dispatch({ type: ActionConstants.GET_TICKETS, status: SUCCESS, response: json }))
-            .catch(json => dispatch({ type: ActionConstants.GET_TICKETS, status: ERROR, response: json }));
-    };
+    return dispatchedRequest('GET', '/tickets', ActionConstants.GET_TICKETS);
 }
 
 export function createAuction(ticket, price) {
-    return function(dispatch) {
-        dispatch({ type: ActionConstants.CREATE_AUCTION, status: PENDING });
-        let data = {
-            ticket_set: {
-                bid_limits: [{ ticket_snapshot: { ticket: { id: ticket.id } }, price: price }]
-            },
-            term_sheet: { legalese: 'n/a' },
-            organization: ticket.project.organization,
-        }
-        return fetch('http://localhost:5000/auctions', {
-                method: 'POST',
-                credentials: 'include', // TEMPORARY CORS HACK
-                headers: { 'Content-Type': 'application/json; charset=utf-8'},
-                body: JSON.stringify(data) })
-            .then(handleStatus)
-            .then(response => response.json())
-            .then(json => dispatch({ type: ActionConstants.CREATE_AUCTION, status: SUCCESS, response: json }))
-            .catch(json => dispatch({ type: ActionConstants.CREATE_AUCTION, status: ERROR, response: json }));
-    };
+    const data = {
+        ticket_set: {
+            bid_limits: [{ ticket_snapshot: { ticket: { id: ticket.id } }, price: price }]
+        },
+        term_sheet: { legalese: 'n/a' },
+        organization: ticket.project.organization,
+    }
+    return dispatchedRequest('POST', '/auctions', ActionConstants.CREATE_AUCTION, data);
 }
 
 

@@ -1,47 +1,15 @@
-//var Dispatcher = require('../dispatcher/RebaseAppDispatcher');
-//var ActionConstants = require('../constants/ActionConstants');
-//var RequestConstants = require('../constants/RequestConstants');
-//var Api = require('../utils/Api');
-//var _ = require('underscore');
-
-import fetch from 'isomorphic-fetch';
-
 import ActionConstants from '../constants/ActionConstants';
-import { ERROR, PENDING, SUCCESS } from '../constants/RequestConstants';
 
-function handleStatus(response) {
-    if (response.status >= 200 && response.status < 300) {
-        return Promise.resolve(response)
-    } else {
-        return Promise.reject(new Error(response.statusText))
-    }
-}
+import { dispatchedRequest } from '../utils/Api';
+import { SUCCESS } from '../constants/RequestConstants';
 
 export function logout() {
-    return function(dispatch) {
-        dispatch({ type: ActionConstants.LOGOUT, status: PENDING });
-        return fetch('http://localhost:5000/auth', {credentials: 'include'})
-            .then(handleStatus)
-            .then(response => response.json())
-            .then(json => dispatch({ type: ActionConstants.LOGOUT, status: SUCCESS, response: json }))
-            .catch(json => dispatch({ type: ActionConstants.LOGOUT, status: ERROR, response: json }));
-    };
+    return dispatchedRequest('GET', '/auth', ActionConstants.LOGOUT);
 }
 
 export function login(email, password) {
-    return function(dispatch) {
-        dispatch({ type: ActionConstants.LOGIN, status: PENDING });
-        let data = { user: { email: email }, password: password, };
-        return fetch('http://localhost:5000/auth', {
-                method: 'POST',
-                credentials: 'include',
-                headers: { 'Content-Type': 'application/json; charset=utf-8'},
-                body: JSON.stringify(data) })
-            .then(handleStatus)
-            .then(response => response.json())
-            .then(json => dispatch({ type: ActionConstants.LOGIN, status: SUCCESS, response: json }))
-            .catch(json => dispatch({ type: ActionConstants.LOGIN, status: ERROR, response: json }));
-    };
+    let data = { user: { email: email }, password: password, };
+    return dispatchedRequest('POST', '/auth', ActionConstants.LOGIN, data);
 }
 
 export function selectView(viewType) {

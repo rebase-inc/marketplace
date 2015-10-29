@@ -1,25 +1,10 @@
-import fetch from 'isomorphic-fetch';
-
 import ActionConstants from '../constants/ActionConstants';
-import { ERROR, PENDING, SUCCESS } from '../constants/RequestConstants';
 
-function handleStatus(response) {
-    if (response.status >= 200 && response.status < 300) {
-        return Promise.resolve(response)
-    } else {
-        return Promise.reject(new Error(response.statusText))
-    }
-}
+import { dispatchedRequest } from '../utils/Api';
+import { SUCCESS } from '../constants/RequestConstants';
 
 export function getContracts() {
-    return function(dispatch) {
-        dispatch({ type: ActionConstants.GET_CONTRACTS, status: PENDING });
-        return fetch('http://localhost:5000/contracts', { credentials: 'include' })
-            .then(handleStatus)
-            .then(response => response.json())
-            .then(json => dispatch({ type: ActionConstants.GET_CONTRACTS, status: SUCCESS, response: json }))
-            .catch(json => { console.warn(json); return dispatch({ type: ActionConstants.GET_CONTRACTS, status: ERROR, response: json }) });
-    };
+    return dispatchedRequest('GET', '/contracts', ActionConstants.GET_CONTRACTS);
 }
 
 //module.exports = {

@@ -37,7 +37,7 @@ if (module.hot) {
 export default class App extends Component {
 
   render() {
-    const debugTools = false;
+    const debugTools = true;
     return (
       <div>
         <Provider store={store}>
