@@ -1,29 +1,41 @@
-var React = require('react');
+import React, { Component, PropTypes } from 'react';
 
-// Components
-var ContractHeader = require('../components/ContractHeader.react');
-var CommentList = require('../components/CommentList.react');
-var CommentBox = require('../components/CommentBox.react');
-var HaltWorkModal = require('../components/HaltWorkModal.react');
-var ResumeWorkModal = require('../components/ResumeWorkModal.react');
-var SubmitWorkModal = require('../components/SubmitWorkModal.react');
-var CompleteWorkModal = require('../components/CompleteWorkModal.react');
-var DisputeWorkModal = require('../components/DisputeWorkModal.react');
-var ResolveMediationModal = require('../components/ResolveMediationModal.react');
-var TicketDetails = require('../components/TicketDetails.react');
+import HaltWorkModal from './HaltWorkModal.react';
+import ResumeWorkModal from './ResumeWorkModal.react';
+import SubmitWorkModal from './SubmitWorkModal.react';
+import DisputeWorkModal from './DisputeWorkModal.react';
+import CompleteWorkModal from './CompleteWorkModal.react';
+import ResolveMediationModal from './ResolveMediationModal.react';
 
-var SingleContractView = React.createClass({
-    propTypes: {
-        currentRole: React.PropTypes.object.isRequired,
-        currentUser: React.PropTypes.object.isRequired,
-        currentContract: React.PropTypes.object.isRequired,
-        unselectContract: React.PropTypes.func.isRequired,
-    },
-    getInitialState: () => ({ modalType: null, showDetails: false }),
-    closeModal: function() {
-        this.setState({ modalType: null });
-    },
-    openModal: function(type) {
+import ContractHeader from './ContractHeader.react';
+import TicketDetails from './TicketDetails.react';
+import CommentList from './CommentList.react';
+import CommentBox from './CommentBox.react';
+
+export default class SingleContractView extends Component {
+    static propTypes = {
+        user: React.PropTypes.object.isRequired,
+        roles: React.PropTypes.object.isRequired,
+        contract: React.PropTypes.object.isRequired,
+        unselect: React.PropTypes.func.isRequired,
+    }
+
+    constructor(props, context) {
+        super(props, context);
+        this.state = { modalType: null, detailsOpen: false }
+        this.toggleDetails = this.toggleDetails.bind(this);
+    }
+
+    toggleDetails(newState) {
+        if (typeof(newState) == 'boolean') {
+            this.setState({ detailsOpen: newState });
+        } else {
+            this.setState({ detailsOpen: !this.state.detailsOpen });
+        }
+    }
+
+    // TODO: Refactor ugly modal handling
+    openModal(type) {
         var modalTypes = ['halt_work', 'resume_work', 'ask_for_review', 'enter_mediation', 'mark_complete', 'fail', 'resolve_mediation'];
         if (modalTypes.indexOf(type) == -1) {
             console.warn('Invalid modal type! ', type);
@@ -31,21 +43,12 @@ var SingleContractView = React.createClass({
         } else {
             this.setState({modalType: type});
         }
-    },
-    componentWillMount: function() {
-        this.haltWork = this.openModal.bind(null, 'halt_work');
-        this.resumeWork = this.openModal.bind(null, 'resume_work');
-        this.askForReview = this.openModal.bind(null, 'ask_for_review');
-        this.enterMediation = this.openModal.bind(null, 'enter_mediation');
-        this.markComplete = this.openModal.bind(null, 'mark_complete');
-        this.resolveMediation = this.openModal.bind(null, 'resolve_mediation');
-    },
-    _selectModal: function(type) {
-        var props = {
-            closeModal: this.closeModal,
-            currentUser: this.props.currentUser,
-            currentRole: this.props.currentRole,
-            currentContract: this.props.currentContract,
+    }
+
+    _selectModal(type) {
+        const props = {
+            close: () => this.setState({ modalType: null }),
+            contract: this.props.contract
         }
         switch (type) {
             case 'halt_work': return (<HaltWorkModal {...props}/>); break;
@@ -55,35 +58,36 @@ var SingleContractView = React.createClass({
             case 'mark_complete': return (<CompleteWorkModal {...props}/>); break;
             case 'resolve_mediation': return (<ResolveMediationModal {...props}/>); break;
             case null: return null; break;
-            default: console.warn('Invalid modal type! ', type); break;
         }
-    },
-    toggleDetails: function(state) {
-        typeof(state) === 'boolean' ? this.setState({ showDetails: state }) : this.setState({ showDetails: !this.state.showDetails });
-    },
-    render: function() {
+    }
+
+    toggleDetails(newState) {
+        if (typeof(newState) == 'boolean') {
+            this.setState({ detailsOpen: newState });
+        } else {
+            this.setState({ detailsOpen: !this.state.detailsOpen });
+        }
+    }
+
+    render() {
         var actions = {
-            haltWork: this.haltWork,
-            resumeWork: this.resumeWork,
-            askForReview: this.askForReview,
-            enterMediation: this.enterMediation,
-            markComplete: this.markComplete,
-            resolveMediation: this.resolveMediation,
-        }
+            haltWork: () => this.openModal('halt_work'),
+            resumeWork: () => this.openModal('resume_work'),
+            askForReview: () => this.openModal('ask_for_review'),
+            enterMediation: () => this.openModal('enter_mediation'),
+            markComplete: () => this.openModal('mark_complete'),
+            resolveMediation: () => this.openModal('resolve_mediation'),
+        };
+        const { role, user, contract, unselect } = this.props;
+
         return (
             <div className='contractView'>
                 { this._selectModal(this.state.modalType) }
-                <ContractHeader currentRole={this.props.currentRole} 
-                    goBack={this.props.unselectContract} 
-                    toggleDetails={this.toggleDetails} 
-                    actions={actions} 
-                    currentContract={this.props.currentContract}/>
-                <TicketDetails hidden={!this.state.showDetails} ticket={this.props.currentContract.ticket} />
-                <CommentList comments={this.props.currentContract.ticket.comments}/>
-                <CommentBox ticket={this.props.currentContract.ticket} user={this.props.currentUser} />
+                <ContractHeader role={role} unselect={unselect} toggleDetails={this.toggleDetails} actions={actions} contract={contract}/>
+                <TicketDetails hidden={!this.state.showDetails} ticket={contract.ticket} />
+                <CommentList comments={contract.ticket.comments}/>
+                <CommentBox submit={() => alert.bind(null, 'oops')}/>
             </div>
         );
     }
-});
-
-module.exports = SingleContractView;
+};

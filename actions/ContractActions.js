@@ -7,6 +7,14 @@ export function getContracts() {
     return dispatchedRequest('GET', '/contracts', ActionConstants.GET_CONTRACTS);
 }
 
+export function selectContract(contractId) {
+    return {
+        type: ActionConstants.SELECT_CONTRACT,
+        response: { contractId: contractId },
+        status: SUCCESS
+    }
+}
+
 //module.exports = {
     //getContractData: function() {
         //function responseAction(response, status) {

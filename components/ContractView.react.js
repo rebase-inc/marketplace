@@ -24,13 +24,13 @@ export default class ContractView extends Component {
         this.componentDidMount = this.componentDidMount.bind(this);
     }
     componentDidMount() {
-        this.props.actions.getContracts();
+        this.props.actions.getContracts()
     }
     handleUserInput(searchText) {
         this.setState({ searchText: searchText });
     }
     render() {
-        const { contract, contracts, user, roles } = this.props;
+        const { contract, contracts, user, roles, actions } = this.props;
         if (!contracts.items.size && !contracts.isFetching) {
             return (
                 <NothingHere>
@@ -39,19 +39,18 @@ export default class ContractView extends Component {
                 </NothingHere>
             );
         }
-        switch (!!contract) {
-            case true:
-                return <div>temp single contract view</div>;
-                return <SingleContractView />;
-                break;
-            case false:
-                return (
-                    <div className='ticketView'>
-                        <SearchBar searchText={this.state.searchText} onUserInput={this.handleUserInput }/>
-                        <ContractList contracts={Array.from(contracts.items.values())} />
-                    </div>
-                );
-                break;
+        if (!!contract.id) {
+            return <SingleContractView
+                contract={contracts.items.get(contract.id)}
+                unselect={() => actions.selectContract(null)}
+                user={user} role={roles.items.get(user.current_role.id)}/>;
+        } else {
+            return (
+                <div className='ticketView'>
+                    <SearchBar searchText={this.state.searchText} onUserInput={this.handleUserInput }/>
+                    <ContractList select={actions.selectContract} user={user} roles={roles} contracts={Array.from(contracts.items.values())} />
+                </div>
+            );
         }
     }
 };

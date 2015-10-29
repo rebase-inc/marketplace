@@ -13,10 +13,11 @@ function searchContracts(contracts, searchText) {
 
 export default class ContractList extends Component {
     static propTypes = {
+        select: PropTypes.func.isRequired,
         contracts: PropTypes.array.isRequired,
     }
     render() {
-        const { contracts } = this.props;
+        const { contracts, select } = this.props;
         let searchResults = !!this.props.searchText ? searchContracts(contracts, this.props.searchText) : contracts.map(c => c.id);
         return (
             <table className='contentList'>

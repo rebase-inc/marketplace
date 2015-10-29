@@ -9,7 +9,6 @@ function handleStatus(response) {
     if (response.status >= 200 && response.status < 300) {
         return Promise.resolve(response)
     } else {
-        console.warn('fetch error: ' + response.statusText);
         return Promise.reject(new Error(response.statusText))
     }
 }
@@ -25,7 +24,19 @@ export function dispatchedRequest(method, url, actionType, data) {
             .then(handleStatus)
             .then(response => response.json())
             .then(json => dispatch({ type: actionType, status: SUCCESS, response: json }))
-            .catch(error => dispatch({ type: actionType, status: ERROR, response: error }));
+            .catch(error => {
+                const warn = (console.warn || console.log).bind(console);
+                switch (error.name) {
+                    case 'Error':
+                        warn('Error during request: ' + error.message);
+                        break;
+                    default:
+                        warn('Error after request!')
+                        warn(error.stack);
+                        break;
+                }
+                return dispatch({ type: actionType, status: ERROR, response: error.message + ' (see console)' })
+            });
     };
 }
 

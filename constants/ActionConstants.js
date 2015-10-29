@@ -21,7 +21,7 @@ let AuctionActions = keyMirror({
 
 let ContractActions = keyMirror({
     GET_CONTRACTS: null,
-    SELECT_CONTRACTS: null,
+    SELECT_CONTRACT: null,
 });
 
 let __ActionConstants = keyMirror({
