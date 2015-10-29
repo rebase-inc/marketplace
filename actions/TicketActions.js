@@ -14,7 +14,7 @@ function handleStatus(response) {
 export function getTickets() {
     return function(dispatch) {
         dispatch({ type: ActionConstants.GET_TICKETS, status: PENDING });
-        return fetch('http://localhost:5000/tickets', { credentials: 'include' })
+        return fetch('/tickets', { credentials: 'include' })
             .then(handleStatus)
             .then(response => response.json())
             .then(json => dispatch({ type: ActionConstants.GET_TICKETS, status: SUCCESS, response: json }))
@@ -32,7 +32,7 @@ export function createAuction(ticket, price) {
             term_sheet: { legalese: 'n/a' },
             organization: ticket.project.organization,
         }
-        return fetch('http://localhost:5000/auctions', {
+        return fetch('/auctions', {
                 method: 'POST',
                 credentials: 'include', // TEMPORARY CORS HACK
                 headers: { 'Content-Type': 'application/json; charset=utf-8'},

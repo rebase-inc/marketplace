@@ -9,7 +9,7 @@ function _shouldBeVisible(auction) {
 }
 
 export default function auctions(auctions = initialAuctions, action) {
-
+    if ( action.type == undefined ) console.warn('UNDEFINED ACTION TYPE IN AUCTIONS REDUCER');
     switch (action.type) {
         case ActionConstants.GET_AUCTIONS: {
             switch (action.status) {
@@ -27,6 +27,35 @@ export default function auctions(auctions = initialAuctions, action) {
                     const auctionsPlusOne = new Map(auctions.items);
                     auctionsPlusOne.set(action.response.auction.id, addSyntheticProperties(action.response.auction));
                     return { isFetching: false, items: auctionsPlusOne };
+                    break;
+            }
+        }
+        case ActionConstants.BID_ON_AUCTION: {
+            let bidOnAuction;
+            let theNewAuctions; // TODO: Break this reducer into multiple reducers so I don't have to use ridiculous names
+            switch (action.status) {
+                case PENDING:
+                    // assign the auction in question to a new object so we can change it
+                    bidOnAuction = Object.assign({}, auctions.items.get(action.response.auction.id), action.response.auction);
+                    bidOnAuction.isFetching = true;
+
+                    // create a list of new auctions with the modified auction replacing the appropriate one from the old list
+                    theNewAuctions = Array.from(auctions.items.values()).map(a => a.id == bidOnAuction.id ? bidOnAuction : a);
+
+                    // isFetching=false here because we are not actually modifying the auctions, but rather one specific auction
+                    return { isFetching: false, items: new Map(theNewAuctions.map(a => [a.id, addSyntheticProperties(a)])) };
+                    break;
+                return Object.assign({}, auctions, { isFetching: true }); break;
+                case ERROR: return Object.assign({}, auctions, { isFetching: false }); break;
+                case SUCCESS:
+                    // assign the auction in question to a new object so we can change it
+                    bidOnAuction = Object.assign({}, auctions.items.get(action.response.auction.id), action.response.auction);
+                    bidOnAuction.isFetching = false;
+
+                    // create a list of new auctions with the modified auction replacing the appropriate one from the old list
+                    theNewAuctions = Array.from(auctions.items.values()).map(a => a.id == bidOnAuction.id ? bidOnAuction : a);
+
+                    return { isFetching: false, items: new Map(theNewAuctions.map(a => [a.id, addSyntheticProperties(a)])) };
                     break;
             }
         }
@@ -50,6 +79,7 @@ export default function auctions(auctions = initialAuctions, action) {
 
                     // isFetching=false here because we are not actually modifying the auction, but rather a nested object in the auctions
                     return { isFetching: false, items: new Map(newAuctions.map(a => [a.id, addSyntheticProperties(a)])) };
+                    break;
                 case ERROR: return Object.assign({}, auctions, { isFetching: false }); break;
                 case SUCCESS:
                     // assign the auction in question to a new object so we can change it
@@ -65,6 +95,7 @@ export default function auctions(auctions = initialAuctions, action) {
                     // create a list of new auctions with the modified auction replacing the appropriate one from the old list
                     newAuctions = Array.from(auctions.items.values()).map(a => a.id == modifiedAuction.id ? modifiedAuction : a);
                     return { isFetching: false, items: new Map(newAuctions.map(a => [a.id, addSyntheticProperties(a)])) };
+                    break;
             }
         }
         case ActionConstants.LOGOUT: return initialAuctions; break;

@@ -40,7 +40,7 @@ export default class SingleAuctionView extends Component {
         // TODO: Build components ontop of TicketHeader like AuctionHeader, ContractHeader, etc (and probably rename TicketHeader -> ContentHeader)
         return (
             <div className='ticketView'>
-                { this.state.modalOpen ? <BidModal bid={bid} /> : null }
+                { this.state.modalOpen ? <BidModal auction={auction} bid={bid} close={() => this.setState({ modalOpen: false})}/> : null }
                 <TicketHeader
                     title={auction.ticket.title}
                     unselect={this.state.showTalent ? () => this.setState({ showTalent: false }) : unselect}

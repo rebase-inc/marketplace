@@ -21,7 +21,8 @@ export default class ContractList extends Component {
         return (
             <table className='contentList'>
                 <tbody ref='tableBody'>
-                    { contracts.filter(c => searchResults.indexOf(c.id) != -1).map(c => <Contract contract={c} key={c.id} />) }
+                    { contracts.filter(c => searchResults.indexOf(c.id) != -1).map(c =>
+                        <Contract contract={c} select={select.bind(null, c.id)} key={c.id} />) }
                 </tbody>
             </table>
         );

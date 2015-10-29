@@ -20,7 +20,7 @@ function handleStatus(response) {
 export function logout() {
     return function(dispatch) {
         dispatch({ type: ActionConstants.LOGOUT, status: PENDING });
-        return fetch('http://localhost:5000/auth')
+        return fetch('/auth', { credentials: 'include'})
             .then(handleStatus)
             .then(response => response.json())
             .then(json => dispatch({ type: ActionConstants.LOGOUT, status: SUCCESS, response: json }))
@@ -32,7 +32,7 @@ export function login(email, password) {
     return function(dispatch) {
         dispatch({ type: ActionConstants.LOGIN, status: PENDING });
         let data = { user: { email: email }, password: password, };
-        return fetch('http://localhost:5000/auth', {
+        return fetch('/auth', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json; charset=utf-8'},
                 body: JSON.stringify(data) })

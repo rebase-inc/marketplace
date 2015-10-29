@@ -8,9 +8,9 @@ import CommentsPanel from './CommentsPanel.react';
 
 export default class Contract extends Component {
     render() {
-        const { contract } = this.props;
+        const { contract, select } = this.props;
         return (
-            <tr className='ticket'>
+            <tr className='ticket' onClick={select}>
                 <StatusPanel state={contract.work.state} />
                 <ProjectInfoPanel project={contract.ticket.project} />
                 <TitlePanel title={contract.ticket.title} />

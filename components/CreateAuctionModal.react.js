@@ -10,7 +10,7 @@ import { BellCurve } from '../utils/Graph';
 export default class CreateAuctionModal extends Component {
     static propTypes = {
         create: PropTypes.func.isRequired,
-        closeModal: PropTypes.func.isRequired,
+        close: PropTypes.func.isRequired,
         isLoading: PropTypes.bool.isRequired,
     }
 
@@ -31,9 +31,9 @@ export default class CreateAuctionModal extends Component {
 
     render() {
         const width = 240;
-        const { create, isLoading } = this.props;
+        const { create, isLoading, close } = this.props;
         return (
-            <ModalContainer close={this.props.closeModal}>
+            <ModalContainer close={close}>
                 <h3>Set your budget</h3>
                 <h4>to see recommended developers</h4>
                 <div className='devBellCurve' ref='bellCurveGraph'>

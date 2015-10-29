@@ -7,7 +7,7 @@ import TitlePanel from './TitlePanel.react';
 import CommentsPanel from './CommentsPanel.react';
 
 export default class Ticket extends Component {
-    static propTypes = { 
+    static propTypes = {
         ticket: PropTypes.object.isRequired,
         select: PropTypes.func.isRequired,
     }

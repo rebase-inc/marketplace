@@ -14,7 +14,7 @@ function handleStatus(response) {
 export function getAuctions() {
     return function(dispatch) {
         dispatch({ type: ActionConstants.GET_AUCTIONS, status: PENDING });
-        return fetch('http://localhost:5000/auctions', { credentials: 'include' })
+        return fetch('/auctions', { credentials: 'include' })
             .then(handleStatus)
             .then(response => response.json())
             .then(json => dispatch({ type: ActionConstants.GET_AUCTIONS, status: SUCCESS, response: json }))
@@ -26,7 +26,7 @@ export function approveNomination(auction, nomination) {
     return function(dispatch) {
         dispatch({ type: ActionConstants.APPROVE_NOMINATION, status: PENDING, response: { auction: auction, nomination: nomination } });
         let data = { auction: { id: auction.id } };
-        return fetch('http://localhost:5000/nominations/' + nomination.contractor.id + '/' + nomination.ticket_set.id, {
+        return fetch('/nominations/' + nomination.contractor.id + '/' + nomination.ticket_set.id, {
                 method: 'PUT',
                 credentials: 'include', // TEMPORARY CORS HACK
                 headers: { 'Content-Type': 'application/json; charset=utf-8'},
