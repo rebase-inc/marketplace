@@ -1,41 +1,39 @@
-// External
-var React = require('react');
-var ReactDOM = require('react-dom');
+import React, { Component, PropTypes } from 'react';
 
-var Icons = require('../components/Icons.react');
+export default class SearchBar extends Component {
+    static propTypes = {
+        placeholder: PropTypes.string,
+        onUserInput: PropTypes.func.isRequired,
+        searchText: PropTypes.string.isRequired,
+    }
 
-var SearchBar = React.createClass({
-    handleChange: function(text) {
-        this.props.onUserInput( ReactDOM.findDOMNode(this.refs.filterTextInput).value );
-    },
-    getInitialState: () => ({focused: false }),
-    onSearchFocus: function() {
-        this.setState({ focused: true });
-    },
-    onSearchBlur: function() {
-        this.setState({ focused: false });
-    },
-    componentWillMount: function() {
-        this.props.onUserInput('');
-    },
-    render: function() {
+    static defaultProps = {
+        placeholder: 'Search tickets'
+    }
+
+    constructor(props, context) {
+        super(props, context);
+        this.state = { focused: false };
+    }
+
+    render() {
+        const { placeholder, onUserInput, searchText } = this.props;
+        const { focused } = this.state;
         return (
             <div id='ticketSearchBar'>
-                <form id='searchBox' className={this.state.focused ? 'focused' : null}>
+                <form id='searchBox' className={focused ? 'focused' : null}>
                     <img src='img/search.svg' id='searchImg' />
                     <input type='text'
-                        onFocus={this.onSearchFocus}
-                        onBlur={this.onSearchBlur}
-                        value={this.props.searchText}
-                        onChange={this.handleChange}
-                        placeholder='Search tickets'
+                        onFocus={() => this.setState({ focused: true })}
+                        onBlur={() => this.setState({ focused: false })}
+                        value={searchText}
+                        onChange={(e) => onUserInput(e.target.value)}
+                        placeholder={placeholder}
                         ref='filterTextInput'/>
-                    <img src='img/clear-search.svg' id='clearSearchImg' onClick={this.props.onUserInput.bind(null, '')} className={!this.props.searchText[0] ? 'hidden' : ''}/>
+                    <img src='img/clear-search.svg' id='clearSearchImg' onClick={() => onUserInput('')} className={searchText[0] ? '' : 'hidden'}/>
                 </form>
                 { !!this.props.children ? <div id='searchBarExtras'>{this.props.children}</div> : null }
             </div>
        );
     }
-});
-
-module.exports = SearchBar;
+};

@@ -18,7 +18,6 @@ export function createAuction(ticket, price) {
     return dispatchedRequest('POST', '/auctions', ActionConstants.CREATE_AUCTION, data);
 }
 
-
 export function selectTicket(ticketId) {
     return {
         type: ActionConstants.SELECT_TICKET,
@@ -35,35 +34,3 @@ export function commentOnTicket(user, ticket, text) {
     };
     return dispatchedRequest('POST', '/comments', ActionConstants.COMMENT_ON_TICKET, data);
 }
-
-//module.exports = {
-    //createInternalTicket: function(project, title) {
-        //let actionType = ActionConstants.CREATE_INTERNAL_TICKET;
-        //let responseAction = (res, status) => Dispatcher.handleRequestAction({ type: actionType, status: status, response: res });
-        //let pendingAction = (res, status) => Dispatcher.handleRequestAction({ type: actionType, status: status, response: res });
-        //Api.createInternalTicket(project, title, responseAction, pendingAction);
-    //},
-    //getTicketData: function() {
-        //var pendingAction = function() {
-            //Dispatcher.handleRequestAction({
-                //type: ActionConstants.GET_TICKET_DATA,
-                //status: RequestConstants.PENDING,
-            //});
-        //};
-        //var responseAction = function(response, status) {
-            //Dispatcher.handleRequestAction({
-                //type: ActionConstants.GET_TICKET_DATA,
-                //status: status,
-                //response: response
-            //});
-        //};
-        //Api.getTicketData(responseAction, pendingAction);
-    //},
-    //selectTicket: function(ticketID) {
-        //!ticketID ? console.warn('No ticket ID provided!') : null;
-        //Dispatcher.handleRequestAction({
-            //type: ActionConstants.SELECT_TICKET,
-            //ticketID: ticketID,
-        //});
-    //},
-//};

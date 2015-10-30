@@ -32,14 +32,16 @@ let ContractActions = keyMirror({
     MARK_WORK_UNBLOCKED: null,
 });
 
+let ReviewActions = keyMirror({
+    GET_REVIEWS: null,
+    SELECT_REVIEW: null,
+});
+
 let __ActionConstants = keyMirror({
     UPDATE_USER_SETTINGS: null,
     UPDATE_PROFILE_PHOTO: null,
     AUTHENTICATE_GITHUB: null,
     GET_TALENT_DATA: null,
-    GET_REVIEW_DATA: null,
-    SELECT_CONTRACT: null,
-    SELECT_REVIEW: null,
     GET_COMMENT_DETAIL: null,
     GET_USER_DETAIL: null,
     GET_USER_DETAIL_AS_MANAGER: null,
@@ -61,4 +63,4 @@ let __ActionConstants = keyMirror({
     GET_PROJECTS: null,
 });
 
-export default Object.assign({}, UserActions, TicketActions, AuctionActions, ContractActions);
+export default Object.assign({}, UserActions, TicketActions, AuctionActions, ContractActions, ReviewActions);
