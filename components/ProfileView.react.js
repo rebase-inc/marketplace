@@ -3,9 +3,6 @@ var React = require('react');
 var ReactDOM = require('react-dom');
 var _ = require('underscore');
 
-// Stores
-var UserStore = require('../stores/UserStore');
-
 // Actions
 var UserActions = require('../actions/UserActions');
 

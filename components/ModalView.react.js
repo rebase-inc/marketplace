@@ -1,7 +1,6 @@
 var React = require('react');
 var ReactDOM = require('react-dom');
 
-var TicketStore = require('../stores/TicketStore');
 var RebaseActions = require('../actions/RebaseActions');
 var ViewConstants = require('../constants/ViewConstants');
 var ticketTypes = ViewConstants.ticketTypes;

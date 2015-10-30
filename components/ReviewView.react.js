@@ -5,9 +5,6 @@ var _ = require('underscore');
 // Constants
 var ViewTypes = require('../constants/ViewConstants').ViewTypes;
 
-// Stores
-var ReviewStore = require('../stores/ReviewStore');
-
 // Actions
 var ReviewActions = require('../actions/ReviewActions');
 let UserActions = require('../actions/UserActions');

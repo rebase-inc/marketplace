@@ -40,10 +40,17 @@ export default class ContractView extends Component {
             );
         }
         if (!!contract.id) {
+            const work = contracts.items.get(contract.id).work;
             return <SingleContractView
+                user={user}
+                submitWork={actions.submitWork.bind(null, work)}
+                disputeWork={actions.disputeWork.bind(null, work)}
+                acceptWork={actions.acceptWork.bind(null, work)}
+                markWorkBlocked={actions.markWorkBlocked.bind(null, work)}
+                markWorkUnblocked={actions.markWorkUnblocked.bind(null, work)}
                 contract={contracts.items.get(contract.id)}
                 unselect={() => actions.selectContract(null)}
-                user={user} role={roles.items.get(user.current_role.id)}/>;
+                role={roles.items.get(user.current_role.id)}/>;
         } else {
             return (
                 <div className='ticketView'>

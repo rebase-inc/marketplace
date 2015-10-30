@@ -1,32 +1,28 @@
-var React = require('react');
-var ReactDOM = require('react-dom');
+import React, { Component, PropTypes } from 'react';
+import ReactDOM from 'react-dom';
 
-var ModalContainer = require('../components/ModalContainer.react');
+import ModalContainer from './ModalContainer.react';
 
-var ContractActions = require('../actions/ContractActions');
+export default class ResumeWorkModal extends Component {
+    static propTypes = {
+        close: PropTypes.func.isRequired,
+        markWorkUnblocked: PropTypes.func.isRequired,
+    }
 
-var ResumeWorkModal = React.createClass({
-    propTypes: {
-        currentUser: React.PropTypes.object.isRequired,
-        currentContract: React.PropTypes.object.isRequired,
-        closeModal: React.PropTypes.func.isRequired,
-    },
-    markUnblocked: function() {
-        var reason = ReactDOM.findDOMNode(this.refs.comment).value;
-        if (!reason.length) { return; }
-        ContractActions.markWorkUnblocked(this.props.currentUser, this.props.currentContract.work, reason);
-        this.props.closeModal();
-    },
-    render: function() {
+    constructor(props, context) {
+        super(props, context);
+        this.state = { text: '' };
+    }
+
+    render() {
+        const { close, markWorkUnblocked } = this.props;
         return (
-            <ModalContainer toggleModal={this.props.closeModal}>
+            <ModalContainer close={close}>
                 <h3>Not blocked anymore?</h3>
                 <h4>You'll be able to resume work on this task</h4>
-                <textarea required ref='comment' placeholder='Please leave a comment describing why you are no longer blocked.'/>
-                <button className='needsResolution' onClick={this.markUnblocked}>Remove Block</button>
+                <textarea required ref='comment' onChange={(e) => this.setState({ text: e.target.value })} placeholder='Please leave a comment describing why you are no longer blocked.'/>
+                <button className='needsResolution' onClick={() => { markWorkUnblocked(this.state.text); close() }}>Remove Block</button>
             </ModalContainer>
         );
     }
-});
-
-module.exports = ResumeWorkModal;
+};

@@ -4,8 +4,6 @@ var ReactDOM = require('react-dom');
 
 var handleScrollShadows = require('../utils/Style').handleScrollShadows;
 
-var GithubStore = require('../stores/GithubStore');
-
 var GithubActions = require('../actions/GithubActions');
 
 var ActionConstants = require('../constants/ActionConstants');

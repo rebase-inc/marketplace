@@ -22,6 +22,12 @@ let AuctionActions = keyMirror({
 let ContractActions = keyMirror({
     GET_CONTRACTS: null,
     SELECT_CONTRACT: null,
+    // Work actions are in the scope of contracts, so I'll consider them contract actions for now
+    SUBMIT_WORK: null,
+    ACCEPT_WORK: null,
+    DISPUTE_WORK: null,
+    MARK_WORK_BLOCKED: null,
+    MARK_WORK_UNBLOCKED: null,
 });
 
 let __ActionConstants = keyMirror({
@@ -42,11 +48,6 @@ let __ActionConstants = keyMirror({
     ADD_COMMENT_TO_AUCTION: null,
     ADD_COMMENT_TO_TICKET: null,
     ADD_COMMENT_TO_REVIEW: null,
-    SUBMIT_WORK: null,
-    DISPUTE_WORK: null,
-    MARK_WORK_COMPLETE: null,
-    MARK_WORK_BLOCKED: null,
-    MARK_WORK_UNBLOCKED: null,
     ANSWER_MEDIATION_FAILED: null,
     ANSWER_MEDIATION_PARTIALLY_COMPLETE: null,
     ANSWER_MEDIATION_COMPLETE: null,

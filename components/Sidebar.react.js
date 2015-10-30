@@ -4,9 +4,6 @@ import { bindActionCreators } from 'redux';
 
 import { Logo, ProfilePicture, Dropdown } from './Icons.react';
 
-import UserActions from '../actions/UserActions';
-import ManagerActions from '../actions/ManagerActions';
-
 import { ViewTypes, ContractorViews, ManagerViews } from '../constants/ViewConstants';
 import { PROFILE, PROJECTS, WORK_HISTORY, BILLING_AND_PAYMENTS } from '../constants/ViewConstants';
 

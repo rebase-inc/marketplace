@@ -10,6 +10,7 @@ var MediationActions = require('../actions/MediationActions');
 
 var ModalStates = keyMirror({ NEW: null, GIVE_UP: null, BACK_TO_WORK: null, COMPLETE: null });
 
+// TODO: Overhaul
 var ResolveMediationModal = React.createClass({
     getInitialState: function() {
         return {

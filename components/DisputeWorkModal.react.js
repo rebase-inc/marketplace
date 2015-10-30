@@ -1,29 +1,28 @@
-var React = require('react');
-var ReactDOM = require('react-dom');
+import React, { Component, PropTypes } from 'react';
+import ReactDOM from 'react-dom';
 
-var ModalContainer = require('../components/ModalContainer.react');
-var RatingStars = require('../components/RatingStars.react');
+import ModalContainer from './ModalContainer.react';
+import RatingStars from './RatingStars.react';
 
-var ContractActions = require('../actions/ContractActions');
+export default class AcceptWorkModal extends Component {
+    static propTypes = {
+        close: PropTypes.func.isRequired,
+        acceptWork: PropTypes.func.isRequired,
+    }
 
-var DisputeWorkModal = React.createClass({
-    getInitialState: function() {
-        return { rating: 0, text: '' }
-    },
-    disputeCompletion: function() {
-        var reason = ReactDOM.findDOMNode(this.refs.comment).value;
-        ContractActions.disputeWork(this.props.currentUser, this.props.currentContract.work, reason);
-        this.props.closeModal();
-    },
-    render: function() {
+    constructor(props, context) {
+        super(props, context);
+        this.state = { text: '' }
+    }
+
+    render() {
         return (
             <ModalContainer toggleModal={this.props.closeModal}>
                 <h3>Dispute Developer Work</h3>
                 <textarea required ref='comment' placeholder="Leave a comment explaining why the work isn't yet complete."/>
-                <button className='warning' onClick={this.disputeCompletion}>Dispute</button>
+                <button className='warning' onClick={() => { disputeWork(this.state.text); close(); }}>Dispute</button>
             </ModalContainer>
         );
     }
-});
+};
 
-module.exports = DisputeWorkModal;
