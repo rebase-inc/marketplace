@@ -199,23 +199,32 @@ export class Timer extends Component {
     }
 };
 
-var Checkbox = React.createClass({
-    propTypes: {
-        checked: React.PropTypes.bool.isRequired,
-        toggle: React.PropTypes.func,
-        label: React.PropTypes.string,
-    },
-    getDefaultProps: () => ({ label: '' }),
-    getInitialState: () => ({ width: 20 }),
-    componentDidMount: function() {
+export class Checkbox extends Component {
+    static propTypes = {
+        checked: PropTypes.bool.isRequired,
+        toggle: PropTypes.func.isRequired,
+        label: PropTypes.string,
+    }
+
+    static defaultprops = {
+        label: '',
+    }
+
+    constructor(props, context) {
+        super(props, context);
+        this.state = { width: width }; // ugh, this is a hack...
+    }
+
+    componentDidMount() {
         // After mounting, resize the svg to fit the label, if there is one
-        // This will be 20px (checkbox) + 4px (margin) + label witdth
+        // This will be 20px (checkbox) + 4px (margin) + label width
         let node = ReactDOM.findDOMNode(this.refs.label);
         if (!!node) {
             this.setState({ width: 24 + node.offsetWidth });
         }
-    },
-    render: function() {
+    }
+
+    render() {
         return (
             <svg className='checkbox' height='20px' width={this.state.width + 'px'} onClick={this.props.toggle || null} style={this.props.style}>
                 <g>
@@ -226,7 +235,7 @@ var Checkbox = React.createClass({
             </svg>
         );
     }
-});
+};
 
 export class ProfilePicture extends Component {
     static propTypes = {

@@ -46,7 +46,7 @@ class SidebarNav extends Component {
         var allViews = [];
         return (
             <div id='sidebarNav'>
-                <RoleSelector user={user} role={user.current_role} roles={Array.from(roles.items.values())}/>
+                <RoleSelector user={user} role={user.current_role} selectRole={(role) => actions.updateProfile(user, {current_role: role.id})} roles={Array.from(roles.items.values())}/>
                 <div id='viewList'>
                     { Array.from(views.items.values()).map(v => <ViewSelection view={v} key={v.type} onSelect={() => actions.selectView(v.type)} selected={v.type == view.type} />) }
                 </div>
@@ -110,7 +110,7 @@ export class RoleSelector extends Component {
     static propTypes = {
         role: PropTypes.object.isRequired,
         roles: PropTypes.array.isRequired,
-        onSelect: PropTypes.func.isRequired,
+        selectRole: PropTypes.func.isRequired,
     }
 
     constructor(props) {
@@ -119,15 +119,16 @@ export class RoleSelector extends Component {
     }
 
     render() {
-        const { role, roles } = this.props;
+        const { role, roles, selectRole } = this.props;
         let nonOwnerRoles = roles.filter(r => r.type != 'owner');
-        let tableHeight = this.state.open ? 40*(nonOwnerRoles.length) + 'px' : '40px';
+        let tableHeight = this.state.open ? 40*(Math.max(nonOwnerRoles.length, 2)) + 'px' : '40px';
         return (
             <div id='roleSelector'
                 style={{height: tableHeight}}
                 onClick={() => this.setState({ open: !this.state.open })}
                 onMouseLeave={() => this.setState({ open: false})}>
-                { nonOwnerRoles.map(r => <RoleElement key={r.id} role={r} selected={r.id == role.id} />) }
+                { nonOwnerRoles.map(r => <RoleElement key={r.id} role={r} select={selectRole.bind(null, r)} selected={r.id == role.id} />) }
+                { nonOwnerRoles.length == 1 ? <MockRoleElement/> : null }
             </div>
         );
     }
@@ -135,9 +136,17 @@ export class RoleSelector extends Component {
 
 let RoleElement = (props) => {
     return (
-        <div className={props.selected ? 'selected role' : 'role'} key={props.role.id} onClick={props.select}>
+        <div className={props.selected ? 'selected role' : 'role'} key={props.role.id} onClick={() => {if (!props.selected) props.select()}}>
             <div>{ props.role.type == 'manager' ? props.role.project.name : 'Contractor View'}</div>
             { props.role.type == 'manager' ? <div>{props.role.project.organization.name}</div> : null }
+        </div>
+    );
+}
+
+let MockRoleElement = (props) => {
+    return (
+        <div className='role'>
+            <div>No other roles</div>
         </div>
     );
 }

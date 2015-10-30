@@ -1,48 +1,23 @@
-var _ = require('underscore');
-var React = require('react');
-var ReactDOM = require('react-dom');
+import React, { Component, PropTypes } from 'react';
+import ReactDOM from 'react-dom';
 
-var handleScrollShadows = require('../utils/Style').handleScrollShadows;
+import ModalContainer from './ModalContainer.react';
+import LoadingAnimation from './LoadingAnimation.react';
 
-var GithubActions = require('../actions/GithubActions');
+import { Checkbox } from './Icons.react';
 
-var ActionConstants = require('../constants/ActionConstants');
+export default ImportProjectModal extends Component {
+    static propTypes =  {
+        importedProjects: PropTypes.object.isRequired,
+    }
 
-var ModalContainer = require('../components/ModalContainer.react');
-var LoadingAnimation = require('../components/LoadingAnimation.react');
-var Icons = require('../components/Icons.react');
-
-var ImportProjectModal = React.createClass({
-    propTypes: {
-        importedProjects: React.PropTypes.object.isRequired,
-    },
-    getInitialState: () => _.extend({ projectsToImport: new Set() }, GithubStore.getState()),
-    componentWillMount: function() {
-        GithubStore.addChangeListener(this._onChange);
-        GithubActions.getAccounts();
-    },
-    componentDidMount: function() {
-        handleScrollShadows(this.refs.projectImportWrapper);
-        var node = ReactDOM.findDOMNode(this.refs.projectImportWrapper);
-        node.addEventListener('scroll', handleScrollShadows.bind(null, this.refs.projectImportWrapper), false);
-    },
-    componentDidUpdate: function() {
-        handleScrollShadows(this.refs.projectImportWrapper);
-    },
-    componentWillUnmount: function() {
-        GithubStore.removeChangeListener(this._onChange);
-    },
-    _onChange: function() {
-        console.log('calling on change');
-        this.setState(GithubStore.getState());
-    },
-    toggleProject: function(project) {
+    toggleProject(project) {
         switch (this.state.projectsToImport.has(project)) {
             case true: this.setState((state) => state.projectsToImport.delete(project)); break;
             case false: this.setState((state) => state.projectsToImport.add(project)); break;
         }
-    },
-    _makeProjectElement: function(repo) {
+    }
+    _makeProjectElement(repo) {
         if (repo.project.imported) {
             return null;
         }
@@ -63,16 +38,15 @@ var ImportProjectModal = React.createClass({
                 </td>
             </tr>
         );
-    },
-    importSelectedProjects: function() {
+    }
+    importSelectedProjects() {
         GithubActions.importRepos(this.state.projectsToImport);
         this.props.toggleModal();
-    },
-    addGithubAccount: function() {
+    }
+    addGithubAccount() {
         window.location.assign('/github', '_blank')
-    },
-    render: function() {
-        console.log('rendering with loading: ', this.state.loading);
+    }
+    render() {
         if (this.state.loading) {
             return (
                 <ModalContainer toggleModal={this.props.toggleModal}>
@@ -106,6 +80,4 @@ var ImportProjectModal = React.createClass({
             );
         }
     }
-});
-
-module.exports = ImportProjectModal;
+};
