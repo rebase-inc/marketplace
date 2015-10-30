@@ -15,10 +15,10 @@ export default class SubmitWorkModal extends Component {
     }
 
     render() {
-        const { close, submitWork } = this.props;
         // The fact that we manually call close after submitting the work is a hack.
         // Instead, we should be looking at the isFetching field of the work on the contract.
         // That will matter for error handling (e.g., a submit work action fails)
+        const { close, submitWork } = this.props;
         return (
             <ModalContainer close={close}>
                 <h3>All done?</h3>

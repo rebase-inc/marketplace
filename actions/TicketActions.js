@@ -27,6 +27,14 @@ export function selectTicket(ticketId) {
     }
 }
 
+export function commentOnTicket(user, ticket, text) {
+    const data = {
+        user: user, // We need this for now, until the api is fixed
+        ticket: {id: ticket.id},
+        content: text
+    };
+    return dispatchedRequest('POST', '/comments', ActionConstants.COMMENT_ON_TICKET, data);
+}
 
 //module.exports = {
     //createInternalTicket: function(project, title) {

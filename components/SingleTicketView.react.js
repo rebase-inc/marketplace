@@ -12,6 +12,7 @@ export default class SingleTicketView extends Component {
         roles: PropTypes.object.isRequired,
         ticket: PropTypes.object.isRequired,
         unselect: PropTypes.func.isRequired,
+        submitComment: PropTypes.func.isRequired,
     }
 
     constructor(props, context) {
@@ -29,7 +30,7 @@ export default class SingleTicketView extends Component {
     }
 
     render() {
-        const { user, roles, ticket, unselect, createAuction } = this.props;
+        const { user, roles, ticket, unselect, createAuction, submitComment } = this.props;
         // TODO: refactor this so that TicketHeader and TicketDetails are in the same component. Current setup doesn't make sense.
         // That would also allow for a more sensical method for closing and opening the TicketDetails
         return (
@@ -40,7 +41,7 @@ export default class SingleTicketView extends Component {
                 </TicketHeader>
                 <TicketDetails hidden={!this.state.detailsOpen} ticket={ticket} />
                 <CommentList comments={ticket.comments}/>
-                <CommentBox submit={alert} />
+                <CommentBox submit={submitComment} />
             </div>
         );
     }

@@ -6,13 +6,13 @@ let initialContracts = { items: new Map(), isFetching: false };
 function _shouldBeVisible() { return true; }
 
 export default function contracts(contracts = initialContracts, action) {
-    let modifiedContract; 
+    let modifiedContract;
     let newContracts;
     switch (action.type) {
         case ActionConstants.GET_CONTRACTS: {
             switch (action.status) {
-                case PENDING: 
-                    return Object.assign({}, contracts, { isFetching: true }); 
+                case PENDING:
+                    return Object.assign({}, contracts, { isFetching: true });
                     break;
                 case SUCCESS:
                     newContracts = new Map(action.response.contracts.filter(_shouldBeVisible).map(c => [c.id, addSyntheticProperties(c)]));

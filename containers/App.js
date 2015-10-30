@@ -36,19 +36,16 @@ if (module.hot) {
 
 export default class App extends Component {
 
-  render() {
-    const debugTools = false;
-    return (
-      <div>
-        <Provider store={store}>
-          <RebaseApp />
-        </Provider>
-        { debugTools ?
+    render() {
+        return (
+            <div>
+            <Provider store={store}>
+            <RebaseApp />
+            </Provider>
             <DebugPanel top left bottom>
                 <DevTools store={store} monitor={LogMonitor} visibleOnLoad={true} />
-            </DebugPanel> : null
-        }
-      </div>
-    );
-  }
+            </DebugPanel>
+            </div>
+        );
+    }
 }

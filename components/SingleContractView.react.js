@@ -60,7 +60,7 @@ export class ContractContractorView extends Component {
         this._makeHeaderButtons = this._makeHeaderButtons.bind(this);
         this.toggleDetails = this.toggleDetails.bind(this);
     }
-    
+
     toggleDetails(newState) {
         if (typeof(newState) == 'boolean') {
             this.setState({ detailsOpen: newState });
@@ -135,7 +135,7 @@ export class ContractManagerView extends Component {
         this._makeHeaderButtons = this._makeHeaderButtons.bind(this);
         this.toggleDetails = this.toggleDetails.bind(this);
     }
-    
+
     toggleDetails(newState) {
         if (typeof(newState) == 'boolean') {
             this.setState({ detailsOpen: newState });
