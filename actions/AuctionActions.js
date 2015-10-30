@@ -9,7 +9,8 @@ export function getAuctions() {
 
 export function approveNomination(auction, nomination) {
     const url = '/nominations/' + nomination.contractor.id + '/' + nomination.ticket_set.id;
-    const data = { auction: { id: auction.id } };
+    // The nomination object is in the data just for the pending case in the reducer
+    const data = { auction: { id: auction.id }, nomination: nomination };
     return dispatchedRequest('PUT', url, ActionConstants.APPROVE_NOMINATION, data);
 }
 

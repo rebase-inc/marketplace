@@ -83,7 +83,7 @@ export default function auctions(auctions = initialAuctions, action) {
                 case ERROR: return Object.assign({}, auctions, { isFetching: false }); break;
                 case SUCCESS:
                     // assign the auction in question to a new object so we can change it
-                    modifiedAuction = Object.assign({}, auctions.items.get(action.response.auction.id));
+                    modifiedAuction = Object.assign({}, auctions.items.get(action.response.nomination.auction.id));
 
                     // set isFetching=false on the nomination in question
                     modifiedAuction.ticket_set.nominations = modifiedAuction.ticket_set.nominations.map(n =>
