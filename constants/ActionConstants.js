@@ -17,6 +17,7 @@ let TicketActions = keyMirror({
 let AuctionActions = keyMirror({
     GET_AUCTIONS: null,
     SELECT_AUCTION: null,
+    COMMENT_ON_AUCTION: null,
     APPROVE_NOMINATION: null,
 });
 

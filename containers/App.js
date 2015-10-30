@@ -42,7 +42,7 @@ export default class App extends Component {
             <Provider store={store}>
             <RebaseApp />
             </Provider>
-            <DebugPanel top left bottom>
+            <DebugPanel top right bottom>
                 <DevTools store={store} monitor={LogMonitor} visibleOnLoad={true} />
             </DebugPanel>
             </div>

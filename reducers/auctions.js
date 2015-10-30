@@ -98,9 +98,27 @@ export default function auctions(auctions = initialAuctions, action) {
                     break;
             }
         }
+        case ActionConstants.COMMENT_ON_AUCTION:
+            return handleCommentOnAuction(action.status, auctions, action.response.comment || action.response);
+            break;
         case ActionConstants.LOGOUT: return initialAuctions; break;
         default: return auctions; break;
     }
+}
+
+function handleCommentOnAuction(requestStatus, auctions, comment) {
+    const oldAuctions = Array.from(auctions.items.values());
+    let modifiedAuction = oldAuctions.find(a => a.ticket.id == comment.ticket.id);
+    switch (requestStatus) {
+        case PENDING: modifiedAuction = Object.assign({}, modifiedAuction, {isFetching: true}); break;
+        case ERROR: modifiedAuction = Object.assign({}, modifiedAuction, {isFetching: false}); break;
+        case SUCCESS:
+            modifiedAuction = addSyntheticProperties(Object.assign({}, modifiedAuction, {isFetching: false}));
+            modifiedAuction.ticket.comments.push(comment);
+        break;
+    }
+    const newAuctions = oldAuctions.map(t => t.id == modifiedAuction.id ? modifiedAuction : t);
+    return { isFetching: false, items: new Map(newAuctions.map(a => [a.id, addSyntheticProperties(a)])) }
 }
 
 function addSyntheticProperties(auction) {

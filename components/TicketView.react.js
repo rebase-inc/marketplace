@@ -60,10 +60,10 @@ export default class TicketView extends Component {
             const createAuction = actions.createAuction.bind(null, mergedTicket); // Hack pt2: Use merged ticket to curry createAuction function
 
             // Do we really need the user object to comment on a ticket?!?
-            return <SingleTicketView 
-                    ticket={mergedTicket} 
-                    createAuction={createAuction} 
-                    unselect={() => actions.selectTicket(null)} 
+            return <SingleTicketView
+                    ticket={mergedTicket}
+                    createAuction={createAuction}
+                    unselect={() => actions.selectTicket(null)}
                     submitComment={actions.commentOnTicket.bind(null, user, mergedTicket)}
                     user={user} roles={roles} />;
         } else {

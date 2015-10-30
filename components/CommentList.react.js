@@ -25,6 +25,11 @@ export default class CommentList extends Component {
         }
     }
 
+    componentDidMount() {
+        const node = ReactDOM.findDOMNode(this);
+        node.scrollTop = node.scrollHeight;
+    }
+
     render() {
         const { comments } = this.props;
         return (

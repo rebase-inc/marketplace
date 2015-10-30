@@ -34,6 +34,7 @@ export default function tickets(tickets = initialTickets, action) {
             // on pending, the comment is not nested in a comment object, but it is on response (success)
             // hence the weird or statement for the last argument in the below function
             return handleCommentOnTicket(action.status, tickets, action.response.comment || action.response);
+            break;
         }
         case ActionConstants.LOGOUT: return initialTickets; break;
         default: return tickets; break;

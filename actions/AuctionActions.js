@@ -39,6 +39,17 @@ export function selectAuction(auctionId) {
     }
 }
 
+// this is intentionally duplicated because as far as react is concerned it is a different
+// action than commenting on a ticket, contract, review, etc.
+export function commentOnAuction(user, auction, text) {
+    const data = {
+        user: user, // We need this for now, until the api is fixed
+        ticket: {id: auction.ticket.id},
+        content: text
+    };
+    return dispatchedRequest('POST', '/comments', ActionConstants.COMMENT_ON_AUCTION, data);
+}
+
 //module.exports = {
     //createAuction: function(ticket, max_price) {
         //function responseHandler(response, status) {
