@@ -1,9 +1,9 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 import ReactDOM from 'react-dom';
 import d3 from 'd3';
 
 import keymirror from 'keymirror';
-import { DonutChart } from '../utils/Graph';
+import { DonutChart, LineChart } from '../utils/Graph';
 
 function _dataURItoBlob(dataURI) {
     var binary = atob(dataURI.split(',')[1]);
@@ -229,7 +229,11 @@ var Checkbox = React.createClass({
 });
 
 export class ProfilePicture extends Component {
-    static propTypes = { user: React.PropTypes.object, dynamic: React.PropTypes.bool };
+    static propTypes = {
+        dynamic: React.PropTypes.bool ,
+        user: React.PropTypes.object.isRequired,
+        uploadPhoto: React.PropTypes.func.isRequired,
+    };
     static defaultProps = { dynamic: false };
 
     openFileDialog() {
@@ -258,7 +262,7 @@ export class ProfilePicture extends Component {
             ctx.drawImage(img, sourceX, sourceY, size, size, 0, 0, MAX_DIMENSION, MAX_DIMENSION);
             let imgUrl = canvas.toDataURL('image/jpeg');
             this.setState({ photo: imgUrl });
-            UserActions.updateProfilePhoto(_dataURItoBlob(imgUrl));
+            //UserActions.updateProfilePhoto(_dataURItoBlob(imgUrl));
         }
     }
 
@@ -370,8 +374,8 @@ export class Dropback extends Component {
     }
 };
 
-var AddNewProject = React.createClass({
-    render: function() {
+export class AddNewProject extends Component {
+    render() {
         return (
             <div onClick={this.props.onClick} className='addNewProject icon'>
                 <h5>Add New Project</h5>
@@ -385,7 +389,7 @@ var AddNewProject = React.createClass({
             </div>
         );
     }
-});
+};
 
 export class FindTalentOverview extends Component {
     static propTypes = {
@@ -416,27 +420,30 @@ export class FindTalentOverview extends Component {
     }
 };
 
-var ProjectGraph = React.createClass({
-    propTypes: {
-        width: React.PropTypes.number,
-        height: React.PropTypes.number,
-    },
-    getDefaultProps: function() {
-        return { width: 160, height: 50, margin: 18 }
-    },
-    getInitialState: function() {
-        return { displayText: '' }
-    },
-    componentDidMount: function() {
+export class ProjectGraph extends Component {
+    static propTypes = {
+        width: PropTypes.number,
+        height: PropTypes.number,
+        margin: PropTypes.number,
+    }
+
+    static defaultProps = {
+        width: 160,
+        height: 50,
+        margin: 18,
+    }
+
+    componentDidMount() {
         function getRandomInt(min, max) {
             return Math.floor(Math.random() * (max - min + 1)) + min;
         }
         var openTickets = [0, 0, 0, 0, 0].map(e => getRandomInt(0, 12)); //horrible hack
         var closedTickets = [0, 0, 0, 0, 0].map(e => getRandomInt(3, 11));//horrible hack
         var element = ReactDOM.findDOMNode(this);
-        Graph.lineChart.create(element, this.props, {openTickets: openTickets, closedTickets: closedTickets});
-    },
-    render: function() {
+        new LineChart(element, this.props, {openTickets: openTickets, closedTickets: closedTickets});
+    }
+
+    render() {
         return (
             <div className='projectGraph'>
                 <div className='graphLabels'>
@@ -446,7 +453,7 @@ var ProjectGraph = React.createClass({
             </div>
         );
     }
-});
+};
 
 export class Logo extends Component {
     render() {

@@ -20,6 +20,13 @@ export function selectView(viewType) {
     }
 }
 
+export function updateProfile(user, settings) {
+    const url = '/users/' + user.id;
+    const data = Object.assign(settings, { id: user.id });
+    return dispatchedRequest('PUT', url, ActionConstants.UPDATE_PROFILE, data);
+}
+
+
 //module.exports = {
     ////login: function(email, password) {
         ////let actionType = ActionConstants.LOGIN;

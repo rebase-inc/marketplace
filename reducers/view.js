@@ -23,10 +23,6 @@ export default function view(view = initialView, action) {
             switch (action.status) {
                 case PENDING: return Object.assign({}, view, { isFetching: true }); break;
                 case SUCCESS:
-                    if (![NEW, OFFERED, IN_PROGRESS, COMPLETED].includes(action.response.viewType)) {
-                        console.warn('Invalid view type: ', action.response.viewType);
-                        return view;
-                    }
                     return Object.assign({}, view, { isFetching: false }, { type: action.response.viewType });
                     break;
             }

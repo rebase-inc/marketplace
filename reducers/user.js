@@ -5,17 +5,21 @@ let initialUser = { email: null, isFetching: false };
 
 export default function user(user = initialUser, action) {
     switch (action.type) {
-        case ActionConstants.LOGIN: {
-            switch (action.status) {
-                case PENDING: return Object.assign({}, user, { isFetching: true }); break;
-                case SUCCESS:
-                    // sanitize the user data for the purpose of keeping a clean and relatively flat local store
-                    const { id, email, current_role, first_name, last_name, photo } = action.response.user;
-                    const newUser = { id, email, first_name, last_name, photo, current_role: {id: current_role.id} };
-                    return Object.assign({}, user, { isFetching: false}, newUser); break;
-            }
-        }
+        case ActionConstants.LOGIN: return handleNewUserData(action.status, user, action.response.user); break;
+        case ActionConstants.UPDATE_PROFILE: return handleNewUserData(action.status, user, action.response.user); break;
         case ActionConstants.LOGOUT: return initialUser; break; // we should probably handle pending and success cases
         default: return user; break;
+    }
+}
+
+function handleNewUserData(requestStatus, oldUser, newUser) {
+    switch (requestStatus) {
+        case PENDING: return Object.assign({}, oldUser, { isFetching: true }); break;
+        case ERROR: return Object.assign({}, oldUser, { isFetching: false }); break;
+        case SUCCESS:
+            const { id, email, current_role, first_name, last_name, photo } = newUser;
+            const newUserData = { id, email, first_name, last_name, photo, current_role: {id: current_role.id} };
+            return Object.assign({}, oldUser, { isFetching: false}, newUserData);
+            break;
     }
 }

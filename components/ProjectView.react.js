@@ -1,95 +1,62 @@
-// External
-var React = require('react');
-var ReactDOM = require('react-dom');
-var _ = require('underscore');
-var keyMirror = require('keymirror');
+import React, { Component, PropTypes } from 'react';
+import ReactDOM from 'react-dom';
 
-// Components
-var ImportProjectModal = require('../components/ImportProjectModal.react');
-var DeleteProjectModal = require('../components/DeleteProjectModal.react');
+import keymirror from 'keymirror';
 
-// Stores
+import { AddNewProject, ProjectGraph } from './Icons.react';
 
-// Actions
-var UserActions = require('../actions/UserActions');
-var ProjectActions = require('../actions/ProjectActions');
+const ModalTypes = keymirror({ ADD_PROJECT: null, DELETE_PROJECT: null });
 
-// Icons
-var Icons = require('../components/Icons.react');
+export default class ProfileView extends Component {
+    static propTypes = {
+        roles: PropTypes.array.isRequired,
+    }
 
-// Utils
-var handleScrollShadows = require('../utils/Style').handleScrollShadows;
+    constructor(props, context) {
+        super(props, context);
+        this.state = { modalType: null, selectedProject: null };
+    }
 
-var ModalTypes = keyMirror({ ADD_PROJECT: null, DELETE_PROJECT: null, CLOSED: null });
-
-var ProfileView = React.createClass({
-    propTypes: {
-        currentUser: React.PropTypes.object.isRequired,
-        currentRole: React.PropTypes.object.isRequired,
-    },
-    getInitialState: () => ({ modalType: ModalTypes.CLOSED, selectedProject: null }),
-    updateProfileSettings: function() {
-        let user = {
-            id: this.props.currentUser.id,
-            first_name: ReactDOM.findDOMNode(this.refs.first_name).value,
-            last_name: ReactDOM.findDOMNode(this.refs.last_name).value,
-            email: ReactDOM.findDOMNode(this.refs.email).value,
-        }
-        UserActions.updateUserSettings(user);
-    },
-    componentDidMount: function() {
-        handleScrollShadows(this.refs.projectList);
-        var node = ReactDOM.findDOMNode(this.refs.projectList);
-        node.addEventListener('scroll', handleScrollShadows.bind(null, this.refs.projectList), false);
-    },
-    componentDidUpdate: function() {
-        handleScrollShadows(this.refs.projectList);
-    },
-    openDeleteProjectModal: function(projectToDelete) {
-        this.setState({ modalType: ModalTypes.DELETE_PROJECT, selectedProject: projectToDelete });
-    },
-    openAddProjectModal: function(projectToDelete) {
-        this.setState({ modalType: ModalTypes.ADD_PROJECT, selectedProject: null });
-    },
-    _makeProjectElement: function(role) {
-        if (role.type == 'manager' && role.project.imported) {
+    _makeProjectElement(role) {
+        if (role.type == 'manager') {
             return (
                 <div className='project' key={role.id}>
-                    <Icons.ProjectGraph />
+                    <ProjectGraph />
                     <div className='projectDetails'>
                         <span className='orgName'>{role.project.organization.name}</span>
                         <span className='projName'>{role.project.name}</span>
-                        <span className='projDelete' onClick={this.openDeleteProjectModal.bind(null, role.project)}>Delete Project?</span>
+                        <span className='projDelete' onClick={() => alert('bar')}>Delete Project?</span>
                     </div>
                 </div>
             );
         }
-    },
-    render: function() {
-        let modal;
-        switch (this.state.modalType) {
-            case ModalTypes.ADD_PROJECT:
-                modal = <ImportProjectModal toggleModal={() => this.setState({ modalType: ModalTypes.CLOSED })} {...this.props}/>;
-                break;
-            case ModalTypes.DELETE_PROJECT:
-                modal = <DeleteProjectModal toggleModal={() => this.setState({ modalType: ModalTypes.CLOSED })} />;
-                break;
-            case ModalTypes.CLOSED:
-                modal = null;
-                break;
-        }
+    }
+
+    render() {
+        const { roles } = this.props;
         return (
             <div className='projectView'>
-                { modal }
+                {
+                    () => {
+                        switch (this.state.modalType) {
+                            case ModalTypes.ADD_PROJECT:
+                                return <ImportProjectModal close={() => this.setState({ modalType: null})} importProject={() => alert('heyoo')} />;
+                                break;
+                            case ModalTypes.DELETE_PROJECT:
+                                return <DeleteProjectModal close={() => this.setState({ modalType: null})} deleteProject={() => alert('heyoo')} />;
+                                break;
+                            default: return null; break;
+                        }
+                    }()
+                }
                 <div className='projectInfo'>
                     <div ref='projectList' className='projectList'>
-                        { this.props.currentUser.roles.map(this._makeProjectElement) }
+                        { roles.map(this._makeProjectElement) }
                     </div>
-                    <Icons.AddNewProject onClick={this.openAddProjectModal} />
+                    <AddNewProject onClick={() => alert('foo')} />
                 </div>
             </div>
         );
     }
-});
+};
 
-module.exports = ProfileView;

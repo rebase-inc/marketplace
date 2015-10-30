@@ -5,6 +5,8 @@ let UserActions = keyMirror({
     LOGOUT: null,
     SELECT_VIEW: null,
     SELECT_ROLE: null,
+    UPDATE_PROFILE: null,
+    UPLOAD_PHOTO: null,
 });
 
 let TicketActions = keyMirror({
@@ -18,6 +20,7 @@ let AuctionActions = keyMirror({
     GET_AUCTIONS: null,
     SELECT_AUCTION: null,
     COMMENT_ON_AUCTION: null,
+    BID_ON_AUCTION: null,
     APPROVE_NOMINATION: null,
 });
 
@@ -47,7 +50,6 @@ let __ActionConstants = keyMirror({
     GET_USER_DETAIL_AS_MANAGER: null,
     GET_USER_DETAIL_AS_CONTRACTOR: null,
     GET_USER_DETAIL_AS_OWNER: null,
-    BID_ON_AUCTION: null,
     COMMENT_ON_TICKET: null,
     ADD_COMMENT_TO_AUCTION: null,
     ADD_COMMENT_TO_TICKET: null,

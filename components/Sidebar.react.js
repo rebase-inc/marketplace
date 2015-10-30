@@ -95,10 +95,10 @@ var ProfileOptions = React.createClass({
         return (
             <div id='profileOptions' className={this.props.isOpen ? 'open' : null}>
                 <ul>
-                    <li onClick={alert.bind(null, PROFILE)}>Profile</li>
-                    <li onClick={alert.bind(null, PROJECTS)}>Projects</li>
-                    <li onClick={alert.bind(null, WORK_HISTORY)}>Work History</li>
-                    <li onClick={alert.bind(null, BILLING_AND_PAYMENTS)}>Billing and Payments</li>
+                    <li onClick={() => actions.selectView(PROFILE)}>Profile</li>
+                    <li onClick={() => actions.selectView(PROJECTS)}>Projects</li>
+                    <li onClick={() => actions.selectView(WORK_HISTORY)}>Work History</li>
+                    <li onClick={() => actions.selectView(BILLING_AND_PAYMENTS)}>Billing and Payments</li>
                     <li onClick={actions.logout}>Sign Out</li>
                 </ul>
             </div>

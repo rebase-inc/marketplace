@@ -1,77 +1,69 @@
 var React = require('react');
 
-var d3Chart = {}
+export class LineChart {
+    constructor(element, dimensions, data) {
+        this.graph = d3.select(element).append("svg:svg")
+        .attr("width", dimensions.width + 2*dimensions.margin)
+        .attr("height", dimensions.height + 2*dimensions.margin)
+        .append("svg:g").attr("transform", "translate(" + dimensions.margin + "," + dimensions.margin + ")");
 
-d3Chart.create = function(element, props, state) {
-    // Create the svg element. This only needs to be done once. Use insert(..., ':first-child') so it goes before text
-    var graph = d3.select(element).append("svg:svg")
-        .attr("width", props.width + 2*props.margin)
-        .attr("height", props.height + 2*props.margin)
-        .append("svg:g").attr("transform", "translate(" + props.margin + "," + props.margin + ")");
-    this.update(element, props, state);
-};
-
-d3Chart.update = function(element, props, state) {
-    var maxYData = Math.max(d3.max(state.openTickets), d3.max(state.closedTickets));
-    var scale = {
-        x: d3.scale.linear().domain([0, state.openTickets.length - 1]).range([0, props.width]),
-        y: d3.scale.linear().domain([0, maxYData]).range([props.height, 0]),
-    }
-
-    var line = d3.svg.line().x( function(d,i) { return scale.x(i); }).y(function(d) { return scale.y(d); });
-    var graph = d3.select(element).select('g');
-    for (var className of  ['openTickets', 'closedTickets']) {
-        var data = className == 'openTickets' ? state.openTickets : state.closedTickets;
-        var text = (cn, d, i) => {
-            return (cn == 'openTickets') ?  'Offered ' + d + ' tickets on day ' + i : d + ' tickets were completed on day ' + i;
+        // if this were later broken out to have an update method, it would probably start here
+        var maxYData = Math.max(d3.max(data.openTickets), d3.max(data.closedTickets));
+        var scale = {
+            x: d3.scale.linear().domain([0, data.openTickets.length - 1]).range([0, dimensions.width]),
+            y: d3.scale.linear().domain([0, maxYData]).range([dimensions.height, 0]),
         }
-        var otherData = (className == 'openTickets') ? state.closedTickets : state.openTickets; // there has to be a better way...
-        graph.selectAll('.point').data(data).enter().append("text")
-            .attr("x", function(d, i) { return scale.x(i) - 2; })
-            .attr("y", function(d, i) {
-                var offset = (d >= otherData[i]) ? -8 : 18;
-                return scale.y(d) + offset;
-            })
-            .text((d,i) => d)
-            .style('font-size', Math.floor(props.height/4))
-            .attr('class', className);
-        graph.append("svg:path")
-            .attr("d", line(data))
-            .attr('class', className);
-        graph.selectAll(".point")
-            .data(data)
-            .enter().append("svg:circle")
-            .attr("cx", function(d, i) { return scale.x(i) })
-            .attr("cy", function(d, i) { return scale.y(d) })
-            .attr("r", function(d, i) { return 5 })
-            .style("stroke", 'transparent')
-            .style("stroke-width", 30)
-            .attr('class', className)
-            .on("mouseover", function(d,i) {
-                d3.select(this).transition()
-                    .ease("elastic")
-                    .duration("400")
-                    .attr("r", 7)
-                    .select('text')
-                    .style({opacity: '1'});
-            })
-            .on("mouseout", function(d,i) {
-                d3.select(this).transition()
-                    .ease("quad")
-                    .delay("100")
-                    .duration("200")
-                    .attr("r", 5)
-                    .select('text')
-                    .style({opacity: '0'});
-            });
 
+        var line = d3.svg.line().x( function(d,i) { return scale.x(i); }).y(function(d) { return scale.y(d); });
+        var graph = d3.select(element).select('g');
+        for (var className of  ['openTickets', 'closedTickets']) {
+            var currentData = className == 'openTickets' ? data.openTickets : data.closedTickets;
+            var text = (cn, d, i) => {
+                return (cn == 'openTickets') ?  'Offered ' + d + ' tickets on day ' + i : d + ' tickets were completed on day ' + i;
+            }
+            var otherData = (className == 'openTickets') ? data.closedTickets : data.openTickets; // there has to be a better way...
+            graph.selectAll('.point').data(currentData).enter().append("text")
+                .attr("x", function(d, i) { return scale.x(i) - 2; })
+                .attr("y", function(d, i) {
+                    var offset = (d >= otherData[i]) ? -8 : 18;
+                    return scale.y(d) + offset;
+                })
+                .text((d,i) => d)
+                .style('font-size', Math.floor(dimensions.height/4))
+                .attr('class', className);
+            graph.append("svg:path")
+                .attr("d", line(currentData))
+                .attr('class', className);
+            graph.selectAll(".point")
+                .data(currentData)
+                .enter().append("svg:circle")
+                .attr("cx", function(d, i) { return scale.x(i) })
+                .attr("cy", function(d, i) { return scale.y(d) })
+                .attr("r", function(d, i) { return 5 })
+                .style("stroke", 'transparent')
+                .style("stroke-width", 30)
+                .attr('class', className)
+                .on("mouseover", function(d,i) {
+                    d3.select(this).transition()
+                        .ease("elastic")
+                        .duration("400")
+                        .attr("r", 7)
+                        .select('text')
+                        .style({opacity: '1'});
+                })
+                .on("mouseout", function(d,i) {
+                    d3.select(this).transition()
+                        .ease("quad")
+                        .delay("100")
+                        .duration("200")
+                        .attr("r", 5)
+                        .select('text')
+                        .style({opacity: '0'});
+                });
+
+        }
     }
 };
-
-d3Chart.destroy = function(el) {
-    // Any clean-up would go here
-};
-
 
 var _xVals = [-4, -3.75, -3.5, -3.25, -3, -2.75, -2.5, -2.25, -2, -1.75, -1.5, -1.25, -1,
     -0.75, -0.5, -0.25, 0, 0.25, 0.5, 0.75, 1, 1.25, 1.5, 1.75, 2, 2.25, 2.5, 2.75, 3, 3.25, 3.5, 3.75, 4]
@@ -102,19 +94,19 @@ export class BellCurve {
         dimensions.width = dimensions.width || 240;
         dimensions.height = dimensions.height || 50;
         dimensions.margin = dimensions.margin || 18;
-        
+
         this.min = dimensions.min || 100;
         this.max = dimensions.max || 2000;
 
         this.data = _BellCurveData;
-        
+
         let graph = d3.select(element).insert("svg:svg", ':first-child')
             .attr("width", dimensions.width + 2*dimensions.margin)
             .attr("height", dimensions.height + 2*dimensions.margin)
             .append("svg:g")
             .attr("transform", "translate(" + dimensions.margin + "," + dimensions.margin + ")");
         this.graph = d3.select(element).select('g');
-    
+
         let scale = {
             x: d3.scale.linear().domain(d3.extent(_xVals)).range([0, dimensions.width]),
             y: d3.scale.linear().domain(d3.extent(_yVals)).range([dimensions.height, 0]),
@@ -139,19 +131,19 @@ export class BellCurve {
             .attr('text-anchor', 'end')
             .attr('font-size', '10px')
             .text('expert');
-        
+
         // Figure out the current cutoff in our coordinate system
         this.cutoff = -4 + Math.round(10*8*(defaultValue - this.min)/(this.max - this.min))/10;
-        
-        // Create the line plot 
+
+        // Create the line plot
         this.line = d3.svg.line().x(data => scale.x(data.x)).y(data => scale.y(data.y));
 
         // Create the area plot...Not sure if all three of these elements are needed. TODO: Clean up
         this.area = d3.svg.area().x(data => scale.x(data.x)).y0(data => scale.y(0)).y1(data => scale.y(data.y));
         this.areaElement = this.graph.selectAll('path.area');
         this.areaBorder = this.graph.selectAll('path.areaBorder');
-   
-        // Make the area fill stop at the cutoff 
+
+        // Make the area fill stop at the cutoff
         this.areaElement.data([this.data.filter(data => data.x <= this.cutoff)]).enter().append('path')
             .attr("class", "area")
             .attr("d", this.area)
@@ -163,7 +155,7 @@ export class BellCurve {
             .attr('stroke-width', '2px')
             .attr('stroke', 'black');
 
-        // Update the data 
+        // Update the data
         this.update(defaultValue);
 
         this.graph.append("path")
@@ -181,8 +173,8 @@ export class BellCurve {
 
         // Update the area fill
         this.graph.selectAll('path.area').data([this.data.filter(data => data.x <= this.cutoff + 0.0001)]).attr('d', this.area);
-       
-        // Update the area border 
+
+        // Update the area border
         this.graph.selectAll('path.areaBorder').data([[{x: this.cutoff, y: 0}, this.data.filter(data => Math.abs(data.x - this.cutoff) <= 0.0001)[0]]]).attr('d', this.line);
     }
 

@@ -32,9 +32,14 @@ class RebaseApp extends Component {
                             case NEW: return <TicketView key='ticketView' user={user} roles={roles} />; break;
                             case OFFERED: return <AuctionView key='auctionView' user={user} roles={roles} />; break;
                             case IN_PROGRESS: return <ContractView user={user} roles={roles} />; break;
-                            case COMPLETED: return <ReviewView user={user} />; break;
-                            case PROFILE: return <ProfileView user={user} />; break;
-                            case PROJECTS: return <ProjectView user={user} />; break;
+                            case COMPLETED: return <ReviewView user={user} roles={roles} />; break;
+                            case PROFILE: 
+                                return <ProfileView 
+                                            updateProfile={actions.updateProfile.bind(null, user)}
+                                            uploadPhoto={() => alert('not implemented')}
+                                            user={user} roles={roles} />; break;
+                            case PROJECTS: 
+                                return <ProjectView roles={Array.from(roles.items.values())} />; break;
                             default: throw 'Invalid view ' + view; break;
                         }
                     }()
