@@ -181,7 +181,8 @@ html, body {
     overflow: hidden;
 }
 
-#react-app {
+/*This is hacky...We might be able to remove the nested div?*/
+#react-app, #react-app > div {
     height: 100%;
     width: 100%;
     margin: 0;
