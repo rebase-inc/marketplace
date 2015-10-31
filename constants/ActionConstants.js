@@ -40,6 +40,11 @@ let ReviewActions = keyMirror({
     SELECT_REVIEW: null,
 });
 
+let GithubAccountActions = keyMirror({
+    GET_GITHUB_ACCOUNTS: null,
+    GET_IMPORTABLE_REPOS: null,
+});
+
 let __ActionConstants = keyMirror({
     UPDATE_USER_SETTINGS: null,
     UPDATE_PROFILE_PHOTO: null,
@@ -65,4 +70,4 @@ let __ActionConstants = keyMirror({
     GET_PROJECTS: null,
 });
 
-export default Object.assign({}, UserActions, TicketActions, AuctionActions, ContractActions, ReviewActions);
+export default Object.assign({}, UserActions, TicketActions, AuctionActions, ContractActions, ReviewActions, GithubAccountActions);

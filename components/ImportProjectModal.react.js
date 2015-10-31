@@ -1,14 +1,29 @@
 import React, { Component, PropTypes } from 'react';
 import ReactDOM from 'react-dom';
 
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+
 import ModalContainer from './ModalContainer.react';
 import LoadingAnimation from './LoadingAnimation.react';
 
 import { Checkbox } from './Icons.react';
 
-export default ImportProjectModal extends Component {
+import * as GithubAccountActions from '../actions/GithubAccountActions';
+
+export default class ImportProjectModal extends Component {
     static propTypes =  {
-        importedProjects: PropTypes.object.isRequired,
+        projects: PropTypes.object.isRequired,
+        githubAccounts: PropTypes.object.isRequired,
+    }
+
+    componentDidMount() {
+        this.props.actions.getGithubAccounts();
+    }
+
+    constructor(props, context) {
+        super(props, context);
+        this.componentDidMount = this.componentDidMount.bind(this);
     }
 
     toggleProject(project) {
@@ -17,6 +32,7 @@ export default ImportProjectModal extends Component {
             case false: this.setState((state) => state.projectsToImport.add(project)); break;
         }
     }
+
     _makeProjectElement(repo) {
         if (repo.project.imported) {
             return null;
@@ -39,45 +55,37 @@ export default ImportProjectModal extends Component {
             </tr>
         );
     }
-    importSelectedProjects() {
-        GithubActions.importRepos(this.state.projectsToImport);
-        this.props.toggleModal();
-    }
-    addGithubAccount() {
-        window.location.assign('/github', '_blank')
-    }
+
     render() {
-        if (this.state.loading) {
+        const { githubAccounts, projects, close } = this.props;
+        if (!githubAccounts.items.size) {
             return (
-                <ModalContainer toggleModal={this.props.toggleModal}>
-                    <h3>Select Project(s) to Import</h3>
-                    <div id='projectImportWrapper' ref='projectImportWrapper'>
-                        <LoadingAnimation />
-                    </div>
-                    <button onClick={this.importSelectedProjects}>Import Selected</button>
-                </ModalContainer>
-                );
-        } else if (!this.state.allAccounts.length) {
-            return (
-                <ModalContainer toggleModal={this.props.toggleModal}>
+                <ModalContainer close={close}>
                     <h3>You must authorize a Github account first!</h3>
-                    <button onClick={this.addGithubAccount}>Add Github Account</button>
+                    <button onClick={() => window.location.assign('localhost:5000/github', '_blank')}>Add Github Account</button>
                 </ModalContainer>
             );
-        } else {
-            return (
-                <ModalContainer toggleModal={this.props.toggleModal}>
-                    <h3>Select Project(s) to Import</h3>
-                    <div id='projectImportWrapper' ref='projectImportWrapper'>
+        }
+
+        return (
+            <ModalContainer close={close}>
+                <h3>Select Project(s) to Import</h3>
+                <div id='projectImportWrapper' ref='projectImportWrapper'>
+                    { githubAccounts.isFetching ? <LoadingAnimation /> :
                         <table>
                             <tbody>
                             { this.state.allRepos.map(this._makeProjectElement) }
                             </tbody>
                         </table>
-                    </div>
-                    <button onClick={this.importSelectedProjects}>Import Selected</button>
-                </ModalContainer>
-            );
-        }
+                    }
+                </div>
+                <button onClick={this.importSelectedProjects}>Import Selected</button>
+            </ModalContainer>
+        );
     }
 };
+
+// Not entirely sure this belongs in its own scope of the state and actions, but we'll leave it for now...TODO: revisit
+let mapStateToProps = state => ({ githubAccounts: state.githubAccounts });
+let mapDispatchToProps = dispatch => ({ actions: bindActionCreators(GithubAccountActions, dispatch)});
+export default connect(mapStateToProps, mapDispatchToProps)(ImportProjectModal);

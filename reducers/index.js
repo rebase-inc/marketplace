@@ -10,3 +10,4 @@ export { default as auction } from './auction';
 export { default as auctions } from './auctions';
 export { default as contract } from './contract';
 export { default as contracts } from './contracts';
+export { default as githubAccounts } from './githubAccounts';

@@ -3,11 +3,12 @@ import ReactDOM from 'react-dom';
 
 import keymirror from 'keymirror';
 
-import { AddNewProject, ProjectGraph } from './Icons.react';
+import ImportProjectModal from './ImportProjectModal.react';
 
+import { AddNewProject, ProjectGraph } from './Icons.react';
 const ModalTypes = keymirror({ ADD_PROJECT: null, DELETE_PROJECT: null });
 
-export default class ProfileView extends Component {
+export default class ProjectView extends Component {
     static propTypes = {
         roles: PropTypes.array.isRequired,
     }
@@ -40,7 +41,9 @@ export default class ProfileView extends Component {
                     () => {
                         switch (this.state.modalType) {
                             case ModalTypes.ADD_PROJECT:
-                                return <ImportProjectModal close={() => this.setState({ modalType: null})} importProject={() => alert('heyoo')} />;
+                                // This modal is scoped to its own state so it doesn't take any functions as
+                                // properties. Not sure this is the correct way to do it...feel free to refactor
+                                return <ImportProjectModal close={() => this.setState({ modalType: null})} />;
                                 break;
                             case ModalTypes.DELETE_PROJECT:
                                 return <DeleteProjectModal close={() => this.setState({ modalType: null})} deleteProject={() => alert('heyoo')} />;
@@ -53,7 +56,7 @@ export default class ProfileView extends Component {
                     <div ref='projectList' className='projectList'>
                         { roles.map(this._makeProjectElement) }
                     </div>
-                    <AddNewProject onClick={() => alert('foo')} />
+                    <AddNewProject onClick={() => this.setState({ modalType: ModalTypes.ADD_PROJECT})} />
                 </div>
             </div>
         );
