@@ -69,7 +69,7 @@ class SidebarProfile extends Component {
     render() {
         const { user, actions } = this.props;
         return (
-            <div id='sidebarProfile'>
+            <div id='sidebarProfile' onMouseLeave={() => this.setState({ optionsOpen: false })}>
                 <div id='currentProfile' onClick={() => this.setState({ optionsOpen: !this.state.optionsOpen})}>
                     <ProfilePicture user={user} />
                     <span>{user.first_name + ' ' + user.last_name}</span>

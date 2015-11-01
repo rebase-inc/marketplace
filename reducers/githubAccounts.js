@@ -13,6 +13,18 @@ export default function githubAccounts(githubAccounts = initialGithubAccounts, a
                     break;
             }
         }
+        case ActionConstants.GET_IMPORTABLE_REPOS: {
+            // this whole block of code is a horrible hack
+            switch (action.status) {
+                case PENDING: return Object.assign({}, githubAccounts, { isFetching: true }); break;
+                case SUCCESS:
+                    // this is embarassing...but right now there's no way to know which account we're talking about
+                    // so, for now, we're going to append the importable repos to every account! TODO: fix
+                    const newAccounts = Array.from(githubAccounts.items.values()).map(a => Object.assign({}, a, {repos: action.response.repos}));
+                    return { isFetching: false, items: new Map(newAccounts.map(ga => [ga.id, ga])) };
+                    break;
+            }
+        }
         default: return githubAccounts; break;
     }
 }

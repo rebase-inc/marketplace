@@ -206,13 +206,13 @@ export class Checkbox extends Component {
         label: PropTypes.string,
     }
 
-    static defaultprops = {
+    static defaultProps = {
         label: '',
     }
 
     constructor(props, context) {
         super(props, context);
-        this.state = { width: width }; // ugh, this is a hack...
+        this.state = { width: 20 }; // ugh, this is a hack...
     }
 
     componentDidMount() {
