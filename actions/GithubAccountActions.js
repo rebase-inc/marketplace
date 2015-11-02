@@ -16,5 +16,5 @@ export function importGithubRepos(githubRepoList) {
     const data = { repos: {} };
     // assumes githubRepoList is a map of id=>repo
     Array.from(githubRepoList).forEach((repo) => data.repos[repo.id] = repo); // hack because api expects weird data format
-    return dispatchedRequest('POST', '/github/import_repos', ActionConstants.IMPORT_REPOS, data);
+    return dispatchedRequest('POST', '/github/import_repos', ActionConstants.IMPORT_GITHUB_REPOS, data);
 }

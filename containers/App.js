@@ -9,7 +9,6 @@ import thunkMiddleware from 'redux-thunk';
 import createLogger from 'redux-logger';
 import * as reducers from '../reducers';
 
-// there is a method in the redux library for doing this without specifying each by hand...TODO: Use it
 const reducer = combineReducers(reducers);
 
 let store;

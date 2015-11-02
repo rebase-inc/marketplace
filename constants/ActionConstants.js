@@ -43,6 +43,7 @@ let ReviewActions = keyMirror({
 let GithubAccountActions = keyMirror({
     GET_GITHUB_ACCOUNTS: null,
     GET_IMPORTABLE_REPOS: null,
+    IMPORT_GITHUB_REPOS: null,
 });
 
 let __ActionConstants = keyMirror({
@@ -64,7 +65,6 @@ let __ActionConstants = keyMirror({
     ANSWER_MEDIATION_COMPLETE: null,
     GET_GITHUB_ACCOUNTS: null,
     GET_IMPORTABLE_GITHUB_REPOS: null,
-    IMPORT_GITHUB_REPOS: null,
     CREATE_INTERNAL_TICKET: null,
     CREATE_GITHUB_TICKET: null,
     DELETE_PROJECT: null,

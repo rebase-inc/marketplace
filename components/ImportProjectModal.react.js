@@ -22,10 +22,18 @@ export default class ImportProjectModal extends Component {
         this.props.actions.getGithubAccounts();
     }
 
+    componentDidUpdate() {
+        if (this.state.markedForClose && !this.props.githubAccounts.isFetching) {
+            this.props.close();
+        }
+    }
+
     constructor(props, context) {
         super(props, context);
         this.componentDidMount = this.componentDidMount.bind(this);
+        this.componentDidUpdate = this.componentDidUpdate.bind(this);
         this.toggleProject = this.toggleProject.bind(this);
+        this.state = { markedForClose: false };
     }
 
     toggleProject(project) {
@@ -41,7 +49,7 @@ export default class ImportProjectModal extends Component {
             return (
                 <ModalContainer close={close}>
                     <h3>You must authorize a Github account first!</h3>
-                    <button onClick={() => window.location.assign('localhost:5000/github', '_blank')}>Add Github Account</button>
+                    <button onClick={() => window.open('/github', '_blank')}>Add Github Account</button>
                 </ModalContainer>
             );
         }
@@ -53,7 +61,7 @@ export default class ImportProjectModal extends Component {
                 { githubAccounts.isFetching ?
                     <LoadingAnimation /> :
                     <ImportableGithubRepos
-                        importRepos={actions.importGithubRepos}
+                        importRepos={(repos) => { this.setState({ markedForClose: true }); actions.importGithubRepos(repos)}}
                         getImportableRepos={actions.getImportableRepos}
                         githubAccounts={Array.from(githubAccounts.items.values())} />
                 }
