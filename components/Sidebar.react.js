@@ -46,7 +46,7 @@ class SidebarNav extends Component {
         var allViews = [];
         return (
             <div id='sidebarNav'>
-                <RoleSelector user={user} role={user.current_role} selectRole={(role) => actions.updateProfile(user, {current_role: role.id})} roles={Array.from(roles.items.values())}/>
+                <RoleSelector user={user} role={user.current_role} selectRole={(role) => actions.selectRole(user, role.id)} roles={Array.from(roles.items.values())}/>
                 <div id='viewList'>
                     { Array.from(views.items.values()).map(v => <ViewSelection view={v} key={v.type} onSelect={() => actions.selectView(v.type)} selected={v.type == view.type} />) }
                 </div>
@@ -120,14 +120,16 @@ export class RoleSelector extends Component {
 
     render() {
         const { role, roles, selectRole } = this.props;
-        let nonOwnerRoles = roles.filter(r => r.type != 'owner');
+        let selectedRole = roles.find(r => r.id == role.id);
+        let nonOwnerRoles = roles.filter(r => r.type != 'owner' && r.id != role.id);
         let tableHeight = this.state.open ? 40*(Math.max(nonOwnerRoles.length, 2)) + 'px' : '40px';
         return (
             <div id='roleSelector'
                 style={{height: tableHeight}}
                 onClick={() => this.setState({ open: !this.state.open })}
                 onMouseLeave={() => this.setState({ open: false})}>
-                { nonOwnerRoles.map(r => <RoleElement key={r.id} role={r} select={selectRole.bind(null, r)} selected={r.id == role.id} />) }
+                <RoleElement key={selectedRole.id} role={selectedRole} selected={true} />
+                { nonOwnerRoles.map(r => <RoleElement key={r.id} role={r} select={selectRole.bind(null, r)} selected={false} />) }
                 { nonOwnerRoles.length == 1 ? <MockRoleElement/> : null }
             </div>
         );

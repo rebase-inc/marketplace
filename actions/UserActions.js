@@ -26,6 +26,10 @@ export function updateProfile(user, settings) {
     return dispatchedRequest('PUT', url, ActionConstants.UPDATE_PROFILE, data);
 }
 
+export function selectRole(user, roleId) {
+    const data = { id: user.id, current_role: { id: roleId }};
+    return updateProfile(user, data);
+}
 
 //module.exports = {
     ////login: function(email, password) {
