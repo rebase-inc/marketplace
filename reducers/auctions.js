@@ -59,50 +59,34 @@ export default function auctions(auctions = initialAuctions, action) {
                     break;
             }
         }
-        case ActionConstants.APPROVE_NOMINATION: {
-            let modifiedAuction;
-            let newAuctions;
-            // this takes the list of bids on the response and sets it to the bids field on the auction
-            // so that we can infer who has bid on the auction and therefore what state a nomination is in.
-            // This is kind of hectic. And I'm not entirely sure if its pure (i.e., no side effects) TODO: Cleanup
-            switch (action.status) {
-                case PENDING:
-                    // assign the auction in question to a new object so we can change it
-                    modifiedAuction = Object.assign({}, auctions.items.get(action.response.auction.id));
-
-                    // set isFetching=true on the nomination in question
-                    modifiedAuction.ticket_set.nominations = modifiedAuction.ticket_set.nominations.map(n =>
-                         n.contractor.id == action.response.nomination.contractor.id ? Object.assign({ isFetching: true }, n) : n);
-
-                    // create a list of new auctions with the modified auction replacing the appropriate one from the old list
-                    newAuctions = Array.from(auctions.items.values()).map(a => a.id == modifiedAuction.id ? modifiedAuction : a);
-
-                    // isFetching=false here because we are not actually modifying the auction, but rather a nested object in the auctions
-                    return { isFetching: false, items: new Map(newAuctions.map(a => [a.id, addSyntheticProperties(a)])) };
-                    break;
-                case ERROR: return Object.assign({}, auctions, { isFetching: false }); break;
-                case SUCCESS:
-                    // assign the auction in question to a new object so we can change it
-                    modifiedAuction = Object.assign({}, auctions.items.get(action.response.nomination.auction.id));
-
-                    // set isFetching=false on the nomination in question
-                    modifiedAuction.ticket_set.nominations = modifiedAuction.ticket_set.nominations.map(n =>
-                         n.contractor.id == action.response.nomination.contractor.id ? Object.assign({ isFetching: false }, n) : n);
-
-                    // add the new nomination to the list of approved_talents
-                    modifiedAuction.approved_talents.push(action.response.nomination);
-
-                    // create a list of new auctions with the modified auction replacing the appropriate one from the old list
-                    newAuctions = Array.from(auctions.items.values()).map(a => a.id == modifiedAuction.id ? modifiedAuction : a);
-                    return { isFetching: false, items: new Map(newAuctions.map(a => [a.id, addSyntheticProperties(a)])) };
-                    break;
-            }
-        }
+        case ActionConstants.APPROVE_NOMINATION:
+            // TODO: Look into changing signature of handleApprovedNomination func to (status, auctions, nomination)
+            const auctionForNomination = auctions.items.get(action.response.auction ? action.response.auction.id : action.response.nomination.auction.id);
+            return handleApprovedNomination(action.status, auctions, auctionForNomination, action.response.nomination);
+            break;
         case ActionConstants.COMMENT_ON_AUCTION:
             return handleCommentOnAuction(action.status, auctions, action.response.comment || action.response);
             break;
         case ActionConstants.LOGOUT: return initialAuctions; break;
         default: return auctions; break;
+    }
+}
+
+// Not entirely sure this function is pure (i.e., doesn't have side effects)
+function handleApprovedNomination(requestStatus, auctions, modifiedAuction, modifiedNomination) {
+    switch (requestStatus) {
+        case PENDING:
+            modifiedAuction.ticket_set.nominations.forEach(n => n.contractor.id == modifiedNomination.contractor.id ? n.isFetching = true : null);
+            auctions.items.set(modifiedAuction.id, modifiedAuction);
+            return { isFetching: false, items: auctions.items };
+            break;
+        case ERROR: return { isFetching: false, items: auctions.items }; break;
+        case SUCCESS:
+            modifiedAuction.ticket_set.nominations.forEach(n => n.contractor.id == modifiedNomination.contractor.id ? n.isFetching = false : null);
+            modifiedAuction.approved_talents.push(modifiedNomination);
+            auctions.items.set(modifiedAuction.id, addSyntheticProperties(modifiedAuction));
+            return { isFetching: false, items: auctions.items }; // Pretty sure this is going to cause problems because it has side effects
+            break;
     }
 }
 
