@@ -74,18 +74,23 @@ export default function auctions(auctions = initialAuctions, action) {
 
 // Not entirely sure this function is pure (i.e., doesn't have side effects)
 function handleApprovedNomination(requestStatus, auctions, modifiedAuction, modifiedNomination) {
+    let newAuction;
+    let newAuctions;
     switch (requestStatus) {
         case PENDING:
-            modifiedAuction.ticket_set.nominations.forEach(n => n.contractor.id == modifiedNomination.contractor.id ? n.isFetching = true : null);
-            auctions.items.set(modifiedAuction.id, modifiedAuction);
-            return { isFetching: false, items: auctions.items };
+            newAuction = Object.assign({}, modifiedAuction);
+            newAuction.ticket_set.nominations.forEach(n => n.contractor.id == modifiedNomination.contractor.id ? n.isFetching = true : null);
+            newAuctions = Array.from(auctions.items.values()).map(a => a.id == newAuction.id ? newAuction : a)
+            return { isFetching: false, items: new Map(newAuctions.map(a => [a.id, addSyntheticProperties(a)]))};
             break;
         case ERROR: return { isFetching: false, items: auctions.items }; break;
         case SUCCESS:
-            modifiedAuction.ticket_set.nominations.forEach(n => n.contractor.id == modifiedNomination.contractor.id ? n.isFetching = false : null);
-            modifiedAuction.approved_talents.push(modifiedNomination);
-            auctions.items.set(modifiedAuction.id, addSyntheticProperties(modifiedAuction));
-            return { isFetching: false, items: auctions.items }; // Pretty sure this is going to cause problems because it has side effects
+            newAuction = Object.assign({}, modifiedAuction);
+            newAuction.ticket_set.nominations.forEach(n => n.contractor.id == modifiedNomination.contractor.id ? n.isFetching = false : null);
+            newAuction.approved_talents = newAuction.approved_talents.map(t => Object.assign({}, t));
+            newAuction.approved_talents.push(modifiedNomination);
+            newAuctions = Array.from(auctions.items.values()).map(a => a.id == newAuction.id ? newAuction : a)
+            return { isFetching: false, items: new Map(newAuctions.map(a => [a.id, addSyntheticProperties(a)])) };
             break;
     }
 }
