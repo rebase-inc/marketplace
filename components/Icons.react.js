@@ -417,11 +417,15 @@ export class FindTalentOverview extends Component {
     componentDidMount() {
         const { auction } = this.props;
         let element = ReactDOM.findDOMNode(this);
+        const overbid = auction.bids.filter(b => !b.contract).length;
+        const approved = auction.approved_talents.length - overbid;
+        const suggested = auction.ticket_set.nominations.filter(n => !auction.approved_talents.find(t => t.contractor.id == n.contractor.id)).length;
         let data = [
-            {category: 'nominated', population: auction.ticket_set.nominations.filter(n => !n.auction).length, color: '#507196'},
-            {category: 'offered', population: auction.approved_talents.length - auction.bids.filter(b => !b.contract).length, color: '#CBD0D4'},
-            {category: 'rejected', population: auction.bids.filter(b => !b.contract).length, color: '#CC6070'}
+            { category: 'suggested', population: suggested, color: '#507196' },
+            { category: 'approved', population: approved, color: '#CBD0D4' },
+            { category: 'not interested', population: overbid, color: '#CC6070' }
         ];
+
         new DonutChart(element, this.props, data);
     }
     render() {
@@ -492,19 +496,3 @@ export class Dropdown extends Component {
         );
     }
 };
-
-
-//module.exports = {
-    //Dropdown: Dropdown,
-    //Comment: Comment,
-    //FindTalent: FindTalent,
-    //Dropback: Dropback,
-    //ApproveTalent: ApproveTalent,
-    //TalentScore: TalentScore,
-    //AddNewProject: AddNewProject,
-    //ProjectGraph: ProjectGraph,
-    //FindTalentOverview: FindTalentOverview,
-    //Timer: Timer,
-    //AddTicket: AddTicket,
-    //Checkbox: Checkbox,
-//};

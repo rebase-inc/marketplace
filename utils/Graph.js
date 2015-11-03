@@ -180,36 +180,29 @@ export class BellCurve {
 
 };
 
+// TODO: Expand this into constructor and update methods
 export class DonutChart {
-    constructor(element, props, data) {
-        let totalDevelopers = data.reduce((pv, cv) => pv + cv.population, 0);
+    constructor(element, dimensions, data) {
+        let svg = d3.select(element).insert("svg:svg", ':first-child')
+            .attr("width", dimensions.width + 2*dimensions.margin)
+            .attr("height", dimensions.height + 2*dimensions.margin)
+            .append("svg:g")
+            .attr("transform", "translate(" + dimensions.height / 2 + "," + dimensions.height / 2 + ")");
 
-        let radius = props.height / 2;
-        let arcWidth = props.height / 5;
+        const totalOfAllCategories = data.reduce((prev, curr) => prev + curr.population, 0);
+        data = !!totalOfAllCategories ? data : [{ color: '#F5B651', population: 1 }];
+
+        let radius = dimensions.height / 2;
+        let arcWidth = dimensions.height / 5;
 
         let arc = d3.svg.arc()
-            .outerRadius(d => d.data.category == 'offered' ? radius - arcWidth / 3 : radius)
-            .innerRadius(d => d.data.category == 'offered' ? radius - arcWidth *2/3 : radius - arcWidth);
+            .outerRadius(d => d.data.category == 'approved' ? radius - arcWidth / 3 : radius)
+            .innerRadius(d => d.data.category == 'approved' ? radius - arcWidth *2/3 : radius - arcWidth);
 
         let pie = d3.layout.pie().sort(null).value(function(d) { return d.population; });
 
-        let svg = d3.select(element).insert("svg:svg", ':first-child')
-            .attr("width", props.width + 2*props.margin)
-            .attr("height", props.height + 2*props.margin)
-            .append("svg:g")
-            .attr("transform", "translate(" + props.height / 2 + "," + props.height / 2 + ")");
-
-        if (!!totalDevelopers) {
-            var g = svg.selectAll(".arc")
-                .data(pie(data))
-                .enter().append("g")
-                .attr("class", "arc");
-        } else {
-            var g = svg.selectAll('.arc')
-                .data(pie([{color: '#F5B651', population: 999}]))
-                .enter().append('g')
-                .attr('class', 'arc');
-        }
+        const dataForNullCase = [{color: '#F5B651', population: 1 }];
+        let g = svg.selectAll('.arc').data(pie(data)).enter().append('g').attr('class', 'arc');
 
         g.append('text')
             .attr('text-anchor', 'middle')
@@ -218,7 +211,7 @@ export class DonutChart {
             .attr('dy', '4px')
             .attr('class', 'percentage');
 
-        let path = g.append("path")
+        g.append("path")
             .attr('d', arc)
             .attr('class', 'matchesHoverState')
             .style('stroke-width', '2px')
@@ -234,7 +227,7 @@ export class DonutChart {
             .attr('transform', function(d, i) {
                 var height = legendSize + legendSpacing;
                 var offset =  height * 3 / 2;
-                var x = props.height - legendSize;
+                var x = dimensions.height - 2*legendSize;
                 var y = i * height - offset;
                 return 'translate(' + x + ',' + y + ')';
             });
@@ -245,7 +238,7 @@ export class DonutChart {
             .style('fill', d => d.color)
             .style('stroke', d => d.color);
 
-        let fontSize = props.height / 6;
+        let fontSize = dimensions.height / 6;
         legend.append('text')
             .text(d => d.population + ' ' + d.category)
             .attr('font-size', fontSize)
@@ -259,7 +252,7 @@ export class DonutChart {
                 let childCategory = !!data.data ? data.data.category : data.category;
                 return (parentData.category == childCategory) ? 1.0 : 0.35;
             });
-            let percentage = !!totalDevelopers ? Math.round(100 * parentData.population / totalDevelopers) + '%' : '';
+            let percentage = !!totalOfAllCategories ? Math.round(100 * parentData.population / totalOfAllCategories) + '%' : '';
             svg.select('.percentage').text(percentage).attr('fill', parentData.color);
 
         });
