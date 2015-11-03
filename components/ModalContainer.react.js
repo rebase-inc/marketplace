@@ -3,6 +3,8 @@ import React, { Component, PropTypes } from 'react';
 export default class ModalContainer extends Component {
     static propTypes = {
         close: PropTypes.func.isRequired
+        //loading: PropTypes.bool, // provide this so that the modal knows not to close if some action is happening
+        //markedForClose: PropTypes.bool, // provide this so that modal can close on next update
     }
 
     render() {

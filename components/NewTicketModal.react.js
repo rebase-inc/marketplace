@@ -1,44 +1,44 @@
-var _ = require('underscore');
-var React = require('react');
-var ReactDOM = require('react-dom');
+import React, { Component, PropTypes } from 'react';
+import ReactDOM from 'react-dom';
 
-var ModalContainer = require('../components/ModalContainer.react');
-var Icons = require('../components/Icons.react');
+import ModalContainer from './ModalContainer.react';
+import { Checkbox } from './Icons.react';
 
-var TicketActions = require('../actions/TicketActions');
-
-var viewConstants = require('../constants/viewConstants');
-var handleScrollShadows = require('../utils/Style').handleScrollShadows;
-
-class ImportProjectModal extends React.Component {
+export default class NewTicketModal extends Component {
+    static propTypes = {
+        createGithubTicket: PropTypes.func.isRequired,
+        createInternalTicket: PropTypes.func.isRequired,
+        close: PropTypes.func.isRequired,
+        project: PropTypes.object.isRequired
+    }
     constructor(props) {
         super(props);
-        this.state = { githubSync: true };
+        this.state = { syncWithGithub: false };
         this.toggleGithubSync = this.toggleGithubSync.bind(this);
-        this._createTicket = this._createTicket.bind(this);
+        this.createTicket = this.createTicket.bind(this);
     }
     toggleGithubSync() {
-        this.setState({ githubSync: !this.state.githubSync });
+        this.setState({ syncWithGithub: !this.state.syncWithGithub });
     }
-    _createTicket() {
-        let title = ReactDOM.findDOMNode(this.refs.ticketTitle).value;
-        if (this.state.githubSync) {
-            TicketActions.createGithubTicket(this.props.project, title);
+    createTicket() {
+        const title = ReactDOM.findDOMNode(this.refs.title).value;
+        if (this.state.syncWithGithub) {
+            this.props.createGithubTicket(this.props.project, title);
         } else {
-            TicketActions.createInternalTicket(this.props.project, title);
+            this.props.createInternalTicket(this.props.project, title);
         }
+        this.props.close(); // hack. TODO: Use the markAsClosed functionality like in ImportProjectModal
     }
     render() {
+        const { close, project } = this.props;
         return (
-            <ModalContainer toggleModal={this.props.toggleModal}>
+            <ModalContainer close={close}>
                 <h3>Create New Ticket</h3>
-                <h4>{`${this.props.project.name} (${this.props.project.organization.name})`}</h4>
-                <Icons.Checkbox toggle={this.toggleGithubSync} checked={this.state.githubSync} label='Sync with GitHub'/>
-                <textarea required ref='ticketTitle' placeholder="Give your ticket a title" />
-                <button onClick={this._createTicket}>Create Ticket</button>
+                <h4>{`${project.name} (${project.organization.name})`}</h4>
+                <Checkbox toggle={this.toggleGithubSync} checked={this.state.syncWithGithub} label='Sync with GitHub'/>
+                <textarea required ref='title' placeholder="Give your ticket a title" />
+                <button onClick={this.createTicket}>Create Ticket</button>
             </ModalContainer>
         );
     }
 }
-
-module.exports = ImportProjectModal;

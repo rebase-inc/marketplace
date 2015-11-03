@@ -23,9 +23,7 @@ export default class TicketView extends Component {
         this.state = { searchText: '', modalOpen: false };
 
         // TODO: Look into autobinding. React-redux examples projects have it, but not sure what they use
-        this.findTalent = this.findTalent.bind(this);
         this.handleUserInput = this.handleUserInput.bind(this);
-        this.toggleModal = this.toggleModal.bind(this);
         this.componentDidMount = this.componentDidMount.bind(this);
     }
     componentDidMount() {
@@ -33,12 +31,6 @@ export default class TicketView extends Component {
     }
     handleUserInput(searchText) {
         this.setState({ searchText: searchText });
-    }
-    findTalent(ticketID) {
-        this.setState({ modalOpen: true });
-    }
-    toggleModal() {
-        this.setState({ modalOpen: !this.state.modalOpen });
     }
     render() {
         const { ticket, tickets, user, roles, actions } = this.props;
@@ -70,10 +62,14 @@ export default class TicketView extends Component {
             return (
                 <div className='ticketView'>
                     <SearchBar searchText={this.state.searchText} onUserInput={this.handleUserInput}>
-                        <AddTicket onClick={this.toggleModal}/>
+                        <AddTicket onClick={() => this.setState({ modalOpen: true })}/>
                     </SearchBar>
                     <TicketList select={actions.selectTicket} tickets={Array.from(tickets.items.values())} />
-                    { !!this.state.modalOpen ? <NewTicketModal project={this.props.currentRole.project} toggleModal={this.toggleModal} /> : null }
+                    { !!this.state.modalOpen ? <NewTicketModal 
+                        project={roles.items.get(user.current_role.id).project}
+                        createInternalTicket={actions.createInternalTicket} 
+                        createGithubTicket={actions.createGithubTicket} 
+                        close={() => this.setState({ modalOpen: false })} /> : null }
                 </div>
             );
         }

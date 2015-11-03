@@ -34,3 +34,19 @@ export function commentOnTicket(user, ticket, text) {
     };
     return dispatchedRequest('POST', '/comments', ActionConstants.COMMENT_ON_TICKET, data);
 }
+
+export function createInternalTicket(project, title) {
+    const data = {
+        project: { id: project.id },
+        title: title
+    }
+    return dispatchedRequest('POST', '/internal_tickets', ActionConstants.CREATE_TICKET, data);
+}
+
+export function createGithubTicket(project, title) {
+    const data = {
+        project: { id: project.id },
+        title: title
+    }
+    return dispatchedRequest('POST', '/github_tickets', ActionConstants.CREATE_TICKET, data);
+}

@@ -15,7 +15,10 @@ function handleStatus(response) {
 
 export function dispatchedRequest(method, url, actionType, data) {
     return function(dispatch) {
-        dispatch({ type: actionType, status: PENDING, response: data });
+        // we dispatch the pending action with some data so that the reducers
+        // can know what data we're attempting to operate on, even if that
+        // operation isn't yet successful.
+        dispatch({ type: actionType, status: PENDING, response: data || {} });
         return fetch(BASE_URL + url, {
                 method: method,
                 credentials: 'include', // CORS Hack

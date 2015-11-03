@@ -10,35 +10,56 @@ function _shouldBeVisible(ticket) {
 
 export default function tickets(tickets = initialTickets, action) {
     switch (action.type) {
-        case ActionConstants.GET_TICKETS: {
-            switch (action.status) {
-                case PENDING: return Object.assign({}, tickets, { isFetching: true }); break;
-                case SUCCESS:
-                    const newTickets = new Map(action.response.tickets.filter(_shouldBeVisible).map(t => [t.id, t]));
-                    return { isFetching: false, items: newTickets };
-            }
-        }
-        case ActionConstants.CREATE_AUCTION: {
-            switch (action.status) {
-                case PENDING: return Object.assign({}, tickets, { isFetching: true }); break;
-                case ERROR: return Object.assign({}, tickets, { isFetching: false }); break;
-                case SUCCESS:
-                    // this is kind of hacky...TODO: Think of a cleaner way to remove an auctioned ticket from the state
-                    const newTickets = Array.from(tickets.items.values()).filter(ticket =>
-                            ticket.id != action.response.auction.ticket_set.bid_limits[0].ticket_snapshot.ticket.id);
-                    return { isFetching: false, items: new Map(newTickets.map(t => [t.id, t])) };
-                    break;
-            }
-        }
-        case ActionConstants.COMMENT_ON_TICKET: {
+        case ActionConstants.GET_TICKETS: return handleNewTickets(action.status, tickets, action.response.tickets); break;
+        case ActionConstants.CREATE_AUCTION: 
+            const auctionedTicket = action.response.auction ? action.response.auction.ticket_set.bid_limits[0].ticket_snapshot.ticket : null;
+            return handleCreateAuction(action.status, tickets, auctionedTicket);
+            break;
+        case ActionConstants.COMMENT_ON_TICKET:
             // on pending, the comment is not nested in a comment object, but it is on response (success)
             // hence the weird or statement for the last argument in the below function
             return handleCommentOnTicket(action.status, tickets, action.response.comment || action.response);
             break;
-        }
+        case ActionConstants.CREATE_TICKET: 
+            // the fact that we have to have an OR between internal ticket and github ticket below suggests that
+            // we maybe should separate the CREATE_TICKET action into CREATE_INTERNAL_TICKET and CREATE_GITHUB_TICKET
+            // actions. Though it's not a big deal for now...
+            return handleNewTicket(action.status, tickets, action.response.internal_ticket || action.response.github_ticket); break;
         case ActionConstants.LOGOUT: return initialTickets; break;
         default: return tickets; break;
     }
+}
+
+function handleNewTicket(requestStatus, oldTickets, newTicket) {
+    switch (requestStatus) {
+        case PENDING: return Object.assign({}, oldTickets, { isFetching: true }); break;
+        case ERROR: return Object.assign({}, oldTickets, { isFetching: false }); break;
+        case SUCCESS:
+            const newTickets = Object.assign({}, oldTickets, { isFetching: false });
+            newTickets.items.set(newTicket.id, newTicket); 
+            return newTickets;
+            break;
+    }
+}
+
+function handleCreateAuction(requestStatus, oldTickets, auctionedTicket) {
+    switch (requestStatus) {
+        case PENDING: return Object.assign({}, oldTickets, { isFetching: true }); break;
+        case ERROR: return Object.assign({}, oldTickets, { isFetching: false }); break;
+        case SUCCESS:
+            const newTickets = Array.from(oldTickets.items.values()).filter(ticket => ticket.id != auctionedTicket.id);
+            return { isFetching: false, items: new Map(newTickets.map(t => [t.id, t])) };
+            break;
+    }
+}
+
+function handleNewTickets(requestStatus, oldTickets, newTickets) {
+    switch (requestStatus) {
+        case PENDING: return Object.assign({}, oldTickets, { isFetching: true }); break;
+        case SUCCESS:
+            return { isFetching: false, items: new Map(newTickets.filter(_shouldBeVisible).map(t => [t.id, t])) }
+    }
+
 }
 
 function handleCommentOnTicket(requestStatus, tickets, comment) {

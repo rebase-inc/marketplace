@@ -22,18 +22,11 @@ export default class ImportProjectModal extends Component {
         this.props.actions.getGithubAccounts();
     }
 
-    componentDidUpdate() {
-        if (this.state.markedForClose && !this.props.githubAccounts.isFetching) {
-            this.props.close();
-        }
-    }
-
     constructor(props, context) {
         super(props, context);
         this.componentDidMount = this.componentDidMount.bind(this);
         this.componentDidUpdate = this.componentDidUpdate.bind(this);
         this.toggleProject = this.toggleProject.bind(this);
-        this.state = { markedForClose: false };
     }
 
     toggleProject(project) {
@@ -54,9 +47,8 @@ export default class ImportProjectModal extends Component {
             );
         }
 
-        // reduce repos from all accounts into one array
         return (
-            <ModalContainer close={close}>
+            <ModalContainer close={close} >
                 <h3>Select Project(s) to Import</h3>
                 { githubAccounts.isFetching ?
                     <LoadingAnimation /> :
