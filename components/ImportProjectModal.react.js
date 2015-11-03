@@ -13,7 +13,6 @@ import * as GithubAccountActions from '../actions/GithubAccountActions';
 
 export default class ImportProjectModal extends Component {
     static propTypes =  {
-        projects: PropTypes.object.isRequired,
         close: PropTypes.func.isRequired,
         githubAccounts: PropTypes.object.isRequired,
     }
@@ -27,6 +26,13 @@ export default class ImportProjectModal extends Component {
         this.componentDidMount = this.componentDidMount.bind(this);
         this.componentDidUpdate = this.componentDidUpdate.bind(this);
         this.toggleProject = this.toggleProject.bind(this);
+        this.state = { markedForClose: false };
+    }
+
+    componentDidUpdate() {
+        if (this.state.markedForClose && !this.props.githubAccounts.isLoading) {
+            this.props.close();
+        }
     }
 
     toggleProject(project) {
