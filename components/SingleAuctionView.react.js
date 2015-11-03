@@ -47,7 +47,7 @@ export default class SingleAuctionView extends Component {
                     unselect={this.state.showTalent ? () => this.setState({ showTalent: false }) : unselect}
                     toggleDetails={this.toggleDetails}>
                     { roles.items.get(user.current_role.id).type == 'manager' ?
-                        <button onClick={() => this.setState({ showTalent: true })}>View Talent</button> :
+                        <button onClick={() => this.setState({ showTalent: true })}>View Developers</button> :
                         <button onClick={() => this.setState({ modalOpen: true })}>Bid Now</button> }
                 </TicketHeader>
                 <TicketDetails hidden={!this.state.detailsOpen} ticket={auction.ticket} />

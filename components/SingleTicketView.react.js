@@ -37,7 +37,7 @@ export default class SingleTicketView extends Component {
             <div className='ticketView'>
                 { this.state.modalOpen ? <CreateAuctionModal isLoading={ticket.isFetching} close={() => this.setState({ modalOpen: false })} create={createAuction}/> : null }
                 <TicketHeader unselect={unselect} title={ticket.title} toggleDetails={this.toggleDetails}>
-                    { roles.items.get(user.current_role.id).type == 'manager' ? <button onClick={() => this.setState({ modalOpen: true })}>Find Talent</button> : null}
+                    { roles.items.get(user.current_role.id).type == 'manager' ? <button onClick={() => this.setState({ modalOpen: true })}>Find Developers</button> : null}
                 </TicketHeader>
                 <TicketDetails hidden={!this.state.detailsOpen} ticket={ticket} />
                 <CommentList comments={ticket.comments}/>
