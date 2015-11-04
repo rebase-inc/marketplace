@@ -36,7 +36,7 @@ export default class ProjectView extends Component {
     render() {
         const { roles } = this.props;
         return (
-            <div className='projectView'>
+            <div className='contentView' id='projectView'>
                 {
                     () => {
                         switch (this.state.modalType) {

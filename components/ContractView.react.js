@@ -53,7 +53,7 @@ export default class ContractView extends Component {
                 role={roles.items.get(user.current_role.id)}/>;
         } else {
             return (
-                <div className='ticketView'>
+                <div className='contentView'>
                     <SearchBar searchText={this.state.searchText} onUserInput={this.handleUserInput }/>
                     <ContractList select={actions.selectContract} user={user} roles={roles} contracts={Array.from(contracts.items.values())} />
                 </div>

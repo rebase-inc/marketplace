@@ -1,0 +1,49 @@
+#profileView input {
+    text-align: left;
+    height: 50px;
+    font-size: 16px;
+    border: none;
+    border-bottom: 1px solid #BFC4CB;
+    padding-top: 8px;
+    background-color: transparent;
+    display: block;
+    margin: 14px auto;
+    width: 360px;
+}
+
+#profileView input:focus {
+    border-bottom: 1px solid #1C2D41;
+    transition: border 500ms;
+}
+
+#profileView button {
+    display: block;
+    margin: 56px auto;
+    width: 360px;
+    height: 50px;
+}
+
+#profileView .profilePicture {
+    display: block;
+    margin: 4px auto;
+    height: 70px;
+    width: 70px;
+    cursor: pointer;
+}
+
+#profileView h5 {
+    margin: 0 auto;
+    text-align: center;
+    font-size: 10px;
+    opacity: 0.6;
+    cursor: pointer;
+}
+
+#profileView > .profileSettings {
+    display: block;
+    position: absolute;
+    margin: 0 auto;
+    top: 50%;
+    left: 50%;
+    transform: translateX(-50%) translateY(-50%);
+}

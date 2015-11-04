@@ -1,0 +1,18 @@
+.ratingStars {
+    height: 14px;
+}
+
+.ratingStars > .label {
+    font-size: 10px;
+    width: 40px;
+    color: #CFD9E6;
+    vertical-align: top;
+}
+
+.ratingStars > .label:first-child {
+    text-align: right;
+}
+
+.ratingStars > .label:last-child {
+    text-align: left;
+}

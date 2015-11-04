@@ -32,14 +32,6 @@ input[type=checkbox]:checked + label {
     background-size: contain;
 }
 
-.ticketView, .auctionView, .contractView, .reviewView, .profileView, .projectView, #nothingHere {
-    position: relative;
-    display: block;
-    float: left;
-    width: calc(100% - 200px);
-    height: 100%;
-}
-
 .contentList {
     display: block;
     border-collapse: collapse;
@@ -187,31 +179,6 @@ tr.auction > td.findTalentPanel:hover {
     font-size: 14px;
 }
 
-.ratingStars {
-    padding-top: 4px;
-    display: inline-block;
-}
-
-.ratingStars.dynamic > svg {
-    cursor: pointer;
-}
-
-.ratingStars > svg, .ratingStars > span {
-    height: 10px;
-    padding: 2px;
-    font-size: 10px;
-    color: #CFD9E6;
-    vertical-align: top;
-}
-
-.ratingStars > span {
-    width: 40px;
-}
-
-.modalView .ratingStars {
-    padding-top: 10px;
-}
-
 #modalDialog > svg.loadingAnimation {
     height: 30px;
 }
@@ -247,36 +214,6 @@ tr.auction > td.findTalentPanel:hover {
 .talentScore > .text {
     font-size: 8px;
     display: block;
-}
-
-.profileView > .profileSettings, .projectView > .projectInfo {
-    display: block;
-    position: absolute;
-    margin: 0 auto;
-    top: 50%;
-    left: 50%;
-    transform: translateX(-50%) translateY(-50%);
-}
-
-.projectView > .projectInfo > .projectList {
-    max-height: 500px;
-    overflow: scroll;
-}
-
-.projectView .projectDetails {
-    display: inline-block;
-    float: left;
-    padding-top: 20px;
-}
-
-.projectView .projectGraph svg text {
-    transition: opacity 500ms;
-    opacity: 0;
-}
-
-.projectView .projectGraph:hover svg text {
-    transition: opacity 500ms;
-    opacity: 1;
 }
 
 .projectGraph > .graphLabels {
@@ -366,89 +303,6 @@ tr.auction > td.findTalentPanel:hover {
     opacity: 1;
     transition: 500ms opacity;
 }
-
-.projectView .project {
-    overflow: auto;
-}
-
-.projectView .projectDetails span {
-    display: block;
-    font-size: 32px;
-}
-
-.projectView .projectDetails span:first-child {
-    transform: translateY(8px);
-    font-size: 14px;
-    padding-left: 1px;
-    opacity: 0.5;
-}
-
-.projectView .projectDetails span:last-child {
-    font-size: 10px;
-    padding-left: 2px;
-    color: hsla(351, 50%, 50%, 1);
-    cursor: pointer;
-}
-
-.projectView .projectGraph {
-    display: inline-block;
-    float: left;
-    padding-right: 20px;
-}
-
-.profileView input {
-    text-align: left;
-    height: 50px;
-    font-size: 16px;
-    border: none;
-    border-bottom: 1px solid #BFC4CB;
-    padding-top: 8px;
-    background-color: transparent;
-    display: block;
-    margin: 14px auto;
-    width: 360px;
-}
-
-.profileView input:focus {
-    border-bottom: 1px solid #1C2D41;
-    transition: border 500ms;
-}
-
-.profileView button {
-    display: block;
-    margin: 56px auto;
-    width: 360px;
-    height: 50px;
-}
-
-.profileView .profilePicture {
-    display: block;
-    margin: 4px auto;
-    height: 70px;
-    width: 70px;
-    cursor: pointer;
-}
-
-.profileView h5, .projectView h5 {
-    margin: 0 auto;
-    text-align: center;
-    font-size: 10px;
-    opacity: 0.6;
-    cursor: pointer;
-}
-
-.projectView .addNewProject {
-    padding: 10px;
-}
-
-.projectView .addNewProject svg {
-    display: block;
-    margin: 0 auto;
-    text-align: center;
-    padding: 5px;
-    cursor: pointer;
-}
-
 svg.loadingAnimation rect {
     animation: bounceBars 1s linear infinite;
 }

@@ -32,7 +32,7 @@ export default class SingleReviewView extends Component {
         const { user, roles, review, unselect, submitComment } = this.props;
 
         return (
-            <div className='ticketView'>
+            <div className='contentView'>
                 <TicketHeader title={review.ticket.title} unselect={unselect} toggleDetails={this.toggleDetails} />
                 <TicketDetails hidden={!this.state.detailsOpen} ticket={review.ticket} />
                 <CommentList comments={review.ticket.comments}/>

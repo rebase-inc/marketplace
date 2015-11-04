@@ -60,7 +60,7 @@ export default class TicketView extends Component {
                     user={user} roles={roles} />;
         } else {
             return (
-                <div className='ticketView'>
+                <div className='contentView'>
                     <SearchBar searchText={this.state.searchText} onUserInput={this.handleUserInput}>
                         <AddTicket onClick={() => this.setState({ modalOpen: true })}/>
                     </SearchBar>

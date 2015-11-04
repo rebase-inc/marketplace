@@ -54,7 +54,7 @@ export default class AuctionView extends Component {
                 user={user} roles={roles}/>;
         } else {
             return (
-                <div className='auctionView'>
+                <div className='contentView'>
                     <SearchBar searchText={this.state.searchText} onUserInput={this.handleUserInput} />
                     <AuctionList select={actions.selectAuction} user={user} roles={roles} auctions={Array.from(auctions.items.values())} />
                 </div>

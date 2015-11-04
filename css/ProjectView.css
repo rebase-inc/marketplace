@@ -1,0 +1,78 @@
+#projectView .project {
+    overflow: auto;
+}
+
+#projectView .projectDetails span {
+    display: block;
+    font-size: 32px;
+}
+
+#projectView .projectDetails span:first-child {
+    transform: translateY(8px);
+    font-size: 14px;
+    padding-left: 1px;
+    opacity: 0.5;
+}
+
+#projectView .projectDetails span:last-child {
+    font-size: 10px;
+    padding-left: 2px;
+    color: hsla(351, 50%, 50%, 1);
+    cursor: pointer;
+}
+
+#projectView .projectGraph {
+    display: inline-block;
+    float: left;
+    padding-right: 20px;
+}
+
+#projectView .addNewProject {
+    padding: 10px;
+}
+
+#projectView .addNewProject svg {
+    display: block;
+    margin: 0 auto;
+    text-align: center;
+    padding: 5px;
+    cursor: pointer;
+}
+
+#projectView > .projectInfo {
+    display: block;
+    position: absolute;
+    margin: 0 auto;
+    top: 50%;
+    left: 50%;
+    transform: translateX(-50%) translateY(-50%);
+}
+
+#projectView > .projectInfo > .projectList {
+    max-height: 500px;
+    overflow: scroll;
+}
+
+#projectView .projectDetails {
+    display: inline-block;
+    float: left;
+    padding-top: 20px;
+}
+
+#projectView .projectGraph svg text {
+    transition: opacity 500ms;
+    opacity: 0;
+}
+
+#projectView .projectGraph:hover svg text {
+    transition: opacity 500ms;
+    opacity: 1;
+}
+
+#projectView h5 {
+    margin: 0 auto;
+    text-align: center;
+    font-size: 10px;
+    opacity: 0.6;
+    cursor: pointer;
+}

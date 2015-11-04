@@ -1,0 +1,57 @@
+#commentBox {
+    width: 100%;
+    bottom: 0;
+    position: absolute;
+    height: 130px;
+    background-color: hsla(204, 45%, 98%, 1);
+}
+
+#commentBox > textarea {
+    margin: 20px;
+    margin-bottom: 15px;
+    height: calc(100% - 40px);
+    width: calc(100% - 40px);
+    resize: none;
+    border: 1px solid hsla(199, 19%, 78%, 1);
+    border-radius: 4px;
+    box-sizing: border-box;
+    background-color: hsla(204, 45%, 99%, 1);
+    float: left;
+}
+
+#commentBox.inProgress > textarea {
+    width: calc(100% - 160px);
+}
+
+#commentBox > #commentSubmissionButtons {
+    width: 100px;
+    height: calc(100% - 40px);
+    margin-top: 20px;
+    margin-bottom: 15px;
+    float: left;
+    display: inline-block;
+}
+
+#commentBox > #commentSubmissionButtons > button {
+    width: 100%;
+    height: calc(50% - 6px);
+    text-transform: uppercase;
+    border: none;
+    color: hsla(204, 45%, 98%, 1);
+    border-radius: 4px;
+    cursor: pointer;
+    margin: 0;
+}
+
+
+#commentBox > #commentSubmissionButtons > button:first-of-type {
+    margin-bottom: 6px;
+    background-color: hsla(167, 48%, 49%, 1);
+}
+
+#commentBox > #commentSubmissionButtons > button:last-of-type {
+    margin-top: 6px;
+    background-color: hsla(204, 8%, 88%, 1);
+}
+
+

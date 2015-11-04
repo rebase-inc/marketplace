@@ -40,7 +40,7 @@ export default class SingleAuctionView extends Component {
         // TODO: Only display 'View Talent' button when not showing the FindTalentView
         // TODO: Build components ontop of TicketHeader like AuctionHeader, ContractHeader, etc (and probably rename TicketHeader -> ContentHeader)
         return (
-            <div className='ticketView'>
+            <div className='contentView'>
                 { this.state.modalOpen ? <BidModal auction={auction} bid={bid} close={() => this.setState({ modalOpen: false})}/> : null }
                 <TicketHeader
                     title={auction.ticket.title}

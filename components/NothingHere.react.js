@@ -13,7 +13,7 @@ var NothingHere = React.createClass({
     },
     render: function() {
         return (
-            <div id='nothingHere'>
+            <div className='contentView' id='nothingHere'>
                 <div id='opacityMask' className={!!this.state.mounted ? 'fade-away' : ''} />
                 <div id='content'>
                     {this.props.children}

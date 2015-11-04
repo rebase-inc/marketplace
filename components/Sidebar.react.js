@@ -5,7 +5,7 @@ import { bindActionCreators } from 'redux';
 import { Logo, ProfilePicture, Dropdown } from './Icons.react';
 
 import { ViewTypes, ContractorViews, ManagerViews } from '../constants/ViewConstants';
-import { PROFILE, PROJECTS, WORK_HISTORY, BILLING_AND_PAYMENTS } from '../constants/ViewConstants';
+import { PROFILE, PROJECTS, DEVELOPER_PROFILE, BILLING_AND_PAYMENTS } from '../constants/ViewConstants';
 
 export default class Sidebar extends Component {
     static propTypes = {
@@ -97,7 +97,7 @@ var ProfileOptions = React.createClass({
                 <ul>
                     <li onClick={() => actions.selectView(PROFILE)}>Profile</li>
                     <li onClick={() => actions.selectView(PROJECTS)}>Projects</li>
-                    <li onClick={() => actions.selectView(WORK_HISTORY)}>Work History</li>
+                    <li onClick={() => actions.selectView(DEVELOPER_PROFILE)}>Developer Profile</li>
                     <li onClick={() => actions.selectView(BILLING_AND_PAYMENTS)}>Billing and Payments</li>
                     <li onClick={actions.logout}>Sign Out</li>
                 </ul>

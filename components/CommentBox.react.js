@@ -14,7 +14,7 @@ export default class CommentBox extends Component {
     render() {
         const { submit } = this.props;
         return (
-            <div id='newCommentBox' className={(this.state.focused || this.state.text.length) ? 'inProgress' : ''}>
+            <div id='commentBox' className={(this.state.focused || this.state.text.length) ? 'inProgress' : ''}>
             <textarea
                 ref='comment' type='text' placeholder='Leave a comment'
                 value={this.state.text}
