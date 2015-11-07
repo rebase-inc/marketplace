@@ -37,7 +37,8 @@ export default class RadarChart {
                 .attr('transform', 'translate(' + config.marginLeft + ',' + config.marginTop + ')');
 
         const circleElements = g.selectAll('circle')
-            .data([{ radius: 0.89, width: '8px'}, { radius: 0.99, width: '4px' }])
+            //.data([{ radius: 0.89, width: '8px'}, { radius: 0.99, width: '4px' }])
+            .data([{ radius: 1, width: '1px'}, { radius: 0.70, width: '1px' }, { radius: 0.4, width: '1px' }])
             .enter()
             .append('circle')
             .attr('cx', config.radius)
@@ -93,9 +94,17 @@ export default class RadarChart {
              .data([values])
              .enter()
              .append('polygon')
-             .attr('points', data => data.reduce((prev, curr, ind) => prev + xValue(ind, curr/config.maxValue) + ',' + yValue(ind, curr/config.maxValue) + ' ', ''))
              .style('fill', '#5FC0AA')
-             .style('fill-opacity', '0.7');
+             .style('fill-opacity', '0.7')
+             .on('mouseover', function() {
+                 d3.select(this).transition(300).style('fill-opacity', 1);
+             })
+             .on('mouseout', function() {
+                 d3.select(this).transition(300).style('fill-opacity', 0.7);
+             })
+             .attr('points', data => data.reduce((prev, curr, ind) => prev + xValue(ind, 0) + ',' + yValue(ind, 0) + ' ', ''))
+             .transition().duration(800).delay(100)
+             .attr('points', data => data.reduce((prev, curr, ind) => prev + xValue(ind, curr/config.maxValue) + ',' + yValue(ind, curr/config.maxValue) + ' ', ''))
 
         const nodes = g.selectAll('.node')
             .data(values)
@@ -103,10 +112,13 @@ export default class RadarChart {
             .append('circle')
             .attr('class', 'node')
             .attr('r', 4)
-            .attr('cx', (data, ind) => xValue(ind, data/config.maxValue))
-            .attr('cy', (data, ind) => yValue(ind, data/config.maxValue))
             .attr('fill', '#5FC0AA')
             .style('stroke', '#F7FAFC')
-            .style('stroke-width', '1px');
+            .style('stroke-width', '1px')
+            .attr('cx', (data, ind) => xValue(ind, 0))
+            .attr('cy', (data, ind) => yValue(ind, 0))
+            .transition().duration(800).delay(100)
+            .attr('cx', (data, ind) => xValue(ind, data/config.maxValue))
+            .attr('cy', (data, ind) => yValue(ind, data/config.maxValue))
     }
 }
