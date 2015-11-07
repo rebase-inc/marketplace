@@ -15,29 +15,27 @@ export default class RadarChart {
             axes.push(key);
             values.push(value);
         }
-        const config = {
+        const config = Object.assign({
             radius: null,
             width: 200,
             height: 200,
+            fontSize: 18,
             marginTop: 40,
             marginBottom: 40,
             marginLeft: 80,
             marginRight: 80,
             maxValue: 1.0,
             areaOpacity: 0.5,
-            color: d3.scale.category10()
-        };
+        }, dimensions);
         config.radius = Math.max(config.width/2, config.height/2)
 
         const g = d3.select(element)
-                .append("svg")
-                .attr("width", config.width + config.marginLeft + config.marginRight)
-                .attr("height", config.height + config.marginTop + config.marginBottom)
-                .append("g")
+                .attr('width', config.width + config.marginLeft + config.marginRight)
+                .attr('height', config.height + config.marginTop + config.marginBottom)
+                .append('g')
                 .attr('transform', 'translate(' + config.marginLeft + ',' + config.marginTop + ')');
 
         const circleElements = g.selectAll('circle')
-            //.data([{ radius: 0.89, width: '8px'}, { radius: 0.99, width: '4px' }])
             .data([{ radius: 1, width: '1px'}, { radius: 0.70, width: '1px' }, { radius: 0.4, width: '1px' }])
             .enter()
             .append('circle')
@@ -86,9 +84,8 @@ export default class RadarChart {
             .attr('dominant-baseline', 'middle')
             .attr('x', (data, ind) => xValue(ind, 1.15))
             .attr('y', (data, ind) => yValue(ind, 1.15))
-            .style("fill", "#1A2B3D");
-
-
+            .style("fill", "#1A2B3D")
+            .style('font-size', config.fontSize);
 
         g.selectAll('.area')
              .data([values])
@@ -96,12 +93,6 @@ export default class RadarChart {
              .append('polygon')
              .style('fill', '#5FC0AA')
              .style('fill-opacity', '0.7')
-             .on('mouseover', function() {
-                 d3.select(this).transition(300).style('fill-opacity', 1);
-             })
-             .on('mouseout', function() {
-                 d3.select(this).transition(300).style('fill-opacity', 0.7);
-             })
              .attr('points', data => data.reduce((prev, curr, ind) => prev + xValue(ind, 0) + ',' + yValue(ind, 0) + ' ', ''))
              .transition().duration(800).delay(100)
              .attr('points', data => data.reduce((prev, curr, ind) => prev + xValue(ind, curr/config.maxValue) + ',' + yValue(ind, curr/config.maxValue) + ' ', ''))
@@ -119,6 +110,37 @@ export default class RadarChart {
             .attr('cy', (data, ind) => yValue(ind, 0))
             .transition().duration(800).delay(100)
             .attr('cx', (data, ind) => xValue(ind, data/config.maxValue))
-            .attr('cy', (data, ind) => yValue(ind, data/config.maxValue))
+            .attr('cy', (data, ind) => yValue(ind, data/config.maxValue));
+
+        d3.select(element).attr('pointer-events', 'none');
+        d3.select(element).transition().delay(900).attr('pointer-events', 'all');
+
+        let invisibleRectangle = d3.select(element).append('rect')
+            .style('visibility', 'hidden')
+            .attr('x', 0)
+            .attr('y', 0)
+            .attr('width', config.width + config.marginLeft + config.marginRight)
+            .attr('height', config.height + config.marginTop + config.marginBottom);
+
+        invisibleRectangle.on('mousemove', function() {
+            let position = d3.mouse(this);
+            let x = position[0] - config.width/2 - config.marginLeft;
+            let y = position[1] - config.height/2 - config.marginTop;
+            let angle = Math.atan(-y/x);
+            if (x >= 0) { angle = angle + 3*Math.PI/2; }
+            else { angle = angle + Math.PI/2; }
+            let anglePerAxis = 2*Math.PI/axes.length;
+            let nearestAxis = Math.round(angle/anglePerAxis);
+
+            d3.selectAll('.node').filter(function(data, ind) { return d3.select(this).attr('r') == 7 && ind != nearestAxis; })
+                .transition().attr('r', 4);
+            d3.selectAll('.node').filter(function(data, ind) { return d3.select(this).attr('r') == 4 && ind == nearestAxis; })
+                .transition().attr('r', 7);
+            d3.selectAll('.node').filter(function(data, ind) { return d3.select(this).attr('r') == 7 && ind != nearestAxis; })
+                .transition().attr('r', 4);
+            d3.selectAll('.node').filter(function(data, ind) { return d3.select(this).attr('r') == 4 && ind == nearestAxis; })
+                .transition().attr('r', 7);
+        });
+        invisibleRectangle.on('mouseout', () => d3.selectAll('.node').transition(300).attr('r', 4));
     }
 }

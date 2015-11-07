@@ -15,12 +15,12 @@ export default class SkillsRadar extends Component {
 
     componentDidMount() {
         let element = ReactDOM.findDOMNode(this);
-        new RadarChart(element, {}, this.props.skills);
+        new RadarChart(element, {height: 160, width: 160, fontSize: 14}, this.props.skills);
     }
 
     render() {
         return (
-            <div className='skillsRadar'/>
+            <svg className='skillsRadar'/>
         );
     }
 };
