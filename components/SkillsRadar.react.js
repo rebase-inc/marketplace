@@ -15,7 +15,8 @@ export default class SkillsRadar extends Component {
 
     componentDidMount() {
         let element = ReactDOM.findDOMNode(this);
-        new RadarChart(element, {height: 160, width: 160, fontSize: 14}, this.props.skills);
+        let radii = [{ radius: 1, width: 0.04}, { radius: 0.88, width: 0.10 }, { radius: 0.3, width: 0.70 }];
+        new RadarChart(element, {height: 140, width: 140, fontSize: 14, innerRadii: radii}, this.props.skills);
     }
 
     render() {

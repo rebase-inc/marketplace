@@ -1,12 +1,3 @@
-// this uses chart.js, which is canvas based, as opposed to d3js, which is svg based.
-// TODO: Do some research into which solution better covers all of our use cases
-// and performs well enough as to not worry about it, and use one or the other
-// for every charting purpose (e.g., donut chart). My uneducated guess is that
-// chart.js is a better solution, as we don't really do any fancy DOM manipulations
-// and are using d3 mostly as a charting library.
-
-import Chart from 'chart.js';
-
 export default class RadarChart {
     constructor(element, dimensions, data) {
         var axes = [];
@@ -25,7 +16,8 @@ export default class RadarChart {
             marginLeft: 80,
             marginRight: 80,
             maxValue: 1.0,
-            areaOpacity: 0.5,
+            areaOpacity: 0.7,
+            innerRadii: [{ radius: 1, width: '1px'}, { radius: 0.7, width: '1px' }, { radius: 0.4, width: '1px' }],
         }, dimensions);
         config.radius = Math.max(config.width/2, config.height/2)
 
@@ -36,15 +28,15 @@ export default class RadarChart {
                 .attr('transform', 'translate(' + config.marginLeft + ',' + config.marginTop + ')');
 
         const circleElements = g.selectAll('circle')
-            .data([{ radius: 1, width: '1px'}, { radius: 0.70, width: '1px' }, { radius: 0.4, width: '1px' }])
+            .data(config.innerRadii)
             .enter()
             .append('circle')
             .attr('cx', config.radius)
             .attr('cy', config.radius)
             .attr('r', d => d.radius*config.radius)
             .attr('fill', 'none')
-            .style('stroke-width', d => d.width)
-            .style("stroke", "#E6E8EB");
+            .style('stroke-width', d => typeof(d.width) == 'number' ? config.radius*d.width : d.width)
+            .style("stroke", "#F0F2F5");
 
         function xValue(index, scalingFactor) {
             scalingFactor = typeof(scalingFactor) == 'undefined' ? 1 : scalingFactor;
@@ -92,7 +84,7 @@ export default class RadarChart {
              .enter()
              .append('polygon')
              .style('fill', '#5FC0AA')
-             .style('fill-opacity', '0.7')
+             .style('fill-opacity', config.areaOpacity)
              .attr('points', data => data.reduce((prev, curr, ind) => prev + xValue(ind, 0) + ',' + yValue(ind, 0) + ' ', ''))
              .transition().duration(800).delay(100)
              .attr('points', data => data.reduce((prev, curr, ind) => prev + xValue(ind, curr/config.maxValue) + ',' + yValue(ind, curr/config.maxValue) + ' ', ''))
@@ -133,13 +125,9 @@ export default class RadarChart {
             let nearestAxis = Math.round(angle/anglePerAxis);
 
             d3.selectAll('.node').filter(function(data, ind) { return d3.select(this).attr('r') == 7 && ind != nearestAxis; })
-                .transition().attr('r', 4);
+                .transition().ease('quad').attr('r', 4);
             d3.selectAll('.node').filter(function(data, ind) { return d3.select(this).attr('r') == 4 && ind == nearestAxis; })
-                .transition().attr('r', 7);
-            d3.selectAll('.node').filter(function(data, ind) { return d3.select(this).attr('r') == 7 && ind != nearestAxis; })
-                .transition().attr('r', 4);
-            d3.selectAll('.node').filter(function(data, ind) { return d3.select(this).attr('r') == 4 && ind == nearestAxis; })
-                .transition().attr('r', 7);
+                .transition().ease('elastic').attr('r', 7);
         });
         invisibleRectangle.on('mouseout', () => d3.selectAll('.node').transition(300).attr('r', 4));
     }

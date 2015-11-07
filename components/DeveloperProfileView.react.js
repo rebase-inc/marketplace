@@ -19,7 +19,7 @@ export default class DeveloperProfileView extends Component {
             <div className='contentView' id='developerProfileView'>
                 <h1>{'Andrew Millspaugh'}</h1>
                 <RatingStars colored={false} rating={4.5} /> 
-                <SkillsRadar skills={new Map([['java', 0.3], ['python', 0.9], ['go', 0.3], ['javascript', 0.6], ['c++', 0.2], ['scala', 0.6], ['css', 0.6]])} />
+                <SkillsRadar skills={new Map([['haskell', 0.7], ['java', 0.3], ['python', 0.9], ['go', 0.3], ['javascript', 0.6], ['c++', 0.2], ['scala', 0.6]])} />
             </div>
         );
     }

@@ -9,12 +9,13 @@
 #developerProfileView .ratingStars {
     font-size: 24px;
     height: 20px;
+    padding: 10px;
     display: block;
     margin: 0 auto;
 }
 
 #developerProfileView .skillsRadar {
-    padding: 30px;
+    padding: 20px;
     display: block;
     margin: 0 auto;
 }
