@@ -8,5 +8,6 @@ import './css/ContentView.css';
 import './css/ProjectView.css';
 import './css/ProfileView.css';
 import './css/CommentBox.css';
+import './css/DeveloperProfileView.css';
 
 ReactDOM.render(<App/>, document.getElementById('react-app'));

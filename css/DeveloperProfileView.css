@@ -1,0 +1,14 @@
+#developerProfileView h1 {
+    font-size: 24px;
+    display: block;
+    margin: 0 auto;
+    padding-top: 30px;
+    text-align: center;
+}
+
+#developerProfileView .ratingStars {
+    font-size: 24px;
+    height: 20px;
+    display: block;
+    margin: 0 auto;
+}

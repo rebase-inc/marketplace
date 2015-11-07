@@ -103,6 +103,7 @@ function handleCommentOnAuction(requestStatus, auctions, comment) {
         case ERROR: modifiedAuction = Object.assign({}, modifiedAuction, {isFetching: false}); break;
         case SUCCESS:
             modifiedAuction = addSyntheticProperties(Object.assign({}, modifiedAuction, {isFetching: false}));
+            modifiedAuction.ticket.comments = modifiedAuction.ticket.comments.map(c => c);
             modifiedAuction.ticket.comments.push(comment);
         break;
     }
@@ -114,7 +115,7 @@ function addSyntheticProperties(auction) {
     let newAuction = Object.assign({}, auction);
     Object.defineProperty(newAuction, 'ticket', {
         get: function() { return newAuction.ticket_set.bid_limits[0].ticket_snapshot.ticket; },
-        //set: function(ticket) { auction.ticket_set.bid_limits[0].ticket_snapshot.ticket = ticket; },
+        set: function(ticket) { newAuction.ticket_set.bid_limits[0].ticket_snapshot.ticket = ticket; },
     });
     Object.defineProperty(newAuction, 'contract', {
         get: function() { return newAuction.bids[0].contract; },

@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import ReactDOM from 'react-dom';
 
 import RatingStars from './RatingStars.react';
+import SkillsRadar from './SkillsRadar.react';
 
 export default class DeveloperProfileView extends Component {
     static propTypes = {
@@ -15,11 +16,10 @@ export default class DeveloperProfileView extends Component {
     
     render() {
         return (
-            <div className='projectView'>
-                <h2 style={{display: 'block', margin: '0 auto'}}>{'Andrew Millspaugh'}</h2>
+            <div className='contentView' id='developerProfileView'>
+                <h1>{'Andrew Millspaugh'}</h1>
                 <RatingStars colored={false} rating={4.5} /> 
-                <img style={{display: 'block', margin: '0 auto'}} src='../img/fakeRadar.png' />
-                <img style={{display: 'block', margin: '0 auto'}} src='../img/fakebarchart.png' />
+                <SkillsRadar skills={new Map([['python', 0.9], ['javascript', 0.3], ['go', 0.6], ['c++', 0.2], ['scala', 0.6], ['css', 0.6]])} />
             </div>
         );
     }

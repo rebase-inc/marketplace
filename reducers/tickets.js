@@ -69,6 +69,7 @@ function handleCommentOnTicket(requestStatus, tickets, comment) {
         case PENDING: modifiedTicket = Object.assign({}, modifiedTicket, {isFetching: true}); break;
         case ERROR: modifiedTicket = Object.assign({}, modifiedTicket, {isFetching: false}); break;
         case SUCCESS:
+            modifiedTicket.comments = modifiedTicket.comments.map(c => c);
             modifiedTicket.comments.push(comment);
             modifiedTicket = Object.assign({}, modifiedTicket, {isFetching: false});
         break;
