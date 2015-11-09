@@ -32,17 +32,22 @@ export class LineChart {
                 .style('font-size', Math.floor(dimensions.height/4))
                 .attr('class', className);
             graph.append("svg:path")
+                .attr("d", line(currentData.map(d => 0)))
+                .transition(800).delay(100)
                 .attr("d", line(currentData))
                 .attr('class', className);
             graph.selectAll(".point")
                 .data(currentData)
                 .enter().append("svg:circle")
                 .attr("cx", function(d, i) { return scale.x(i) })
-                .attr("cy", function(d, i) { return scale.y(d) })
                 .attr("r", function(d, i) { return 5 })
                 .style("stroke", 'transparent')
                 .style("stroke-width", 30)
                 .attr('class', className)
+                .attr("cy", function(d, i) { return scale.y(0) })
+                .transition(800).delay(100)
+                .attr("cy", function(d, i) { return scale.y(d) });
+            graph.selectAll(".point")
                 .on("mouseover", function(d,i) {
                     d3.select(this).transition()
                         .ease("elastic")
