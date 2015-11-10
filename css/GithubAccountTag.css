@@ -1,0 +1,26 @@
+.githubAccountTag {
+    cursor: pointer;
+}
+
+.githubAccountTag:hover rect {
+    fill: #6C88A8;
+}
+
+.githubAccountTag > .githubLogo {
+    float: left;
+    display: inline-block;
+    height: 24px;
+    padding: 3px;
+    fill: #F5F7FA;
+}
+
+.githubAccountTag > .title {
+    float: left;
+    display: inline-block;
+    text-align: left;
+    margin: 0;
+    font-size: 14px;
+    line-height: 18px;
+    padding: 6px;
+    padding-right: 10px;
+}

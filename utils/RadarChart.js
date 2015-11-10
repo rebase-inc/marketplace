@@ -1,5 +1,7 @@
+import d3 from 'd3';
+
 export default class RadarChart {
-    constructor(element, dimensions, data) {
+    constructor(element, properties, data) {
         var axes = [];
         var values = [];
         for (let [key, value] of data) {
@@ -18,7 +20,7 @@ export default class RadarChart {
             maxValue: 1.0,
             areaOpacity: 0.7,
             innerRadii: [{ radius: 1, width: '1px'}, { radius: 0.7, width: '1px' }, { radius: 0.4, width: '1px' }],
-        }, dimensions);
+        }, properties);
         config.radius = Math.max(config.width/2, config.height/2)
 
         const g = d3.select(element)

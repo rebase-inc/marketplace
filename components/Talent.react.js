@@ -1,7 +1,8 @@
 import React, { Component, PropTypes } from 'react';
 
 import RatingStars from './RatingStars.react';
-import { ApproveTalent, TalentScore } from './Icons.react';
+import TalentScore from './TalentScore.react';
+import ApproveTalentIcon from './ApproveTalentIcon.react';
 
 export default class Talent extends Component {
     static propTypes = { nomination: PropTypes.object.isRequired, }
@@ -12,7 +13,7 @@ export default class Talent extends Component {
         return (
             <tr className='nomination'>
                 <td className='actionPanel' onClick={approve}>
-                    <ApproveTalent auction={auction} nomination={nomination} />
+                    <ApproveTalentIcon auction={auction} nomination={nomination} />
                 </td>
                 <td className='talentPanel'>
                     <span>{nomination.contractor.user.first_name + ' ' + nomination.contractor.user.last_name}</span>

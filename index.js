@@ -9,5 +9,6 @@ import './css/ProjectView.css';
 import './css/ProfileView.css';
 import './css/CommentBox.css';
 import './css/DeveloperProfileView.css';
+import './css/GithubAccountTag.css';
 
 ReactDOM.render(<App/>, document.getElementById('react-app'));
