@@ -24,3 +24,24 @@
 #nothingHere > #content > button {
     font-size: 14px;
 }
+
+#nothingHere svg.desktop {
+    position: absolute;
+    top: 6%;
+    left: 12%;
+    width: 56%;
+}
+
+#nothingHere svg.keyboard {
+    position: absolute;
+    top: 60%;
+    left: 10%;
+    width: 54%;
+}
+
+#nothingHere svg.headphones {
+    position: absolute;
+    top: 50%;
+    left: 67%;
+    width: 25%;
+}
