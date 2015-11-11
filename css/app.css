@@ -602,11 +602,6 @@ img.profilePicture {
     height: 40px;
 }
 
-#nothingHere {
-    background: url('../img/desk-contents.svg') no-repeat center, url('../img/desk-background.svg') repeat-x bottom;
-    background-size: auto 90%, auto 100%;
-}
-
 #opacityMask {
     display: block;
     position: absolute;
@@ -620,33 +615,6 @@ img.profilePicture {
     transition: opacity 1200ms;
     transition-delay: 0;
     opacity: 0;
-}
-
-#nothingHere > #content {
-    top: 50%;
-    left: 50%;
-    width: 40%;
-    position: absolute;
-    transform: translateY(-80%) translateX(-50%);
-}
-
-#nothingHere > #content > * {
-    display: block;
-    margin: 10px auto;
-    text-align: center;
-}
-
-#nothingHere > #content > h3 {
-    font-size: 24px;
-}
-
-#nothingHere > #content > span {
-    font-size: 14;
-    opacity: 0.5;
-}
-
-#nothingHere > #content > button {
-    font-size: 14px;
 }
 
 #searchBox input {

@@ -1,26 +1,20 @@
-var React = require('react');
+import React, { Component, PropTypes } from 'react';
 
-var UserActions = require('../actions/UserActions');
+import DesktopComputerGraphic from './DesktopComputerGraphic.react';
+import KeyboardGraphic from './KeyboardGraphic.react';
+import HeadphonesGraphic from './HeadphonesGraphic.react';
 
-var ViewTypes = require('../constants/ViewConstants').ViewTypes;
-
-var NothingHere = React.createClass({
-    getInitialState: () => ({mounted: false}),
-    componentDidMount: function() {
-        setTimeout(function() {
-            !!this.isMounted() ?  this.setState({ mounted: true }) : null;
-        }.bind(this), 50); // animation hack
-    },
-    render: function() {
+export default class NothingHere extends Component {
+    render() {
         return (
             <div className='contentView' id='nothingHere'>
-                <div id='opacityMask' className={!!this.state.mounted ? 'fade-away' : ''} />
+                <DesktopComputerGraphic />
+                <KeyboardGraphic />
+                <HeadphonesGraphic />
                 <div id='content'>
                     {this.props.children}
                 </div>
            </div>
         );
     }
-});
-
-module.exports = NothingHere;
+};

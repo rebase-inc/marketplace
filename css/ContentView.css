@@ -5,3 +5,21 @@
     width: calc(100% - 200px);
     height: 100%;
 }
+
+.contentView svg.desktop {
+    position: absolute;
+    top: 10%;
+    left: 17%;
+}
+
+.contentView svg.keyboard {
+    position: absolute;
+    top: 60%;
+    left: 10%;
+}
+
+.contentView svg.headphones {
+    position: absolute;
+    top: 50%;
+    left: 67%;
+}

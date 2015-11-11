@@ -10,5 +10,6 @@ import './css/ProfileView.css';
 import './css/CommentBox.css';
 import './css/DeveloperProfileView.css';
 import './css/GithubAccountTag.css';
+import './css/NothingHere.css';
 
 ReactDOM.render(<App/>, document.getElementById('react-app'));

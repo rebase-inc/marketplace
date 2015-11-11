@@ -42,7 +42,7 @@ class RebaseApp extends Component {
                             case PROJECTS:
                                 return <ProjectView roles={Array.from(roles.items.values())} />; break;
                             case DEVELOPER_PROFILE:
-                                return <DeveloperProfileView />; break;
+                                return <DeveloperProfileView user={user} contractor={Array.from(roles.items.values()).find(r => r.type == 'contractor')} />; break;
                             default: throw 'Invalid view ' + view; break;
                         }
                     }()
