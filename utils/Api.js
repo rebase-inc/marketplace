@@ -3,9 +3,9 @@ import fetch from 'isomorphic-fetch';
 import ActionConstants from '../constants/ActionConstants';
 import { ERROR, PENDING, SUCCESS } from '../constants/RequestConstants';
 
-const BASE_URL = 'http://localhost:5000';
+const BASE_URL = '/api/v1';
 
-function handleStatus(response) {
+function handleStatus(response, redirect) {
     if (response.status >= 200 && response.status < 300) {
         return Promise.resolve(response)
     } else {
