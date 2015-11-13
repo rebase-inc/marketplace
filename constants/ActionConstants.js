@@ -43,6 +43,7 @@ let ReviewActions = keyMirror({
 
 let GithubAccountActions = keyMirror({
     GET_GITHUB_ACCOUNTS: null,
+    AUTHORIZE_GITHUB: null,
     GET_IMPORTABLE_REPOS: null,
     IMPORT_GITHUB_REPOS: null,
 });

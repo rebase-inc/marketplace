@@ -4,8 +4,9 @@ import ReactDOM from 'react-dom';
 import keymirror from 'keymirror';
 
 import ImportProjectModal from './ImportProjectModal.react';
+import LargePlusIcon from './LargePlusIcon.react';
 
-import { AddNewProject, ProjectGraph } from './Icons.react';
+import { ProjectGraph } from './Icons.react';
 const ModalTypes = keymirror({ ADD_PROJECT: null, DELETE_PROJECT: null });
 
 export default class ProjectView extends Component {
@@ -56,7 +57,7 @@ export default class ProjectView extends Component {
                     <div ref='projectList' className='projectList'>
                         { roles.map(this._makeProjectElement) }
                     </div>
-                    <AddNewProject onClick={() => this.setState({ modalType: ModalTypes.ADD_PROJECT})} />
+                    <LargePlusIcon onClick={() => this.setState({ modalType: ModalTypes.ADD_PROJECT})} text={'Add Project'}/>
                 </div>
             </div>
         );

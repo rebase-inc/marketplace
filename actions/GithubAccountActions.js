@@ -7,6 +7,10 @@ export function getGithubAccounts() {
     return dispatchedRequest('GET', '/github_accounts', ActionConstants.GET_GITHUB_ACCOUNTS);
 }
 
+export function analyzeGithubSkills() {
+    return dispatchedRequest('GET', '/github/analyze_skills', ActionConstants.ANALYZE_GITHUB_SKILLS);
+}
+
 export function getImportableRepos(githubAccount) {
     const url = '/github_accounts/' + githubAccount.id + '/importable_repos';
     return dispatchedRequest('GET', url, ActionConstants.GET_IMPORTABLE_REPOS);

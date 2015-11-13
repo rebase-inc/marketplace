@@ -34,7 +34,7 @@
     margin: 0 auto;
 }
 
-#developerProfileView .githubAccountTag {
+#developerProfileView .githubAccountTag, #developerProfileView .largePlusIcon {
     padding: 15px;
     display: block;
     margin-left: auto;
