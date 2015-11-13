@@ -37,6 +37,7 @@ export default class BidModal extends Component {
 
     render() {
         const { auction, bid, isLoading, minPrice, maxPrice, defaultPrice, sliderWidth, close } = this.props;
+        console.log('auction:', auction);
         if (!this.state.submitted || isLoading) {
             return (
                 <ModalContainer close={close}>
@@ -64,7 +65,7 @@ export default class BidModal extends Component {
                     <h3>Your bid was accepted!</h3>
                     <h4>Get started by cloning and running the tests</h4>
                     <div className='infoOrInput cloneInstructions'>
-                        $ git clone git@github.com:airpool/ios <br/>
+                        $ {auction.clone}<br/>
                         $ cd api && python deploy.py && python tests/run.py
                     </div>
                     <button onClick={() => selectContract(auction.bids[0].contract.id)}>Show task</button>
