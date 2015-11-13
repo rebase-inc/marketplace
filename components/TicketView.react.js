@@ -8,8 +8,7 @@ import NewTicketModal from './NewTicketModal.react';
 import TicketList from './TicketList.react';
 import SearchBar from './SearchBar.react';
 import NothingHere from './NothingHere.react';
-
-import { AddTicket } from './Icons.react';
+import PlusIcon from './PlusIcon.react';
 
 import * as TicketActions from '../actions/TicketActions';
 
@@ -62,7 +61,7 @@ export default class TicketView extends Component {
             return (
                 <div className='contentView'>
                     <SearchBar searchText={this.state.searchText} onUserInput={this.handleUserInput}>
-                        <AddTicket onClick={() => this.setState({ modalOpen: true })}/>
+                        <PlusIcon onClick={() => this.setState({ modalOpen: true })} text={'Add ticket'} />
                     </SearchBar>
                     <TicketList select={actions.selectTicket} tickets={Array.from(tickets.items.values())} />
                     { !!this.state.modalOpen ? <NewTicketModal 
