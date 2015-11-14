@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 
-import { Dropback } from './Icons.react';
+import DropbackIcon from './DropbackIcon.react';
+import ThreeDotsIcon from './ThreeDotsIcon.react';
 
 export default class TicketHeader extends Component {
     static propTypes = {
@@ -13,9 +14,9 @@ export default class TicketHeader extends Component {
         const { title, unselect, toggleDetails, children } = this.props; 
         return (
             <div id='itemHeader'>
-                <div onClick={unselect} className='backButton'><Dropback/></div>
+                <DropbackIcon onClick={unselect} />
                 { children }
-                <img onClick={toggleDetails} className='details' src='img/three-dots.svg'/>
+                <ThreeDotsIcon onClick={toggleDetails} />
                 <span className='title'>{title}</span>
             </div>
         );

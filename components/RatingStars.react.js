@@ -15,7 +15,7 @@ export default class RatingStars extends Component {
     static defaultProps = {
         dynamic: false,
         labeled: false,
-        colored: true,
+        colored: false,
         rating: 0,
     }
 

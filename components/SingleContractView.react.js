@@ -170,7 +170,7 @@ export class ContractManagerView extends Component {
         const { acceptWork, disputeWork, markWorkUnblocked, contract, unselect, ...props } = this.props;
         const closeModal = () => this.setState({ modalType: null });
         return (
-            <div className='contractView'>
+            <div className='contentView'>
                 {
                     () => {
                         switch(this.state.modalType) {
