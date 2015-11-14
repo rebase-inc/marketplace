@@ -32,9 +32,8 @@ export default class DeveloperProfileView extends Component {
             );
         }
         const skills = new Map(Object.keys(contractor.skill_set.skills).map(skill => [skill, contractor.skill_set.skills[skill]]));
-        //const githubAccount = !!contractor.remote_work_history ? user.github_accounts[0] : null;
+        const githubAccount = !!contractor.remote_work_history ? contractor.remote_work_history.github_accounts[0] : null;
 
-        const githubAccount = null;
         return (
             <div className='contentView' id='developerProfileView'>
                 <h1>{user.first_name + ' ' + user.last_name}</h1>
