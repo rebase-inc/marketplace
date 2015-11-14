@@ -60,11 +60,13 @@ export default class BidModal extends Component {
             );
         } else {
             // TODO: Get clone instructions from auction object
+            console.log('Auction:', auction);
             return (
                 <ModalContainer close={close}>
                     <h3>Your bid was accepted!</h3>
                     <h4>Get started by cloning and running the tests</h4>
                     <div className='infoOrInput cloneInstructions'>
+                        ERROR HERE
                         $ {auction.clone}<br/>
                         $ cd api && python deploy.py && python tests/run.py
                     </div>
