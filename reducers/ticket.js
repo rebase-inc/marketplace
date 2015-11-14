@@ -20,6 +20,11 @@ export default function ticket(ticket = initialTicket, action) {
                     break;
             }
         }
+        case ActionConstants.SELECT_VIEW: {
+            switch (action.status) {
+                case SUCCESS: return initialTicket; break;
+            }
+        }
         case ActionConstants.LOGOUT: return initialTicket; break;
         default: return ticket; break;
     }

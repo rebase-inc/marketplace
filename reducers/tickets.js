@@ -57,7 +57,6 @@ function handleNewTickets(requestStatus, oldTickets, newTickets) {
     switch (requestStatus) {
         case PENDING: return Object.assign({}, oldTickets, { isFetching: true }); break;
         case SUCCESS:
-            console.log('we got some new tickets: ', newTickets.length);
             return { isFetching: false, items: new Map(newTickets.filter(_shouldBeVisible).map(t => [t.id, t])) }
     }
 

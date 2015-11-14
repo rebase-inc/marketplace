@@ -20,6 +20,11 @@ export default function contract(contract = initialContract, action) {
                     break;
             }
         }
+        case ActionConstants.SELECT_VIEW: {
+            switch (action.status) {
+                case SUCCESS: return initialContract; break;
+            }
+        }
         case ActionConstants.LOGOUT: return initialContract; break;
         default: return contract; break;
     }
