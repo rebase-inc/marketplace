@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 
 import TicketHeader from './TicketHeader.react';
-import TicketDetails from './TicketDetails.react';
+import ReviewDetails from './ReviewDetails.react';
 import CommentList from './CommentList.react';
 import CommentBox from './CommentBox.react';
 
@@ -30,11 +30,11 @@ export default class SingleReviewView extends Component {
 
     render() {
         const { user, roles, review, unselect, submitComment } = this.props;
-
+        console.log('Review:', review);
         return (
             <div className='contentView'>
                 <TicketHeader title={review.ticket.title} unselect={unselect} toggleDetails={this.toggleDetails} />
-                <TicketDetails hidden={!this.state.detailsOpen} ticket={review.ticket} />
+                <ReviewDetails hidden={!this.state.detailsOpen} review={review} />
                 <CommentList comments={review.ticket.comments}/>
                 <CommentBox submit={submitComment} />
             </div>

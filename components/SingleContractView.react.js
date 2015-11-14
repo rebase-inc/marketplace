@@ -185,7 +185,7 @@ export class ContractManagerView extends Component {
                 <TicketHeader title={contract.ticket.title} unselect={unselect} toggleDetails={this.toggleDetails}>
                     { this._makeHeaderButtons(contract) }
                 </TicketHeader>
-                <TicketDetails hidden={!this.state.detailsOpen} ticket={contract.ticket} />
+                <ContractDetails hidden={!this.state.detailsOpen} contract={contract} />
                 <CommentList comments={contract.ticket.comments}/>
                 <CommentBox submit={() => alert.bind(null, 'oops')}/>
             </div>
