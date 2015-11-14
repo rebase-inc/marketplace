@@ -28,20 +28,20 @@
 #nothingHere svg.desktop {
     position: absolute;
     top: 6%;
-    left: 12%;
-    width: 56%;
+    left: 14%;
+    width: 45%;
 }
 
 #nothingHere svg.keyboard {
     position: absolute;
     top: 60%;
-    left: 10%;
-    width: 54%;
+    left: 12%;
+    width: 38%;
 }
 
 #nothingHere svg.headphones {
     position: absolute;
     top: 50%;
-    left: 67%;
-    width: 25%;
+    left: 62%;
+    width: 20%;
 }

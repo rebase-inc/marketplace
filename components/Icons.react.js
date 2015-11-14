@@ -3,15 +3,6 @@ import ReactDOM from 'react-dom';
 
 import { DonutChart, LineChart } from '../utils/Graph';
 
-function _dataURItoBlob(dataURI) {
-    var binary = atob(dataURI.split(',')[1]);
-    var array = [];
-    for(var i = 0; i < binary.length; i++) {
-        array.push(binary.charCodeAt(i));
-    }
-    return new Blob([new Uint8Array(array)], {type: 'image/jpeg'});
-}
-
 export class Timer extends Component {
     static propTypes = { expires: React.PropTypes.string.isRequired }
     constructor(props, context) {
@@ -116,76 +107,6 @@ export class Checkbox extends Component {
         );
     }
 };
-
-export class ProfilePicture extends Component {
-    static propTypes = {
-        dynamic: React.PropTypes.bool ,
-        user: React.PropTypes.object.isRequired,
-        uploadPhoto: React.PropTypes.func.isRequired,
-    };
-    static defaultProps = { dynamic: false };
-
-    openFileDialog() {
-        if (!this.props.dynamic) { return; }
-        let fileInput = ReactDOM.findDOMNode(this.refs.fileInput);
-        fileInput.value = null;
-        fileInput.click();
-    }
-
-    handleFile(event) {
-        let MAX_DIMENSION = 600;
-        let fileToUpload = event.target.files[0];
-
-        let img = document.createElement('img');
-        img.src = window.URL.createObjectURL(fileToUpload);
-        let canvas = document.createElement('canvas');
-        canvas.height = MAX_DIMENSION;
-        canvas.width = MAX_DIMENSION;
-        let ctx = canvas.getContext("2d");
-        ctx.drawImage(img, 0, 0);
-
-        img.onload = () => {
-            let size = Math.min(img.width, img.height);
-            let sourceX = (img.width - size)/2;
-            let sourceY = (img.height - size)/2;
-            ctx.drawImage(img, sourceX, sourceY, size, size, 0, 0, MAX_DIMENSION, MAX_DIMENSION);
-            let imgUrl = canvas.toDataURL('image/jpeg');
-            this.setState({ photo: imgUrl });
-            //UserActions.updateProfilePhoto(_dataURItoBlob(imgUrl));
-        }
-    }
-
-    render() {
-        const { user, dynamic } = this.props;
-        if (!!user.photo) {
-            return (
-                <div>
-                    <img ref='imgNode' className='profilePicture' onClick={this.openFileDialog} src={user.photo}/>
-                    { !!dynamic ? <h5 onClick={this.openFileDialog}>Change profile picture</h5> : null }
-                    <input type='file' ref='fileInput' style={{ display: 'none' }} onChange={this.handleFile} />
-                </div>
-            );
-        }
-        else {
-            let initials = user.first_name.charAt(0) + user.last_name.charAt(0);
-            return (
-                <div>
-                    <svg onClick={this.openFileDialog} className='profilePicture' width="140px" height="140px" viewBox="0 0 140 140" version="1.1">
-                        <g id="UI" stroke="none" strokeWidth="1" fill="none" fill-rule="evenodd">
-                            <circle id="Oval-276" fill="#718296" cx="70" cy="70" r="70"></circle>
-                            <text id="intials" x='70' y='70' fontFamily="Gotham Rounded" fontSize="54px" dy="18px" fill="#F5F7FA" textAnchor='middle'>
-                                {initials}
-                            </text>
-                        </g>
-                    </svg>
-                    {!!dynamic ? <h5>Change profile picture</h5> : null }
-                    <input type='file' ref='fileInput' style={{ display: 'none' }} onChange={this.handleFile} />
-                </div>
-            );
-        }
-    }
-}
-
 
 export class FindTalent extends Component {
     render() {
@@ -309,7 +230,7 @@ export class ProjectGraph extends Component {
 export class Logo extends Component {
     render() {
         return (
-            <svg width="59px" height="49px" viewBox="0 0 59 49">
+            <svg className='logo' width="59px" height="49px" viewBox="0 0 59 49">
                 <g stroke="none" strokeWidth="1" fill="none">
                     <path d="M39.4328849,0.332707025 L39.4328849,14.0498069 L19.9125,25.9848489 L19.9125,11.8787876 L39.4328849,0.332707025 Z" fill="#8499B1"></path>
                     <path d="M19.9125,11.8787879 L19.9125,25.9848485 L0,38.0924593 L0,24.3753594 L19.9125,11.8787879 Z" fill="#8499B1"></path>

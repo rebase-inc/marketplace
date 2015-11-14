@@ -192,63 +192,6 @@ html, body {
     margin: 0;
 }
 
-#roleSelector {
-    left: 0;
-    transition: 300ms height;
-    display: block;
-    background-color: hsla(212, 22%, 33%, 1);
-    cursor: pointer;
-    position: relative;
-    overflow: hidden;
-}
-
-#roleSelector .role {
-    height: 40px;
-    width: 100%;
-    display: block;
-}
-
-#roleSelector .role:hover {
-    background-color: hsla(212, 22%, 53%, 1);
-}
-
-#roleSelector > .role > div {
-    display: block;
-    text-align: center;
-    width: 90%;
-    margin: 0 auto;
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-    box-sizing: border-box;
-}
-
-#roleSelector .role > div:first-child {
-    padding-top: 5px;
-    line-height: 20px;
-    font-size: 16px;
-}
-
-#roleSelector .role > div:last-child {
-    line-height: 10px;
-    font-size: 10px;
-    opacity: 0.5;
-}
-
-#roleSelector .role > div:only-child {
-    line-height: 40px;
-    text-align: center;
-    width: 100%;
-}
-
-.logo {
-    width: 50px;
-    display: block;
-    margin: 0 auto;
-    margin-top: 20px;
-    margin-bottom: 20px;
-}
-
 .commentIcon {
     height: 18px;
     display: block;
@@ -366,15 +309,6 @@ html, body {
 #app {
     width: 100%;
     height: 100%;
-}
-
-#sidebar {
-    color: white;
-    display: block;
-    float: left;
-    width: 200px;
-    height: 100%;
-    background-color: hsla(211, 40%, 13%, 1)
 }
 
 #itemHeader.neutral {
@@ -743,43 +677,6 @@ img.profilePicture {
     color: hsla(217, 18%, 71%, 1);
 }
 
-#viewList {
-    font-size: 14px;
-    padding-left: 30px;
-    padding-top: 50px;
-}
-
-.viewIcon {
-    width: 40px;
-    height: 30px;
-    float: left;
-}
-
-.viewIcon > img {
-    display: block;
-    margin: 0 auto;
-    height: 20px;
-}
-
-.viewSelection {
-    float: left;
-    width: 100%;
-    margin-top: 10px;
-    opacity: 0.5;
-    cursor: pointer;
-}
-
-.viewSelection.selected, .viewSelection:hover {
-    opacity: 1;
-}
-
-.viewName {
-    float: left;
-    height: 30px;
-    vertical-align: middle;
-    line-height: 20px;
-}
-
 #sidebarProfile {
     position: absolute;
     bottom: 0;
@@ -791,57 +688,9 @@ img.profilePicture {
     background-color: hsla(212, 22%, 47%, 1);
 }
 
-#currentProfile {
-    padding: 8px;
-    background-color: hsla(212, 22%, 33%, 1);
-}
-
-#profileOptions {
-    width: 100%;
-}
-
 #sidebarProfile:hover {
     opacity: 1;
 }
-
-#profileOptions > ul{
-    padding: 0;
-    margin: 0;
-    height: 0;
-    transition: height 0.3s;
-    text-align: center;
-    list-style-type: none;
-}
-
-#profileOptions.open > ul {
-    height: 170px;
-    transition: height 0.3s;
-}
-
-#profileOptions > ul > li {
-    padding: 5px;
-}
-
-#profileOptions > ul > li:hover {
-    background-color: hsla(0, 0%, 100%, 0.2);
-}
-
-#currentProfile img, #currentProfile .profilePicture {
-    height: 24px;
-    width: 24px;
-    margin-right: 8px;
-    float: left;
-}
-
-#currentProfile > span {
-    padding-right: 6px;
-    width: 125px;
-    float: left;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-
 
 /** modal view test **/
 

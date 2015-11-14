@@ -1,7 +1,6 @@
 .contentView {
-    position: relative;
-    display: block;
-    float: left;
-    width: calc(100% - 200px);
-    height: 100%;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: calc(100% - 50px);
 }

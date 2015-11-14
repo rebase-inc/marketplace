@@ -19,12 +19,12 @@ export default class PastWorkChart extends Component {
 
         let data = [];
         data = fooData.map((d, ind) => [fooData[ind], barData[ind], bazData[ind]]);
-        new BarChart(element, { width: 600, height: 160, marginTop: 0, categories: ['rebase/api', 'rebase/react-app', 'rackt/redux-devtools'] }, data);
+        new BarChart(element, { width: 550, height: 250, marginTop: 0, categories: ['rebase/api', 'rebase/react-app', 'rackt/redux-devtools'] }, data);
     }
 
     render() {
         return (
-            <svg className='pastWorkChart'/>
+            <svg className='pastWork'/>
         );
     }
 };
