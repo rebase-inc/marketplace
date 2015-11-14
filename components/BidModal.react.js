@@ -8,8 +8,7 @@ import Slider from './Slider.react';
 export default class BidModal extends Component {
     static propTypes = {
         bid: PropTypes.func.isRequired,
-        auction: PropTypes.object.isRequired, // this is kind of a hack...I think it would be solved by better modal management
-        isLoading: PropTypes.bool.isRequired,
+        auction: PropTypes.object.isRequired,
         minPrice: PropTypes.number,
         maxPrice: PropTypes.number,
         defaultPrice: PropTypes.number,
@@ -37,8 +36,7 @@ export default class BidModal extends Component {
 
     render() {
         const { auction, bid, isLoading, minPrice, maxPrice, defaultPrice, sliderWidth, close } = this.props;
-        console.log('auction:', auction);
-        if (!this.state.submitted || isLoading) {
+        if (!this.state.submitted || auction.isFetching) {
             return (
                 <ModalContainer close={close}>
                     <h3>Choose your price</h3>
@@ -46,7 +44,7 @@ export default class BidModal extends Component {
                     <Slider width={sliderWidth} min={minPrice} max={maxPrice} step={20} value={this.state.price} onChange={(price) => this.setState({ price: price})} />
                     <h3>{this.state.price + ' USD'}</h3>
                     <button onClick={() => { this.setState({submitted: true}); bid(this.state.price)}}>
-                        { isLoading ? <LoadingAnimation /> : 'Submit Bid' }
+                        { auction.isFetching ? <LoadingAnimation /> : 'Submit Bid' }
                     </button>
                 </ModalContainer>
             );

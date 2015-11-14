@@ -20,6 +20,11 @@ export default function auction(auction = initialAuction, action) {
                     break;
             }
         }
+        case ActionConstants.SELECT_VIEW: {
+            switch (action.status) {
+                case SUCCESS: return initialAuction; break;
+            }
+        }
         case ActionConstants.LOGOUT: return initialAuction; break;
         default: return auction;
     }

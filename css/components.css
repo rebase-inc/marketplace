@@ -50,6 +50,7 @@ input[type=checkbox]:checked + label {
 
 button > .loadingAnimation {
     height: 14px;
+    width: 20px;
     fill: #F6F8FA;
 }
 

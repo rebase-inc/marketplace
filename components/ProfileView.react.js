@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import ReactDOM from 'react-dom';
 
-import { ProfilePicture } from './Icons.react';
+import ProfilePicture from './ProfilePicture.react';
 
 export default class ProfileView extends Component {
     static propTypes = {
@@ -33,7 +33,6 @@ export default class ProfileView extends Component {
                     <input ref='first_name' defaultValue={user.first_name}/>
                     <input ref='last_name' defaultValue={user.last_name}/>
                     <input ref='email' defaultValue={user.email}/>
-                    <input ref='location' defaultValue='Seattle, WA'/>
                     <button onClick={this.updateProfileSettings}>Update Profile Settings</button>
                 </div>
             </div>

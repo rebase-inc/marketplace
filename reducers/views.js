@@ -3,16 +3,16 @@ import { PENDING, SUCCESS, ERROR } from '../constants/RequestConstants';
 import { NEW, OFFERED, IN_PROGRESS, COMPLETED } from '../constants/ViewConstants';
 
 let ManagerViews = new Map([
-    { name: 'New', icon: 'img/new-24px.svg', type: NEW },
-    { name: 'Waiting', icon: 'img/waiting-24px.svg', type: OFFERED },
-    { name: 'In Progress', icon: 'img/in-progress-24px.svg', type: IN_PROGRESS },
-    { name: 'Closed', icon: 'img/completed-manager-24px.svg', type: COMPLETED },
+    { name: 'Tickets', type: NEW },
+    { name: 'Auctions', type: OFFERED },
+    { name: 'Work', type: IN_PROGRESS },
+    { name: 'Completed', type: COMPLETED },
 ].map(view => [ view.type, view ]));
 
 let ContractorViews = new Map([
-    { name: 'Offered', icon: 'img/offered-24px.svg', type: OFFERED },
-    { name: 'In Progress', icon: 'img/in-progress-24px.svg', type: IN_PROGRESS },
-    { name: 'Closed', icon: 'img/completed-24px.svg', type: COMPLETED },
+    { name: 'Auctions', type: OFFERED },
+    { name: 'Work', type: IN_PROGRESS },
+    { name: 'Reviews', type: COMPLETED },
 ].map(view => [ view.type, view ]));
 
 const initialViews = {items: [], isFetching: false };

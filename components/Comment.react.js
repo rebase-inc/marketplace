@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 
-import { ProfilePicture } from './Icons.react';
+import ProfilePicture from './ProfilePicture.react';
 
 const MonthNames = ['January', 'February', 'March', 'April', 'May',
     'June', 'July', 'August', 'September', 'October', 'November', 'December']

@@ -11,6 +11,11 @@ export default function review(review = initialReview, action) {
                     return { isFetching: false, id: action.response.reviewId }
             }
         }
+        case ActionConstants.SELECT_VIEW: {
+            switch (action.status) {
+                case SUCCESS: return initialReview; break;
+            }
+        }
         case ActionConstants.LOGOUT: return initialReview; break;
         default: return review; break;
     }

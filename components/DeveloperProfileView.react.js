@@ -6,10 +6,9 @@ import { bindActionCreators } from 'redux';
 
 import * as GithubAccountActions from '../actions/GithubAccountActions';
 
-import RatingStars from './RatingStars.react';
+import DeveloperHeader from './DeveloperHeader.react';
 import SkillsRadar from './SkillsRadar.react';
 import PastWorkChart from './PastWorkChart.react';
-import GithubAccountTag from './GithubAccountTag.react';
 import NothingHere from './NothingHere.react';
 import LargePlusIcon from './LargePlusIcon.react';
 
@@ -32,18 +31,15 @@ export default class DeveloperProfileView extends Component {
             );
         }
         const skills = new Map(Object.keys(contractor.skill_set.skills).map(skill => [skill, contractor.skill_set.skills[skill]]));
-        //const githubAccount = !!contractor.remote_work_history ? user.github_accounts[0] : null;
+        const githubAccount = !!contractor.remote_work_history ? contractor.remote_work_history.github_accounts[0] : null;
 
-        const githubAccount = null;
         return (
             <div className='contentView' id='developerProfileView'>
-                <h1>{user.first_name + ' ' + user.last_name}</h1>
-                <RatingStars colored={false} rating={4.5} />
-                <h5>{'Rating based on ' + 67 + ' tasks'}</h5>
-                <GithubAccountTag account={githubAccount} authorize={() => window.location.replace('/api/v1/github')} />
-                <SkillsRadar skills={skills} />
-                <h5>Completed Work</h5>
-                <PastWorkChart />
+                <div className='skillsRadarChart'>
+                    <SkillsRadar skills={skills} />
+                </div>
+                <DeveloperHeader user={user} contractor={contractor} />
+                <PastWorkChart reviews={[]} />
             </div>
         );
     }

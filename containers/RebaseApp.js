@@ -12,7 +12,7 @@ import ProfileView from '../components/ProfileView.react';
 import ProjectView from '../components/ProjectView.react';
 import DeveloperProfileView from '../components/DeveloperProfileView.react';
 import LoginDialog from '../components/LoginDialog.react';
-import Sidebar from '../components/Sidebar.react';
+import MainHeader from '../components/MainHeader.react';
 
 import * as UserActions from '../actions/UserActions';
 
@@ -26,7 +26,7 @@ class RebaseApp extends Component {
     } else {
         return (
             <div id='app'>
-                <Sidebar user={user} roles={roles} view={view} views={views} actions={actions}/>
+                <MainHeader user={user} roles={roles} view={view} views={views} actions={actions}/>
                 {
                     () => {
                         switch (view.type) {

@@ -1,0 +1,139 @@
+#mainHeader {
+    color: #F5F7FA;
+    position: absolute;
+    width: 100%;
+    height: 50px;
+    background-color: #1C2D41;
+}
+
+#mainHeader > svg.logo {
+    float: left;
+    height: 100%;
+    padding: 10px;
+    box-sizing: border-box;
+}
+
+#mainHeader > #viewList {
+    height: 100%;
+    float: left;
+}
+
+#mainHeader > #viewList > * {
+   opacity: 0.5;
+   text-transform: uppercase;
+   height: 100%;
+   line-height: 50px;
+   float: left;
+   font-size: 12px;
+   padding-left: 10px;
+   padding-right: 10px;
+   cursor: pointer;
+}
+
+#mainHeader > #viewList > *[data-selected='true'],
+#mainHeader > #viewList > *:hover {
+   opacity: 1;
+}
+
+#roleSelector {
+    height: 100%;
+    overflow: hidden;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    transition: 300ms height, 300ms background-color;
+    cursor: pointer;
+    z-index: 999;
+}
+
+#profileOptions {
+    height: 100%;
+    z-index: 999;
+    position: absolute;
+    right: 0;
+    overflow: hidden;
+    transition: 300ms height, 300ms background-color;
+    cursor: pointer;
+}
+
+#roleSelector[data-open='true'],
+#profileOptions[data-open='true'] {
+    background-color: #546C8A;
+    height: auto;
+    overflow: auto;
+}
+
+#roleSelector > .role,
+#profileOptions > .option {
+    padding-top: 5px;
+    padding-bottom: 5px;
+    padding-left: 10px;
+    padding-right: 10px;
+    box-sizing: border-box;
+    height: 50px;
+}
+
+#profileOptions > .option:not(:first-child) {
+    height: 30px;
+}
+
+#profileOptions > .option { 
+    line-height: 20px;
+    text-align: center;
+    font-size: 14px;
+}
+
+#profileOptions > #currentProfile > * {
+    float: right;
+    box-sizing: border-box;
+    height: 100%;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-left: 5px;
+    padding-right: 5px;
+    line-height: 20px;
+}
+
+#profileOptions > #currentProfile svg {
+    height: 20px;
+    width: 20px;
+}
+
+#roleSelector > .role[data-selected='true'] > span:first-child,
+#roleSelector > .role:hover > span:first-child
+#profileOptions > .option:hover {
+    opacity: 1;
+}
+
+#roleSelector > .role[data-selected='true'] > span:nth-child(2),
+#roleSelector > .role:hover > span:nth-child(2) {
+    opacity: 0.75;
+}
+
+#roleSelector > .role > span {
+    display: block;
+    text-align: center;
+    box-sizing: border-box;
+    width: 100%;
+}
+
+#roleSelector .role > span:nth-child(2) {
+    line-height: 10px;
+    font-size: 10px;
+    opacity: 0.4;
+}
+
+#roleSelector .role > span:first-child {
+    padding-top: 4px;
+    line-height: 20px;
+    font-size: 16px;
+    opacity: 0.6;
+}
+
+#roleSelector .role > span:only-child {
+    padding-top: 0;
+    line-height: 40px;
+    text-align: center;
+    width: 100%;
+}
+
