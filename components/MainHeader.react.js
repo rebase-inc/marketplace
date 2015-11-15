@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
 import ProfilePicture from './ProfilePicture.react';
+import DropdownMenu from './DropdownMenu.react';
 import { Logo, Dropdown } from './Icons.react';
 
 import { ViewTypes, ContractorViews, ManagerViews } from '../constants/ViewConstants';
@@ -95,13 +96,16 @@ class ProfileOptions extends Component {
     render() {
         const { user, actions } = this.props;
         return (
-            <div id='profileOptions' onClick={this.open} onMouseLeave={this.close} data-open={this.state.open}>
+            <div id='profileOptions' onMouseEnter={this.open} onMouseLeave={this.close} data-open={this.state.open}>
                 <CurrentProfile user={user} />
-                <div className='option' onClick={() => actions.selectView(PROFILE)}>Profile</div>
-                <div className='option' onClick={() => actions.selectView(PROJECTS)}>Projects</div>
-                <div className='option' onClick={() => actions.selectView(DEVELOPER_PROFILE)}>Developer Profile</div>
-                <div className='option' onClick={() => actions.selectView(BILLING_AND_PAYMENTS)}>Billing and Payments</div>
-                <div className='option' onClick={actions.logout}>Sign Out</div>
+                { this.state.open ? 
+                    <DropdownMenu> 
+                        <div className='option' onClick={() => actions.selectView(PROFILE)}>Profile</div>
+                        <div className='option' onClick={() => actions.selectView(PROJECTS)}>Projects</div>
+                        <div className='option' onClick={() => actions.selectView(DEVELOPER_PROFILE)}>Developer Profile</div>
+                        <div className='option' onClick={() => actions.selectView(BILLING_AND_PAYMENTS)}>Billing and Payments</div>
+                        <div className='option' onClick={actions.logout}>Sign Out</div>
+                    </DropdownMenu> : null }
             </div>
        );
     }
@@ -150,9 +154,13 @@ export class ProjectSelector extends Component {
         let selectedRole = roles.find(r => r.id == role.id);
         let otherRoles = roles.filter(r => r.id != role.id);
         return (
-            <div id='roleSelector' onClick={this.open} onMouseLeave={this.close} data-open={this.state.open}>
+            <div id='projectSelector' onMouseOver={this.open} onMouseLeave={this.close} data-open={this.state.open}>
                 <Role key={selectedRole.id} role={selectedRole} selected={true} />
-                { otherRoles.map(r => <Role key={r.id} role={r} select={() => selectRole(r)} selected={false} />) }
+                { this.state.open ? 
+                    <DropdownMenu> 
+                        { otherRoles.map(r => <Role key={r.id} role={r} select={() => selectRole(r)} selected={false} />) }
+                        { otherRoles.length ? null : <div className='role'><span style={{fontSize: '12px'}}>no other projects</span></div> }
+                    </DropdownMenu> : null }
             </div>
         );
     }
