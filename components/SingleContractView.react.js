@@ -74,17 +74,17 @@ export class ContractContractorView extends Component {
             case 'in_progress':
                 return ([
                     <button onClick={() => this.setState({ modalType: ModalTypes.SUBMIT_WORK })} key='finished'>Finished</button>,
-                    <button onClick={() => this.setState({ modalType: ModalTypes.HALT_WORK })} key='blocked'>Blocked</button>
+                    <button data-alert onClick={() => this.setState({ modalType: ModalTypes.HALT_WORK })} key='blocked'>Blocked</button>
                 ]);
                 break;
             case 'in_review': return null; break;
             case 'blocked':
-                return <button onClick={() => this.setState({ modalType: ModalTypes.UNBLOCK_WORK})} key='unblock'>Unblock</button>;
+                return <button data-alert onClick={() => this.setState({ modalType: ModalTypes.UNBLOCK_WORK})} key='unblock'>Unblock</button>;
                 break;
             case 'in_mediation':
                 const mediation = contract.work.mediations[contract.work.mediations.length - 1];
                 if ( mediation.state == 'discussion' || mediation.state == 'waiting_for_dev' ) {
-                    return <button onClick={() => this.setState({ modalType: ModalTypes.RESOLVE_MEDIATION})} key='resolveIssue'>Resolve Issue</button>;
+                    return <button data-warning onClick={() => this.setState({ modalType: ModalTypes.RESOLVE_MEDIATION})} key='resolveIssue'>Resolve Issue</button>;
                 } else { return null; }
                 break;
             default: return null; break;
