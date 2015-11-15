@@ -9,6 +9,13 @@ import AuctionList from './AuctionList.react';
 import SingleAuctionView from './SingleAuctionView.react';
 import NothingHere from './NothingHere.react';
 
+// hack to only show auctions not already bid on. This has to be done here because reducer doesn't have access to user
+// TODO: Add query parameter like ?state=waiting_for_bids or equivalent to api
+function _shouldBeVisible(role, auction) {
+    // all auctions are visible if you're a manager. They disappear if you're a contractor and you've already bid
+    return (role.type == 'manager' || !auction.bids.length)
+}
+
 export default class AuctionView extends Component {
     static propTypes = {
         user: React.PropTypes.object.isRequired,
@@ -35,7 +42,8 @@ export default class AuctionView extends Component {
     }
     render() {
         const { auction, auctions, user, roles, actions } = this.props;
-        if (!auctions.items.size && !auctions.isFetching) {
+        const viewableAuctions = Array.from(auctions.items.values()).filter(a => _shouldBeVisible(roles.items.get(user.current_role.id), a));
+        if (!viewableAuctions.length && !auctions.isFetching) {
             return (
                 <NothingHere>
                     <h3>You don't have any offered tickets</h3>
@@ -56,7 +64,7 @@ export default class AuctionView extends Component {
             return (
                 <div className='contentView'>
                     <SearchBar searchText={this.state.searchText} onUserInput={this.handleUserInput} />
-                    <AuctionList select={actions.selectAuction} user={user} roles={roles} auctions={Array.from(auctions.items.values())} />
+                    <AuctionList select={actions.selectAuction} user={user} roles={roles} auctions={viewableAuctions} />
                 </div>
             );
         }
