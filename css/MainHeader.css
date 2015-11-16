@@ -35,36 +35,34 @@
    opacity: 1;
 }
 
-#roleSelector {
-    height: 100%;
-    overflow: hidden;
+#projectSelector {
     position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
-    transition: 300ms height, 300ms background-color;
     cursor: pointer;
     z-index: 999;
+    height: auto;
+    overflow: auto;
+    left: 50%;
+    transform: translateX(-50%);
 }
 
 #profileOptions {
-    height: 100%;
-    z-index: 999;
     position: absolute;
-    right: 0;
-    overflow: hidden;
-    transition: 300ms height, 300ms background-color;
     cursor: pointer;
-}
-
-#roleSelector[data-open='true'],
-#profileOptions[data-open='true'] {
-    background-color: #546C8A;
+    z-index: 999;
+    right: 0;
     height: auto;
     overflow: auto;
 }
 
-#roleSelector > .role,
-#profileOptions > .option {
+/*#projectSelector[data-open='true'],*/
+/*#profileOptions[data-open='true'] {*/
+    /*background-color: #546C8A;*/
+    /*height: auto;*/
+    /*overflow: auto;*/
+/*}*/
+
+#projectSelector .role,
+#profileOptions .option {
     padding-top: 5px;
     padding-bottom: 5px;
     padding-left: 10px;
@@ -73,11 +71,13 @@
     height: 50px;
 }
 
-#profileOptions > .option:not(:first-child) {
+#profileOptions > .dropdownMenu > .option {
     height: 30px;
+    text-align: center;
+    opacity: 0.7;
 }
 
-#profileOptions > .option { 
+#profileOptions .option { 
     line-height: 20px;
     text-align: center;
     font-size: 14px;
@@ -99,41 +99,67 @@
     width: 20px;
 }
 
-#roleSelector > .role[data-selected='true'] > span:first-child,
-#roleSelector > .role:hover > span:first-child
-#profileOptions > .option:hover {
+#projectSelector .role[data-selected='true'] > span:first-child,
+#projectSelector > .dropdownMenu > .role:hover > span:first-child,
+#profileOptions > .dropdownMenu > .option:hover {
     opacity: 1;
 }
 
-#roleSelector > .role[data-selected='true'] > span:nth-child(2),
-#roleSelector > .role:hover > span:nth-child(2) {
+#projectSelector .role[data-selected='true'] > span:nth-child(2),
+#projectSelector .role:hover > span:nth-child(2) {
     opacity: 0.75;
 }
 
-#roleSelector > .role > span {
+#projectSelector .role > span {
     display: block;
     text-align: center;
     box-sizing: border-box;
     width: 100%;
 }
 
-#roleSelector .role > span:nth-child(2) {
+#projectSelector .role > span:nth-child(2) {
     line-height: 10px;
     font-size: 10px;
     opacity: 0.4;
 }
 
-#roleSelector .role > span:first-child {
+#projectSelector .role > span:first-child {
     padding-top: 4px;
     line-height: 20px;
     font-size: 16px;
     opacity: 0.6;
 }
 
-#roleSelector .role > span:only-child {
+#projectSelector .role > span:only-child {
     padding-top: 0;
     line-height: 40px;
     text-align: center;
     width: 100%;
+}
+
+
+/*hacks to deal with the dropdown sitting against the edge*/
+#profileOptions .dropdownMenu { padding: 10px; margin-right: 10px; }
+#profileOptions .dropdownMenu .arrowUp { transform: translateY(-20px) translateX(-50%) translateX(-5px); }
+
+.dropdownMenu {
+    padding-left: 20px;
+    padding-right: 20px;
+    background-color: #1C2D41;
+    position: static;
+    margin-top: 20px;
+    border-radius: 4px;
+    z-index: 999;
+}
+
+.arrowUp {
+    width: 0;
+    height: 0;
+    position: absolute;
+    left: 50%;
+    transform: translateY(-10px) translateX(-50%);
+    border-left: 15px solid transparent;
+    border-right: 15px solid transparent;
+    border-bottom: 15px solid #1C2D41; /*Actual color*/
 }
 

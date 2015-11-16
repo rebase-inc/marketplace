@@ -343,16 +343,16 @@ html, body {
 }
 
 #itemHeader > button,
-#itemHeader > .details {
+#itemHeader > svg {
     float: right;
     cursor: pointer;
 }
 
-#itemHeader > .details {
+#itemHeader > svg.threeDotsIcon {
     padding: 22px 10px 22px 10px;
 }
 
-#itemHeader > .details:hover {
+#itemHeader > svg.threeDotsIcon:hover {
     opacity: 0.6;
 }
 
