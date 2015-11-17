@@ -5,6 +5,27 @@ import ModalContainer from './ModalContainer.react';
 import LoadingAnimation from './LoadingAnimation.react';
 import Slider from './Slider.react';
 
+class CloneInstructions extends Component {
+    static propTypes = {
+        clone: PropTypes.string.isRequired,
+        deploy: PropTypes.string.isRequired,
+        test: PropTypes.string.isRequired,
+    }
+
+    render() {
+        const { clone, deploy, test } = this.props;
+        let dir=clone.substring(clone.lastIndexOf('/'));
+        return (
+            <div className='infoOrInput cloneInstructions'>
+                {'$ '+clone}<br/>
+                {'$ cd '+dir}<br/>
+                {deploy ? '$ '+deploy : ''}<br/>
+                {test ? '$ '+test : ''}<br/>
+            </div>
+        );
+    }
+};
+
 export default class BidModal extends Component {
     static propTypes = {
         bid: PropTypes.func.isRequired,
@@ -13,9 +34,9 @@ export default class BidModal extends Component {
         maxPrice: PropTypes.number,
         defaultPrice: PropTypes.number,
         close: PropTypes.func.isRequired,
-        selectAuctionView: PropTypes.func.isRequired,
-        selectContract: PropTypes.func.isRequired,
-        selectAuction: PropTypes.func.isRequired,
+        //selectAuctionView: PropTypes.func.isRequired,
+        //selectContract: PropTypes.func.isRequired,
+        //selectAuction: PropTypes.func.isRequired,
     }
 
     static defaultProps = {
@@ -62,13 +83,8 @@ export default class BidModal extends Component {
                 <ModalContainer close={close}>
                     <h3>Your bid was accepted!</h3>
                     <h4>Get started by cloning and running the tests</h4>
-                    <div className='infoOrInput cloneInstructions'>
-                        $ {auction.work.clone}<br/>
-                        $ cd <project_dir><br/>
-                        $ {auction.ticket.project.deploy}<br/>
-                        $ {auction.ticket.project.test}<br/>
-                    </div>
                     <button onClick={() => selectContract(auction.bids[0].contract.id)}>Show task</button>
+                    <CloneInstructions clone={auction.work.clone} deploy={auction.ticket.project.deploy} test={auction.ticket.project.test} />
                 </ModalContainer>
             );
         }

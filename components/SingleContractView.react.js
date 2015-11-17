@@ -9,9 +9,12 @@ import DisputeWorkModal from './DisputeWorkModal.react';
 import ResolveMediationModal from './ResolveMediationModal.react';
 
 import TicketHeader from './TicketHeader.react';
-import ContractDetails from './ContractDetails.react';
 import CommentList from './CommentList.react';
 import CommentBox from './CommentBox.react';
+import TicketPanel from './TicketPanel.react';
+import CodePanel from './CodePanel.react';
+import OfferPanel from './OfferPanel.react';
+import AuctionPanel from './AuctionPanel.react';
 
 const ModalTypes = keymirror({
     HALT_WORK: null,
@@ -21,6 +24,24 @@ const ModalTypes = keymirror({
     ACCEPT_WORK: null,
     DISPUTE_WORK: null,
 });
+
+class ContractDetails extends Component {
+    static propTypes = {
+        contract: PropTypes.object.isRequired,
+        hidden: PropTypes.bool.isRequired,
+    }
+    render() {
+        const { contract, hidden } = this.props;
+        return (
+            <div className={hidden ? 'hidden' : 'visible'} id='itemDetails'>
+                <TicketPanel ticket={contract.ticket} />
+                <OfferPanel offer={contract.bid.work_offer[0]} />
+                <AuctionPanel auction={contract.bid.auction} />
+                <CodePanel clone={contract.work.clone} deploy={contract.ticket.project.deploy} test={contract.ticket.project.test} readme={contract.ticket.project.readme} />
+            </div>
+        );
+    }
+};
 
 export default class SingleContractView extends Component {
     static propTypes = {

@@ -1,9 +1,33 @@
 import React, { Component, PropTypes } from 'react';
 
 import TicketHeader from './TicketHeader.react';
-import ReviewDetails from './ReviewDetails.react';
 import CommentList from './CommentList.react';
 import CommentBox from './CommentBox.react';
+import CodePanel from './CodePanel.react';
+import OfferPanel from './OfferPanel.react';
+import TicketPanel from './TicketPanel.react';
+
+class ReviewDetails extends Component {
+    static propTypes = {
+        review: PropTypes.object.isRequired,
+        hidden: PropTypes.bool.isRequired,
+    }
+    render() {
+        const { review, hidden } = this.props;
+        return (
+            <div className={hidden ? 'hidden' : 'visible'} id='itemDetails'>
+                <TicketPanel ticket={review.ticket} />
+                <OfferPanel offer={review.work.offer} />
+                <CodePanel
+                    clone={review.work.clone}
+                    deploy={review.ticket.project.deploy}
+                    test={review.ticket.project.test}
+                    readme={review.ticket.project.readme}
+                />
+            </div>
+        );
+    }
+};
 
 export default class SingleReviewView extends Component {
     static propTypes = {

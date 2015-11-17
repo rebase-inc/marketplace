@@ -1,11 +1,35 @@
 import React, { Component, PropTypes } from 'react';
 
 import TicketHeader from './TicketHeader.react';
-import AuctionDetails from './AuctionDetails.react';
 import CommentList from './CommentList.react';
 import CommentBox from './CommentBox.react';
 import FindTalentView from './FindTalentView.react';
 import BidModal from './BidModal.react';
+import TicketPanel from './TicketPanel.react';
+import CodePanel from './CodePanel.react';
+import AuctionPanel from './AuctionPanel.react';
+
+class AuctionDetails extends Component {
+    static propTypes = {
+        auction: PropTypes.object.isRequired,
+        hidden: PropTypes.bool.isRequired,
+    }
+    render() {
+        const { auction, hidden } = this.props;
+        return (
+            <div className={hidden ? 'hidden' : 'visible'} id='itemDetails'>
+                <TicketPanel ticket={auction.ticket} />
+                <AuctionPanel auction={auction} />
+                <CodePanel
+                    clone={auction.ticket.project.work_repo.clone}
+                    deploy={auction.ticket.project.deploy}
+                    test={auction.ticket.project.test}
+                    readme={auction.ticket.project.readme}
+                />
+            </div>
+        );
+    }
+};
 
 export default class SingleAuctionView extends Component {
     static propTypes = {

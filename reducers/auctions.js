@@ -111,6 +111,15 @@ function handleCommentOnAuction(requestStatus, auctions, comment) {
     return { isFetching: false, items: new Map(newAuctions.map(a => [a.id, addSyntheticProperties(a)])) }
 }
 
+function getWinningBid(auction) {
+    let winningBids = auction.bids.filter(bid => bid.contract);
+    if (winningBids.length > 0) {
+        return winningBids[0];
+    } else {
+        return null;
+    }
+};
+
 function addSyntheticProperties(auction) {
     let newAuction = Object.assign({}, auction);
     Object.defineProperty(newAuction, 'ticket', {
@@ -119,17 +128,12 @@ function addSyntheticProperties(auction) {
     });
     Object.defineProperty(newAuction, 'contract', {
         get: function() {
-            return newAuction.winningBid.contract;
-        },
-    });
-    Object.defineProperty(newAuction, 'winningBid', {
-        get: function() {
-            return newAuction.bids.filter(bid => bid.contract)[0];
-        },
-    });
-    Object.defineProperty(newAuction, 'work', {
-        get: function() {
-            return newAuction.winningBid.work_offers[0].work;
+            let winningBid = getWinningBid(newAuction);
+            if (winningBid !== null ) {
+                return newAuction.winningBid.contract;
+            } else {
+                return null;
+            }
         },
     });
     Object.defineProperty(newAuction, 'nominations', {
