@@ -48,7 +48,7 @@ export default class ImportProjectModal extends Component {
             return (
                 <ModalContainer close={close}>
                     <h3>You must authorize a Github account first!</h3>
-                    <button onClick={() => window.open('/github', '_blank')}>Add Github Account</button>
+                    <button onClick={() => window.location.replace('/api/v1/github')}>Add Github Account</button>
                 </ModalContainer>
             );
         }

@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 
 import TicketHeader from './TicketHeader.react';
-import TicketDetails from './TicketDetails.react';
+import AuctionDetails from './AuctionDetails.react';
 import CommentList from './CommentList.react';
 import CommentBox from './CommentBox.react';
 import FindTalentView from './FindTalentView.react';
@@ -34,8 +34,8 @@ export default class SingleAuctionView extends Component {
     render() {
         const { user, roles, auction, unselect, approveNomination, bid, submitComment } = this.props;
 
-        // TODO: refactor this so that TicketHeader and TicketDetails are in the same component. Current setup doesn't make sense.
-        // That would also allow for a more sensical method for closing and opening the TicketDetails
+        // TODO: refactor this so that TicketHeader and AuctionDetails are in the same component. Current setup doesn't make sense.
+        // That would also allow for a more sensical method for closing and opening the AuctionDetails
         // TODO: Deal with all of the states below more cleanly. Probably requires a refactor into multiple components
         // TODO: Only display 'View Talent' button when not showing the FindTalentView
         // TODO: Build components ontop of TicketHeader like AuctionHeader, ContractHeader, etc (and probably rename TicketHeader -> ContentHeader)
@@ -50,7 +50,7 @@ export default class SingleAuctionView extends Component {
                         <button onClick={() => this.setState({ showTalent: true })}>View Developers</button> :
                         <button onClick={() => this.setState({ modalOpen: true })}>Bid Now</button> }
                 </TicketHeader>
-                <TicketDetails hidden={!this.state.detailsOpen} ticket={auction.ticket} />
+                <AuctionDetails hidden={!this.state.detailsOpen} auction={auction} />
                 { this.state.showTalent ? <FindTalentView auction={auction} approveNomination={approveNomination} /> : null }
                 { this.state.showTalent ? null : <CommentList comments={auction.ticket.comments}/> }
                 { this.state.showTalent ? null : <CommentBox submit={submitComment} /> }

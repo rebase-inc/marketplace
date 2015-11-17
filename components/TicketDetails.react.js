@@ -10,9 +10,8 @@ export default class TicketDetails extends Component {
     }
     render() {
         const { ticket, hidden } = this.props;
-        console.log('Ticket:', ticket);
         let creationString = (date) => { return 'Created ' + MonthNames[date.getMonth()] + ' ' + date.getDate(); }(new Date(ticket.created));
-        creationString += (ticket.descriminator == 'github_ticket') ? ' on Github' : ' on Rebase';
+        creationString += (ticket.discriminator == 'github_ticket') ? ' on Github' : ' on Rebase';
         return (
             <div className={hidden ? 'hidden' : 'visible'} id='itemDetails'>
                 <div id='mainInfo'>

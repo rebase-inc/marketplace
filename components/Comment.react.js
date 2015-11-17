@@ -12,7 +12,7 @@ export default class Comment extends Component {
     }
     render() {
         const { comment } = this.props;
-        let dateString = (date) => { return MonthNames[date.getMonth()] + ' ' + date.getDate(); }(new Date(comment.date));
+        let dateString = (date) => { return MonthNames[date.getMonth()] + ' ' + date.getDate(); }(new Date(comment.created));
         return (
             <div className='comment' key={comment.id}>
                 <div className='photo'>

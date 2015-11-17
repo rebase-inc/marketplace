@@ -118,7 +118,19 @@ function addSyntheticProperties(auction) {
         set: function(ticket) { newAuction.ticket_set.bid_limits[0].ticket_snapshot.ticket = ticket; },
     });
     Object.defineProperty(newAuction, 'contract', {
-        get: function() { return newAuction.bids[0].contract; },
+        get: function() {
+            return newAuction.winningBid.contract;
+        },
+    });
+    Object.defineProperty(newAuction, 'winningBid', {
+        get: function() {
+            return newAuction.bids.filter(bid => bid.contract)[0];
+        },
+    });
+    Object.defineProperty(newAuction, 'work', {
+        get: function() {
+            return newAuction.winningBid.work_offers[0].work;
+        },
     });
     Object.defineProperty(newAuction, 'nominations', {
         get: function() { return newAuction.ticket_set.nominations; },
