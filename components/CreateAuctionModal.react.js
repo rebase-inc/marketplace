@@ -40,7 +40,7 @@ export default class CreateAuctionModal extends Component {
                     <Slider width={width} min={100} max={2000} value={this.state.price} onChange={(value) => this.setState({ price: value })} />
                     <h3>{this.state.price + ' USD'}</h3>
                 </div>
-                <button onClick={() => create(this.state.price)}>{ isLoading ? <LoadingAnimation /> : 'Submit Budget'}</button>
+                <button onClick={() => {create(this.state.price); close()}}>{ isLoading ? <LoadingAnimation /> : 'Submit Budget'}</button>
             </ModalContainer>
         );
     }

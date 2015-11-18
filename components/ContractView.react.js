@@ -17,7 +17,7 @@ export default class ContractView extends Component {
     }
     constructor(props, context) {
         super(props, context);
-        this.state = { searchText: '', modalOpen: false };
+        this.state = { searchText: '' };
 
         // TODO: Look into autobinding. React-redux examples projects have it, but not sure what they use
         this.handleUserInput = this.handleUserInput.bind(this);
@@ -40,14 +40,8 @@ export default class ContractView extends Component {
             );
         }
         if (!!contract.id) {
-            const work = contracts.items.get(contract.id).work;
-            return <SingleContractView
-                user={user}
-                submitWork={actions.submitWork.bind(null, work)}
-                disputeWork={actions.disputeWork.bind(null, work)}
-                acceptWork={actions.acceptWork.bind(null, work)}
-                markWorkBlocked={actions.markWorkBlocked.bind(null, work)}
-                markWorkUnblocked={actions.markWorkUnblocked.bind(null, work)}
+            return <SingleContractView user={user}
+                actions={actions}
                 contract={contracts.items.get(contract.id)}
                 unselect={() => actions.selectContract(null)}
                 role={roles.items.get(user.current_role.id)}/>;

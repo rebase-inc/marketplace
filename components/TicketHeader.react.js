@@ -14,16 +14,16 @@ export default class TicketHeader extends Component {
         alert: PropTypes.bool,
         warning: PropTypes.bool,
     }
-    
+
     render() {
-        const { title, unselect, toggleDetails, children } = this.props; 
+        const { title, unselect, toggleDetails, children } = this.props;
         const { neutral, notification, okay, alert, warning } = this.props;
         return (
             <div id='itemHeader'
-                data-neutral={neutral} 
-                data-notification={notification} 
-                data-okay={okay} 
-                data-alert={alert} 
+                data-neutral={neutral}
+                data-notification={notification}
+                data-okay={okay}
+                data-alert={alert}
                 data-warning={warning} >
                 <DropbackIcon onClick={unselect} />
                 { children }

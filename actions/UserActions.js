@@ -20,6 +20,14 @@ export function selectView(viewType) {
     }
 }
 
+export function closeModal() {
+    return {
+        type: ActionConstants.SELECT_MODAL,
+        response: { modalType: null },
+        status: SUCCESS
+    }
+}
+
 export function updateProfile(user, settings) {
     const url = '/users/' + user.id;
     const data = Object.assign(settings, { id: user.id });

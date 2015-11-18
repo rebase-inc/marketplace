@@ -3,20 +3,12 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
 import { ViewTypes } from '../constants/ViewConstants';
-
-import TicketView from '../components/TicketView.react';
-import AuctionView from '../components/AuctionView.react';
-import ContractView from '../components/ContractView.react';
-import ReviewView from '../components/ReviewView.react';
-import ProfileView from '../components/ProfileView.react';
-import ProjectView from '../components/ProjectView.react';
-import DeveloperProfileView from '../components/DeveloperProfileView.react';
 import LoginDialog from '../components/LoginDialog.react';
 import MainHeader from '../components/MainHeader.react';
+import ModalView from '../components/ModalView.react';
+import MainView from '../components/MainView.react';
 
 import * as UserActions from '../actions/UserActions';
-
-import { NEW, OFFERED, IN_PROGRESS, COMPLETED, PROFILE, PROJECTS, DEVELOPER_PROFILE } from '../constants/ViewConstants';
 
 class RebaseApp extends Component {
   render() {
@@ -27,26 +19,8 @@ class RebaseApp extends Component {
         return (
             <div id='app'>
                 <MainHeader user={user} roles={roles} view={view} views={views} actions={actions}/>
-                {
-                    () => {
-                        switch (view.type) {
-                            case NEW: return <TicketView key='ticketView' user={user} roles={roles} />; break;
-                            case OFFERED: return <AuctionView key='auctionView' user={user} roles={roles} />; break;
-                            case IN_PROGRESS: return <ContractView user={user} roles={roles} />; break;
-                            case COMPLETED: return <ReviewView user={user} roles={roles} />; break;
-                            case PROFILE:
-                                return <ProfileView
-                                            updateProfile={actions.updateProfile.bind(null, user)}
-                                            uploadPhoto={() => alert('not implemented')}
-                                            user={user} roles={roles} />; break;
-                            case PROJECTS:
-                                return <ProjectView roles={Array.from(roles.items.values())} />; break;
-                            case DEVELOPER_PROFILE:
-                                return <DeveloperProfileView user={user} contractor={Array.from(roles.items.values()).find(r => r.type == 'contractor')} />; break;
-                            default: throw 'Invalid view ' + view; break;
-                        }
-                    }()
-                }
+                <ModalView user={user} roles={roles} />
+                <MainView view={view} user={user} roles={roles} />
             </div>
         );
     }

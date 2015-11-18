@@ -13,9 +13,6 @@ export default class BidModal extends Component {
         maxPrice: PropTypes.number,
         defaultPrice: PropTypes.number,
         close: PropTypes.func.isRequired,
-        selectAuctionView: PropTypes.func.isRequired,
-        selectContract: PropTypes.func.isRequired,
-        selectAuction: PropTypes.func.isRequired,
     }
 
     static defaultProps = {
@@ -36,7 +33,7 @@ export default class BidModal extends Component {
 
     render() {
         const { auction, bid, isLoading, minPrice, maxPrice, defaultPrice, sliderWidth, close } = this.props;
-        if (!this.state.submitted || auction.isFetching) {
+        if (!auction.bids.length) {
             return (
                 <ModalContainer close={close}>
                     <h3>Choose your price</h3>
@@ -48,12 +45,12 @@ export default class BidModal extends Component {
                     </button>
                 </ModalContainer>
             );
-        } else if (auction.state == 'waiting_for_bids') {
+        } else if (!auction.bids[0].contract) {
             return (
                 <ModalContainer close={close}>
                     <h3>Your bid was not accepted.</h3>
                     <h4>{'But there are other tasks waiting for you!'}</h4>
-                    <button onClick={() => { selectAuction(null); selectAuctionView(); }}>Show tasks</button>
+                    <button onClick={close}>Show tasks</button>
                 </ModalContainer>
             );
         } else {
@@ -66,7 +63,7 @@ export default class BidModal extends Component {
                         $ git clone git@github.com:airpool/ios <br/>
                         $ cd api && python deploy.py && python tests/run.py
                     </div>
-                    <button onClick={() => selectContract(auction.bids[0].contract.id)}>Show task</button>
+                    <button onClick={close}>Show task</button>
                 </ModalContainer>
             );
         }
