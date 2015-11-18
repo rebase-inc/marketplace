@@ -10,7 +10,7 @@ export default class TicketPanel extends Component {
         let creationString = (date) => { return 'Created ' + Months[date.getMonth()] + ' ' + date.getDate(); }(new Date(ticket.created));
         creationString += (ticket.discriminator == 'github_ticket') ? ' on Github' : ' on Rebase';
         return (
-            <div id='mainInfo'>
+            <div id='ticketPanel'>
                 <span>{ticket.title}</span>
                 <span>{creationString}</span>
                 <button className='notification'>Close issue</button>

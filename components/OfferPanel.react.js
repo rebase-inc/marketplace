@@ -11,9 +11,7 @@ export default class OfferPanel extends Component {
         let name = user.first_name+' '+user.last_name
         let contractorString = 'Assigned to '+name
         return (
-            <div id='offerPanel'>
-                <span>{contractorString}</span>
-            </div>
+            <span>{contractorString}</span>
         );
     }
 };

@@ -5,31 +5,10 @@ import CommentList from './CommentList.react';
 import CommentBox from './CommentBox.react';
 import FindTalentView from './FindTalentView.react';
 import BidModal from './BidModal.react';
+import DetailsPanel from './DetailsPanel.react';
 import TicketPanel from './TicketPanel.react';
-import CodePanel from './CodePanel.react';
 import AuctionPanel from './AuctionPanel.react';
 
-class AuctionDetails extends Component {
-    static propTypes = {
-        auction: PropTypes.object.isRequired,
-        hidden: PropTypes.bool.isRequired,
-    }
-    render() {
-        const { auction, hidden } = this.props;
-        return (
-            <div className={hidden ? 'hidden' : 'visible'} id='itemDetails'>
-                <TicketPanel ticket={auction.ticket} />
-                <AuctionPanel auction={auction} />
-                <CodePanel
-                    clone={auction.ticket.project.work_repo.clone}
-                    deploy={auction.ticket.project.deploy}
-                    test={auction.ticket.project.test}
-                    readme={auction.ticket.project.readme}
-                />
-            </div>
-        );
-    }
-};
 
 export default class SingleAuctionView extends Component {
     static propTypes = {
@@ -74,7 +53,16 @@ export default class SingleAuctionView extends Component {
                         <button onClick={() => this.setState({ showTalent: true })}>View Developers</button> :
                         <button onClick={() => this.setState({ modalOpen: true })}>Bid Now</button> }
                 </TicketHeader>
-                <AuctionDetails hidden={!this.state.detailsOpen} auction={auction} />
+                <DetailsPanel
+                    hidden={!this.state.detailsOpen}
+                    clone={auction.ticket.project.work_repo.clone}
+                    deploy={auction.ticket.project.deploy}
+                    test={auction.ticket.project.test}
+                    readme={auction.ticket.project.readme}
+                    >
+                    <TicketPanel ticket={auction.ticket} />
+                    <AuctionPanel auction={auction} />
+                </DetailsPanel>
                 { this.state.showTalent ? <FindTalentView auction={auction} approveNomination={approveNomination} /> : null }
                 { this.state.showTalent ? null : <CommentList comments={auction.ticket.comments}/> }
                 { this.state.showTalent ? null : <CommentBox submit={submitComment} /> }

@@ -5,24 +5,8 @@ import CommentList from './CommentList.react';
 import CommentBox from './CommentBox.react';
 import CreateAuctionModal from './CreateAuctionModal.react';
 import TicketPanel from './TicketPanel.react';
-import CodePanel from './CodePanel.react';
+import DetailsPanel from './DetailsPanel.react';
 
-
-class TicketDetails extends Component {
-    static propTypes = {
-        ticket: PropTypes.object.isRequired,
-        hidden: PropTypes.bool.isRequired,
-    }
-    render() {
-        const { ticket, hidden } = this.props;
-        return (
-            <div className={hidden ? 'hidden' : 'visible'} id='itemDetails'>
-                <TicketPanel ticket={ticket} />
-                <CodePanel clone={ticket.project.work_repo.clone} deploy={ticket.project.deploy} test={ticket.project.test} readme={ticket.project.readme} />
-            </div>
-        );
-    }
-};
 
 export default class SingleTicketView extends Component {
     static propTypes = {
@@ -57,7 +41,15 @@ export default class SingleTicketView extends Component {
                 <TicketHeader unselect={unselect} title={ticket.title} toggleDetails={this.toggleDetails}>
                     { roles.items.get(user.current_role.id).type == 'manager' ? <button onClick={() => this.setState({ modalOpen: true })}>Find Developers</button> : null}
                 </TicketHeader>
-                <TicketDetails hidden={!this.state.detailsOpen} ticket={ticket} />
+                <DetailsPanel
+                    hidden={!this.state.detailsOpen}
+                    clone={ticket.project.work_repo.clone}
+                    deploy={ticket.project.deploy}
+                    test={ticket.project.test}
+                    readme={ticket.project.readme}
+                    >
+                    <TicketPanel ticket={ticket} />
+                </DetailsPanel>
                 <CommentList comments={ticket.comments}/>
                 <CommentBox submit={submitComment} />
             </div>

@@ -8,7 +8,7 @@ class Item extends Component {
     render() {
         const { name, value } = this.props;
         return (
-            <div>
+            <div id='codePanelItem'>
                 <span>{name}</span>
                 {value || 'n/a'}
             </div>

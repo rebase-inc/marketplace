@@ -12,9 +12,9 @@ import TicketHeader from './TicketHeader.react';
 import CommentList from './CommentList.react';
 import CommentBox from './CommentBox.react';
 import TicketPanel from './TicketPanel.react';
-import CodePanel from './CodePanel.react';
 import OfferPanel from './OfferPanel.react';
 import AuctionPanel from './AuctionPanel.react';
+import DetailsPanel from './DetailsPanel.react';
 
 const ModalTypes = keymirror({
     HALT_WORK: null,
@@ -33,12 +33,17 @@ class ContractDetails extends Component {
     render() {
         const { contract, hidden } = this.props;
         return (
-            <div className={hidden ? 'hidden' : 'visible'} id='itemDetails'>
+            <DetailsPanel
+                hidden={hidden}
+                clone={contract.work.clone}
+                deploy={contract.ticket.project.deploy}
+                test={contract.ticket.project.test}
+                readme={contract.ticket.project.readme}
+                >
                 <TicketPanel ticket={contract.ticket} />
                 <OfferPanel offer={contract.bid.work_offers[0]} />
                 <AuctionPanel auction={contract.bid.auction} />
-                <CodePanel clone={contract.work.clone} deploy={contract.ticket.project.deploy} test={contract.ticket.project.test} readme={contract.ticket.project.readme} />
-            </div>
+            </DetailsPanel>
         );
     }
 };

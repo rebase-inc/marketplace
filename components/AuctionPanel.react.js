@@ -9,9 +9,7 @@ export default class AuctionPanel extends Component {
         const { auction } = this.props;
         let finishString = (date) => { return 'Finish work by ' + Months[date.getMonth()] + ' ' + date.getDate(); }(new Date(auction.finish_work_by));
         return (
-            <div id='mainInfo'>
-                <span>{finishString}</span>
-            </div>
+            <span>{finishString}</span>
         );
     }
 };
