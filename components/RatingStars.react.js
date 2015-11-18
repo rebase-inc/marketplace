@@ -33,6 +33,7 @@ export default class RatingStars extends Component {
         }[type];
         return (
             <g fill={color} 
+                key={ratingNumber}
                 transform={'translate(' + (ratingNumber - 1) * 35 + ',0)'}
                 onMouseOver={() => { if (this.props.dynamic) this.setState({ dynamicRating: ratingNumber })}}
                 onClick={() => { if (this.props.dynamic) this.props.setRating(ratingNumber)}}>
