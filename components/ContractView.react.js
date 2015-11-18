@@ -10,6 +10,12 @@ import NothingHere from './NothingHere.react';
 import ContractList from './ContractList.react';
 import SingleContractView from './SingleContractView.react';
 
+
+// hack to only show not completed contracts. This really should be handled by the api
+function _shouldBeVisible(contract) {
+    return (contract.work.state != 'complete')
+}
+
 export default class ContractView extends Component {
     static propTypes = {
         user: React.PropTypes.object.isRequired,
@@ -17,7 +23,7 @@ export default class ContractView extends Component {
     }
     constructor(props, context) {
         super(props, context);
-        this.state = { searchText: '', modalOpen: false };
+        this.state = { searchText: '' };
 
         // TODO: Look into autobinding. React-redux examples projects have it, but not sure what they use
         this.handleUserInput = this.handleUserInput.bind(this);
@@ -31,7 +37,8 @@ export default class ContractView extends Component {
     }
     render() {
         const { contract, contracts, user, roles, actions } = this.props;
-        if (!contracts.items.size && !contracts.isFetching) {
+        const viewableContracts = Array.from(contracts.items.values()).filter(c => _shouldBeVisible(c));
+        if (!viewableContracts.length && !contracts.isFetching) {
             return (
                 <NothingHere>
                     <h3>You don't have any in progress tickets</h3>
@@ -40,14 +47,8 @@ export default class ContractView extends Component {
             );
         }
         if (!!contract.id) {
-            const work = contracts.items.get(contract.id).work;
-            return <SingleContractView
-                user={user}
-                submitWork={actions.submitWork.bind(null, work)}
-                disputeWork={actions.disputeWork.bind(null, work)}
-                acceptWork={actions.acceptWork.bind(null, work)}
-                markWorkBlocked={actions.markWorkBlocked.bind(null, work)}
-                markWorkUnblocked={actions.markWorkUnblocked.bind(null, work)}
+            return <SingleContractView user={user}
+                actions={actions}
                 contract={contracts.items.get(contract.id)}
                 unselect={() => actions.selectContract(null)}
                 role={roles.items.get(user.current_role.id)}/>;
@@ -55,7 +56,7 @@ export default class ContractView extends Component {
             return (
                 <div className='contentView'>
                     <SearchBar searchText={this.state.searchText} onUserInput={this.handleUserInput }/>
-                    <ContractList select={actions.selectContract} user={user} roles={roles} contracts={Array.from(contracts.items.values())} />
+                    <ContractList select={actions.selectContract} user={user} roles={roles} contracts={viewableContracts} />
                 </div>
             );
         }

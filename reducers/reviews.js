@@ -37,7 +37,6 @@ function handleCommentOnReview(requestStatus, reviews, comment) {
     }
     const newReviews = oldReviews.map(r => r.id == modifiedReview.id ? modifiedReview : r);
     return { isFetching: false, items: new Map(newReviews.map(r => [r.id, addSyntheticProperties(r)])) }
-    return { isFetching: false, items: new Map(newAuctions.map(a => [a.id, addSyntheticProperties(a)])) }
 }
 
 function addSyntheticProperties(review) {

@@ -2,6 +2,7 @@ import ActionConstants from '../constants/ActionConstants';
 
 import { dispatchedRequest } from '../utils/Api';
 import { SUCCESS } from '../constants/RequestConstants';
+import { BID_MODAL } from '../constants/ModalConstants';
 
 export function getAuctions() {
     return dispatchedRequest('GET', '/auctions', ActionConstants.GET_AUCTIONS);
@@ -35,6 +36,14 @@ export function selectAuction(auctionId) {
     return {
         type: ActionConstants.SELECT_AUCTION,
         response: { auctionId: auctionId },
+        status: SUCCESS
+    }
+}
+
+export function openBidModal() {
+    return {
+        type: ActionConstants.SELECT_MODAL,
+        response: { type: BID_MODAL },
         status: SUCCESS
     }
 }

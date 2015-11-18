@@ -2,6 +2,7 @@ import ActionConstants from '../constants/ActionConstants';
 
 import { dispatchedRequest } from '../utils/Api';
 import { SUCCESS } from '../constants/RequestConstants';
+import { CREATE_TICKET_MODAL, CREATE_AUCTION_MODAL } from '../constants/ModalConstants';
 
 export function getTickets() {
     return dispatchedRequest('GET', '/tickets', ActionConstants.GET_TICKETS);
@@ -49,4 +50,28 @@ export function createGithubTicket(project, title) {
         title: title
     }
     return dispatchedRequest('POST', '/github_tickets', ActionConstants.CREATE_TICKET, data);
+}
+
+export function openNewAuctionModal() {
+    return {
+        type: ActionConstants.SELECT_MODAL,
+        response: { type: CREATE_AUCTION_MODAL },
+        status: SUCCESS
+    }
+}
+
+export function openNewTicketModal() {
+    return {
+        type: ActionConstants.SELECT_MODAL,
+        response: { type: CREATE_TICKET_MODAL },
+        status: SUCCESS
+    }
+}
+
+export function closeModal() {
+    return {
+        type: ActionConstants.SELECT_MODAL,
+        response: { type: undefined },
+        status: SUCCESS
+    }
 }

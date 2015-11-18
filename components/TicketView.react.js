@@ -4,7 +4,6 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
 import SingleTicketView from './SingleTicketView.react';
-import NewTicketModal from './NewTicketModal.react';
 import TicketList from './TicketList.react';
 import SearchBar from './SearchBar.react';
 import NothingHere from './NothingHere.react';
@@ -19,7 +18,7 @@ export default class TicketView extends Component {
     }
     constructor(props, context) {
         super(props, context);
-        this.state = { searchText: '', modalOpen: false };
+        this.state = { searchText: '' };
 
         // TODO: Look into autobinding. React-redux examples projects have it, but not sure what they use
         this.handleUserInput = this.handleUserInput.bind(this);
@@ -41,34 +40,24 @@ export default class TicketView extends Component {
                     <h3>In order to get some work done, you first need some tasks</h3>
                     <button>Import Another Project</button>
                     <span>OR</span>
-                    <button className='notification'>Add a Task</button>
+                    <button className='notification' onClick={actions.openNewTicketModal}>Add a Task</button>
                 </NothingHere>
             );
         }
         if (!!ticket.id) {
-            // the following two lines is a hack required because API requires the ticket organization
-            const mergedTicket = Object.assign({}, ticket, tickets.items.get(ticket.id)); // Hack pt1: Merge ticket (w/ loading status) and full detailed ticket
-            const createAuction = actions.createAuction.bind(null, mergedTicket); // Hack pt2: Use merged ticket to curry createAuction function
-
-            // Do we really need the user object to comment on a ticket?!?
             return <SingleTicketView
-                    ticket={mergedTicket}
-                    createAuction={createAuction}
+                    ticket={tickets.items.get(ticket.id)}
+                    openNewAuctionModal={actions.openNewAuctionModal}
                     unselect={() => actions.selectTicket(null)}
-                    submitComment={actions.commentOnTicket.bind(null, user, mergedTicket)}
+                    submitComment={actions.commentOnTicket.bind(null, user, tickets.items.get(ticket.id))} // Do we really need the user object to comment on a ticket?!?
                     user={user} roles={roles} />;
         } else {
             return (
                 <div className='contentView'>
                     <SearchBar searchText={this.state.searchText} onUserInput={this.handleUserInput}>
-                        <PlusIcon onClick={() => this.setState({ modalOpen: true })} text={'Add ticket'} />
+                        <PlusIcon onClick={actions.openNewTicketModal} text={'Add ticket'} />
                     </SearchBar>
                     <TicketList select={actions.selectTicket} tickets={Array.from(tickets.items.values())} />
-                    { !!this.state.modalOpen ? <NewTicketModal 
-                        project={roles.items.get(user.current_role.id).project}
-                        createInternalTicket={actions.createInternalTicket} 
-                        createGithubTicket={actions.createGithubTicket} 
-                        close={() => this.setState({ modalOpen: false })} /> : null }
                 </div>
             );
         }

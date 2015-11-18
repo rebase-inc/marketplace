@@ -3,18 +3,19 @@ var keyMirror = require('keymirror');
 let UserActions = keyMirror({
     LOGIN: null,
     LOGOUT: null,
+    SELECT_MODAL: null,
     SELECT_VIEW: null,
     SELECT_ROLE: null,
-    UPDATE_PROFILE: null,
     UPLOAD_PHOTO: null,
+    UPDATE_PROFILE: null,
 });
 
 let TicketActions = keyMirror({
     GET_TICKETS: null,
     CREATE_TICKET: null,
     SELECT_TICKET: null,
-    COMMENT_ON_TICKET: null,
     CREATE_AUCTION: null, // this is a ticket action as far as scoping is considered...might imply we should change the REST API endpoint
+    COMMENT_ON_TICKET: null,
 });
 
 let AuctionActions = keyMirror({
