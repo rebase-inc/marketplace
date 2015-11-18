@@ -4,7 +4,6 @@ import TicketHeader from './TicketHeader.react';
 import CommentList from './CommentList.react';
 import CommentBox from './CommentBox.react';
 import CreateAuctionModal from './CreateAuctionModal.react';
-import TicketPanel from './TicketPanel.react';
 import DetailsPanel from './DetailsPanel.react';
 
 
@@ -43,13 +42,9 @@ export default class SingleTicketView extends Component {
                 </TicketHeader>
                 <DetailsPanel
                     hidden={!this.state.detailsOpen}
+                    ticket={ticket}
                     clone={ticket.project.work_repo.clone}
-                    deploy={ticket.project.deploy}
-                    test={ticket.project.test}
-                    readme={ticket.project.readme}
-                    >
-                    <TicketPanel ticket={ticket} />
-                </DetailsPanel>
+                />
                 <CommentList comments={ticket.comments}/>
                 <CommentBox submit={submitComment} />
             </div>

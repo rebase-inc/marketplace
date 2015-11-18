@@ -5,7 +5,6 @@ import CommentList from './CommentList.react';
 import CommentBox from './CommentBox.react';
 import DetailsPanel from './DetailsPanel.react';
 import OfferPanel from './OfferPanel.react';
-import TicketPanel from './TicketPanel.react';
 
 export default class SingleReviewView extends Component {
     static propTypes = {
@@ -38,12 +37,9 @@ export default class SingleReviewView extends Component {
                 <TicketHeader title={review.ticket.title} unselect={unselect} toggleDetails={this.toggleDetails} />
                 <DetailsPanel
                     hidden={!this.state.detailsOpen}
+                    ticket={review.ticket}
                     clone={review.work.clone}
-                    deploy={review.ticket.project.deploy}
-                    test={review.ticket.project.test}
-                    readme={review.ticket.project.readme}
                     >
-                    <TicketPanel ticket={review.ticket} />
                     <OfferPanel offer={review.work.offer} />
                 </DetailsPanel>
                 <CommentList comments={review.ticket.comments}/>

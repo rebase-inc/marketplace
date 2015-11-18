@@ -6,7 +6,6 @@ import CommentBox from './CommentBox.react';
 import FindTalentView from './FindTalentView.react';
 import BidModal from './BidModal.react';
 import DetailsPanel from './DetailsPanel.react';
-import TicketPanel from './TicketPanel.react';
 import AuctionPanel from './AuctionPanel.react';
 
 
@@ -55,12 +54,9 @@ export default class SingleAuctionView extends Component {
                 </TicketHeader>
                 <DetailsPanel
                     hidden={!this.state.detailsOpen}
+                    ticket={auction.ticket}
                     clone={auction.ticket.project.work_repo.clone}
-                    deploy={auction.ticket.project.deploy}
-                    test={auction.ticket.project.test}
-                    readme={auction.ticket.project.readme}
                     >
-                    <TicketPanel ticket={auction.ticket} />
                     <AuctionPanel auction={auction} />
                 </DetailsPanel>
                 { this.state.showTalent ? <FindTalentView auction={auction} approveNomination={approveNomination} /> : null }
