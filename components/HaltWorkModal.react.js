@@ -21,7 +21,7 @@ export default class SubmitWorkModal extends Component {
                 <h3>Blocked?</h3>
                 <h4>Let the client know you need something to continue</h4>
                 <textarea required ref='comment' onChange={(e) => this.setState({ text: e.target.value })} placeholder='Please leave a comment describing why you are blocked.'/>
-                <button className='needsResolution' onClick={() => { markWorkBlocked(this.state.text); close() }}>Mark Blocked</button>
+                <button data-alert onClick={() => { markWorkBlocked(this.state.text); close() }}>Mark Blocked</button>
             </ModalContainer>
         );
     }

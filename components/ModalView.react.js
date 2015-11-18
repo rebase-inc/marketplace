@@ -59,7 +59,7 @@ export default class ModalView extends Component {
                 return <ResumeWorkModal close={userActions.closeModal} markWorkUnblocked={markWorkUnblocked} />; break;
             case ModalConstants.BLOCK_WORK_MODAL:
                 const markWorkBlocked = contractActions.markWorkBlocked.bind(null, contracts.items.get(contract.id).work);
-                return <HaltWorkModal close={userActions.closeModal} markWorkBlocked={() => alert('foo')} />; break;
+                return <HaltWorkModal close={userActions.closeModal} markWorkBlocked={markWorkBlocked} />; break;
             case ModalConstants.RESOLVE_MEDIATION_MODAL:
                 //const markWorkBlocked = contractActions.markWorkBlocked.bind(null, contracts.items.get(contract.id).work),
                 return <ResolveMediationModal close={userActions.closeModal} resolveMediation={() => alert('oops')} />; break;

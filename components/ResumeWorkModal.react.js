@@ -21,7 +21,7 @@ export default class ResumeWorkModal extends Component {
                 <h3>Not blocked anymore?</h3>
                 <h4>You'll be able to resume work on this task</h4>
                 <textarea required ref='comment' onChange={(e) => this.setState({ text: e.target.value })} placeholder='Please leave a comment describing why you are no longer blocked.'/>
-                <button className='needsResolution' onClick={() => { markWorkUnblocked(this.state.text); close() }}>Remove Block</button>
+                <button data-okay onClick={() => { markWorkUnblocked(this.state.text); close() }}>Remove Block</button>
             </ModalContainer>
         );
     }
