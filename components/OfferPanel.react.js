@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 
-class OfferPanel extends Component {
+export default class OfferPanel extends Component {
     static propTypes = {
         offer: PropTypes.object.isRequired,
     }

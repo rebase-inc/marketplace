@@ -35,7 +35,7 @@ class ContractDetails extends Component {
         return (
             <div className={hidden ? 'hidden' : 'visible'} id='itemDetails'>
                 <TicketPanel ticket={contract.ticket} />
-                <OfferPanel offer={contract.bid.work_offer[0]} />
+                <OfferPanel offer={contract.bid.work_offers[0]} />
                 <AuctionPanel auction={contract.bid.auction} />
                 <CodePanel clone={contract.work.clone} deploy={contract.ticket.project.deploy} test={contract.ticket.project.test} readme={contract.ticket.project.readme} />
             </div>

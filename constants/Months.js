@@ -1,4 +1,4 @@
-export const MonthNames = [
+const Months = [
     'January',
     'February',
     'March',
@@ -11,4 +11,6 @@ export const MonthNames = [
     'October',
     'November',
     'December'
-]
+];
+
+export default Months;
