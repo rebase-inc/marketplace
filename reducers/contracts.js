@@ -19,6 +19,9 @@ export default function contracts(contracts = initialContracts, action) {
                     return { isFetching: false, items: newContracts };
             }
         }
+        case ActionConstants.BID_ON_AUCTION: {
+            return addNewContract(action.status, contracts, action.response.auction);
+        }
         case ActionConstants.SUBMIT_WORK: {
             return updateWorkOnContract(action.status, contracts, action.response.work);
         }
@@ -39,13 +42,25 @@ export default function contracts(contracts = initialContracts, action) {
     }
 }
 
+function addNewContract(requestStatus, contracts, auction) {
+    switch (requestStatus) {
+        case PENDING: return Object.assign({}, contracts, { isFetching: true }); break;
+        case ERROR: return Object.assign({}, contracts, { isFetching: false }); break;
+        case SUCCESS:
+            const newContract = addSyntheticProperties(auction.bids[0].contract);
+            newContract.bid = auction.bids[0];
+            const newContracts = Array.from(contracts.items.values()).map(c => c);
+            newContracts.push(newContract);
+            return { isFetching: false, items: new Map(newContracts.map(c => [c.id, addSyntheticProperties(c)])) };
+    }
+}
+
 function updateWorkOnContract(requestStatus, contracts, work) {
     const oldContract = Array.from(contracts.items.values()).find(c => c.work.id == work.id);
     const newContract = addSyntheticProperties(Object.assign({}, oldContract, { isFetching: requestStatus == PENDING }));
     newContract.work = work; // this can't be done with Object.assign above because it's using a synthetic property
     const newContracts = Array.from(contracts.items.values()).map(c => c.id == newContract.id ? newContract : c);
     // we probably don't actually need to call addSyntheticProperties again below...TODO: See if that's true
-    return { isFetching: false, items: new Map(newContracts.map(c => [c.id, addSyntheticProperties(c)])) };
 }
 
 function addSyntheticProperties(contract) {

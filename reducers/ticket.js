@@ -1,5 +1,6 @@
 import ActionConstants from '../constants/ActionConstants';
 import { PENDING, SUCCESS, ERROR } from '../constants/RequestConstants';
+import { NEW } from '../constants/ViewConstants';
 
 let initialTicket = { id: null, isFetching: false };
 
@@ -22,7 +23,9 @@ export default function ticket(ticket = initialTicket, action) {
         }
         case ActionConstants.SELECT_VIEW: {
             switch (action.status) {
-                case SUCCESS: return initialTicket; break;
+                case SUCCESS:
+                    return (action.response.viewType == NEW) ? initialTicket : ticket;
+                    break;
             }
         }
         case ActionConstants.LOGOUT: return initialTicket; break;

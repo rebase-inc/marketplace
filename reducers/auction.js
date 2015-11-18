@@ -1,5 +1,6 @@
 import ActionConstants from '../constants/ActionConstants';
 import { PENDING, SUCCESS, ERROR } from '../constants/RequestConstants';
+import { OFFERED } from '../constants/ViewConstants';
 
 let initialAuction = { id: null, isFetching: false };
 
@@ -27,7 +28,9 @@ export default function auction(auction = initialAuction, action) {
         }
         case ActionConstants.SELECT_VIEW: {
             switch (action.status) {
-                case SUCCESS: return initialAuction; break;
+                case SUCCESS:
+                    return (action.response.viewType == OFFERED) ? initialAuction : auction;
+                    break;
             }
         }
         case ActionConstants.LOGOUT: return initialAuction; break;
