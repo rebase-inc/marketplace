@@ -16,7 +16,6 @@ export default function reviews(reviews = initialReviews, action) {
         case ActionConstants.COMMENT_ON_REVIEW: {
             // on pending, the comment is not nested in a comment object, but it is on response (success)
             // hence the weird or statement for the last argument in the below function
-            return reviews;
             return handleCommentOnReview(action.status, reviews, action.response.comment || action.response);
             break;
         }
@@ -26,19 +25,19 @@ export default function reviews(reviews = initialReviews, action) {
 }
 
 function handleCommentOnReview(requestStatus, reviews, comment) {
-    throw 'not yet implemented';
     const oldReviews = Array.from(reviews.items.values());
-    let modifiedReview = oldReviews.find(t => t.id == comment.ticket.id);
+    let modifiedReview = oldReviews.find(r => r.work.offer.ticket_snapshot.ticket.id == comment.ticket.id);
     switch (requestStatus) {
         case PENDING: modifiedReview = Object.assign({}, modifiedReview, {isFetching: true}); break;
         case ERROR: modifiedReview = Object.assign({}, modifiedReview, {isFetching: false}); break;
         case SUCCESS:
-            modifiedReview.comments.push(comment);
-            modifiedReview = Object.assign({}, modifiedReview, {isFetching: false});
+            modifiedReview = addSyntheticProperties(Object.assign({}, modifiedReview, {isFetching: false}));
+            modifiedReview.ticket.comments.push(comment);
         break;
     }
-    const newReviews = oldReviews.map(t => t.id == modifiedReview.id ? modifiedReview : t);
-    return { isFetching: false, items: new Map(newReviews.map(t => [t.id, t])) }
+    const newReviews = oldReviews.map(r => r.id == modifiedReview.id ? modifiedReview : r);
+    return { isFetching: false, items: new Map(newReviews.map(r => [r.id, addSyntheticProperties(r)])) }
+    return { isFetching: false, items: new Map(newAuctions.map(a => [a.id, addSyntheticProperties(a)])) }
 }
 
 function addSyntheticProperties(review) {

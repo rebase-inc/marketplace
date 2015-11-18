@@ -31,7 +31,6 @@ export default class SingleReviewView extends Component {
 
     render() {
         const { user, roles, review, unselect, submitComment } = this.props;
-        console.log('Review:', review);
         return (
             <div className='contentView'>
                 <TicketHeader title={review.ticket.title} unselect={unselect} toggleDetails={this.toggleDetails} />

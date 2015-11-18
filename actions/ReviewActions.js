@@ -15,3 +15,14 @@ export function selectReview(reviewId) {
     }
 }
 
+
+// this is intentionally duplicated because as far as react is concerned it is a different
+// action than commenting on a ticket, contract, review, etc.
+export function commentOnReview(user, review, text) {
+    const data = {
+        user: user, // We need this for now, until the api is fixed
+        ticket: {id: review.ticket.id},
+        content: text
+    };
+    return dispatchedRequest('POST', '/comments', ActionConstants.COMMENT_ON_REVIEW, data);
+}

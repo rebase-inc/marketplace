@@ -39,6 +39,7 @@ let ContractActions = keyMirror({
 let ReviewActions = keyMirror({
     GET_REVIEWS: null,
     SELECT_REVIEW: null,
+    COMMENT_ON_REVIEW: null,
 });
 
 let GithubAccountActions = keyMirror({

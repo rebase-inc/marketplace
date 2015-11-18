@@ -42,6 +42,7 @@ export default class ReviewView extends Component {
             return <SingleReviewView
                 review={reviews.items.get(review.id)}
                 unselect={() => actions.selectReview(null)}
+                submitComment={actions.commentOnReview.bind(null, user, reviews.items.get(review.id))}
                 user={user} roles={roles}/>;
         } else {
             return (
