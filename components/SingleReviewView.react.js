@@ -4,7 +4,6 @@ import TicketHeader from './TicketHeader.react';
 import CommentList from './CommentList.react';
 import CommentBox from './CommentBox.react';
 import DetailsPanel from './DetailsPanel.react';
-import OfferPanel from './OfferPanel.react';
 
 export default class SingleReviewView extends Component {
     static propTypes = {
@@ -39,7 +38,7 @@ export default class SingleReviewView extends Component {
                     ticket={review.ticket}
                     clone={review.work.clone}
                     >
-                    <OfferPanel offer={review.work.offer} />
+                    <span>{'Assigned to '+user.first_name+' '+user.last_name}</span>
                 </DetailsPanel>
                 <CommentList comments={review.ticket.comments}/>
                 <CommentBox submit={submitComment} />

@@ -1,6 +1,5 @@
 import ActionConstants from '../constants/ActionConstants';
 import { PENDING, SUCCESS, ERROR } from '../constants/RequestConstants';
-import Months from '../constants/Months';
 
 let initialAuctions = { items: new Map(), isFetching: false };
 
@@ -120,18 +119,8 @@ function addSyntheticProperties(auction) {
     });
     Object.defineProperty(newAuction, 'contract', {
         get: function() {
-            let winningBids = auction.bids.filter(bid => bid.contract);
-            if (winningBids.length > 0) {
-                return winningBids[0].contract;
-            } else {
-                return null;
-            }
-        },
-    });
-    Object.defineProperty(newAuction, 'finish_work_by_human_readable', {
-        get: function() {
-            let date = new Date(auction.finish_work_by);
-            return 'Finish work by ' + Months[date.getMonth()] + ' ' + date.getDate();
+            let winningBid = auction.bids.find(bid => bid.contract);
+            return winningBid !== undefined ? winningBid.contract : null;
         },
     });
     Object.defineProperty(newAuction, 'nominations', {
