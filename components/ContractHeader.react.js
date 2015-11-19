@@ -35,7 +35,7 @@ export class InProgressContractHeader extends Component {
     render() {
         const { role, contract, unselect, toggleDetails, actions } = this.props;
         return (
-            <TicketHeader title={contract.ticket.title} unselect={unselect} toggleDetails={toggleDetails}>
+            <TicketHeader notification title={contract.ticket.title} unselect={unselect} toggleDetails={toggleDetails}>
                 { role.type == 'contractor' ? <button onClick={actions.openSubmitWorkModal} key='finished'>Finished</button> : null }
                 { role.type == 'contractor' ? <button data-alert onClick={actions.openBlockWorkModal} key='blocked'>Blocked</button>: null }
             </TicketHeader>
