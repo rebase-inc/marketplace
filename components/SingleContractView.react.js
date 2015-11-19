@@ -4,28 +4,7 @@ import ContractHeader from './ContractHeader.react';
 import CommentList from './CommentList.react';
 import CommentBox from './CommentBox.react';
 import OfferPanel from './OfferPanel.react';
-import AuctionPanel from './AuctionPanel.react';
 import DetailsPanel from './DetailsPanel.react';
-
-class ContractDetails extends Component {
-    static propTypes = {
-        contract: PropTypes.object.isRequired,
-        hidden: PropTypes.bool.isRequired,
-    }
-    render() {
-        const { contract, hidden } = this.props;
-        return (
-            <DetailsPanel
-                hidden={hidden}
-                ticket={contract.ticket}
-                clone={contract.work.clone}
-                >
-                <OfferPanel offer={contract.bid.work_offers[0]} />
-                <AuctionPanel auction={contract.bid.auction} />
-            </DetailsPanel>
-        );
-    }
-};
 
 export default class SingleContractView extends Component {
     static propTypes = {
@@ -55,7 +34,14 @@ export default class SingleContractView extends Component {
         return (
             <div className='contentView'>
                 <ContractHeader actions={actions} contract={contract} role={role} unselect={unselect} toggleDetails={this.toggleDetails} />
-                <ContractDetails hidden={!this.state.detailsOpen} contract={contract} />
+                <DetailsPanel
+                    hidden={hidden}
+                    ticket={contract.ticket}
+                    clone={contract.work.clone}
+                    >
+                    <OfferPanel offer={contract.bid.work_offers[0]} />
+                    <span>{contract.bid.auction.finish_work_by_human_readable}</span>
+                </DetailsPanel>
                 <CommentList comments={contract.ticket.comments}/>
                 <CommentBox submit={() => alert.bind(null, 'oops')}/>
             </div>

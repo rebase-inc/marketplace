@@ -5,7 +5,6 @@ import CommentList from './CommentList.react';
 import CommentBox from './CommentBox.react';
 import FindTalentView from './FindTalentView.react';
 import DetailsPanel from './DetailsPanel.react';
-import AuctionPanel from './AuctionPanel.react';
 
 
 export default class SingleAuctionView extends Component {
@@ -54,7 +53,7 @@ export default class SingleAuctionView extends Component {
                     ticket={auction.ticket}
                     clone={auction.ticket.project.work_repo.clone}
                     >
-                    <AuctionPanel auction={auction} />
+                    <span>{auction.finish_work_by_human_readable}</span>
                 </DetailsPanel>
                 { this.state.showTalent ? <FindTalentView auction={auction} approveNomination={approveNomination} /> : null }
                 { this.state.showTalent ? null : <CommentList comments={auction.ticket.comments}/> }

@@ -1,5 +1,6 @@
 import ActionConstants from '../constants/ActionConstants';
 import { PENDING, SUCCESS, ERROR } from '../constants/RequestConstants';
+import Months from '../constants/Months';
 
 let initialAuctions = { items: new Map(), isFetching: false };
 
@@ -111,15 +112,6 @@ function handleCommentOnAuction(requestStatus, auctions, comment) {
     return { isFetching: false, items: new Map(newAuctions.map(a => [a.id, addSyntheticProperties(a)])) }
 }
 
-function getWinningBid(auction) {
-    let winningBids = auction.bids.filter(bid => bid.contract);
-    if (winningBids.length > 0) {
-        return winningBids[0];
-    } else {
-        return null;
-    }
-};
-
 function addSyntheticProperties(auction) {
     let newAuction = Object.assign({}, auction);
     Object.defineProperty(newAuction, 'ticket', {
@@ -128,12 +120,18 @@ function addSyntheticProperties(auction) {
     });
     Object.defineProperty(newAuction, 'contract', {
         get: function() {
-            let winningBid = getWinningBid(newAuction);
-            if (winningBid !== null ) {
-                return newAuction.winningBid.contract;
+            let winningBids = auction.bids.filter(bid => bid.contract);
+            if (winningBids.length > 0) {
+                return winningBids[0].contract;
             } else {
                 return null;
             }
+        },
+    });
+    Object.defineProperty(newAuction, 'finish_work_by_human_readable', {
+        get: function() {
+            let date = new Date(auction.finish_work_by);
+            return 'Finish work by ' + Months[date.getMonth()] + ' ' + date.getDate();
         },
     });
     Object.defineProperty(newAuction, 'nominations', {
