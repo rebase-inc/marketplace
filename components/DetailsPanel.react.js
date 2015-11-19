@@ -12,7 +12,7 @@ export default class DetailsPanel extends Component {
         let creationString ='Created ' + humanReadableDate(ticket.created);
         creationString += (ticket.discriminator == 'github_ticket') ? ' on Github' : ' on Rebase';
         return (
-            <div className={hidden ? 'hidden' : 'visible'} id='itemDetails'>
+            <div className={hidden ? 'hidden' : 'visible'} id='detailsPanel'>
                 <div id='mainInfo'>
                     <span>{ticket.title}</span>
                     <span>{creationString}</span>
@@ -20,17 +20,17 @@ export default class DetailsPanel extends Component {
                     {this.props.children}
                 </div>
                 <div id='technicalInfo'>
-                    <CodePanelItem name='Clone' value={clone} />
-                    <CodePanelItem name='Deploy' value={ticket.project.deploy} />
-                    <CodePanelItem name='Test' value={ticket.project.test} />
-                    <CodePanelItem name='Readme' value={ticket.project.readme} />
+                    <TechInfoItem name='Clone (ssh)' value={clone} />
+                    <TechInfoItem name='Deploy' value={ticket.project.deploy} />
+                    <TechInfoItem name='Test' value={ticket.project.test} />
+                    <TechInfoItem name='Readme' value={ticket.project.readme} />
                 </div>
             </div>
         );
     }
 };
 
-class CodePanelItem extends Component {
+class TechInfoItem extends Component {
     static propTypes = {
         name: PropTypes.string.isRequired,
         value: PropTypes.string.isRequired,
@@ -38,9 +38,9 @@ class CodePanelItem extends Component {
     render() {
         const { name, value } = this.props;
         return (
-            <div className='codePanelItem'>
-                {name}
-                {value || 'n/a'}
+            <div className='techInfoItem'>
+                <span>{name}</span>
+                <input onClick={e => e.target.select()} readonly value={value || 'n/a'}/>
             </div>
         );
     }
