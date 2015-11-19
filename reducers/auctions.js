@@ -123,6 +123,12 @@ function addSyntheticProperties(auction) {
             return winningBid !== undefined ? winningBid.contract : null;
         },
     });
+    Object.defineProperty(newAuction, 'work', {
+        get: function() {
+            let winningBid = auction.bids.find(bid => bid.contract);
+            return winningBid !== undefined ? winningBid.work_offers[0].work : null;
+        },
+    });
     Object.defineProperty(newAuction, 'nominations', {
         get: function() { return newAuction.ticket_set.nominations; },
     });
