@@ -40,7 +40,7 @@ export default class SingleContractView extends Component {
                     clone={contract.work.clone}
                     >
                     <span>{'Assigned to '+user.first_name+' '+user.last_name}</span>
-                    <span>{humanReadableDate(contract.bid.auction.finish_work_by)}</span>
+                    <span>{'Finish work by '+humanReadableDate(contract.bid.auction.finish_work_by)}</span>
                 </DetailsPanel>
                 <CommentList comments={contract.ticket.comments}/>
                 <CommentBox submit={() => alert.bind(null, 'oops')}/>
