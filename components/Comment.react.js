@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 
 import ProfilePicture from './ProfilePicture.react';
-import humanReadableDate from '../utils/date.js';
+import {humanReadableDate} from '../utils/date.js';
 
 export default class Comment extends Component {
     static propTypes = {

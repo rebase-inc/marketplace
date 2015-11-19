@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react';
-import humanReadableDate from '../utils/date';
+import {humanReadableDate} from '../utils/date';
 
 export default class DetailsPanel extends Component {
     static propTypes = {

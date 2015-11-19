@@ -5,7 +5,7 @@ import CommentList from './CommentList.react';
 import CommentBox from './CommentBox.react';
 import FindTalentView from './FindTalentView.react';
 import DetailsPanel from './DetailsPanel.react';
-import humanReadableDate from '../utils/date';
+import {humanReadableDate} from '../utils/date';
 
 
 export default class SingleAuctionView extends Component {

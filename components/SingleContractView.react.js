@@ -4,7 +4,7 @@ import ContractHeader from './ContractHeader.react';
 import CommentList from './CommentList.react';
 import CommentBox from './CommentBox.react';
 import DetailsPanel from './DetailsPanel.react';
-import humanReadableDate from '../utils/date';
+import {humanReadableDate} from '../utils/date';
 
 export default class SingleContractView extends Component {
     static propTypes = {
