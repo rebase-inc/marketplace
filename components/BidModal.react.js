@@ -14,7 +14,7 @@ class CloneInstructions extends Component {
 
     render() {
         const { clone, deploy, test } = this.props;
-        let dir=clone.substring(clone.lastIndexOf('/'));
+        let dir=clone.substring(clone.lastIndexOf('/') + 1);
         return (
             <div className='infoOrInput cloneInstructions'>
                 {'$ '+clone}<br/>
@@ -75,7 +75,6 @@ export default class BidModal extends Component {
                 </ModalContainer>
             );
         } else {
-            // TODO: Get clone instructions from auction object
             return (
                 <ModalContainer close={close}>
                     <h3>Your bid was accepted!</h3>

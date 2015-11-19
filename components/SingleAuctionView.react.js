@@ -54,7 +54,7 @@ export default class SingleAuctionView extends Component {
                     ticket={auction.ticket}
                     clone={auction.ticket.project.work_repo.clone}
                     >
-                    <span>{humanReadableDate(auction.finish_work_by)}</span>
+                    <span>{'Finish work by '+humanReadableDate(auction.finish_work_by)}</span>
                 </DetailsPanel>
                 { this.state.showTalent ? <FindTalentView auction={auction} approveNomination={approveNomination} /> : null }
                 { this.state.showTalent ? null : <CommentList comments={auction.ticket.comments}/> }
