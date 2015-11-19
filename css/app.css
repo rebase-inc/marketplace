@@ -167,6 +167,8 @@ button.warning:hover { background-color: hsla(351, 50%, 60%, 1); }
 #itemHeader>button[data-warning] { background-color: hsla(351, 50%, 40%, 1); }
 #itemHeader>button[data-warning]:hover { background-color: hsla(351, 50%, 60%, 1); }
 
+span[data-warning] { color: hsla(351, 50%, 60%, 1); }
+
 #itemHeader { transition: background 1s; }
 #itemHeader[data-notification] { background-color: hsla(167, 48%, 49%, 1); color: hsla(210, 29%, 97%, 1); }
 #itemHeader[data-notification] svg path { fill: hsla(210, 29%, 97%, 1); }
@@ -865,6 +867,10 @@ img.profilePicture {
     padding-left: 12px;
     box-sizing: border-box;
     background-color: transparent;
+}
+
+#login-box input[data-warning] {
+    background-color: hsla(351, 50%, 60%, 0.3);
 }
 
 #login-box input:focus { border: 1px solid #47C8AB; box-shadow: inset 0 1px 2px rgba(203,203,210,0.2),0 0 4px rgba(80,227,194,0.35); outline: none; }

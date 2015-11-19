@@ -16,7 +16,7 @@ export default class DetailsPanel extends Component {
                 <div id='mainInfo'>
                     <span>{ticket.title}</span>
                     <span>{creationString}</span>
-                    <button className='notification'>Close issue</button>
+                    <button data-notification>Close issue</button>
                     {this.props.children}
                 </div>
                 <div id='technicalInfo'>
