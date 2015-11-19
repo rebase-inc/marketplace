@@ -30,6 +30,7 @@ export default class SingleReviewView extends Component {
 
     render() {
         const { user, roles, review, unselect, submitComment } = this.props;
+        let contractor = review.work.offer.contractor;
         return (
             <div className='contentView'>
                 <TicketHeader title={review.ticket.title} unselect={unselect} toggleDetails={this.toggleDetails} />
@@ -38,7 +39,7 @@ export default class SingleReviewView extends Component {
                     ticket={review.ticket}
                     clone={review.work.clone}
                     >
-                    <span>{'Assigned to '+user.first_name+' '+user.last_name}</span>
+                    <span>{'Assigned to '+contractor.user.first_name+' '+contractor.user.last_name}</span>
                 </DetailsPanel>
                 <CommentList comments={review.ticket.comments}/>
                 <CommentBox submit={submitComment} />
