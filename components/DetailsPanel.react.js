@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react';
-import Months from '../constants/Months';
+import humanReadableDate from '../utils/date';
 
 export default class DetailsPanel extends Component {
     static propTypes = {
@@ -9,7 +9,7 @@ export default class DetailsPanel extends Component {
     }
     render() {
         const { hidden, ticket, clone } = this.props;
-        let creationString = (date) => { return 'Created ' + Months[date.getMonth()] + ' ' + date.getDate(); }(new Date(ticket.created));
+        let creationString ='Created ' + humanReadableDate(ticket.created);
         creationString += (ticket.discriminator == 'github_ticket') ? ' on Github' : ' on Rebase';
         return (
             <div className={hidden ? 'hidden' : 'visible'} id='itemDetails'>
