@@ -14,7 +14,7 @@ class RebaseApp extends Component {
   render() {
     const { user, view, views, roles, actions } = this.props;
     if (!user.email) {
-        return <LoginDialog isLoading={user.isFetching} onLogin={actions.login} />
+        return <LoginDialog isLoading={user.isFetching} onLogin={actions.login} error={user.error} />
     } else {
         return (
             <div id='app'>

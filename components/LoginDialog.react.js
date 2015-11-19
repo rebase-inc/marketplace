@@ -10,7 +10,7 @@ import * as UserActions from '../actions/UserActions';
 
 
 export default class LoginDialog extends Component {
-    static propTypes = { 
+    static propTypes = {
         onLogin: React.PropTypes.func.isRequired,
         isLoading: React.PropTypes.bool.isRequired,
     }
@@ -22,16 +22,15 @@ export default class LoginDialog extends Component {
     }
 
     render = () => {
-        const { isLoading } = this.props;
+        const { isLoading, error } = this.props;
         return (
             <div id='login-background'>
-                <div id='login-box' onKeyPress={(e) => { if (event.charCode == 13) this.login(); }}>
+                <div id='login-box' onKeyPress={(e) => { (e.charCode == 13) ? this.login() : null }}>
                     <Logo />
-                    <p>{ this.props.error }</p>
-                    <input id='email' type='email' ref='email' className='required email' placeholder='Email' />
-                    <input id='password' type='password' ref='password' placeholder='Password' />
+                    <input data-warning={!!error || undefined} id='email' type='email' ref='email' className='required email' placeholder='Email' />
+                    <input data-warning={!!error || undefined} id='password' type='password' ref='password' placeholder='Password' />
                     <button id='log-in' onClick={this.login}>{ isLoading ? <LoadingAnimation /> : 'Log in' }</button>
-                    <div id='error-message'></div>
+                    <span data-warning>{error}</span>
                 </div>
             </div>
         );

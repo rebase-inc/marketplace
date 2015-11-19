@@ -1,15 +1,34 @@
 import fetch from 'isomorphic-fetch';
 
 import ActionConstants from '../constants/ActionConstants';
-import { ERROR, PENDING, SUCCESS } from '../constants/RequestConstants';
+import { ERROR, UNAUTHORIZED, PENDING, SUCCESS } from '../constants/RequestConstants';
 
 const BASE_URL = '/api/v1';
+
+class ServerError extends Error {
+    constructor(message) {
+        super(message);
+        this.name = this.constructor.name;
+        this.message = message;
+    }
+}
+
+class UnauthorizedError extends Error {
+    constructor(message) {
+        super(message);
+        this.name = this.constructor.name;
+        this.message = message;
+    }
+}
+
 
 function handleStatus(response, redirect) {
     if (response.status >= 200 && response.status < 300) {
         return Promise.resolve(response)
+    } else if (response.status == 401) {
+        return Promise.reject(new UnauthorizedError());
     } else {
-        return Promise.reject(new Error(response.statusText))
+        return Promise.reject(new ServerError(response.statusText));
     }
 }
 
@@ -29,16 +48,20 @@ export function dispatchedRequest(method, url, actionType, data) {
             .then(json => dispatch({ type: actionType, status: SUCCESS, response: json }))
             .catch(error => {
                 const warn = (console.warn || console.log).bind(console);
+                let status = ERROR;
                 switch (error.name) {
-                    case 'Error':
-                        warn('Error during request: ' + error.message);
+                    case 'UnauthorizedError': status = UNAUTHORIZED; break;
+                    case 'ServerError':
+                        status = ERROR;
+                        warn('Server Error: ' + error.message);
                         break;
                     default:
-                        warn('Error after request!')
+                        warn('Error after request: ' + error.message);
                         warn(error.stack);
+                        status = ERROR;
                         break;
                 }
-                return dispatch({ type: actionType, status: ERROR, response: error.message + ' (see console)' })
+                return dispatch({ type: actionType, status: status, response: error.message || {} })
             });
     };
 }

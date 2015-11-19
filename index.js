@@ -12,5 +12,6 @@ import './css/DeveloperProfileView.css';
 import './css/GithubAccountTag.css';
 import './css/NothingHere.css';
 import './css/MainHeader.css';
+import './css/DetailsPanel.css';
 
 ReactDOM.render(<App/>, document.getElementById('react-app'));
