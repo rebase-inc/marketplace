@@ -19,8 +19,30 @@ export default function reviews(reviews = initialReviews, action) {
             return handleCommentOnReview(action.status, reviews, action.response.comment || action.response);
             break;
         }
+        case ActionConstants.ACCEPT_WORK: return addNewReview(action.status, reviews, action.response.work); break;
         case ActionConstants.LOGOUT: return initialReviews; break;
         default: return reviews; break;
+    }
+}
+
+function addNewReview(requestStatus, reviews, work) {
+    switch (requestStatus) {
+        case PENDING: return Object.assign({}, reviews, { isFetching: true }); break;
+        case ERROR: return Object.assign({}, reviews, { isFetching: false }); break;
+        case SUCCESS: {
+            let newReviews = new Map(reviews.items);
+            let newReview = work.review;
+            Object.defineProperty(newReview, 'work', {
+                value: work,
+                configurable: true, // allows reload in redux
+            });
+            Object.defineProperty(newReview, 'ticket', {
+                value: work.offer.ticket_snapshot.ticket,
+                configurable: true,
+            });
+            newReviews.set(newReview.id, newReview);
+            return { isFetching: false, items: newReviews };
+        }
     }
 }
 

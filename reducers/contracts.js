@@ -26,7 +26,7 @@ export default function contracts(contracts = initialContracts, action) {
             return updateWorkOnContract(action.status, contracts, action.response.work);
         }
         case ActionConstants.ACCEPT_WORK: {
-            return updateWorkOnContract(action.status, contracts, action.response.work);
+            return removeContract(action.status, contracts, action.response.work);
         }
         case ActionConstants.DISPUTE_WORK: {
             return updateWorkOnContract(action.status, contracts, action.response.work);
@@ -55,12 +55,39 @@ function addNewContract(requestStatus, contracts, auction) {
     }
 }
 
+function* removeOneContract(contracts, work_id) {
+    for(let contract of contracts) {
+        if(contract.work.id != work_id) {
+            yield [contract.id, contract];
+        }
+    }
+}
+
+function removeContract(requestStatus, contracts, work) {
+    switch (requestStatus) {
+        case PENDING: return Object.assign({}, contracts, { isFetching: true }); break;
+        case ERROR: return Object.assign({}, contracts, { isFetching: false }); break;
+        case SUCCESS: {
+            let newContracts = {};
+            newContracts[Symbol.iterator] = removeOneContract.bind(null, contracts.items.values(), work.id);
+            return { isFetching: false, items: new Map(newContracts) };
+        }
+    }
+}
+
 function updateWorkOnContract(requestStatus, contracts, work) {
-    const oldContract = Array.from(contracts.items.values()).find(c => c.work.id == work.id);
-    const newContract = addSyntheticProperties(Object.assign({}, oldContract, { isFetching: requestStatus == PENDING }));
-    newContract.work = work; // this can't be done with Object.assign above because it's using a synthetic property
-    const newContracts = Array.from(contracts.items.values()).map(c => c.id == newContract.id ? newContract : c);
-    // we probably don't actually need to call addSyntheticProperties again below...TODO: See if that's true
+    switch (requestStatus) {
+        case PENDING: return Object.assign({}, contracts, { isFetching: true }); break;
+        case ERROR: return Object.assign({}, contracts, { isFetching: false }); break;
+        case SUCCESS: {
+            const oldContract = Array.from(contracts.items.values()).find(c => c.work.id == work.id);
+            const newContract = addSyntheticProperties(Object.assign({}, oldContract, { isFetching: requestStatus == PENDING }));
+            newContract.work = work; // this can't be done with Object.assign above because it's using a synthetic property
+            const newContracts = Array.from(contracts.items.values()).map(c => c.id == newContract.id ? newContract : c);
+            // we probably don't actually need to call addSyntheticProperties again below...TODO: See if that's true
+            return { isFetching: false, items: new Map(newContracts.map(c => [c.id, c])) };
+        }
+    }
 }
 
 function addSyntheticProperties(contract) {

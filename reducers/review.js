@@ -16,6 +16,13 @@ export default function review(review = initialReview, action) {
                 case SUCCESS: return initialReview; break;
             }
         }
+        case ActionConstants.ACCEPT_WORK: {
+            switch (action.status) {
+                case PENDING: return Object.assign({}, review, { isFetching: true }); break;
+                case ERROR: return Object.assign({}, review, { isFetching: false }); break;
+                case SUCCESS: return { isFetching: false, id: action.response.work.review.id }; break;
+            }
+        }
         case ActionConstants.LOGOUT: return initialReview; break;
         default: return review; break;
     }

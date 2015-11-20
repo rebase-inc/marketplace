@@ -36,6 +36,13 @@ export default function view(view = initialView, action) {
                     break;
             }
         }
+        case ActionConstants.ACCEPT_WORK: {
+            switch (action.status) {
+                case PENDING: return Object.assign({}, view, { isFetching: true }); break;
+                case ERROR: return Object.assign({}, view, { isFetching: false }); break;
+                case SUCCESS: return { isFetching: false, type: COMPLETED }; break;
+            }
+        }
         case ActionConstants.CREATE_AUCTION: {
             switch (action.status) {
                 case PENDING: return Object.assign({}, view, { isFetching: true }); break;
