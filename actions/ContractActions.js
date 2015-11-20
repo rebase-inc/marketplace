@@ -5,7 +5,7 @@ import { SUCCESS } from '../constants/RequestConstants';
 import { SUBMIT_WORK_MODAL, ACCEPT_WORK_MODAL, DISPUTE_WORK_MODAL, BLOCK_WORK_MODAL, UNBLOCK_WORK_MODAL, RESOLVE_MEDIATION_MODAL } from '../constants/ModalConstants';
 
 export function getContracts() {
-    return dispatchedRequest('GET', '/contracts', ActionConstants.GET_CONTRACTS);
+    return (dispatch, getState) => (!!getState().auctions.isFetching) ? Promise.resolve() : dispatch(dispatchedRequest('GET', '/contracts', ActionConstants.GET_CONTRACTS));
 }
 
 export function selectContract(contractId) {
