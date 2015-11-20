@@ -97,7 +97,7 @@ export class InMediationContractHeader extends Component {
         waitingForResponse = waitingForResponse || (role.type == 'contractor' && mediation.state == 'waiting_for_dev');
         waitingForResponse = waitingForResponse || (role.type == 'manager' && mediation.state == 'waiting_for_client');
         return (
-            <TicketHeader alert title={contract.ticket.title} unselect={unselect} toggleDetails={this.toggleDetails}>
+            <TicketHeader alert title={contract.ticket.title} unselect={unselect} toggleDetails={toggleDetails}>
                 { waitingForResponse ? <button onClick={actions.openResolveMediationModal} key='resolveMediation'>Resolve Issue</button> : null }
             </TicketHeader>
         );
