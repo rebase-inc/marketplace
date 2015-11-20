@@ -26,7 +26,7 @@ export default class ReviewView extends Component {
         this.props.actions.getReviews()
     }
     componentDidUpdate(prevProps) {
-        if (prevProps.user != this.props.user) {
+        if (prevProps.user.current_role != this.props.user.current_role) {
             this.props.actions.getReviews()
         }
     }

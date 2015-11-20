@@ -30,7 +30,7 @@ export default class TicketView extends Component {
         this.props.actions.getTickets()
     }
     componentDidUpdate(prevProps) {
-        if (prevProps.user != this.props.user) {
+        if (prevProps.user.current_role != this.props.user.current_role) {
             this.props.actions.getTickets()
         }
     }
