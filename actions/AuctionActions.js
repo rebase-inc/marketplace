@@ -5,7 +5,7 @@ import { SUCCESS } from '../constants/RequestConstants';
 import { BID_MODAL } from '../constants/ModalConstants';
 
 export function getAuctions() {
-    return dispatchedRequest('GET', '/auctions', ActionConstants.GET_AUCTIONS);
+    return (dispatch, getState) => (!!getState().auctions.isFetching) ? Promise.resolve() : dispatch(dispatchedRequest('GET', '/auctions', ActionConstants.GET_AUCTIONS));
 }
 
 export function approveNomination(auction, nomination) {

@@ -9,8 +9,8 @@ function _shouldBeVisible(auction) {
 }
 
 export default function auctions(auctions = initialAuctions, action) {
-    if ( action.type == undefined ) console.warn('UNDEFINED ACTION TYPE IN AUCTIONS REDUCER');
     switch (action.type) {
+        case ActionConstants.SELECT_ROLE: return handleNewRole(action.status, auctions, action.response.user); break;
         case ActionConstants.GET_AUCTIONS: {
             switch (action.status) {
                 case PENDING: return Object.assign({}, auctions, { isFetching: true }); break;
@@ -109,6 +109,14 @@ function handleCommentOnAuction(requestStatus, auctions, comment) {
     }
     const newAuctions = oldAuctions.map(t => t.id == modifiedAuction.id ? modifiedAuction : t);
     return { isFetching: false, items: new Map(newAuctions.map(a => [a.id, addSyntheticProperties(a)])) }
+}
+
+function handleNewRole(requestStatus, oldAuctions, user) {
+    switch (requestStatus) {
+        case PENDING: return Object.assign({}, oldAuctions, { isFetching: true }); break;
+        case ERROR: return Object.assign({}, oldAuctions, { isFetching: false }); break;
+        case SUCCESS: return initialAuctions; break;
+    }
 }
 
 function addSyntheticProperties(auction) {

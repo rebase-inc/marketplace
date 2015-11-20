@@ -8,6 +8,7 @@ import TicketList from './TicketList.react';
 import SearchBar from './SearchBar.react';
 import NothingHere from './NothingHere.react';
 import PlusIcon from './PlusIcon.react';
+import LoadingAnimation from './LoadingAnimation.react';
 
 import * as TicketActions from '../actions/TicketActions';
 
@@ -23,9 +24,15 @@ export default class TicketView extends Component {
         // TODO: Look into autobinding. React-redux examples projects have it, but not sure what they use
         this.handleUserInput = this.handleUserInput.bind(this);
         this.componentDidMount = this.componentDidMount.bind(this);
+        this.componentDidUpdate = this.componentDidUpdate.bind(this);
     }
     componentDidMount() {
         this.props.actions.getTickets()
+    }
+    componentDidUpdate(prevProps) {
+        if (prevProps.user != this.props.user) {
+            this.props.actions.getTickets()
+        }
     }
     handleUserInput(searchText) {
         this.setState({ searchText: searchText });
@@ -34,7 +41,20 @@ export default class TicketView extends Component {
         const { ticket, tickets, user, roles, actions } = this.props;
         // If there aren't any tickets to display and we're not in the process of finding any,
         // display the nothing here screen, with some actions to help the user get out of this state.
-        if (!tickets.items.size && !tickets.isFetching) {
+        if (!!ticket.id) {
+            return <SingleTicketView
+                    ticket={tickets.items.get(ticket.id)}
+                    openNewAuctionModal={actions.openNewAuctionModal}
+                    unselect={() => actions.selectTicket(null)}
+                    submitComment={actions.commentOnTicket.bind(null, user, tickets.items.get(ticket.id))} // Do we really need the user object to comment on a ticket?!?
+                    user={user} roles={roles} />;
+        } else if (!tickets.items.size && tickets.isFetching) {
+            return (
+                <div className='contentView'>
+                    <LoadingAnimation />
+                </div>
+            );
+        } else if (!tickets.items.size) {
             return (
                 <NothingHere>
                     <h3>In order to get some work done, you first need some tasks</h3>
@@ -43,21 +63,13 @@ export default class TicketView extends Component {
                     <button className='notification' onClick={actions.openNewTicketModal}>Add a Task</button>
                 </NothingHere>
             );
-        }
-        if (!!ticket.id) {
-            return <SingleTicketView
-                    ticket={tickets.items.get(ticket.id)}
-                    openNewAuctionModal={actions.openNewAuctionModal}
-                    unselect={() => actions.selectTicket(null)}
-                    submitComment={actions.commentOnTicket.bind(null, user, tickets.items.get(ticket.id))} // Do we really need the user object to comment on a ticket?!?
-                    user={user} roles={roles} />;
         } else {
             return (
                 <div className='contentView'>
                     <SearchBar searchText={this.state.searchText} onUserInput={this.handleUserInput}>
                         <PlusIcon onClick={actions.openNewTicketModal} text={'Add ticket'} />
                     </SearchBar>
-                    <TicketList select={actions.selectTicket} tickets={Array.from(tickets.items.values())} />
+                    <TicketList select={actions.selectTicket} tickets={Array.from(tickets.items.values())} loading={tickets.isFetching} />
                 </div>
             );
         }

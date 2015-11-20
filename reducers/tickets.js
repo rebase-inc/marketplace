@@ -11,7 +11,8 @@ function _shouldBeVisible(ticket) {
 export default function tickets(tickets = initialTickets, action) {
     switch (action.type) {
         case ActionConstants.GET_TICKETS: return handleNewTickets(action.status, tickets, action.response.tickets); break;
-        case ActionConstants.CREATE_AUCTION: 
+        case ActionConstants.SELECT_ROLE: return handleNewRole(action.status, tickets, action.response.user); break;
+        case ActionConstants.CREATE_AUCTION:
             const auctionedTicket = action.response.auction ? action.response.auction.ticket_set.bid_limits[0].ticket_snapshot.ticket : null;
             return handleCreateAuction(action.status, tickets, auctionedTicket);
             break;
@@ -20,7 +21,7 @@ export default function tickets(tickets = initialTickets, action) {
             // hence the weird or statement for the last argument in the below function
             return handleCommentOnTicket(action.status, tickets, action.response.comment || action.response);
             break;
-        case ActionConstants.CREATE_TICKET: 
+        case ActionConstants.CREATE_TICKET:
             // the fact that we have to have an OR between internal ticket and github ticket below suggests that
             // we maybe should separate the CREATE_TICKET action into CREATE_INTERNAL_TICKET and CREATE_GITHUB_TICKET
             // actions. Though it's not a big deal for now...
@@ -30,13 +31,21 @@ export default function tickets(tickets = initialTickets, action) {
     }
 }
 
+function handleNewRole(requestStatus, oldTickets, user) {
+    switch (requestStatus) {
+        case PENDING: return Object.assign({}, oldTickets, { isFetching: true }); break;
+        case ERROR: return Object.assign({}, oldTickets, { isFetching: false }); break;
+        case SUCCESS: return initialTickets; break;
+    }
+}
+
 function handleNewTicket(requestStatus, oldTickets, newTicket) {
     switch (requestStatus) {
         case PENDING: return Object.assign({}, oldTickets, { isFetching: true }); break;
         case ERROR: return Object.assign({}, oldTickets, { isFetching: false }); break;
         case SUCCESS:
             const newTickets = Object.assign({}, oldTickets, { isFetching: false });
-            newTickets.items.set(newTicket.id, newTicket); 
+            newTickets.items.set(newTicket.id, newTicket);
             return newTickets;
             break;
     }
