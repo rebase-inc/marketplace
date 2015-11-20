@@ -1,7 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import ReactDOM from 'react-dom';
 
-import LoadingAnimation from './LoadingAnimation.react';
 import Ticket from './Ticket.react';
 
 import Fuse from '../utils/Fuse';
@@ -15,10 +14,11 @@ export default class TicketList extends Component {
     static propTypes = {
         tickets: PropTypes.array.isRequired,
         select: PropTypes.func.isRequired,
+        loading: PropTypes.bool.isRequired,
     }
 
     render() {
-        const { tickets, select } = this.props;
+        const { tickets, select, loading } = this.props;
         let searchResults = !!this.props.searchText ? searchTickets(tickets, this.props.searchText) : tickets.map(t => t.id);
         return (
             <table className='contentList'>

@@ -20,9 +20,15 @@ export default class ReviewView extends Component {
 
         this.handleUserInput = this.handleUserInput.bind(this);
         this.componentDidMount = this.componentDidMount.bind(this);
+        this.componentDidUpdate = this.componentDidUpdate.bind(this);
     }
     componentDidMount() {
         this.props.actions.getReviews()
+    }
+    componentDidUpdate(prevProps) {
+        if (prevProps.user != this.props.user) {
+            this.props.actions.getReviews()
+        }
     }
     handleUserInput(searchText) {
         this.setState({ searchText: searchText });

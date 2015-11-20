@@ -5,6 +5,7 @@ let initialReviews = { items: [], isFetching: false };
 
 export default function reviews(reviews = initialReviews, action) {
     switch (action.type) {
+        case ActionConstants.SELECT_ROLE: return handleNewRole(action.status, reviews, action.response.user); break;
         case ActionConstants.GET_REVIEWS: {
             switch (action.status) {
                 case PENDING: return Object.assign({}, reviews, { isFetching: true }); break;
@@ -37,6 +38,14 @@ function handleCommentOnReview(requestStatus, reviews, comment) {
     }
     const newReviews = oldReviews.map(r => r.id == modifiedReview.id ? modifiedReview : r);
     return { isFetching: false, items: new Map(newReviews.map(r => [r.id, addSyntheticProperties(r)])) }
+}
+
+function handleNewRole(requestStatus, oldReviews, user) {
+    switch (requestStatus) {
+        case PENDING: return Object.assign({}, oldReviews, { isFetching: true }); break;
+        case ERROR: return Object.assign({}, oldReviews, { isFetching: false }); break;
+        case SUCCESS: return initialReviews; break;
+    }
 }
 
 function addSyntheticProperties(review) {

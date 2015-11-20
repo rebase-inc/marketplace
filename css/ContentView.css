@@ -4,3 +4,11 @@
     width: 100%;
     height: calc(100% - 50px);
 }
+
+.contentView .loadingAnimation {
+    position: absolute;
+    height: 60px;
+    top: 50%;
+    left: 50%;
+    transform: translateX(-50%) translateY(-50%);
+}

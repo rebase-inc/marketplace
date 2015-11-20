@@ -5,7 +5,8 @@ import { SUCCESS } from '../constants/RequestConstants';
 import { CREATE_TICKET_MODAL, CREATE_AUCTION_MODAL } from '../constants/ModalConstants';
 
 export function getTickets() {
-    return dispatchedRequest('GET', '/tickets', ActionConstants.GET_TICKETS);
+    // only get tickets if the tickets aren't already in a loading state
+    return (dispatch, getState) => (!!getState().tickets.isFetching) ? Promise.resolve() : dispatch(dispatchedRequest('GET', '/tickets', ActionConstants.GET_TICKETS));
 }
 
 export function createAuction(ticket, price) {

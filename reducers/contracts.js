@@ -19,25 +19,14 @@ export default function contracts(contracts = initialContracts, action) {
                     return { isFetching: false, items: newContracts };
             }
         }
-        case ActionConstants.BID_ON_AUCTION: {
-            return addNewContract(action.status, contracts, action.response.auction);
-        }
-        case ActionConstants.SUBMIT_WORK: {
-            return updateWorkOnContract(action.status, contracts, action.response.work);
-        }
-        case ActionConstants.ACCEPT_WORK: {
-            return updateWorkOnContract(action.status, contracts, action.response.work);
-        }
-        case ActionConstants.DISPUTE_WORK: {
-            return updateWorkOnContract(action.status, contracts, action.response.work);
-        }
-        case ActionConstants.MARK_WORK_BLOCKED: {
-            return updateWorkOnContract(action.status, contracts, action.response.work);
-        }
-        case ActionConstants.MARK_WORK_UNBLOCKED: {
-            return updateWorkOnContract(action.status, contracts, action.response.work);
-        }
+        case ActionConstants.BID_ON_AUCTION: return addNewContract(action.status, contracts, action.response.auction);
+        case ActionConstants.SUBMIT_WORK: return updateWorkOnContract(action.status, contracts, action.response.work);
+        case ActionConstants.ACCEPT_WORK: return updateWorkOnContract(action.status, contracts, action.response.work);
+        case ActionConstants.DISPUTE_WORK: return updateWorkOnContract(action.status, contracts, action.response.work);
+        case ActionConstants.MARK_WORK_BLOCKED: return updateWorkOnContract(action.status, contracts, action.response.work);
+        case ActionConstants.MARK_WORK_UNBLOCKED: return updateWorkOnContract(action.status, contracts, action.response.work);
         case ActionConstants.LOGOUT: return initialContracts; break;
+        case ActionConstants.SELECT_ROLE: return handleNewRole(action.status, contracts, action.response.user); break;
         default: return contracts; break;
     }
 }
@@ -61,6 +50,14 @@ function updateWorkOnContract(requestStatus, contracts, work) {
     newContract.work = work; // this can't be done with Object.assign above because it's using a synthetic property
     const newContracts = Array.from(contracts.items.values()).map(c => c.id == newContract.id ? newContract : c);
     // we probably don't actually need to call addSyntheticProperties again below...TODO: See if that's true
+}
+
+function handleNewRole(requestStatus, oldContracts, user) {
+    switch (requestStatus) {
+        case PENDING: return Object.assign({}, oldContracts, { isFetching: true }); break;
+        case ERROR: return Object.assign({}, oldContracts, { isFetching: false }); break;
+        case SUCCESS: return initialContracts; break;
+    }
 }
 
 function addSyntheticProperties(contract) {

@@ -36,7 +36,8 @@ export function updateProfile(user, settings) {
 
 export function selectRole(user, roleId) {
     const data = { id: user.id, current_role: { id: roleId }};
-    return updateProfile(user, data);
+    const url = '/users/' + user.id;
+    return dispatchedRequest('PUT', url, ActionConstants.SELECT_ROLE, data);
 }
 
 //module.exports = {

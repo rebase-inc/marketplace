@@ -28,9 +28,15 @@ export default class ContractView extends Component {
         // TODO: Look into autobinding. React-redux examples projects have it, but not sure what they use
         this.handleUserInput = this.handleUserInput.bind(this);
         this.componentDidMount = this.componentDidMount.bind(this);
+        this.componentDidUpdate = this.componentDidUpdate.bind(this);
     }
     componentDidMount() {
         this.props.actions.getContracts()
+    }
+    componentDidUpdate(prevProps) {
+        if (prevProps.user != this.props.user) {
+            this.props.actions.getContracts()
+        }
     }
     handleUserInput(searchText) {
         this.setState({ searchText: searchText });
