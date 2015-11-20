@@ -29,9 +29,15 @@ export default class AuctionView extends Component {
         this.findTalent = this.findTalent.bind(this);
         this.handleUserInput = this.handleUserInput.bind(this);
         this.componentDidMount = this.componentDidMount.bind(this);
+        this.componentDidUpdate = this.componentDidUpdate.bind(this);
     }
     componentDidMount() {
         this.props.actions.getAuctions()
+    }
+    componentDidUpdate(prevProps) {
+        if (prevProps.user != this.props.user) {
+            this.props.actions.getAuctions()
+        }
     }
     handleUserInput(searchText) {
         this.setState({ searchText: searchText });

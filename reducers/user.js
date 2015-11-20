@@ -4,10 +4,10 @@ import { PENDING, SUCCESS, UNAUTHORIZED, ERROR } from '../constants/RequestConst
 let initialUser = { email: null, isFetching: false, error: null };
 
 export default function user(user = initialUser, action) {
-    console.log('handling action ', action);
     switch (action.type) {
         case ActionConstants.LOGIN: return handleNewUserData(action.status, user, action.response.user); break;
         case ActionConstants.UPDATE_PROFILE: return handleNewUserData(action.status, user, action.response.user); break;
+        case ActionConstants.SELECT_ROLE: return handleNewUserData(action.status, user, action.response.user); break;
         case ActionConstants.LOGOUT: return initialUser; break; // we should probably handle pending and success cases
         default: return user; break;
     }
