@@ -62,7 +62,7 @@ export default class ModalView extends Component {
                 return <HaltWorkModal close={userActions.closeModal} markWorkBlocked={markWorkBlocked} />; break;
             case ModalConstants.RESOLVE_MEDIATION_MODAL:
                 //const markWorkBlocked = contractActions.markWorkBlocked.bind(null, contracts.items.get(contract.id).work),
-                return <ResolveMediationModal close={userActions.closeModal} resolveMediation={() => alert('oops')} />; break;
+                return <ResolveMediationModal close={userActions.closeModal} role={user.current_role} resolveMediation={() => alert('oops')} />; break;
             default:
                 console.warn('Invalid modal type! ', modal.type);
                 return null;
