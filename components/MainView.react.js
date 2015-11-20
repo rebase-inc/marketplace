@@ -14,6 +14,7 @@ export default class MainView extends Component {
     static propTypes = {
         user: PropTypes.object.isRequired,
         roles: PropTypes.object.isRequired,
+        actions: PropTypes.object.isRequired,
     }
 
     render() {
