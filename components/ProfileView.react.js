@@ -25,11 +25,11 @@ export default class ProfileView extends Component {
         this.props.updateProfile(settings);
     }
     render() {
-        const { user, roles } = this.props;
+        const { user, roles, uploadPhoto } = this.props;
         return (
             <div className='contentView' id='profileView'>
                 <div className='profileSettings'>
-                    <ProfilePicture user={user} uploadPhoto={this.uploadPhoto} dynamic={true}/>
+                    <ProfilePicture user={user} uploadPhoto={uploadPhoto} dynamic={true}/>
                     <input ref='first_name' defaultValue={user.first_name}/>
                     <input ref='last_name' defaultValue={user.last_name}/>
                     <input ref='email' defaultValue={user.email}/>

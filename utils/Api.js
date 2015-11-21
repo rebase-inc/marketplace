@@ -32,17 +32,18 @@ function handleStatus(response, redirect) {
     }
 }
 
-export function dispatchedRequest(method, url, actionType, data) {
+export function dispatchedRequest(method, url, actionType, data, json = true) {
     // we dispatch the pending action with some data so that the reducers
     // can know what data we're attempting to operate on, even if that
     // operation isn't yet successful.
     return dispatch => {
+        console.log('dispatching with ', json ? JSON.stringify(data) : data);
         dispatch({ type: actionType, status: PENDING, response: data || {} });
         return fetch(BASE_URL + url, {
                 method: method,
                 credentials: 'include', // CORS Hack
-                headers: { 'Content-Type': 'application/json; charset=utf-8'},
-                body: JSON.stringify(data || undefined) })
+                headers: json ? { 'Content-Type': 'application/json; charset=utf-8'} : false,
+                body: json ? JSON.stringify(data) : data })
             .then(handleStatus)
             .then(response => response.json())
             .then(json => dispatch({ type: actionType, status: SUCCESS, response: json }))
@@ -65,4 +66,3 @@ export function dispatchedRequest(method, url, actionType, data) {
             });
     };
 }
-

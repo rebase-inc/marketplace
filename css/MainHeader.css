@@ -94,7 +94,8 @@
     line-height: 20px;
 }
 
-#profileOptions > #currentProfile svg {
+#profileOptions > #currentProfile svg,
+#profileOptions > #currentProfile img {
     height: 20px;
     width: 20px;
 }
