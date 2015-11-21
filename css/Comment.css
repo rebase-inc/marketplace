@@ -1,0 +1,23 @@
+.comment .text > p {
+    margin: 0;
+}
+
+.comment .text code {
+    display: block;
+    background-color: #EBF0F2;
+    box-sizing: border-box;
+    width: calc(100% - 20px);
+    overflow-x: scroll;
+    padding: 10px;
+    margin: 10px;
+    border-radius: 4px;
+}
+
+.comment .text code,
+.comment .text code * {
+    font-family: "Courier New", Courier, monospace;
+}
+
+.comment .text pre {
+    margin: 0;
+}
