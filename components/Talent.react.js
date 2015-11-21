@@ -16,7 +16,7 @@ export default class Talent extends Component {
                     <ApproveTalentIcon auction={auction} nomination={nomination} />
                 </td>
                 <td className='talentPanel'>
-                    <span>{nomination.contractor.user.first_name + ' ' + nomination.contractor.user.last_name}</span>
+                    <span>{nomination.contractor.user.name}</span>
                     <RatingStars rating={nomination.contractor.rating} />
                 </td>
                 <td className='skillSetPanel'>

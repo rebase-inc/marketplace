@@ -66,7 +66,8 @@ export default class ProfilePicture extends Component {
             );
         }
         else {
-            let initials = user.first_name.charAt(0) + user.last_name.charAt(0);
+            console.log('user is ', user);
+            const initials = user.name.match(/\b(\w)/g).join('');
             return (
                 <div>
                     <svg onClick={dynamic ? this.openFileDialog : null} className='profilePicture' width="140px" height="140px" viewBox="0 0 140 140" version="1.1">

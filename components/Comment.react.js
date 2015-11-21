@@ -20,14 +20,12 @@ marked.setOptions({
     highlight: code => highlight.highlightAuto(code).value,
 });
 
-
-
 export default class Comment extends Component {
     static propTypes = {
        comment: PropTypes.object.isRequired,
     }
     rawMarkup() {
-        var rawMarkup = marked(this.props.comment.content.toString(), {sanitize: true});
+        var rawMarkup = marked(this.props.comment.content, {sanitize: true});
         return { __html: rawMarkup };
     }
     render() {
@@ -38,7 +36,7 @@ export default class Comment extends Component {
                     <ProfilePicture user={comment.user}/>
                 </div>
                 <div className='content'>
-                    <div className='name'>{comment.user.first_name + ' ' + comment.user.last_name}</div>
+                    <div className='name'>{comment.user.name}</div>
                     <div className='date'>{humanReadableDate(comment.created)}</div>
                     <div className='text' dangerouslySetInnerHTML={this.rawMarkup()}/>
                 </div>

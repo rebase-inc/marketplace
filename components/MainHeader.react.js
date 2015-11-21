@@ -88,7 +88,7 @@ class ProfileOptions extends Component {
     open() {
         this.setState({ open: true });
     }
-    
+
     close() {
         this.setState({ open: false });
     }
@@ -98,8 +98,8 @@ class ProfileOptions extends Component {
         return (
             <div id='profileOptions' onMouseEnter={this.open} onMouseLeave={this.close} data-open={this.state.open}>
                 <CurrentProfile user={user} />
-                { this.state.open ? 
-                    <DropdownMenu> 
+                { this.state.open ?
+                    <DropdownMenu>
                         <div className='option' onClick={() => actions.selectView(PROFILE)}>Profile</div>
                         <div className='option' onClick={() => actions.selectView(PROJECTS)}>Projects</div>
                         <div className='option' onClick={() => actions.selectView(DEVELOPER_PROFILE)}>Developer Profile</div>
@@ -121,7 +121,7 @@ class CurrentProfile extends Component {
         return (
             <div id='currentProfile' className='option'>
                 <ProfilePicture user={user} />
-                <div>{user.first_name + ' ' + user.last_name}</div>
+                <div>{user.name}</div>
             </div>
         );
     }
@@ -144,7 +144,7 @@ export class ProjectSelector extends Component {
     open() {
         this.setState({ open: true });
     }
-    
+
     close() {
         this.setState({ open: false });
     }
@@ -156,8 +156,8 @@ export class ProjectSelector extends Component {
         return (
             <div id='projectSelector' onMouseOver={this.open} onMouseLeave={this.close} data-open={this.state.open}>
                 <Role key={selectedRole.id} role={selectedRole} selected={true} />
-                { this.state.open ? 
-                    <DropdownMenu> 
+                { this.state.open ?
+                    <DropdownMenu>
                         { otherRoles.map(r => <Role key={r.id} role={r} select={() => selectRole(r)} selected={false} />) }
                         { otherRoles.length ? null : <div className='role'><span style={{fontSize: '12px'}}>no other projects</span></div> }
                     </DropdownMenu> : null }
