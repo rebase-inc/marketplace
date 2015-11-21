@@ -70,7 +70,7 @@ export default class AuctionView extends Component {
             return (
                 <div className='contentView'>
                     <SearchBar searchText={this.state.searchText} onUserInput={this.handleUserInput} />
-                    <AuctionList select={actions.selectAuction} user={user} roles={roles} auctions={viewableAuctions} loading={auctions.isFetching} />
+                    <AuctionList searchText={this.state.searchText} select={actions.selectAuction} user={user} roles={roles} auctions={viewableAuctions} loading={auctions.isFetching} />
                 </div>
             );
         }

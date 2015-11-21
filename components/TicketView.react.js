@@ -62,7 +62,7 @@ export default class TicketView extends Component {
                     <SearchBar searchText={this.state.searchText} onUserInput={this.handleUserInput}>
                         <PlusIcon onClick={actions.openNewTicketModal} text={'Add ticket'} />
                     </SearchBar>
-                    <TicketList select={actions.selectTicket} tickets={Array.from(tickets.items.values())} loading={tickets.isFetching} />
+                    <TicketList searchText={this.state.searchText} select={actions.selectTicket} tickets={Array.from(tickets.items.values())} loading={tickets.isFetching} />
                 </div>
             );
         }

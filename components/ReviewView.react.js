@@ -54,7 +54,7 @@ export default class ReviewView extends Component {
             return (
                 <div className='contentView'>
                     <SearchBar placeholder='Search finished work' searchText={this.state.searchText} onUserInput={this.handleUserInput} />
-                    <ReviewList select={actions.selectReview} user={user} roles={roles} reviews={Array.from(reviews.items.values())} loading={reviews.isFetching} />
+                    <ReviewList searchText={this.state.searchText} select={actions.selectReview} user={user} roles={roles} reviews={Array.from(reviews.items.values())} loading={reviews.isFetching} />
                 </div>
             );
         }

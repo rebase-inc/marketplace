@@ -62,7 +62,7 @@ export default class ContractView extends Component {
             return (
                 <div className='contentView'>
                     <SearchBar searchText={this.state.searchText} onUserInput={this.handleUserInput }/>
-                    <ContractList select={actions.selectContract} user={user} roles={roles} contracts={viewableContracts} loading={contracts.isFetching} />
+                    <ContractList searchText={this.state.searchText} select={actions.selectContract} user={user} roles={roles} contracts={viewableContracts} loading={contracts.isFetching} />
                 </div>
             );
         }

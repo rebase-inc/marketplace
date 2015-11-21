@@ -20,6 +20,7 @@ export default class ContractList extends Component {
         const { contracts, select, loading } = this.props;
         let searchResults = !!this.props.searchText ? searchContracts(contracts, this.props.searchText) : contracts.map(c => c.id);
         if (loading && !contracts.length) { return <LoadingAnimation />; }
+
         return (
             <table className='contentList'>
                 <tbody ref='tableBody'>
