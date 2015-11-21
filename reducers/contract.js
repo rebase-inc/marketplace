@@ -11,6 +11,7 @@ export default function contract(contract = initialContract, action) {
                     return { isFetching: false, id: action.response.contractId }
             }
         }
+        case ActionConstants.SELECT_ROLE: return handleNewRole(action.status, contract); break;
         case ActionConstants.BID_ON_AUCTION: {
             switch (action.status) {
                 case PENDING: return Object.assign({}, contract, { isFetching: true }); break;
@@ -36,5 +37,13 @@ export default function contract(contract = initialContract, action) {
         }
         case ActionConstants.LOGOUT: return initialContract; break;
         default: return contract; break;
+    }
+}
+
+function handleNewRole(requestStatus, oldContract) {
+    switch (requestStatus) {
+        case PENDING: return oldContract; break;
+        case ERROR: return oldContract; break;
+        case SUCCESS: return initialContract; break;
     }
 }
