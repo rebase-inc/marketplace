@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import ReactDOM from 'react-dom';
 
 import Ticket from './Ticket.react';
+import LoadingAnimation from './LoadingAnimation.react';
 
 import Fuse from '../utils/Fuse';
 
@@ -20,6 +21,7 @@ export default class TicketList extends Component {
     render() {
         const { tickets, select, loading } = this.props;
         let searchResults = !!this.props.searchText ? searchTickets(tickets, this.props.searchText) : tickets.map(t => t.id);
+        if (loading && !tickets.length) { return <LoadingAnimation />; }
         return (
             <table className='contentList'>
                 <tbody ref='tableBody'>

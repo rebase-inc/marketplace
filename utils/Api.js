@@ -37,7 +37,6 @@ export function dispatchedRequest(method, url, actionType, data, json = true) {
     // can know what data we're attempting to operate on, even if that
     // operation isn't yet successful.
     return dispatch => {
-        console.log('dispatching with ', json ? JSON.stringify(data) : data);
         dispatch({ type: actionType, status: PENDING, response: data || {} });
         return fetch(BASE_URL + url, {
                 method: method,
