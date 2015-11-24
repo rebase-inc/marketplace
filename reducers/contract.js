@@ -34,6 +34,16 @@ export default function contract(contract = initialContract, action) {
                 case SUCCESS: return initialContract; break;
             }
         }
+        case ActionConstants.MEDIATION_ANSWER: {
+            switch (action.status) {
+                case PENDING: return Object.assign({}, contract, { isFetching: true }); break;
+                case ERROR: return Object.assign({}, contract, { isFetching: false }); break;
+                case SUCCESS:
+                    return { isFetching: false, id: contract.id };
+                    break;
+            }
+            break;
+        }
         case ActionConstants.LOGOUT: return initialContract; break;
         default: return contract; break;
     }

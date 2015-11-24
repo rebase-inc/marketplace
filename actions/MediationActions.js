@@ -1,22 +1,22 @@
-//var Dispatcher = require('../dispatcher/RebaseAppDispatcher');
-//var ActionConstants = require('../constants/ActionConstants');
-//var RequestConstants = require('../constants/RequestConstants');
-//var Api = require('../utils/Api');
+import { dispatchedRequest } from '../utils/Api';
+import ActionConstants from '../constants/ActionConstants';
 
-//module.exports = {
-    //answerFailed: function(role, mediation) {
-        //function responseAction(response) {
-            //Dispatcher.handleRequestAction({
-                //type: ActionConstants.ANSWER_MEDIATION_FAILED,
-                //response: response
-            //});
-        //};
-        //function pendingAction(response) {
-            //Dispatcher.handleRequestAction({
-                //type: ActionConstants.ANSWER_MEDIATION_FAILED,
-                //response: RequestConstants.PENDING,
-            //});
-        //};
-        //Api.markMediationFailed(role, mediation, responseAction, pendingAction);
-    //},
-//};
+function clientAnswer(mediation, answer) {
+    const url = '/mediations/' + mediation.id + '/client_answer';
+    const data = { client_answer: answer };
+    return dispatchedRequest('POST', url, ActionConstants.CLIENT_ANSWER, data);
+}
+
+function devAnswer(mediation, answer) {
+    const url = '/mediations/' + mediation.id + '/dev_answer';
+    const data = { dev_answer: answer };
+    return dispatchedRequest('POST', url, ActionConstants.DEV_ANSWER, data);
+}
+
+export function sendAnswer(role_type, mediation, answer) {
+    switch (role_type) {
+        case 'manager': return clientAnswer(mediation, answer);
+        case 'contractor': return devAnswer(mediation, answer);
+        default: throw 'Unsupported role in mediations';
+    }
+};

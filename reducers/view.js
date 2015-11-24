@@ -1,6 +1,7 @@
 import ActionConstants from '../constants/ActionConstants';
 import { PENDING, SUCCESS, ERROR } from '../constants/RequestConstants';
 import { NEW, OFFERED, IN_PROGRESS, COMPLETED } from '../constants/ViewConstants';
+import { COMPLETE } from '../constants/WorkStates';
 
 const initialView = { isFetching: false, type: OFFERED };
 
@@ -41,6 +42,19 @@ export default function view(view = initialView, action) {
                 case PENDING: return Object.assign({}, view, { isFetching: true }); break;
                 case ERROR: return Object.assign({}, view, { isFetching: false }); break;
                 case SUCCESS: return { isFetching: false, type: COMPLETED }; break;
+            }
+        }
+        case ActionConstants.MEDIATION_ANSWER: {
+            switch (action.status) {
+                case PENDING: return Object.assign({}, view, { isFetching: true });
+                case ERROR: return Object.assign({}, view, { isFetching: false });
+                case SUCCESS: {
+                    if(action.response.mediation.work.state == COMPLETE) {
+                        return { isFetching: false, type: COMPLETED }
+                    } else {
+                        return view;
+                    }
+                };
             }
         }
         case ActionConstants.CREATE_AUCTION: {

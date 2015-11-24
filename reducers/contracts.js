@@ -1,5 +1,6 @@
 import ActionConstants from '../constants/ActionConstants';
 import { PENDING, SUCCESS, ERROR } from '../constants/RequestConstants';
+import { COMPLETE } from '../constants/WorkStates';
 
 let initialContracts = { items: new Map(), isFetching: false };
 
@@ -25,6 +26,7 @@ export default function contracts(contracts = initialContracts, action) {
         case ActionConstants.DISPUTE_WORK: return updateWorkOnContract(action.status, contracts, action.response.work);
         case ActionConstants.MARK_WORK_BLOCKED: return updateWorkOnContract(action.status, contracts, action.response.work);
         case ActionConstants.MARK_WORK_UNBLOCKED: return updateWorkOnContract(action.status, contracts, action.response.work);
+        case ActionConstants.MEDIATION_ANSWER: return updateMediation(action.status, contracts, action.response.mediation);
         case ActionConstants.LOGOUT: return initialContracts; break;
         case ActionConstants.SELECT_ROLE: return handleNewRole(action.status, contracts, action.response.user); break;
         default: return contracts; break;
@@ -75,6 +77,40 @@ function updateWorkOnContract(requestStatus, contracts, work) {
             const newContracts = Array.from(contracts.items.values()).map(c => c.id == newContract.id ? newContract : c);
             // we probably don't actually need to call addSyntheticProperties again below...TODO: See if that's true
             return { isFetching: false, items: new Map(newContracts.map(c => [c.id, c])) };
+        }
+    }
+}
+
+function* updateOneMediation(contracts, mediation) {
+    for(let contract of contracts) {
+        if(contract.work.mediation.id == mediation.id) {
+            if(mediation.work.state == COMPLETE) {
+                continue;
+            } else {
+                const new_work = Object.assign({}, mediation.work);
+                new_work.mediation = mediation;
+                const new_work_offer = Object.assign({}, contract.bid.work_offers[0]);
+                new_work_offer.work = new_work;
+                const new_bid = Object.assign({}, contract.bid);
+                new_bid.work_offers = new Array([new_work_offer]);
+                const new_contract = Object.assign({}, contract);
+                new_contract.bid = new_bid;
+                yield [contract.id, new_contract];
+            }
+        } else {
+            yield [contract.id, contract];
+        }
+    }
+}
+
+function updateMediation(requestStatus, contracts, mediation) {
+    switch (requestStatus) {
+        case PENDING: return Object.assign({}, contracts, { isFetching: true }); break;
+        case ERROR: return Object.assign({}, contracts, { isFetching: false }); break;
+        case SUCCESS: {
+            let newContracts = {};
+            newContracts[Symbol.iterator] = updateOneMediation.bind(null, contracts.items.values(), mediation);
+            return { isFetching: false, items: new Map(newContracts) };
         }
     }
 }
