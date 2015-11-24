@@ -4,13 +4,13 @@ import ActionConstants from '../constants/ActionConstants';
 function clientAnswer(mediation, answer) {
     const url = '/mediations/' + mediation.id + '/client_answer';
     const data = { client_answer: answer };
-    return dispatchedRequest('POST', url, ActionConstants.CLIENT_ANSWER, data);
+    return dispatchedRequest('POST', url, ActionConstants.MEDIATION_ANSWER, data);
 }
 
 function devAnswer(mediation, answer) {
     const url = '/mediations/' + mediation.id + '/dev_answer';
     const data = { dev_answer: answer };
-    return dispatchedRequest('POST', url, ActionConstants.DEV_ANSWER, data);
+    return dispatchedRequest('POST', url, ActionConstants.MEDIATION_ANSWER, data);
 }
 
 export function sendAnswer(role_type, mediation, answer) {
