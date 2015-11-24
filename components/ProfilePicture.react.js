@@ -49,7 +49,6 @@ export default class ProfilePicture extends Component {
             ctx.drawImage(img, sourceX, sourceY, size, size, 0, 0, MAX_DIMENSION, MAX_DIMENSION);
             let imgUrl = canvas.toDataURL('image/jpeg');
             this.setState({ photo: imgUrl });
-            console.log(this.props);
             this.props.uploadPhoto(_dataURItoBlob(imgUrl));
         }
     }
@@ -66,7 +65,6 @@ export default class ProfilePicture extends Component {
             );
         }
         else {
-            console.log('user is ', user);
             const initials = user.name.match(/\b(\w)/g).join('');
             return (
                 <div>

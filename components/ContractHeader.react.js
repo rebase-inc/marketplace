@@ -93,7 +93,7 @@ export class InMediationContractHeader extends Component {
 
     render() {
         const { contract, unselect, role, toggleDetails, actions } = this.props;
-        const mediation = contract.work.mediation[contract.work.mediation.length - 1];
+        const mediation = contract.work.mediation[0];
         let waitingForResponse = (mediation.state == DISCUSSION);
         waitingForResponse = waitingForResponse || (role.type == 'contractor' && mediation.state == WAITING_FOR_DEV);
         waitingForResponse = waitingForResponse || (role.type == 'manager' && mediation.state == WAITING_FOR_CLIENT);

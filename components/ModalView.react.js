@@ -63,7 +63,7 @@ export default class ModalView extends Component {
                 return <HaltWorkModal close={userActions.closeModal} markWorkBlocked={markWorkBlocked} />; break;
             case ModalConstants.RESOLVE_MEDIATION_MODAL: {
                 let mediations = contracts.items.get(contract.id).work.mediation;
-                let mediation = mediations[mediations.length-1];
+                let mediation = mediations[0];
                 return <ResolveMediationModal
                     close={userActions.closeModal}
                     role_type={roles.items.get(user.current_role.id).type}
