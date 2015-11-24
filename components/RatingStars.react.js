@@ -6,7 +6,6 @@ export default class RatingStars extends Component {
 
     static propTypes = {
         dynamic: PropTypes.bool,
-        labeled: PropTypes.bool,
         colored: PropTypes.bool,
         rating: PropTypes.number,
         setRating: PropTypes.func,
@@ -14,7 +13,6 @@ export default class RatingStars extends Component {
 
     static defaultProps = {
         dynamic: false,
-        labeled: false,
         colored: false,
         rating: 0,
     }
@@ -43,7 +41,7 @@ export default class RatingStars extends Component {
     }
 
     render() {
-        const { rating, dynamic, labeled, colored } = this.props;
+        const { rating, dynamic, colored } = this.props;
         const { dynamicRating } = this.state;
 
         // TODO: Clean this up
@@ -57,11 +55,9 @@ export default class RatingStars extends Component {
 
         return (
             <svg className='ratingStars' viewBox='0 0 173 32' onMouseLeave={() => this.setState({ dynamicRating: rating })}>
-                { labeled ? <span className='label' key='worst'>worst</span> : null }
                 { _.range(1, fullStars + 1).map((el) => this._makeStar('full', el, colored ? color : '#2C4866')) }
                 { _.range(fullStars + 1, 6).map((el) => this._makeStar('empty', el, colored ? color : '#2C4866')) }
                 { halfStar ? this._makeStar('half', fullStars + 1, colored ? color : '#2C4866') : null }
-                { labeled ? <span className='label' key='best'>best</span> : null }
             </svg>
         );
     }

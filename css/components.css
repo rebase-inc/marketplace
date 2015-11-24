@@ -152,9 +152,9 @@ tr.auction > td.findTalentPanel:hover {
     height: 30px;
 }
 
-#modalDialog .ratingStars > svg, #modalDialog .ratingStars > span {
+#modalDialog .ratingStars {
     display: inline-block;
-    height: 15px;
+    height: 20px;
     line-height: 15px;
     padding: 4px;
 }
