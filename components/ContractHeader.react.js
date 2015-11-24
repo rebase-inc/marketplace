@@ -44,6 +44,7 @@ export class InProgressContractHeader extends Component {
 
 export class InReviewContractHeader extends Component {
     static propTypes = {
+        role: PropTypes.object.isRequired,
         contract: PropTypes.object.isRequired,
         unselect: PropTypes.func.isRequired,
         toggleDetails: PropTypes.func.isRequired,
@@ -53,7 +54,7 @@ export class InReviewContractHeader extends Component {
     render() {
         const { role, contract, unselect, toggleDetails, actions } = this.props;
         return (
-            <TicketHeader okay title={contract.ticket.title} unselect={unselect} toggleDetails={this.toggleDetails}>
+            <TicketHeader okay title={contract.ticket.title} unselect={unselect} toggleDetails={toggleDetails}>
                 { role.type == 'manager' ? <button data-okay onClick={actions.openAcceptWorkModal} key='acceptWork'>Accept Work</button> : null }
                 { role.type == 'manager' ? <button data-warning onClick={actions.openDisputeWorkModal} data-alert key='dispute'>Dispute</button> : null }
             </TicketHeader>
