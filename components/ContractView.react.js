@@ -34,7 +34,7 @@ export default class ContractView extends Component {
         this.props.actions.getContracts()
     }
     componentDidUpdate(prevProps) {
-        if (prevProps.user != this.props.user) {
+        if (prevProps.user.current_role != this.props.user.current_role) {
             this.props.actions.getContracts()
         }
     }
@@ -62,7 +62,7 @@ export default class ContractView extends Component {
             return (
                 <div className='contentView'>
                     <SearchBar searchText={this.state.searchText} onUserInput={this.handleUserInput }/>
-                    <ContractList select={actions.selectContract} user={user} roles={roles} contracts={viewableContracts} />
+                    <ContractList searchText={this.state.searchText} select={actions.selectContract} user={user} roles={roles} contracts={viewableContracts} loading={contracts.isFetching} />
                 </div>
             );
         }

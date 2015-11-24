@@ -14,6 +14,7 @@ export default class MainView extends Component {
     static propTypes = {
         user: PropTypes.object.isRequired,
         roles: PropTypes.object.isRequired,
+        actions: PropTypes.object.isRequired,
     }
 
     render() {
@@ -30,7 +31,7 @@ export default class MainView extends Component {
             case PROFILE:
                 return <ProfileView user={user} roles={roles}
                             updateProfile={actions.updateProfile.bind(null, user)}
-                            uploadPhoto={() => alert('not implemented')} />; break;
+                            uploadPhoto={actions.uploadProfilePhoto} />; break;
             case PROJECTS:
                 return <ProjectView roles={Array.from(roles.items.values())} />; break;
             case DEVELOPER_PROFILE:

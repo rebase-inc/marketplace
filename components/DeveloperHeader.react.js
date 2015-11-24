@@ -27,7 +27,7 @@ export default class DeveloperHeader extends Component {
 
         return (
             <div id='developerHeader'>
-                <h1>{user.first_name + ' ' + user.last_name}</h1>
+                <h1>{user.name}</h1>
                 <RatingStars colored={false} rating={4.5} />
                 <h5>{'Rating based on ' + 67 + ' tasks'}</h5>
                 <GithubAccountTag account={githubAccount} authorize={() => window.location.replace('/api/v1/github')} />

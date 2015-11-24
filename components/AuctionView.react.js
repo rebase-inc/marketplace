@@ -35,7 +35,7 @@ export default class AuctionView extends Component {
         this.props.actions.getAuctions()
     }
     componentDidUpdate(prevProps) {
-        if (prevProps.user != this.props.user) {
+        if (prevProps.user.current_role != this.props.user.current_role) {
             this.props.actions.getAuctions()
         }
     }
@@ -70,7 +70,7 @@ export default class AuctionView extends Component {
             return (
                 <div className='contentView'>
                     <SearchBar searchText={this.state.searchText} onUserInput={this.handleUserInput} />
-                    <AuctionList select={actions.selectAuction} user={user} roles={roles} auctions={viewableAuctions} />
+                    <AuctionList searchText={this.state.searchText} select={actions.selectAuction} user={user} roles={roles} auctions={viewableAuctions} loading={auctions.isFetching} />
                 </div>
             );
         }

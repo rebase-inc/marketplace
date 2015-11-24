@@ -26,7 +26,7 @@ export default class ReviewView extends Component {
         this.props.actions.getReviews()
     }
     componentDidUpdate(prevProps) {
-        if (prevProps.user != this.props.user) {
+        if (prevProps.user.current_role != this.props.user.current_role) {
             this.props.actions.getReviews()
         }
     }
@@ -54,7 +54,7 @@ export default class ReviewView extends Component {
             return (
                 <div className='contentView'>
                     <SearchBar placeholder='Search finished work' searchText={this.state.searchText} onUserInput={this.handleUserInput} />
-                    <ReviewList select={actions.selectReview} user={user} roles={roles} reviews={Array.from(reviews.items.values())} />
+                    <ReviewList searchText={this.state.searchText} select={actions.selectReview} user={user} roles={roles} reviews={Array.from(reviews.items.values())} loading={reviews.isFetching} />
                 </div>
             );
         }
