@@ -661,6 +661,12 @@ img.profilePicture {
     margin-top: 10px;
 }
 
+#modalDialog .cloneInstructions .codeField {
+    width: 100%;
+    height: 30px;
+    transform: translateX(-40px);
+}
+
 #modalDialog > * {
     display: block;
     margin: 10px auto;

@@ -9,7 +9,7 @@ export default class ModalContainer extends Component {
 
     render() {
         return (
-            <div id='modalView' className='noselect'>
+            <div id='modalView'>
                 <div id='modalDialog'>
                     <div onClick={this.props.close} id='modalClose'>
                         <img src='img/modal-close.svg'/>
