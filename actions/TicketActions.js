@@ -30,7 +30,7 @@ export function selectTicket(ticketId) {
 
 export function commentOnTicket(user, ticket, text) {
     const data = {
-        user: user, // We need this for now, until the api is fixed
+        user: { id: user.id }, // We need this for now, until the api is fixed
         ticket: {id: ticket.id},
         content: text
     };

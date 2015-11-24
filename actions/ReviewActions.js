@@ -20,7 +20,7 @@ export function selectReview(reviewId) {
 // action than commenting on a ticket, contract, review, etc.
 export function commentOnReview(user, review, text) {
     const data = {
-        user: user, // We need this for now, until the api is fixed
+        user: { id: user.id }, // We need this for now, until the api is fixed
         ticket: {id: review.ticket.id},
         content: text
     };

@@ -78,20 +78,6 @@ table.contentList > tbody > tr > td {
     padding-right: 10px;
 }
 
-.statusPanel[data-okay] {
-    background-color: hsla(166, 43%, 56%, 1);
-}
-.statusPanel[data-notification] {
-    background-color: hsla(212, 22%, 43%, 1);
-}
-.statusPanel[data-alert] {
-    background-color: hsla(37, 87%, 61%, 1);
-}
-.statusPanel[data-warning] {
-    background-color: hsla(37, 87%, 61%, 1);
-    background-color: hsla(351, 50%, 50%, 1);
-}
-
 table.contentList > tbody > tr > td.statusPanel {
     padding: 0;
     width: 8px;

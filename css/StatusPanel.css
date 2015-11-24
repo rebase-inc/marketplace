@@ -1,0 +1,4 @@
+.statusPanel[data-okay] { background-color: hsla(167, 48%, 49%, 1); }
+.statusPanel[data-notification] { background-color: hsla(212, 22%, 43%, 1); }
+.statusPanel[data-alert] { background-color: hsla(37, 87%, 61%, 1); }
+.statusPanel[data-warning] { background-color: hsla(37, 87%, 61%, 1); background-color: hsla(351, 50%, 50%, 1); }

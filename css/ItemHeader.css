@@ -1,0 +1,60 @@
+#itemHeader { transition: background 1s; }
+#itemHeader[data-notification] { background-color: hsla(167, 48%, 49%, 1); color: hsla(210, 29%, 97%, 1); }
+#itemHeader[data-notification] svg path { fill: hsla(210, 29%, 97%, 1); }
+#itemHeader[data-alert] { background-color: hsla(37, 87%, 61%, 1); color: hsla(210, 29%, 97%, 1); }
+#itemHeader[data-warning] { background-color: hsla(351, 48%, 54%, 1); color: hsla(210, 29%, 97%, 1); }
+
+#itemHeader>button[data-alert] { background-color: hsla(37, 87%, 51%, 1); }
+#itemHeader>button[data-alert]:hover { background-color: hsla(37, 87%, 71%, 1); }
+
+#itemHeader>button[data-warning] { background-color: hsla(351, 50%, 40%, 1); }
+#itemHeader>button[data-warning]:hover { background-color: hsla(351, 50%, 60%, 1); }
+
+#itemHeader > button,
+#itemHeader > svg {
+    float: right;
+    cursor: pointer;
+}
+
+#itemHeader > svg.threeDotsIcon {
+    padding: 22px 10px 22px 10px;
+}
+
+#itemHeader > svg.threeDotsIcon:hover {
+    opacity: 0.6;
+}
+
+
+#itemHeader {
+    height: 50px;
+    width: 100%;
+    background-color: hsla(200, 30%, 96%, 1);
+    color: hsla(215, 41%, 29%, 1);
+    font-size: 16px;
+    line-height: 50px;
+}
+
+
+#itemHeader .dropbackIcon {
+    display: inline;
+    padding: 13px;
+    float: left;
+}
+
+#itemHeader > .backButton,
+#itemHeader > .title {
+    cursor: pointer;
+}
+
+#itemHeader > span {
+    display: block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+
+#itemHeader > button {
+    float: right;
+}
+
