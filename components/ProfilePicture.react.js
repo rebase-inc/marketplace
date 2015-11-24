@@ -18,8 +18,13 @@ export default class ProfilePicture extends Component {
     };
     static defaultProps = { dynamic: false };
 
+    constructor(props, context) {
+        super(props, context);
+        this.openFileDialog = this.openFileDialog.bind(this);
+        this.handleFile = this.handleFile.bind(this);
+    }
+
     openFileDialog() {
-        if (!this.props.dynamic) { return; }
         let fileInput = ReactDOM.findDOMNode(this.refs.fileInput);
         fileInput.value = null;
         fileInput.click();
@@ -44,7 +49,8 @@ export default class ProfilePicture extends Component {
             ctx.drawImage(img, sourceX, sourceY, size, size, 0, 0, MAX_DIMENSION, MAX_DIMENSION);
             let imgUrl = canvas.toDataURL('image/jpeg');
             this.setState({ photo: imgUrl });
-            //UserActions.updateProfilePhoto(_dataURItoBlob(imgUrl));
+            console.log(this.props);
+            this.props.uploadPhoto(_dataURItoBlob(imgUrl));
         }
     }
 
@@ -53,17 +59,18 @@ export default class ProfilePicture extends Component {
         if (!!user.photo) {
             return (
                 <div>
-                    <img ref='imgNode' className='profilePicture' onClick={this.openFileDialog} src={user.photo}/>
+                    <img ref='imgNode' className='profilePicture' onClick={dynamic ? this.openFileDialog : null} src={user.photo}/>
                     { !!dynamic ? <h5 onClick={this.openFileDialog}>Change profile picture</h5> : null }
                     <input type='file' ref='fileInput' style={{ display: 'none' }} onChange={this.handleFile} />
                 </div>
             );
         }
         else {
-            let initials = user.first_name.charAt(0) + user.last_name.charAt(0);
+            console.log('user is ', user);
+            const initials = user.name.match(/\b(\w)/g).join('');
             return (
                 <div>
-                    <svg onClick={this.openFileDialog} className='profilePicture' width="140px" height="140px" viewBox="0 0 140 140" version="1.1">
+                    <svg onClick={dynamic ? this.openFileDialog : null} className='profilePicture' width="140px" height="140px" viewBox="0 0 140 140" version="1.1">
                         <g id="UI" stroke="none" strokeWidth="1" fill="none" fill-rule="evenodd">
                             <circle id="Oval-276" fill="#718296" cx="70" cy="70" r="70"></circle>
                             <text id="intials" x='70' y='70' fontFamily="Gotham Rounded" fontSize="54px" dy="18px" fill="#F5F7FA" textAnchor='middle'>

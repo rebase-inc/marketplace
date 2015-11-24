@@ -20,7 +20,7 @@ class RebaseApp extends Component {
             <div id='app'>
                 <MainHeader user={user} roles={roles} view={view} views={views} actions={actions}/>
                 <ModalView user={user} roles={roles} />
-                <MainView view={view} user={user} roles={roles} />
+                <MainView view={view} user={user} roles={roles} actions={actions}/>
             </div>
         );
     }

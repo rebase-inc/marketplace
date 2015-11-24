@@ -65,6 +65,7 @@ function handleCreateAuction(requestStatus, oldTickets, auctionedTicket) {
 function handleNewTickets(requestStatus, oldTickets, newTickets) {
     switch (requestStatus) {
         case PENDING: return Object.assign({}, oldTickets, { isFetching: true }); break;
+        case ERROR: return Object.assign({}, oldTickets, { isFetching: false }); break;
         case SUCCESS:
             return { isFetching: false, items: new Map(newTickets.filter(_shouldBeVisible).map(t => [t.id, t])) }
     }

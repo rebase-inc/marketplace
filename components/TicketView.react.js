@@ -8,7 +8,6 @@ import TicketList from './TicketList.react';
 import SearchBar from './SearchBar.react';
 import NothingHere from './NothingHere.react';
 import PlusIcon from './PlusIcon.react';
-import LoadingAnimation from './LoadingAnimation.react';
 
 import * as TicketActions from '../actions/TicketActions';
 
@@ -30,7 +29,7 @@ export default class TicketView extends Component {
         this.props.actions.getTickets()
     }
     componentDidUpdate(prevProps) {
-        if (prevProps.user != this.props.user) {
+        if (prevProps.user.current_role != this.props.user.current_role) {
             this.props.actions.getTickets()
         }
     }
@@ -48,13 +47,7 @@ export default class TicketView extends Component {
                     unselect={() => actions.selectTicket(null)}
                     submitComment={actions.commentOnTicket.bind(null, user, tickets.items.get(ticket.id))} // Do we really need the user object to comment on a ticket?!?
                     user={user} roles={roles} />;
-        } else if (!tickets.items.size && tickets.isFetching) {
-            return (
-                <div className='contentView'>
-                    <LoadingAnimation />
-                </div>
-            );
-        } else if (!tickets.items.size) {
+        } else if (!tickets.items.size && !tickets.isFetching) {
             return (
                 <NothingHere>
                     <h3>In order to get some work done, you first need some tasks</h3>
@@ -69,7 +62,7 @@ export default class TicketView extends Component {
                     <SearchBar searchText={this.state.searchText} onUserInput={this.handleUserInput}>
                         <PlusIcon onClick={actions.openNewTicketModal} text={'Add ticket'} />
                     </SearchBar>
-                    <TicketList select={actions.selectTicket} tickets={Array.from(tickets.items.values())} loading={tickets.isFetching} />
+                    <TicketList searchText={this.state.searchText} select={actions.selectTicket} tickets={Array.from(tickets.items.values())} loading={tickets.isFetching} />
                 </div>
             );
         }

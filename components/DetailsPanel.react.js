@@ -40,7 +40,7 @@ class TechInfoItem extends Component {
         return (
             <div className='techInfoItem'>
                 <span>{name}</span>
-                <input onClick={e => e.target.select()} readonly value={value || 'n/a'}/>
+                <input onClick={e => e.target.select()} readOnly value={value || 'n/a'}/>
             </div>
         );
     }

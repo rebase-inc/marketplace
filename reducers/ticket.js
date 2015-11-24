@@ -12,6 +12,7 @@ export default function ticket(ticket = initialTicket, action) {
                     return { isFetching: false, id: action.response.ticketId }
             }
         }
+        case ActionConstants.SELECT_ROLE: return handleNewRole(action.status, ticket); break;
         case ActionConstants.CREATE_AUCTION: {
             switch (action.status) {
                 case PENDING: return Object.assign({}, ticket, { isFetching: true }); break;
@@ -30,5 +31,13 @@ export default function ticket(ticket = initialTicket, action) {
         }
         case ActionConstants.LOGOUT: return initialTicket; break;
         default: return ticket; break;
+    }
+}
+
+function handleNewRole(requestStatus, oldTicket) {
+    switch (requestStatus) {
+        case PENDING: return oldTicket; break;
+        case ERROR: return oldTicket; break;
+        case SUCCESS: return initialTicket; break;
     }
 }

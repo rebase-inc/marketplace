@@ -20,8 +20,9 @@ export default class ReviewList extends Component {
     }
     render() {
         // TODO: Refactor so this takes a role, instead of user and list of roles
-        const { reviews, user, roles, select } = this.props;
+        const { reviews, user, roles, select, loading } = this.props;
         let searchResults = !!this.props.searchText ? searchReviews(reviews, this.props.searchText) : reviews.map(a => a.id);
+        if (loading && !reviews.length) { return <LoadingAnimation />; }
         return (
             <table className='contentList'>
                 <tbody ref='tableBody'>

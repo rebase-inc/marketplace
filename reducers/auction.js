@@ -17,6 +17,7 @@ export default function auction(auction = initialAuction, action) {
                 //case SUCCESS: return initialAuction; break;
             //}
         //}
+        case ActionConstants.SELECT_ROLE: return handleNewRole(action.status, auction); break;
         case ActionConstants.CREATE_AUCTION: {
             switch (action.status) {
                 case PENDING: return Object.assign({}, auction, { isFetching: true }); break;
@@ -35,5 +36,13 @@ export default function auction(auction = initialAuction, action) {
         }
         case ActionConstants.LOGOUT: return initialAuction; break;
         default: return auction;
+    }
+}
+
+function handleNewRole(requestStatus, oldAuction) {
+    switch (requestStatus) {
+        case PENDING: return oldAuction; break;
+        case ERROR: return oldAuction; break;
+        case SUCCESS: return initialAuction; break;
     }
 }

@@ -20,8 +20,9 @@ export default class AuctionList extends Component {
     }
     render() {
         // TODO: Refactor so this takes a role, instead of user and list of roles
-        const { auctions, user, roles, select } = this.props;
-        let searchResults = !!this.props.searchText ? searchAuctions(auction, this.props.searchText) : auctions.map(a => a.id);
+        const { auctions, user, roles, select, loading } = this.props;
+        let searchResults = !!this.props.searchText ? searchAuctions(auctions, this.props.searchText) : auctions.map(a => a.id);
+        if (loading && !auctions.length) { return <LoadingAnimation />; }
         return (
             <table className='contentList'>
                 <tbody ref='tableBody'>
