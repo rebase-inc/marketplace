@@ -315,7 +315,7 @@ html, body {
 }
 
 #commentList {
-    height: calc(100% - 130px - 50px);
+    height: calc(100% - 130px - 50px - 30px);
     overflow: auto;
 }
 
