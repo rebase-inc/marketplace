@@ -37,6 +37,10 @@ let ContractActions = keyMirror({
     MARK_WORK_UNBLOCKED: null,
 });
 
+let MediationActions = keyMirror({
+    MEDIATION_ANSWER: null,
+});
+
 let ReviewActions = keyMirror({
     GET_REVIEWS: null,
     SELECT_REVIEW: null,
@@ -76,4 +80,4 @@ let __ActionConstants = keyMirror({
     DELETE_MANAGER: null,
 });
 
-export default Object.assign({}, UserActions, TicketActions, AuctionActions, ContractActions, ReviewActions, GithubAccountActions);
+export default Object.assign({}, UserActions, TicketActions, AuctionActions, ContractActions, ReviewActions, GithubAccountActions, MediationActions);

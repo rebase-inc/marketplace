@@ -20,6 +20,7 @@ import * as UserActions from '../actions/UserActions';
 import * as TicketActions from '../actions/TicketActions';
 import * as AuctionActions from '../actions/AuctionActions';
 import * as ContractActions from '../actions/ContractActions';
+import * as MediationActions from '../actions/MediationActions';
 
 // might be worth expanding this into four components (TicketModal, AuctionModal, ContractModal, ReviewModal)
 // so that we don't have to over-connect the state into this component. Not 100% sure it would work well, but
@@ -27,7 +28,7 @@ import * as ContractActions from '../actions/ContractActions';
 export default class ModalView extends Component {
     render() {
         const { modal, user, roles } = this.props;
-        const { userActions, ticketActions, auctionActions, contractActions } = this.props;
+        const { userActions, ticketActions, auctionActions, contractActions, mediationActions } = this.props;
         const { ticket, tickets, auction, auctions, contract, contracts, review } = this.props;
         switch (modal.type) {
             case null: return null; break;
@@ -60,9 +61,17 @@ export default class ModalView extends Component {
             case ModalConstants.BLOCK_WORK_MODAL:
                 const markWorkBlocked = contractActions.markWorkBlocked.bind(null, contracts.items.get(contract.id).work);
                 return <HaltWorkModal close={userActions.closeModal} markWorkBlocked={markWorkBlocked} />; break;
-            case ModalConstants.RESOLVE_MEDIATION_MODAL:
-                //const markWorkBlocked = contractActions.markWorkBlocked.bind(null, contracts.items.get(contract.id).work),
-                return <ResolveMediationModal close={userActions.closeModal} resolveMediation={() => alert('oops')} />; break;
+            case ModalConstants.RESOLVE_MEDIATION_MODAL: {
+                let mediations = contracts.items.get(contract.id).work.mediations;
+                let mediation = mediations[mediations.length-1];
+                return <ResolveMediationModal
+                    close={userActions.closeModal}
+                    role_type={roles.items.get(user.current_role.id).type}
+                    mediation={mediation}
+                    sendAnswer={mediationActions.sendAnswer}
+                    resolveMediation={() => alert('oops')}
+                />; break;
+            }
             default:
                 console.warn('Invalid modal type! ', modal.type);
                 return null;
@@ -84,5 +93,6 @@ let mapActionsToProps = dispatch => ({
     ticketActions: bindActionCreators(TicketActions, dispatch),
     auctionActions: bindActionCreators(AuctionActions, dispatch),
     contractActions: bindActionCreators(ContractActions, dispatch),
+    mediationActions: bindActionCreators(MediationActions, dispatch),
 });
 export default connect(mapStateToProps, mapActionsToProps)(ModalView);

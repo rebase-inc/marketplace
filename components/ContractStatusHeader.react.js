@@ -41,10 +41,10 @@ export default class ContractStatusHeader extends Component {
                 statusText += '.';
                 break;
             case 'in_mediation':
-                const mediation = contract.work.mediation[contract.work.mediation.length - 1];
+                const mediation = contract.work.mediations[contract.work.mediations.length - 1];
                 statusText += 'There is disagreement about the state of this work. Waiting for response from ';
                 statusText += mediation.state == 'discussion' ? 'both parties.' : '';
-                statusText += mediation.state == 'waiting_for_dev' ? contract.bid.contract.user.name : '';
+                statusText += mediation.state == 'waiting_for_dev' ? contract.bid.contractor.user.name : '';
                 statusText += mediation.state == 'waiting_for_client' ? contract.ticket.project.organization.name : '';
                 statusText += '.';
                 break;

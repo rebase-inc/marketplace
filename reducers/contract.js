@@ -16,9 +16,15 @@ export default function contract(contract = initialContract, action) {
             switch (action.status) {
                 case PENDING: return Object.assign({}, contract, { isFetching: true }); break;
                 case ERROR: return Object.assign({}, contract, { isFetching: false }); break;
-                case SUCCESS:
-                    return { isFetching: false, id: action.response.auction.bids[0].contract.id };
-                    break;
+                case SUCCESS: {
+                    let winningBid = action.response.auction.bids.find(bid => bid.contract);
+                    if(winningBid !== undefined) {
+                        return { isFetching: false, id: winningBid.contract.id };
+                    } else {
+                        // this bid was not successful
+                        return contract;
+                    }
+                }
             }
         }
         case ActionConstants.CREATE_AUCTION: {

@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
 import * as ContractActions from '../actions/ContractActions';
+import { COMPLETE } from '../constants/WorkStates';
 
 // Components
 import SearchBar from './SearchBar.react';
@@ -13,7 +14,7 @@ import SingleContractView from './SingleContractView.react';
 
 // hack to only show not completed contracts. This really should be handled by the api
 function _shouldBeVisible(contract) {
-    return (contract.work.state != 'complete')
+    return (contract.work.state != COMPLETE);
 }
 
 export default class ContractView extends Component {

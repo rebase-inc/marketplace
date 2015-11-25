@@ -26,10 +26,10 @@ export function uploadProfilePhoto(fileBlob) {
     return dispatchedRequest('POST', '/uploads', ActionConstants.UPLOAD_PHOTO, data, false); 
 }
 
-export function closeModal() {
+export function closeModal(viewType=null) {
     return {
         type: ActionConstants.SELECT_MODAL,
-        response: { modalType: null },
+        response: { modalType: null , viewType: viewType},
         status: SUCCESS
     }
 }

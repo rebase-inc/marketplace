@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 
 import TicketHeader from './TicketHeader.react';
+import { DISCUSSION, WAITING_FOR_DEV, WAITING_FOR_CLIENT } from '../constants/MediationStates';
 
 export default class ContractHeader extends Component {
     static propTypes = {
@@ -91,12 +92,12 @@ export class InMediationContractHeader extends Component {
 
     render() {
         const { contract, unselect, role, toggleDetails, actions } = this.props;
-        const mediation = contract.work.mediation[contract.work.mediation.length - 1];
-        let waitingForResponse = (mediation.state == 'dicussion');
-        waitingForResponse = waitingForResponse || (role.type == 'contractor' && mediation.state == 'waiting_for_dev');
-        waitingForResponse = waitingForResponse || (role.type == 'manager' && mediation.state == 'waiting_for_client');
+        const mediation = contract.work.mediations[contract.work.mediations.length-1];
+        let waitingForResponse = (mediation.state == DISCUSSION);
+        waitingForResponse = waitingForResponse || (role.type == 'contractor' && mediation.state == WAITING_FOR_DEV);
+        waitingForResponse = waitingForResponse || (role.type == 'manager' && mediation.state == WAITING_FOR_CLIENT);
         return (
-            <TicketHeader alert title={contract.ticket.title} unselect={unselect} toggleDetails={this.toggleDetails}>
+            <TicketHeader alert title={contract.ticket.title} unselect={unselect} toggleDetails={toggleDetails}>
                 { waitingForResponse ? <button onClick={actions.openResolveMediationModal} key='resolveMediation'>Resolve Issue</button> : null }
             </TicketHeader>
         );

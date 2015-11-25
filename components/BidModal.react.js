@@ -5,6 +5,7 @@ import ModalContainer from './ModalContainer.react';
 import LoadingAnimation from './LoadingAnimation.react';
 import CodeField from './CodeField.react';
 import Slider from './Slider.react';
+import { OFFERED } from '../constants/ViewConstants';
 
 class CloneInstructions extends Component {
     static propTypes = {
@@ -72,7 +73,7 @@ export default class BidModal extends Component {
                 <ModalContainer close={close}>
                     <h3>Your bid was not accepted.</h3>
                     <h4>{'But there are other tasks waiting for you!'}</h4>
-                    <button onClick={close}>Show tasks</button>
+                    <button onClick={close.bind(null, OFFERED)}>Show tasks</button>
                 </ModalContainer>
             );
         } else {

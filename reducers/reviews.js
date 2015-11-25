@@ -1,5 +1,6 @@
 import ActionConstants from '../constants/ActionConstants';
 import { PENDING, SUCCESS, ERROR } from '../constants/RequestConstants';
+import { COMPLETE } from '../constants/WorkStates';
 
 let initialReviews = { items: [], isFetching: false };
 
@@ -20,9 +21,42 @@ export default function reviews(reviews = initialReviews, action) {
             return handleCommentOnReview(action.status, reviews, action.response.comment || action.response);
             break;
         }
+        case ActionConstants.ACCEPT_WORK: {
+            switch (action.status) {
+                case PENDING: return Object.assign({}, reviews, { isFetching: true }); break;
+                case ERROR: return Object.assign({}, reviews, { isFetching: false }); break;
+                case SUCCESS: return addNewReview(reviews, action.response.work); break;
+            }
+        }
+        case ActionConstants.MEDIATION_ANSWER: {
+            switch (action.status) {
+                case PENDING: return Object.assign({}, reviews, { isFetching: true });
+                case ERROR: return Object.assign({}, reviews, { isFetching: false });
+                case SUCCESS: if(action.response.mediation.work.state == COMPLETE) {
+                    return addNewReview(reviews, action.response.mediation.work);
+                } else {
+                    return reviews;
+                }
+            }
+        }
         case ActionConstants.LOGOUT: return initialReviews; break;
         default: return reviews; break;
     }
+}
+
+function addNewReview(reviews, work) {
+    const newReviews = new Map(reviews.items);
+    const newReview = work.review;
+    Object.defineProperty(newReview, 'work', {
+        value: work,
+        configurable: true, // allows reload in redux
+    });
+    Object.defineProperty(newReview, 'ticket', {
+        value: work.offer.ticket_snapshot.ticket,
+        configurable: true,
+    });
+    newReviews.set(newReview.id, newReview);
+    return { isFetching: false, items: newReviews };
 }
 
 function handleCommentOnReview(requestStatus, reviews, comment) {
