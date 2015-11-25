@@ -34,7 +34,7 @@ export default function auction(auction = initialAuction, action) {
                 case PENDING: return Object.assign({}, auction, { isFetching: true }); break;
                 case SUCCESS: {
                     if(action.response.viewType != null) {
-                        return Object.assign({}, initialAuction);
+                        return initialAuction;
                     } else {
                         return auction;
                     }

@@ -44,15 +44,7 @@ export default function view(view = initialView, action) {
             switch (action.status) {
                 case PENDING: return Object.assign({}, view, { isFetching: true }); break;
                 case ERROR: return Object.assign({}, view, { isFetching: false }); break;
-                case SUCCESS: {
-                    let winningBid = action.response.auction.bids.find(bid => bid.contract);
-                    if(winningBid !== undefined) {
-                        return { isFetching: false, type: IN_PROGRESS };
-                    } else {
-                        // this bid was not successful
-                        return view;
-                    }
-                }
+                case SUCCESS: return action.response.auction.bids.find(bid => bid.contract) !== undefined ? { isFetching: false, type: IN_PROGRESS } : view;
             }
         }
         case ActionConstants.ACCEPT_WORK: {

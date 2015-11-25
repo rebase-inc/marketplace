@@ -41,7 +41,6 @@ export default function contract(contract = initialContract, action) {
                 case SUCCESS: return initialContract; break;
             }
         }
-        case ActionConstants.MEDIATION_ANSWER: return contract;
         case ActionConstants.LOGOUT: return initialContract; break;
         default: return contract; break;
     }
