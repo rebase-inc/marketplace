@@ -20,6 +20,7 @@ export default function contracts(contracts = initialContracts, action) {
                     return { isFetching: false, items: newContracts };
             }
         }
+        case ActionConstants.COMMENT_ON_CONTRACT: return handleCommentOnContract(action.status, contracts, action.response.comment || action.response);
         case ActionConstants.BID_ON_AUCTION: return addNewContract(action.status, contracts, action.response.auction);
         case ActionConstants.SUBMIT_WORK: return updateWorkOnContract(action.status, contracts, action.response.work);
         case ActionConstants.ACCEPT_WORK: return removeContract(action.status, contracts, action.response.work);
@@ -148,3 +149,19 @@ function addSyntheticProperties(contract) {
     });
     return newContract;
 }
+
+function handleCommentOnContract(requestStatus, contracts, comment) {
+    const oldContracts = Array.from(contracts.items.values());
+    let modifiedContract = oldContracts.find(c => c.ticket.id == comment.ticket.id);
+    switch (requestStatus) {
+        case PENDING: modifiedContract = Object.assign({}, modifiedContract, {isFetching: true}); break;
+        case ERROR: modifiedContract = Object.assign({}, modifiedContract, {isFetching: false}); break;
+        case SUCCESS:
+            modifiedContract = addSyntheticProperties(Object.assign({}, modifiedContract, {isFetching: false}));
+            modifiedContract.ticket.comments.push(comment);
+        break;
+    }
+    const newContracts = oldContracts.map(c => c.id == modifiedContract.id ? modifiedContract : c);
+    return { isFetching: false, items: new Map(newContracts.map(c => [c.id, addSyntheticProperties(c)])) }
+}
+

@@ -29,6 +29,7 @@ let AuctionActions = keyMirror({
 let ContractActions = keyMirror({
     GET_CONTRACTS: null,
     SELECT_CONTRACT: null,
+    COMMENT_ON_CONTRACT: null,
     // Work actions are in the scope of contracts, so I'll consider them contract actions for now
     SUBMIT_WORK: null,
     ACCEPT_WORK: null,

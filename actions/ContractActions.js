@@ -93,3 +93,14 @@ export function openResolveMediationModal() {
         status: SUCCESS
     }
 }
+
+// this is intentionally duplicated because as far as react is concerned it is a different
+// action than commenting on a ticket, contract, review, etc.
+export function commentOnContract(user, contract, text) {
+    const data = {
+        user: { id: user.id }, // We need this for now, until the api is fixed
+        ticket: {id: contract.ticket.id},
+        content: text
+    };
+    return dispatchedRequest('POST', '/comments', ActionConstants.COMMENT_ON_CONTRACT, data);
+}
