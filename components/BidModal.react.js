@@ -82,7 +82,7 @@ export default class BidModal extends Component {
                     <h3>Your bid was accepted!</h3>
                     <h4>Get started by cloning and running the tests</h4>
                     <CloneInstructions clone={auction.work.clone} deploy={auction.ticket.project.deploy} test={auction.ticket.project.test} />
-                    <button onClick={close.bind(null, null)}>Show task</button>
+                    <button onClick={close}>Show task</button>
                 </ModalContainer>
             );
         }
