@@ -93,8 +93,9 @@ function updateWorkOnContract(requestStatus, contracts, work) {
 
 function* updateOneMediation(contracts, mediation) {
     for(let contract of contracts) {
-        if(contract.work.mediation.id == mediation.id) {
+        if(contract.id == mediation.work.offer.bid.contract.id) {
             if(mediation.work.state == COMPLETE) {
+                // that effectively removes this contract from the new list of contracts
                 continue;
             } else {
                 const new_work = Object.assign({}, mediation.work);
@@ -102,10 +103,10 @@ function* updateOneMediation(contracts, mediation) {
                 const new_work_offer = Object.assign({}, contract.bid.work_offers[0]);
                 new_work_offer.work = new_work;
                 const new_bid = Object.assign({}, contract.bid);
-                new_bid.work_offers = new Array([new_work_offer]);
+                new_bid.work_offers = new Array(new_work_offer);
                 const new_contract = Object.assign({}, contract);
                 new_contract.bid = new_bid;
-                yield [contract.id, new_contract];
+                yield [contract.id, addSyntheticProperties(new_contract)];
             }
         } else {
             yield [contract.id, contract];

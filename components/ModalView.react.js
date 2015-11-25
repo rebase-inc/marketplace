@@ -62,8 +62,8 @@ export default class ModalView extends Component {
                 const markWorkBlocked = contractActions.markWorkBlocked.bind(null, contracts.items.get(contract.id).work);
                 return <HaltWorkModal close={userActions.closeModal} markWorkBlocked={markWorkBlocked} />; break;
             case ModalConstants.RESOLVE_MEDIATION_MODAL: {
-                let mediations = contracts.items.get(contract.id).work.mediation;
-                let mediation = mediations[0];
+                let mediations = contracts.items.get(contract.id).work.mediations;
+                let mediation = mediations[mediations.length-1];
                 return <ResolveMediationModal
                     close={userActions.closeModal}
                     role_type={roles.items.get(user.current_role.id).type}
