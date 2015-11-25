@@ -34,8 +34,8 @@ export default class SingleContractView extends Component {
         const { contract, user, role, unselect, actions } = this.props;
         return (
             <div className='contentView'>
-                <ContractStatusHeader contract={contract} role={role} />
                 <ContractHeader actions={actions} contract={contract} role={role} unselect={unselect} toggleDetails={this.toggleDetails} />
+                <ContractStatusHeader contract={contract} role={role} />
                 <DetailsPanel
                     hidden={!this.state.detailsOpen}
                     ticket={contract.ticket}
