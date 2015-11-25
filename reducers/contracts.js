@@ -26,7 +26,7 @@ export default function contracts(contracts = initialContracts, action) {
         case ActionConstants.DISPUTE_WORK: return updateWorkOnContract(action.status, contracts, action.response.work);
         case ActionConstants.MARK_WORK_BLOCKED: return updateWorkOnContract(action.status, contracts, action.response.work);
         case ActionConstants.MARK_WORK_UNBLOCKED: return updateWorkOnContract(action.status, contracts, action.response.work);
-        case ActionConstants.MEDIATION_ANSWER: return updateMediation(action.status, contracts, action.response.mediation);
+        case ActionConstants.MEDIATION_ANSWER: return updateMediation(action.status, contracts, action.response);
         case ActionConstants.LOGOUT: return initialContracts; break;
         case ActionConstants.SELECT_ROLE: return handleNewRole(action.status, contracts, action.response.user); break;
         default: return contracts; break;
@@ -37,12 +37,22 @@ function addNewContract(requestStatus, contracts, auction) {
     switch (requestStatus) {
         case PENDING: return Object.assign({}, contracts, { isFetching: true }); break;
         case ERROR: return Object.assign({}, contracts, { isFetching: false }); break;
-        case SUCCESS:
-            const newContract = addSyntheticProperties(auction.bids[0].contract);
-            newContract.bid = auction.bids[0];
-            const newContracts = Array.from(contracts.items.values()).map(c => c);
-            newContracts.push(newContract);
-            return { isFetching: false, items: new Map(newContracts.map(c => [c.id, addSyntheticProperties(c)])) };
+        case SUCCESS: {
+            let winningBid = auction.bids.find(bid => bid.contract);
+            if(winningBid !== undefined) {
+                const newContract = addSyntheticProperties(winningBid.contract);
+                Object.defineProperty(newContract, 'bid', {
+                    value: winningBid,
+                    configurable: true, // a hack to let us repeatedly set the property so we don't have to be careful
+                });
+                const newContracts = new Map(contracts.items);
+                newContracts.set(newContract.id, newContract);
+                return { isFetching: false, items: newContracts };
+            } else {
+                // this bid was not successful
+                return contracts;
+            }
+        }
     }
 }
 
@@ -103,13 +113,13 @@ function* updateOneMediation(contracts, mediation) {
     }
 }
 
-function updateMediation(requestStatus, contracts, mediation) {
+function updateMediation(requestStatus, contracts, response) {
     switch (requestStatus) {
         case PENDING: return Object.assign({}, contracts, { isFetching: true }); break;
         case ERROR: return Object.assign({}, contracts, { isFetching: false }); break;
         case SUCCESS: {
             let newContracts = {};
-            newContracts[Symbol.iterator] = updateOneMediation.bind(null, contracts.items.values(), mediation);
+            newContracts[Symbol.iterator] = updateOneMediation.bind(null, contracts.items.values(), response.mediation);
             return { isFetching: false, items: new Map(newContracts) };
         }
     }

@@ -28,13 +28,31 @@ export default function view(view = initialView, action) {
                     break;
             }
         }
+        case ActionConstants.SELECT_MODAL: {
+            switch (action.status) {
+                case PENDING: return Object.assign({}, view, { isFetching: true }); break;
+                case SUCCESS: {
+                    if(action.response.viewType != null) {
+                        return Object.assign({}, view, { isFetching: false }, { type: action.response.viewType });
+                    } else {
+                        return view;
+                    }
+                }
+            }
+        }
         case ActionConstants.BID_ON_AUCTION: {
             switch (action.status) {
                 case PENDING: return Object.assign({}, view, { isFetching: true }); break;
                 case ERROR: return Object.assign({}, view, { isFetching: false }); break;
-                case SUCCESS:
-                    return { isFetching: false, type: IN_PROGRESS };
-                    break;
+                case SUCCESS: {
+                    let winningBid = action.response.auction.bids.find(bid => bid.contract);
+                    if(winningBid !== undefined) {
+                        return { isFetching: false, type: IN_PROGRESS };
+                    } else {
+                        // this bid was not successful
+                        return view;
+                    }
+                }
             }
         }
         case ActionConstants.ACCEPT_WORK: {
