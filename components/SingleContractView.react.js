@@ -1,10 +1,11 @@
 import React, { Component, PropTypes } from 'react';
 
 import ContractHeader from './ContractHeader.react';
+import ContractStatusHeader from './ContractStatusHeader.react';
 import CommentList from './CommentList.react';
 import CommentBox from './CommentBox.react';
 import DetailsPanel from './DetailsPanel.react';
-import {humanReadableDate} from '../utils/date';
+import { humanReadableDate } from '../utils/date';
 
 export default class SingleContractView extends Component {
     static propTypes = {
@@ -33,14 +34,13 @@ export default class SingleContractView extends Component {
         const { contract, user, role, unselect, actions } = this.props;
         return (
             <div className='contentView'>
+                <ContractStatusHeader contract={contract} role={role} />
                 <ContractHeader actions={actions} contract={contract} role={role} unselect={unselect} toggleDetails={this.toggleDetails} />
                 <DetailsPanel
                     hidden={!this.state.detailsOpen}
                     ticket={contract.ticket}
-                    clone={contract.work.clone}
-                    >
+                    clone={contract.work.clone}>
                     <span>{'Assigned to ' + contract.bid.contractor.user.name}</span>
-                    <span>{'Finish work by ' + humanReadableDate(contract.bid.auction.finish_work_by)}</span>
                 </DetailsPanel>
                 <CommentList comments={contract.ticket.comments}/>
                 <CommentBox submit={() => alert.bind(null, 'oops')}/>

@@ -11,10 +11,9 @@ export default class ContractHeader extends Component {
         toggleDetails: PropTypes.func.isRequired,
         actions: PropTypes.object.isRequired,
     }
-    
+
     render() {
         const { role, contract, unselect, toggleDetails, actions } = this.props;
-        console.log('contract work state is ', contract.work.state);
         switch (contract.work.state) {
             case 'in_progress': return <InProgressContractHeader contract={contract} actions={actions} role={role} unselect={unselect} toggleDetails={toggleDetails} />;
             case 'in_review': return <InReviewContractHeader contract={contract} actions={actions} role={role} unselect={unselect} toggleDetails={toggleDetails} />;

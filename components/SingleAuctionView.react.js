@@ -33,6 +33,7 @@ export default class SingleAuctionView extends Component {
 
     render() {
         const { user, roles, auction, unselect, approveNomination, submitComment, openBidModal } = this.props;
+        const roleType = roles.items.get(user.current_role.id).type;
 
         // TODO: refactor this so that TicketHeader and AuctionDetails are in the same component. Current setup doesn't make sense.
         // That would also allow for a more sensical method for closing and opening the AuctionDetails
@@ -45,9 +46,8 @@ export default class SingleAuctionView extends Component {
                     title={auction.ticket.title}
                     unselect={this.state.showTalent ? () => this.setState({ showTalent: false }) : unselect}
                     toggleDetails={this.toggleDetails}>
-                    { roles.items.get(user.current_role.id).type == 'manager' ?
-                        <button onClick={() => this.setState({ showTalent: true })}>View Developers</button> :
-                        <button onClick={openBidModal}>Bid Now</button> }
+                    { roleType == 'contractor' ? <button onClick={openBidModal}>Bid Now</button> : null }
+                    { roleType == 'manager' && !this.state.showTalent ? <button onClick={() => this.setState({ showTalent: true })}>View Developers</button> : null }
                 </TicketHeader>
                 <DetailsPanel
                     hidden={!this.state.detailsOpen}

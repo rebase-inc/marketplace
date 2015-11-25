@@ -14,5 +14,9 @@ import './css/NothingHere.css';
 import './css/MainHeader.css';
 import './css/DetailsPanel.css';
 import './css/Comment.css';
+import './css/ItemHeader.css';
+import './css/ContractStatusHeader.css';
+import './css/StatusPanel.css';
+import './css/CodeField.css';
 
 ReactDOM.render(<App/>, document.getElementById('react-app'));

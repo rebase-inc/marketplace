@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 
 import ModalContainer from './ModalContainer.react';
 import LoadingAnimation from './LoadingAnimation.react';
+import CodeField from './CodeField.react';
 import Slider from './Slider.react';
 import { OFFERED } from '../constants/ViewConstants';
 
@@ -17,11 +18,11 @@ class CloneInstructions extends Component {
         const { clone, deploy, test } = this.props;
         let dir=clone.substring(clone.lastIndexOf('/') + 1);
         return (
-            <div className='infoOrInput cloneInstructions'>
-                {'$ '+clone}<br/>
-                {'$ cd '+dir}<br/>
-                {deploy ? '$ '+deploy : ''}<br/>
-                {test ? '$ '+test : ''}<br/>
+            <div className='cloneInstructions'>
+                <CodeField name='Clone' value={clone} />
+                <CodeField name='Navigate' value={'cd ' + dir} />
+                { deploy ? <CodeField value={deploy} /> : null }
+                { test ? <CodeField value={test} /> : null }
             </div>
         );
     }

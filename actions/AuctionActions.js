@@ -52,7 +52,7 @@ export function openBidModal() {
 // action than commenting on a ticket, contract, review, etc.
 export function commentOnAuction(user, auction, text) {
     const data = {
-        user: user, // We need this for now, until the api is fixed
+        user: { id: user.id }, // We need this for now, until the api is fixed
         ticket: {id: auction.ticket.id},
         content: text
     };
