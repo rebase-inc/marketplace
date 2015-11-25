@@ -44,7 +44,6 @@ export default class ContractView extends Component {
     }
     render() {
         const { contract, contracts, user, roles, actions } = this.props;
-        console.log('Contracts:', contracts.items);
         const viewableContracts = Array.from(contracts.items.values()).filter(c => _shouldBeVisible(c));
         if (!viewableContracts.length && !contracts.isFetching) {
             return (
