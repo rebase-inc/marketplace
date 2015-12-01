@@ -28,18 +28,6 @@ export default function view(view = initialView, action) {
                     break;
             }
         }
-        case ActionConstants.SELECT_MODAL: {
-            switch (action.status) {
-                case PENDING: return Object.assign({}, view, { isFetching: true }); break;
-                case SUCCESS: {
-                    if(action.response.viewType != null) {
-                        return Object.assign({}, view, { isFetching: false }, { type: action.response.viewType });
-                    } else {
-                        return view;
-                    }
-                }
-            }
-        }
         case ActionConstants.BID_ON_AUCTION: {
             switch (action.status) {
                 case PENDING: return Object.assign({}, view, { isFetching: true }); break;

@@ -46,7 +46,17 @@ export default function auctions(auctions = initialAuctions, action) {
                     return { isFetching: false, items: new Map(theNewAuctions.map(a => [a.id, addSyntheticProperties(a)])) };
                     break;
                 return Object.assign({}, auctions, { isFetching: true }); break;
-                case ERROR: return Object.assign({}, auctions, { isFetching: false }); break;
+                case ERROR: 
+                    // assign the auction in question to a new object so we can change it
+                    bidOnAuction = Object.assign({}, auctions.items.get(action.response.bid.auction.id));
+                    bidOnAuction.isFetching = false;
+
+                    // create a list of new auctions with the modified auction replacing the appropriate one from the old list
+                    theNewAuctions = Array.from(auctions.items.values()).map(a => a.id == bidOnAuction.id ? bidOnAuction : a);
+
+                    // isFetching=false here because we are not actually modifying the auctions, but rather one specific auction
+                    return { isFetching: false, items: new Map(theNewAuctions.map(a => [a.id, addSyntheticProperties(a)])) };
+                    break;
                 case SUCCESS:
                     // assign the auction in question to a new object so we can change it
                     bidOnAuction = Object.assign({}, auctions.items.get(action.response.auction.id), action.response.auction);

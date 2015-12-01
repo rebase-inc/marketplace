@@ -29,18 +29,6 @@ export default function auction(auction = initialAuction, action) {
                     break;
             }
         }
-        case ActionConstants.SELECT_MODAL: {
-            switch (action.status) {
-                case PENDING: return Object.assign({}, auction, { isFetching: true }); break;
-                case SUCCESS: {
-                    if(action.response.viewType != null) {
-                        return initialAuction;
-                    } else {
-                        return auction;
-                    }
-                }
-            }
-        }
         case ActionConstants.SELECT_VIEW: {
             switch (action.status) {
                 case SUCCESS:

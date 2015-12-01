@@ -143,7 +143,9 @@ function addSyntheticProperties(contract) {
         configurable: true, // a hack to let us repeatedly set the property so we don't have to be careful
     });
     Object.defineProperty(newContract, 'work', {
-        get: function() { return newContract.bid.work_offers[0].work; },
+        get: function() {
+            if (!newContract.bid.work_offers[0]) { console.warn('Invalid contract object'); return null; }
+            return newContract.bid.work_offers[0].work; },
         set: function(work) { newContract.bid.work_offers[0].work = work; },
         configurable: true, // a hack to let us repeatedly set the property so we don't have to be careful
     });

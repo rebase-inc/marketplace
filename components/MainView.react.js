@@ -37,7 +37,8 @@ export default class MainView extends Component {
             case DEVELOPER_PROFILE:
                 return <DeveloperProfileView user={user} contractor={Array.from(roles.items.values()).find(r => r.type == 'contractor')} />; break;
             default:
-                return null;
+                warn = (console.warn || console.log).bind(console);
+                warn('Invalid view ' + view.type); return null;
         }
     }
 }

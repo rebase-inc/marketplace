@@ -25,12 +25,11 @@ switch (process.env.NODE_ENV) {
             require('redux-devtools').devTools(),
             require('redux-devtools').persistState(debugSession)
         )(createStore)(reducer);
+        if (module.hot) {
+            // the hot swap of the reducers needs to be done explicitly
+            module.hot.accept('../reducers', () => store.replaceReducer(combineReducers(require('../reducers'))));
+        }
     }
-}
-
-if (module.hot) {
-    // the hot swap of the reducers needs to be done explicitly
-    module.hot.accept('../reducers', () => store.replaceReducer(combineReducers(require('../reducers'))));
 }
 
 export default class App extends Component {

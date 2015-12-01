@@ -23,13 +23,13 @@ export function selectView(viewType) {
 export function uploadProfilePhoto(fileBlob) {
     var data = new FormData();
     data.append('photo', fileBlob);
-    return dispatchedRequest('POST', '/uploads', ActionConstants.UPLOAD_PHOTO, data, false); 
+    return dispatchedRequest('POST', '/uploads', ActionConstants.UPLOAD_PHOTO, data, false);
 }
 
-export function closeModal(viewType=null) {
+export function closeModal() {
     return {
         type: ActionConstants.SELECT_MODAL,
-        response: { modalType: null , viewType: viewType},
+        response: { modalType: null },
         status: SUCCESS
     }
 }
