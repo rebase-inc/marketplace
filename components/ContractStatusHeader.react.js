@@ -32,9 +32,9 @@ export default class ContractStatusHeader extends Component {
                 break;
             case 'blocked':
                 statusText += 'Marked as blocked by ';
-                statusText += contract.bid.contract.user.name;
+                statusText += contract.bid.contractor.user.name;
                 statusText += role.type == 'contractor' ? ' (you)' : '';
-                statusText += '.';
+                statusText += '. ';
                 statusText += 'Waiting to be unblocked by ';
                 statusText += contract.ticket.project.organization.name;
                 statusText += role.type == 'manager' ? ' (you)' : '';
