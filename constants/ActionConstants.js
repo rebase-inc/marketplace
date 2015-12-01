@@ -8,6 +8,7 @@ let UserActions = keyMirror({
     SELECT_ROLE: null,
     UPLOAD_PHOTO: null,
     UPDATE_PROFILE: null,
+    RESTORE_SESSION: null,
 });
 
 let TicketActions = keyMirror({

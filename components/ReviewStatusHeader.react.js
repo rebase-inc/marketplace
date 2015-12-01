@@ -11,7 +11,6 @@ export default class ReviewStatusHeader extends Component {
     render() {
         const { review, role } = this.props;
         let statusText = '';
-        console.log('the review is ', review);
         statusText += 'Completed by ';
         statusText += role.type == 'manager' ? review.work.offer.contractor.user.name : 'you';;
         statusText += '. ';

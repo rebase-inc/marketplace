@@ -32,7 +32,6 @@ export default class SingleContractView extends Component {
 
     render() {
         const { contract, user, role, unselect, actions } = this.props;
-        console.log('submit comment is ', actions.commentOnContract);
         return (
             <div className='contentView'>
                 <ContractHeader actions={actions} contract={contract} role={role} unselect={unselect} toggleDetails={this.toggleDetails} />

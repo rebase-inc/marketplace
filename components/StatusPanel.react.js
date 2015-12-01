@@ -4,7 +4,6 @@ export default class StatusPanel extends Component {
     static propTypes = { state: PropTypes.string.isRequired }
     render() {
         const { state } = this.props;
-        console.log('state is ', state);
         return <td
             className='statusPanel'
             data-neutral={undefined}

@@ -4,7 +4,11 @@ import { dispatchedRequest } from '../utils/Api';
 import { SUCCESS } from '../constants/RequestConstants';
 
 export function logout() {
-    return dispatchedRequest('GET', '/auth', ActionConstants.LOGOUT);
+    return dispatchedRequest('DELETE', '/auth', ActionConstants.LOGOUT);
+}
+
+export function restoreSession() {
+    return dispatchedRequest('GET', '/auth', ActionConstants.LOGIN);
 }
 
 export function login(email, password) {
@@ -24,6 +28,15 @@ export function uploadProfilePhoto(fileBlob) {
     var data = new FormData();
     data.append('photo', fileBlob);
     return dispatchedRequest('POST', '/uploads', ActionConstants.UPLOAD_PHOTO, data, false);
+}
+
+export function loadCookieData() {
+    console.log('the cookie we got is ', Cookies.get('user'));
+    return {
+        type: ActionConstants.LOAD_COOKIE_DATA,
+        response: { user: Cookies.get('user') },
+        status: SUCCESS,
+    }
 }
 
 export function closeModal() {
