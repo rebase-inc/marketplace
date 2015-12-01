@@ -18,5 +18,6 @@ import './css/ItemHeader.css';
 import './css/ContractStatusHeader.css';
 import './css/StatusPanel.css';
 import './css/CodeField.css';
+import './css/Talent.css';
 
 ReactDOM.render(<App/>, document.getElementById('react-app'));

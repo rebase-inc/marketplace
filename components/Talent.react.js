@@ -12,8 +12,8 @@ export default class Talent extends Component {
         // TODO: Abstract out each of these panels
         return (
             <tr className='nomination'>
-                <td className='actionPanel' onClick={approve}>
-                    <ApproveTalentIcon auction={auction} nomination={nomination} />
+                <td className='actionPanel'>
+                    <ApproveTalentIcon approve={approve} auction={auction} nomination={nomination} />
                 </td>
                 <td className='talentPanel'>
                     <span>{nomination.contractor.user.name}</span>
