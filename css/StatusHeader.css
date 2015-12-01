@@ -1,0 +1,13 @@
+#statusHeader {
+    height: 30px;
+    width: 100%;
+    font-size: 12px;
+    line-height: 30px;
+    text-align: center;
+    transition: background 1s;
+}
+
+#statusHeader[data-notification] { background-color: hsla(212, 22%, 43%, 1); color: hsla(210, 29%, 97%, 1); }
+#statusHeader[data-okay] { background-color: hsla(167, 48%, 49%, 1); color: hsla(210, 29%, 97%, 1);}
+#statusHeader[data-alert] { background-color: hsla(37, 87%, 61%, 1); color: hsla(210, 29%, 97%, 1); }
+#statusHeader[data-warning] { background-color: hsla(351, 48%, 54%, 1); color: hsla(210, 29%, 97%, 1); }

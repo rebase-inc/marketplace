@@ -4,6 +4,7 @@ import TicketHeader from './TicketHeader.react';
 import CommentList from './CommentList.react';
 import CommentBox from './CommentBox.react';
 import DetailsPanel from './DetailsPanel.react';
+import ReviewStatusHeader from './ReviewStatusHeader.react';
 
 export default class SingleReviewView extends Component {
     static propTypes = {
@@ -34,6 +35,7 @@ export default class SingleReviewView extends Component {
         return (
             <div className='contentView'>
                 <TicketHeader title={review.ticket.title} unselect={unselect} toggleDetails={this.toggleDetails} />
+                <ReviewStatusHeader review={review} role={roles.items.get(user.current_role.id)}/>
                 <DetailsPanel
                     hidden={!this.state.detailsOpen}
                     ticket={review.ticket}

@@ -50,7 +50,7 @@ export default class ContractStatusHeader extends Component {
                 break;
         }
         return (
-            <div id='contractStatusHeader'
+            <div id='statusHeader'
                 data-neutral={undefined}
                 data-notification={contract.work.state == 'in_progress' || undefined}
                 data-okay={contract.work.state == 'in_review' || undefined}

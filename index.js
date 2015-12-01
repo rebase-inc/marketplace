@@ -15,7 +15,7 @@ import './css/MainHeader.css';
 import './css/DetailsPanel.css';
 import './css/Comment.css';
 import './css/ItemHeader.css';
-import './css/ContractStatusHeader.css';
+import './css/StatusHeader.css';
 import './css/StatusPanel.css';
 import './css/CodeField.css';
 import './css/Talent.css';
