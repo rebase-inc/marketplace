@@ -31,7 +31,7 @@ var ResolveMediationModal = React.createClass({
     },
     answer: function(response) {
         const { close, role_type, mediation, sendAnswer } = this.props;
-        sendAnswer(role_type, mediation, response);
+        sendAnswer(role_type, mediation, response, this.state.text);
         close();
     },
     render: function() {

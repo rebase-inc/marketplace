@@ -1,22 +1,24 @@
 import { dispatchedRequest } from '../utils/Api';
 import ActionConstants from '../constants/ActionConstants';
 
-function clientAnswer(mediation, answer) {
-    const url = '/mediations/' + mediation.id + '/client_answer';
-    const data = { client_answer: answer };
-    return dispatchedRequest('POST', url, ActionConstants.MEDIATION_ANSWER, data);
-}
+const _roleToEvents = new Map([
+    ['manager', 'client_answer'],
+    ['contractor', 'dev_answer'],
+]);
 
-function devAnswer(mediation, answer) {
-    const url = '/mediations/' + mediation.id + '/dev_answer';
-    const data = { dev_answer: answer };
-    return dispatchedRequest('POST', url, ActionConstants.MEDIATION_ANSWER, data);
-}
-
-export function sendAnswer(role_type, mediation, answer) {
-    switch (role_type) {
-        case 'manager': return clientAnswer(mediation, answer);
-        case 'contractor': return devAnswer(mediation, answer);
-        default: throw 'Unsupported role in mediations';
+function roleToEvent(role) {
+    if(_roleToEvents.has(role)) {
+        return _roleToEvents.get(role);
+    } else {
+        throw 'Unsupported role in mediations: '+role;
     }
+}
+
+export function sendAnswer(role_type, mediation, answer, comment) {
+    const url = '/mediations/' + mediation.id + '/'+roleToEvent(role_type);
+    const data = {
+        answer: answer,
+        comment: comment
+    };
+    return dispatchedRequest('POST', url, ActionConstants.MEDIATION_ANSWER, data);
 };
