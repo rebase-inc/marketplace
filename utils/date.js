@@ -1,6 +1,6 @@
 import Months from '../constants/Months';
 
-export function humanReadableDate(isoDate) {
+export function humanReadableDate(isoDate, time=true) {
     let date = new Date(isoDate);
     let month = Months[date.getMonth()];
     let day = date.getDate();
@@ -8,5 +8,5 @@ export function humanReadableDate(isoDate) {
     let minutes = date.getMinutes();
     minutes = minutes < 10 ? '0' + minutes : minutes;
     let ampm = date.getHours() < 12 ? 'AM' : 'PM';
-    return month + ' ' + day + ' at ' + hours + ':' + minutes + ampm;
+    return month + ' ' + day + (time ? ' at ' + hours + ':' + minutes + ampm : '');
 };
