@@ -19,8 +19,8 @@ function _shouldBeVisible(contract) {
 }
 
 const SortFunctions = new Map([
-    ['finishing soon', (a, b) => new Date(a.bid.auction.finish_work_by) >= new Date(b.bid.auction.finish_work_by) ],
-    ['time left', (a, b) => new Date(a.bid.auction.finish_work_by) <= new Date(b.bid.auction.finish_work_by) ],
+    ['finishing soon', (a, b) => new Date(a.bid.auction.finish_work_by) - new Date(b.bid.auction.finish_work_by) ],
+    ['time left', (a, b) => new Date(b.bid.auction.finish_work_by) - new Date(a.bid.auction.finish_work_by) ],
     ['blocked', (a, b) => b.work.state == 'blocked' ],
     ['in review', (a, b) => b.work.state == 'in_review' ],
     ['in progress', (a, b) => b.work.state == 'in_progress' ],

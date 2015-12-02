@@ -18,18 +18,18 @@ function _shouldBeVisible(role, auction) {
 }
 
 const SortFunctions = new Map([
-    ['ending soon', (a, b) => new Date(a.expires) >= new Date(b.expires) ],
-    ['time left', (a, b) => new Date(a.expires) <= new Date(b.expires) ],
+    ['ending soon', (a, b) => new Date(a.expires) - new Date(b.expires) ],
+    ['time left', (a, b) => new Date(b.expires) - new Date(a.expires) ],
 ]);
 
 const unapproved = (auction) => auction.ticket_set.nominations.filter(n => !auction.approved_talents.find(t => t.contractor.id == n.contractor.id)).length;
 const ManagerSortFunctions = new Map([
-    ['waiting nominations', (a, b) => unapproved(a) <= unapproved(b)],
-    ['big budget', (a, b) => a.ticket_set.bid_limits[0].price <= b.ticket_set.bid_limits[0].price],
-    ['small budget', (a, b) => a.ticket_set.bid_limits[0].price >= b.ticket_set.bid_limits[0].price],
+    ['waiting nominations', (a, b) => unapproved(b) - unapproved(a)],
+    ['big budget', (a, b) => parseInt(b.ticket_set.bid_limits[0].price) - parseInt(a.ticket_set.bid_limits[0].price)],
+    ['small budget', (a, b) => parseInt(a.ticket_set.bid_limits[0].price) - parseInt(b.ticket_set.bid_limits[0].price)],
 ]);
 const DeveloperSortFunctions = new Map([
-    ['highest rated', (a,b) => a.ticket.project.organization.rating >= b.ticket.project.organzation.rating],
+    ['highest rated', (a,b) => a.ticket.project.organization.rating - b.ticket.project.organzation.rating],
 ]);
 
 export default class AuctionView extends Component {

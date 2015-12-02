@@ -13,10 +13,10 @@ import SortOptions from './SortOptions.react';
 import * as TicketActions from '../actions/TicketActions';
 
 const SortFunctions = new Map([
-    ['newest', (a, b) => new Date(a.created) <= new Date(b.created)],
-    ['oldest', (a, b) => new Date(a.created) >= new Date(b.created)],
-    ['most comments', (a, b) => a.comments.length <= b.comments.length],
-    ['fewest comments', (a, b) => a.comments.length >= b.comments.length],
+    ['newest', (a, b) => new Date(b.created) - new Date(a.created)],
+    ['oldest', (a, b) => new Date(a.created) - new Date(b.created)],
+    ['most comments', (a, b) => b.comments.length - a.comments.length],
+    ['fewest comments', (a, b) => a.comments.length - b.comments.length],
 ]);
 
 export default class TicketView extends Component {

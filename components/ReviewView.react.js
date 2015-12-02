@@ -11,11 +11,10 @@ import NothingHere from './NothingHere.react';
 import SortOptions from './SortOptions.react';
 
 const SortFunctions = new Map([
-    ['new', (a, b) => new Date(a.created) <= new Date(b.created) ],
-    ['old', (a, b) => new Date(a.created) >= new Date(b.created) ],
-    ['good review', (a, b) => a.rating >= b.rating ],
-    ['bad review', (a, b) => a.rating <= b.rating ],
-    ['project', (a, b) => a.ticket.project.name <= b.ticket.project.name ],
+    ['new', (a, b) => new Date(b.created) - new Date(a.created) ],
+    ['old', (a, b) => new Date(a.created) - new Date(b.created) ],
+    ['good review', (a, b) => parseInt(a.rating) - parseInt(b.rating) ],
+    ['bad review', (a, b) => parseInt(b.rating) - parseInt(a.rating) ],
 ]);
 
 export default class ReviewView extends Component {
