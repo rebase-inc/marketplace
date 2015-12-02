@@ -13,11 +13,12 @@ function searchContracts(contracts, searchText) {
 
 export default class ContractList extends Component {
     static propTypes = {
+        role: PropTypes.object.isRequired,
         select: PropTypes.func.isRequired,
         contracts: PropTypes.array.isRequired,
     }
     render() {
-        const { contracts, select, loading } = this.props;
+        const { contracts, select, loading, role } = this.props;
         let searchResults = !!this.props.searchText ? searchContracts(contracts, this.props.searchText) : contracts.map(c => c.id);
         if (loading && !contracts.length) { return <LoadingAnimation />; }
 
@@ -25,7 +26,7 @@ export default class ContractList extends Component {
             <table className='contentList'>
                 <tbody ref='tableBody'>
                     { contracts.filter(c => searchResults.indexOf(c.id) != -1).map(c =>
-                        <Contract contract={c} select={select.bind(null, c.id)} key={c.id} />) }
+                        <Contract contract={c} role={role} select={select.bind(null, c.id)} key={c.id} />) }
                 </tbody>
             </table>
         );
