@@ -24,7 +24,7 @@ export function submitWork(work, comment) {
 
 export function disputeWork(work, comment) {
     const url = '/works/' + work.id + '/mediate';
-    const data = { reason: comment, work: work };
+    const data = { comment: comment, work: work };
     return dispatchedRequest('POST', url, ActionConstants.DISPUTE_WORK, data);
 }
 
