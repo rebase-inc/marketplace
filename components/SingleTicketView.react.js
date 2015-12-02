@@ -35,7 +35,6 @@ export default class SingleTicketView extends Component {
         const { user, roles, ticket, unselect, submitComment, openNewAuctionModal } = this.props;
         // TODO: refactor this so that TicketHeader and TicketDetails are in the same component. Current setup doesn't make sense.
         // That would also allow for a more sensical method for closing and opening the TicketDetails
-        console.log('submit comment is ', submitComment); 
         return (
             <div className='contentView'>
                 <TicketHeader unselect={unselect} title={ticket.title} toggleDetails={this.toggleDetails}>

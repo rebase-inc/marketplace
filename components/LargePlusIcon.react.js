@@ -10,7 +10,6 @@ export default class LargePlusIcon extends Component {
 
     componentDidMount() {
         const node = ReactDOM.findDOMNode(this.refs.text);
-        console.log(' node width is ', node.offsetWidth);
         this.setState({ width: node.offsetWidth });
     }
 

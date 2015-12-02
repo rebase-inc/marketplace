@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 
-import RatingStars from './RatingStars.react';
+import TalentPanel from './TalentPanel.react';
 import TalentScore from './TalentScore.react';
 import ApproveTalentIcon from './ApproveTalentIcon.react';
 
@@ -12,13 +12,10 @@ export default class Talent extends Component {
         // TODO: Abstract out each of these panels
         return (
             <tr className='nomination'>
-                <td className='actionPanel' onClick={approve}>
-                    <ApproveTalentIcon auction={auction} nomination={nomination} />
+                <td className='actionPanel'>
+                    <ApproveTalentIcon approve={approve} auction={auction} nomination={nomination} />
                 </td>
-                <td className='talentPanel'>
-                    <span>{nomination.contractor.user.name}</span>
-                    <RatingStars rating={nomination.contractor.rating} />
-                </td>
+                <TalentPanel contractor={nomination.contractor} />
                 <td className='skillSetPanel'>
                     <div className='skills'>
                         { Object.keys(nomination.contractor.skill_set.skills).map((skill) =>

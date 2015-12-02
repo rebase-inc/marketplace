@@ -35,7 +35,7 @@ export class InProgressContractHeader extends Component {
     render() {
         const { role, contract, unselect, toggleDetails, actions } = this.props;
         return (
-            <TicketHeader okay title={contract.ticket.title} unselect={unselect} toggleDetails={toggleDetails}>
+            <TicketHeader title={contract.ticket.title} unselect={unselect} toggleDetails={toggleDetails}>
                 { role.type == 'contractor' ? <button onClick={actions.openSubmitWorkModal} key='finished'>Finished</button> : null }
                 { role.type == 'contractor' ? <button data-alert onClick={actions.openBlockWorkModal} key='blocked'>Blocked</button>: null }
             </TicketHeader>
@@ -55,7 +55,7 @@ export class InReviewContractHeader extends Component {
     render() {
         const { role, contract, unselect, toggleDetails, actions } = this.props;
         return (
-            <TicketHeader okay title={contract.ticket.title} unselect={unselect} toggleDetails={toggleDetails}>
+            <TicketHeader title={contract.ticket.title} unselect={unselect} toggleDetails={toggleDetails}>
                 { role.type == 'manager' ? <button data-okay onClick={actions.openAcceptWorkModal} key='acceptWork'>Accept Work</button> : null }
                 { role.type == 'manager' ? <button data-warning onClick={actions.openDisputeWorkModal} data-alert key='dispute'>Dispute</button> : null }
             </TicketHeader>
@@ -74,7 +74,7 @@ export class BlockedContractHeader extends Component {
     render() {
         const { contract, unselect, toggleDetails, actions } = this.props;
         return (
-            <TicketHeader alert title={contract.ticket.title} unselect={unselect} toggleDetails={this.toggleDetails}>
+            <TicketHeader title={contract.ticket.title} unselect={unselect} toggleDetails={toggleDetails}>
                 <button data-alert onClick={actions.openUnblockWorkModal} key='unblockWork'>Unblock</button>
             </TicketHeader>
         );
@@ -97,7 +97,7 @@ export class InMediationContractHeader extends Component {
         waitingForResponse = waitingForResponse || (role.type == 'contractor' && mediation.state == WAITING_FOR_DEV);
         waitingForResponse = waitingForResponse || (role.type == 'manager' && mediation.state == WAITING_FOR_CLIENT);
         return (
-            <TicketHeader alert title={contract.ticket.title} unselect={unselect} toggleDetails={toggleDetails}>
+            <TicketHeader title={contract.ticket.title} unselect={unselect} toggleDetails={toggleDetails}>
                 { waitingForResponse ? <button onClick={actions.openResolveMediationModal} key='resolveMediation'>Resolve Issue</button> : null }
             </TicketHeader>
         );

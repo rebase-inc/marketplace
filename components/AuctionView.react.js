@@ -8,6 +8,7 @@ import SearchBar from './SearchBar.react';
 import AuctionList from './AuctionList.react';
 import SingleAuctionView from './SingleAuctionView.react';
 import NothingHere from './NothingHere.react';
+import SortOptions from './SortOptions.react';
 
 // hack to only show auctions not already bid on. This has to be done here because reducer doesn't have access to user
 // TODO: Add query parameter like ?state=waiting_for_bids or equivalent to api
@@ -16,6 +17,21 @@ function _shouldBeVisible(role, auction) {
     return (role.type == 'manager' || !auction.bids.length)
 }
 
+const SortFunctions = new Map([
+    ['ending soon', (a, b) => new Date(a.expires) - new Date(b.expires) ],
+    ['time left', (a, b) => new Date(b.expires) - new Date(a.expires) ],
+]);
+
+const unapproved = (auction) => auction.ticket_set.nominations.filter(n => !auction.approved_talents.find(t => t.contractor.id == n.contractor.id)).length;
+const ManagerSortFunctions = new Map([
+    ['unapproved developers', (a, b) => unapproved(b) - unapproved(a)],
+    ['big budget', (a, b) => parseInt(b.ticket_set.bid_limits[0].price) - parseInt(a.ticket_set.bid_limits[0].price)],
+    ['small budget', (a, b) => parseInt(a.ticket_set.bid_limits[0].price) - parseInt(b.ticket_set.bid_limits[0].price)],
+]);
+const DeveloperSortFunctions = new Map([
+    ['highest rated', (a,b) => a.ticket.project.organization.rating - b.ticket.project.organzation.rating],
+]);
+
 export default class AuctionView extends Component {
     static propTypes = {
         user: React.PropTypes.object.isRequired,
@@ -23,13 +39,13 @@ export default class AuctionView extends Component {
     }
     constructor(props, context) {
         super(props, context);
-        this.state = { searchText: '' };
 
         // TODO: Look into autobinding. React-redux examples projects have it, but not sure what they use
-        this.findTalent = this.findTalent.bind(this);
         this.handleUserInput = this.handleUserInput.bind(this);
         this.componentDidMount = this.componentDidMount.bind(this);
         this.componentDidUpdate = this.componentDidUpdate.bind(this);
+
+        this.state = { searchText: '', sort: SortFunctions.get('ending soon') };
     }
     componentDidMount() {
         this.props.actions.getAuctions()
@@ -37,18 +53,16 @@ export default class AuctionView extends Component {
     componentDidUpdate(prevProps) {
         if (prevProps.user.current_role != this.props.user.current_role) {
             this.props.actions.getAuctions()
+            this.setState({ sort: SortFunctions.get('ending soon') });
         }
     }
     handleUserInput(searchText) {
         this.setState({ searchText: searchText });
     }
-    findTalent(auctionID) {
-        //if (!!auctionID) {  TicketActions.selectAuction(auctionID); }
-        //this.setState({ viewingTalent: true });
-    }
     render() {
         const { auction, auctions, user, roles, actions } = this.props;
         const viewableAuctions = Array.from(auctions.items.values()).filter(a => _shouldBeVisible(roles.items.get(user.current_role.id), a));
+        const isManager = roles.items.get(user.current_role.id).type == 'manager';
         if (!viewableAuctions.length && !auctions.isFetching) {
             return (
                 <NothingHere>
@@ -67,10 +81,13 @@ export default class AuctionView extends Component {
                 openBidModal={actions.openBidModal}
                 user={user} roles={roles}/>;
         } else {
+            const allSortFunctions = new Map([...SortFunctions, ...(isManager ? ManagerSortFunctions : DeveloperSortFunctions)]);
             return (
                 <div className='contentView'>
-                    <SearchBar searchText={this.state.searchText} onUserInput={this.handleUserInput} />
-                    <AuctionList searchText={this.state.searchText} select={actions.selectAuction} user={user} roles={roles} auctions={viewableAuctions} loading={auctions.isFetching} />
+                    <SearchBar searchText={this.state.searchText} onUserInput={this.handleUserInput}>
+                        <SortOptions options={allSortFunctions} select={(fn) => this.setState({ sort: fn })} sort={this.state.sort} />
+                    </SearchBar>
+                    <AuctionList searchText={this.state.searchText} sort={this.state.sort} select={actions.selectAuction} user={user} roles={roles} auctions={viewableAuctions} loading={auctions.isFetching} />
                 </div>
             );
         }

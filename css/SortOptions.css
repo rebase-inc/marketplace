@@ -1,0 +1,22 @@
+.sortOptions > span {
+    font-size: 12px;
+    opacity: 0.4;
+    height: 40px;
+    line-height: 40px;
+    padding-left: 8px;
+    padding-right: 8px;
+    cursor: pointer;
+    display: inline-block;
+    float: left;
+}
+
+.sortOptions > span.selected,
+.sortOptions > span:hover {
+    opacity: 1;
+}
+
+.sortOptions > span:first-child {
+    font-size: 16px;
+    opacity: 1;
+    cursor: default;
+}

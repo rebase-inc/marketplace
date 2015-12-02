@@ -102,6 +102,7 @@ export class BellCurve {
 
         this.min = dimensions.min || 100;
         this.max = dimensions.max || 2000;
+        defaultValue = Math.min(defaultValue, this.max);
 
         this.data = _BellCurveData;
 
@@ -153,6 +154,7 @@ export class BellCurve {
             .attr("class", "area")
             .attr("d", this.area)
             .attr('fill', 'grey');
+
         this.areaBorder.data([[{x: this.cutoff, y: 0}, this.data.filter(data => Math.abs(data.x - this.cutoff) <= 0.0001)[0]]]).enter().append('path')
             .attr("class", "areaBorder")
             .attr("d", this.line)

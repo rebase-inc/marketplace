@@ -19,7 +19,7 @@ export default class TicketHeader extends Component {
         const { title, unselect, toggleDetails, children } = this.props;
         const { neutral, notification, okay, alert, warning } = this.props;
         return (
-            <div id='itemHeader'
+            <div id='itemHeader' className='noselect'
                 data-neutral={neutral}
                 data-notification={notification}
                 data-okay={okay}

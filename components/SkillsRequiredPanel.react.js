@@ -7,6 +7,7 @@ export default class SkillsRequiredPanel extends Component {
             <td className='skillsRequiredPanel'>
                 <div className='skills'>
                     { Object.keys(skills).map(s => <div key={s} className='skill'>{s}</div>) }
+                    { !Object.keys(skills).length ? <span>No known skills!</span> : null }
                 </div>
             </td>
         );

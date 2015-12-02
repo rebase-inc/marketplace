@@ -61,7 +61,7 @@ export function dispatchedRequest(method, url, actionType, data, json = true) {
                         status = ERROR;
                         break;
                 }
-                return dispatch({ type: actionType, status: status, response: Object.assign(data, {message: error.message || {}}) })
+                return dispatch({ type: actionType, status: status, response: Object.assign(data || {}, {message: error.message || {}}) })
             });
     };
 }
