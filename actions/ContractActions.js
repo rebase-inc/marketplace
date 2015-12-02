@@ -18,7 +18,7 @@ export function selectContract(contractId) {
 
 export function submitWork(work, comment) {
     const url = '/works/' + work.id + '/review';
-    const data = { reason: comment, work: work };
+    const data = { comment: comment, work: work };
     return dispatchedRequest('POST', url, ActionConstants.SUBMIT_WORK, data);
 }
 
@@ -30,7 +30,7 @@ export function disputeWork(work, comment) {
 
 export function acceptWork(work, comment) {
     const url = '/works/' + work.id + '/complete';
-    const data = { reason: comment, work: work };
+    const data = { comment: comment, work: work };
     return dispatchedRequest('POST', url, ActionConstants.ACCEPT_WORK, data);
 }
 
