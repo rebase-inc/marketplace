@@ -36,13 +36,13 @@ export function acceptWork(work, comment, rating) {
 
 export function markWorkBlocked(work, comment) {
     const url = '/works/' + work.id + '/halt';
-    const data = { reason: comment, work: work };
+    const data = { comment: comment, work: work };
     return dispatchedRequest('POST', url, ActionConstants.MARK_WORK_BLOCKED, data);
 }
 
 export function markWorkUnblocked(work, comment) {
     const url = '/works/' + work.id + '/resume';
-    const data = { reason: comment, work: work };
+    const data = { comment: comment, work: work };
     return dispatchedRequest('POST', url, ActionConstants.MARK_WORK_UNBLOCKED, data);
 }
 
