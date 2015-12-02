@@ -28,9 +28,9 @@ export function disputeWork(work, comment) {
     return dispatchedRequest('POST', url, ActionConstants.DISPUTE_WORK, data);
 }
 
-export function acceptWork(work, comment) {
+export function acceptWork(work, comment, rating) {
     const url = '/works/' + work.id + '/complete';
-    const data = { comment: comment, work: work };
+    const data = { comment: comment, work: work, rating: rating };
     return dispatchedRequest('POST', url, ActionConstants.ACCEPT_WORK, data);
 }
 
