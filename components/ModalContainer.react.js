@@ -19,7 +19,7 @@ export default class ModalContainer extends Component {
             <div id='modalView'>
                 <div id='modalDialog'>
                     <CloseIcon onClick={close} />
-                    { !!help.length ? <HelpIcon onClick={() => this.setState({ showHelp: true })} /> : null }
+                    { !!help ? <HelpIcon onClick={() => this.setState({ showHelp: true })} /> : null }
                     { this.state.showHelp ? <h4>{ help }</h4> : children }
                     { this.state.showHelp ? <button className='small' data-notification onClick={() => this.setState({ showHelp: false })}>Hide Help</button> : null }
                 </div>

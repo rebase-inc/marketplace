@@ -77,7 +77,7 @@ table.contentList > tbody > tr > td.statusPanel {
 }
 
 table.contentList > tbody > tr > td:not(.statusPanel):first-of-type {
-    padding-left: 20px;
+    padding-left: 12px;
 }
 
 table.contentList > tbody > tr > td:not(.statusPanel):last-of-type {
@@ -104,10 +104,8 @@ tr.nomination > td.actionPanel svg,
 tr.ticket > td.findTalentPanel svg,
 tr.auction > td.findTalentPanel svg {
     cursor: pointer;
-    height: 18px;
     display: block;
     margin: 0 auto;
-    padding: 10px 10px 4px 10px;
 }
 
 tr.auction > td.talentOverviewPanel svg {

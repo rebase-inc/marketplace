@@ -24,7 +24,7 @@ const SortFunctions = new Map([
 
 const unapproved = (auction) => auction.ticket_set.nominations.filter(n => !auction.approved_talents.find(t => t.contractor.id == n.contractor.id)).length;
 const ManagerSortFunctions = new Map([
-    ['waiting nominations', (a, b) => unapproved(b) - unapproved(a)],
+    ['unapproved developers', (a, b) => unapproved(b) - unapproved(a)],
     ['big budget', (a, b) => parseInt(b.ticket_set.bid_limits[0].price) - parseInt(a.ticket_set.bid_limits[0].price)],
     ['small budget', (a, b) => parseInt(a.ticket_set.bid_limits[0].price) - parseInt(b.ticket_set.bid_limits[0].price)],
 ]);

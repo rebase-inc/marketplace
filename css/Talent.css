@@ -2,4 +2,4 @@
 .actionPanel .approveTalentIcon > svg:first-child { display: block; }
 .actionPanel:hover .approveTalentIcon > svg:first-child { display: none; }
 .actionPanel:hover .approveTalentIcon > svg:last-child { display: block; }
-
+.actionPanel .approveTalentIcon > svg { height: 36px; }
