@@ -6,6 +6,7 @@ import LoadingAnimation from './LoadingAnimation.react';
 import CodeField from './CodeField.react';
 import Slider from './Slider.react';
 import { OFFERED } from '../constants/ViewConstants';
+import { humanReadableDate } from '../utils/date';
 
 class CloneInstructions extends Component {
     static propTypes = {
@@ -59,8 +60,8 @@ export default class BidModal extends Component {
         if (!auction.bids.length) {
             return (
                 <ModalContainer close={close}>
-                    <h3>Choose your price</h3>
-                    <h4>to work on this task</h4>
+                    <h3>Name your price to start working</h3>
+                    <h4>{'Must be finished by ' + humanReadableDate(auction.finish_work_by)}</h4>
                     <Slider width={sliderWidth} min={minPrice} max={maxPrice} step={20} value={this.state.price} onChange={(price) => this.setState({ price: price})} />
                     <h3>{this.state.price + ' USD'}</h3>
                     <button onClick={() => { this.setState({submitted: true}); bid(this.state.price)}}>

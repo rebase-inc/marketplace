@@ -274,6 +274,7 @@ html, body {
     font-size: 10px;
     display: block;
     margin: 0 auto;
+    text-transform: lowercase;
 }
 
 .budgetPanel span:last-child {
