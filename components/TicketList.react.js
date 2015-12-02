@@ -17,16 +17,17 @@ export default class TicketList extends Component {
         select: PropTypes.func.isRequired,
         loading: PropTypes.bool.isRequired,
         searchText: PropTypes.string.isRequired,
+        sort: PropTypes.func.isRequired,
     }
 
     render() {
-        const { tickets, select, loading } = this.props;
+        const { tickets, select, loading, sort } = this.props;
         let searchResults = !!this.props.searchText ? searchTickets(tickets, this.props.searchText) : tickets.map(t => t.id);
         if (loading && !tickets.length) { return <LoadingAnimation />; }
         return (
             <table className='contentList'>
                 <tbody ref='tableBody'>
-                    { tickets.filter(t => searchResults.indexOf(t.id) != -1).map(t =>
+                    { tickets.filter(t => searchResults.indexOf(t.id) != -1).sort(sort).map(t =>
                          <Ticket ticket={t} select={select.bind(null, t.id)} key={t.id} />) }
                 </tbody>
             </table>

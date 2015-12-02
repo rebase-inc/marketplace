@@ -38,6 +38,7 @@ export class DeveloperViewAuction extends Component {
                 <ProjectInfoPanel project={auction.ticket.project} />
                 <TitlePanel title={auction.ticket.title} />
                 <SkillsRequiredPanel skills={auction.ticket.skill_requirement.skills} />
+                <TimerPanel text='Auction Ends' expires={auction.expires} />
                 <CommentsPanel comments={auction.ticket.comments} />
             </tr>
         );

@@ -17,17 +17,19 @@ export default class ReviewList extends Component {
         roles: PropTypes.object.isRequired,
         user: PropTypes.object.isRequired,
         select: PropTypes.func.isRequired,
+        sort: PropTypes.func.isRequired,
     }
+
     render() {
         // TODO: Refactor so this takes a role, instead of user and list of roles
-        const { reviews, user, roles, select, loading } = this.props;
+        const { reviews, user, roles, select, loading, sort } = this.props;
         let searchResults = !!this.props.searchText ? searchReviews(reviews, this.props.searchText) : reviews.map(a => a.id);
         if (loading && !reviews.length) { return <LoadingAnimation />; }
         return (
             <table className='contentList'>
                 <tbody ref='tableBody'>
-                    { reviews.filter(r => searchResults.indexOf(r.id) != -1).map(r =>
-                         <Review user={user} roles={roles} review={r} select={select.bind(null, r.id)} key={r.id} />) }
+                    { reviews.filter(r => searchResults.indexOf(r.id) != -1).sort(sort).map(r =>
+                         <Review role={roles.items.get(user.current_role.id)} review={r} select={select.bind(null, r.id)} key={r.id} />) }
                 </tbody>
             </table>
         );

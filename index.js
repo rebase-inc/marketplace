@@ -19,5 +19,6 @@ import './css/StatusHeader.css';
 import './css/StatusPanel.css';
 import './css/CodeField.css';
 import './css/Talent.css';
+import './css/SortOptions.css';
 
 ReactDOM.render(<App/>, document.getElementById('react-app'));

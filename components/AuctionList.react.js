@@ -17,16 +17,18 @@ export default class AuctionList extends Component {
         roles: PropTypes.object.isRequired,
         user: PropTypes.object.isRequired,
         select: PropTypes.func.isRequired,
+        sort: PropTypes.func.isRequired,
     }
+
     render() {
         // TODO: Refactor so this takes a role, instead of user and list of roles
-        const { auctions, user, roles, select, loading } = this.props;
+        const { auctions, user, roles, select, loading, sort } = this.props;
         let searchResults = !!this.props.searchText ? searchAuctions(auctions, this.props.searchText) : auctions.map(a => a.id);
         if (loading && !auctions.length) { return <LoadingAnimation />; }
         return (
             <table className='contentList'>
                 <tbody ref='tableBody'>
-                    { auctions.filter(a => searchResults.indexOf(a.id) != -1).map(a =>
+                    { auctions.filter(a => searchResults.indexOf(a.id) != -1).sort(sort).map(a =>
                          <Auction user={user} roles={roles} auction={a} select={select.bind(null, a.id)} key={a.id} />) }
                 </tbody>
             </table>

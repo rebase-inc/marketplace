@@ -8,8 +8,16 @@ import TicketList from './TicketList.react';
 import SearchBar from './SearchBar.react';
 import NothingHere from './NothingHere.react';
 import PlusIcon from './PlusIcon.react';
+import SortOptions from './SortOptions.react';
 
 import * as TicketActions from '../actions/TicketActions';
+
+const SortFunctions = new Map([
+    ['newest', (a, b) => new Date(a.created) <= new Date(b.created)],
+    ['oldest', (a, b) => new Date(a.created) >= new Date(b.created)],
+    ['most comments', (a, b) => a.comments.length <= b.comments.length],
+    ['fewest comments', (a, b) => a.comments.length >= b.comments.length],
+]);
 
 export default class TicketView extends Component {
     static propTypes = {
@@ -18,7 +26,7 @@ export default class TicketView extends Component {
     }
     constructor(props, context) {
         super(props, context);
-        this.state = { searchText: '' };
+        this.state = { searchText: '', sort: SortFunctions.get('newest') };
 
         // TODO: Look into autobinding. React-redux examples projects have it, but not sure what they use
         this.handleUserInput = this.handleUserInput.bind(this);
@@ -60,9 +68,10 @@ export default class TicketView extends Component {
             return (
                 <div className='contentView'>
                     <SearchBar searchText={this.state.searchText} onUserInput={this.handleUserInput}>
-                        <PlusIcon onClick={actions.openNewTicketModal} text={'Add ticket'} />
+                        {/*<PlusIcon onClick={actions.openNewTicketModal} text={'Add ticket'} />*/}
+                        <SortOptions options={SortFunctions} select={(fn) => this.setState({ sort: fn })} sort={this.state.sort} />
                     </SearchBar>
-                    <TicketList searchText={this.state.searchText} select={actions.selectTicket} tickets={Array.from(tickets.items.values())} loading={tickets.isFetching} />
+                    <TicketList searchText={this.state.searchText} select={actions.selectTicket} sort={this.state.sort} tickets={[...tickets.items.values()]} loading={tickets.isFetching} />
                 </div>
             );
         }
