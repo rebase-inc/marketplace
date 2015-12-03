@@ -37,7 +37,7 @@ export default class TicketView extends Component {
         this.props.actions.getTickets()
     }
     componentDidUpdate(prevProps) {
-        if (prevProps.user.current_role != this.props.user.current_role) {
+        if (prevProps.user.current_role.id != this.props.user.current_role.id) {
             this.props.actions.getTickets()
         }
     }
@@ -58,10 +58,12 @@ export default class TicketView extends Component {
         } else if (!tickets.items.size && !tickets.isFetching) {
             return (
                 <NothingHere>
-                    <h3>In order to get some work done, you first need some tasks</h3>
-                    <button>Import Another Project</button>
-                    <span>OR</span>
-                    <button className='notification' onClick={actions.openNewTicketModal}>Add a Task</button>
+                    <h3>Your Tickets</h3>
+                    <h4>If you have unassigned tickets, they'll appear here. Tickets can be created on Rebase or imported from GitHub</h4>
+                    <div>
+                        <button onClick={actions.openNewTicketModal}>Add New Ticket</button>
+                        <button data-notification>Import Project</button>
+                    </div>
                 </NothingHere>
             );
         } else {

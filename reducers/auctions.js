@@ -5,6 +5,8 @@ let initialAuctions = { items: new Map(), isFetching: false };
 
 // hack to only show available auction. TODO: Add query parameter like ?state=waiting_for_bids or equivalent to api
 function _shouldBeVisible(auction) {
+    console.log('auction state is ', auction.state);
+    console.log(auction.state == 'created' || auction.state == 'waiting_for_bids')
     return (auction.state == 'created' || auction.state == 'waiting_for_bids')
 }
 
@@ -16,6 +18,7 @@ export default function auctions(auctions = initialAuctions, action) {
                 case PENDING: return Object.assign({}, auctions, { isFetching: true }); break;
                 case SUCCESS:
                     const newAuctions = new Map(action.response.auctions.filter(_shouldBeVisible).map(a => [a.id, addSyntheticProperties(a)]));
+                    console.log('new auctions are ', newAuctions);
                     return { isFetching: false, items: newAuctions };
             }
         }

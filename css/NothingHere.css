@@ -13,7 +13,13 @@
 }
 
 #nothingHere > #content > h3 {
-    font-size: 24px;
+    font-size: 30px;
+}
+
+#nothingHere > #content > h4 {
+    font-size: 14px;
+    max-width: 400px;
+    opacity: 0.5;
 }
 
 #nothingHere > #content > span {
@@ -21,8 +27,8 @@
     opacity: 0.5;
 }
 
-#nothingHere > #content > button {
-    font-size: 14px;
+#nothingHere svg {
+    opacity: 0.45;
 }
 
 #nothingHere svg.desktop {

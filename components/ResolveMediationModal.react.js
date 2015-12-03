@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react';
 var ReactDOM = require('react-dom');
 var keyMirror = require('keymirror');
 
-var ModalContainer = require('../components/ModalContainer.react');
+import ModalContainer from './ModalContainer.react';
 var RatingStars = require('../components/RatingStars.react');
 
 import { RESUME_WORK, COMPLETE, FAIL } from '../constants/MediationAnswers';

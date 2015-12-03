@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
 import * as AuctionActions from '../actions/AuctionActions';
+import { NEW } from '../constants/ViewConstants';
 
 import SearchBar from './SearchBar.react';
 import AuctionList from './AuctionList.react';
@@ -14,7 +15,7 @@ import SortOptions from './SortOptions.react';
 // TODO: Add query parameter like ?state=waiting_for_bids or equivalent to api
 function _shouldBeVisible(role, auction) {
     // all auctions are visible if you're a manager. They disappear if you're a contractor and you've already bid
-    return (role.type == 'manager' || !auction.bids.length)
+    return (role.type == 'manager' || !auction.bids.find(a => a.contractor.id == role.id))
 }
 
 const SortFunctions = new Map([
@@ -51,7 +52,7 @@ export default class AuctionView extends Component {
         this.props.actions.getAuctions()
     }
     componentDidUpdate(prevProps) {
-        if (prevProps.user.current_role != this.props.user.current_role) {
+        if (prevProps.user.current_role.id != this.props.user.current_role.id) {
             this.props.actions.getAuctions()
             this.setState({ sort: SortFunctions.get('ending soon') });
         }
@@ -60,14 +61,19 @@ export default class AuctionView extends Component {
         this.setState({ searchText: searchText });
     }
     render() {
-        const { auction, auctions, user, roles, actions } = this.props;
+        const { auction, auctions, user, roles, actions, selectView } = this.props;
         const viewableAuctions = Array.from(auctions.items.values()).filter(a => _shouldBeVisible(roles.items.get(user.current_role.id), a));
         const isManager = roles.items.get(user.current_role.id).type == 'manager';
         if (!viewableAuctions.length && !auctions.isFetching) {
+            const nothingHereString = isManager ?
+                'Any tickets that you set a budget for will appear here with a summary of the data about the offer.' :
+                    'Any tickets that have been offered to you will appear here with information about who offered them to you.';
             return (
                 <NothingHere>
-                    <h3>You don't have any offered tickets</h3>
-                    { roles.items.get(user.current_role.id).type == 'manager' ?  <button>View New Tickets</button> : null }
+                    <h3>{ isManager ? 'Your Auctions' : 'Your Offers' }</h3>
+                    <h4>{ nothingHereString }</h4>
+                    { isManager ? <button onClick={selectView.bind(null, NEW)}>View New Tickets</button> :
+                        <button>See Sample Offer</button> }
                 </NothingHere>
             );
         }
