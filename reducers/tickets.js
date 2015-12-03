@@ -1,7 +1,13 @@
+import Immutable from 'immutable';
+
 import ActionConstants from '../constants/ActionConstants';
 import { PENDING, SUCCESS, ERROR } from '../constants/RequestConstants';
 
-let initialTickets = { items: [], isFetching: false };
+import { getAuctionTicket } from '../utils/getters'; 
+
+// Not entirely sure if we need to use a record here. It allows for property getting which is nice,
+// but we have to define and instantiate it at the same time, which is weird.
+const initialTickets = new Immutable.Record({ items: Immutable.OrderedMap(), isFetching: false })();
 
 // hack to only show non auctioned tickets. TODO: Add query parameter like ?new=true or equivalent to api
 function _shouldBeVisible(ticket) {
@@ -12,8 +18,8 @@ export default function tickets(tickets = initialTickets, action) {
     switch (action.type) {
         case ActionConstants.GET_TICKETS: return handleNewTickets(action.status, tickets, action.response.tickets); break;
         case ActionConstants.SELECT_ROLE: return handleNewRole(action.status, tickets, action.response.user); break;
-        case ActionConstants.CREATE_AUCTION:
-            const auctionedTicket = action.response.auction ? action.response.auction.ticket_set.bid_limits[0].ticket_snapshot.ticket : null;
+        case ActionConstants.CREATE_AUCTION: 
+            const auctionedTicket = action.response.auction ? getAuctionTicket(action.response.auction) : null;
             return handleCreateAuction(action.status, tickets, auctionedTicket);
             break;
         case ActionConstants.COMMENT_ON_TICKET:
@@ -33,66 +39,46 @@ export default function tickets(tickets = initialTickets, action) {
 
 function handleNewRole(requestStatus, oldTickets, user) {
     switch (requestStatus) {
-        case PENDING: return Object.assign({}, oldTickets, { isFetching: true }); break;
-        case ERROR: return Object.assign({}, oldTickets, { isFetching: false }); break;
-        case SUCCESS: return initialTickets; break;
+        case PENDING: return oldTickets.set('isFetching', true);
+        case ERROR: return oldTickets.set('isFetching', false);
+        case SUCCESS: return initialTickets;
     }
 }
 
 function handleNewTicket(requestStatus, oldTickets, newTicket) {
     switch (requestStatus) {
-        case PENDING: return Object.assign({}, oldTickets, { isFetching: true }); break;
-        case ERROR: return Object.assign({}, oldTickets, { isFetching: false }); break;
-        case SUCCESS:
-            const newTickets = Object.assign({}, oldTickets, { isFetching: false });
-            newTickets.items.set(newTicket.id, newTicket);
-            return newTickets;
-            break;
+        case PENDING: return oldTickets.set('isFetching', true);
+        case ERROR: return oldTickets.set('isFetching', false);
+        case SUCCESS: return oldTickets.mergeDeep({ items: [newTicket.id, newTicket], isFetching: false });
     }
 }
 
 function handleCreateAuction(requestStatus, oldTickets, auctionedTicket) {
     switch (requestStatus) {
-        case PENDING: return Object.assign({}, oldTickets, { isFetching: true }); break;
-        case ERROR: return Object.assign({}, oldTickets, { isFetching: false }); break;
-        case SUCCESS:
-            const newTickets = Array.from(oldTickets.items.values()).filter(ticket => ticket.id != auctionedTicket.id);
-            return { isFetching: false, items: new Map(newTickets.map(t => [t.id, t])) };
-            break;
+        case PENDING: return oldTickets.set('isFetching', true);
+        case ERROR: return oldTickets.set('isFetching', false);
+        case SUCCESS: return oldTickets.deleteIn({ items: auctionedTicket.id }).set('isFetching', false);
     }
 }
 
 function handleNewTickets(requestStatus, oldTickets, newTickets) {
     switch (requestStatus) {
-        case PENDING: return Object.assign({}, oldTickets, { isFetching: true }); break;
-        case ERROR: return Object.assign({}, oldTickets, { isFetching: false }); break;
-        case SUCCESS:
-            return { isFetching: false, items: new Map(newTickets.filter(_shouldBeVisible).map(t => [t.id, t])) }
+        case PENDING: return oldTickets.set('isFetching', true);
+        case ERROR: return oldTickets.set('isFetching', false);
+        case SUCCESS: return oldTickets.mergeDeep({ isFetching: false, items: newTickets.filter(_shouldBeVisible).map(t => [t.id, t]) });
     }
-
 }
 
-function handleCommentOnTicket(requestStatus, tickets, comment) {
-    const oldTickets = Array.from(tickets.items.values());
-    let modifiedTicket = oldTickets.find(t => t.id == comment.ticket.id);
-    // push the comment onto the stack as soon as we know about it. Delete or
-    // confirm on Error/Success
+function handleCommentOnTicket(requestStatus, oldTickets, comment) {
+    const ticketId = comment.ticket.id;
+    const commentIndex = oldTickets.getIn(['items', ticketId, 'comments']).findIndex(c => c.content == comment.content);
     switch (requestStatus) {
-        case PENDING: 
-            modifiedTicket.comments = modifiedTicket.comments.map(c => Object.assign({}, c));
-            comment.isFetching = true;
-            modifiedTicket.comments.push(Object.assign({}, comment));
-            modifiedTicket = Object.assign({}, modifiedTicket);
-            break;
+        case PENDING:
+            comment = Immutable.Map(comment).set('isFetching', true);
+            return oldTickets.updateIn(['items', ticketId, 'comments'], comments => comments.push(comment));
         case ERROR:
-            modifiedTicket.comments = modifiedTicket.comments.filter(c => c.content != comment.content).map(c => Object.assign({}, c));
-            modifiedTicket = Object.assign({}, modifiedTicket);
-            break;
+            return oldTickets.deleteIn(['items', ticketId, 'comments', commentIndex]);
         case SUCCESS:
-            modifiedTicket.comments = modifiedTicket.comments.map(c => c.content == comment.content ? Object.assign({}, comment, {isFetching: false}) : Object.assign({}, c));
-            modifiedTicket = Object.assign({}, modifiedTicket);
-            break;
+            return oldTickets.mergeIn(['items', ticketId, 'comments', commentIndex], comment, { isFetching: false });
     }
-    const newTickets = oldTickets.map(t => t.id == modifiedTicket.id ? modifiedTicket : t);
-    return { isFetching: false, items: new Map(newTickets.map(t => [t.id, t])) }
 }

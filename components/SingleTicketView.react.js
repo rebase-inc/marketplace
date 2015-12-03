@@ -10,11 +10,9 @@ import DetailsPanel from './DetailsPanel.react';
 export default class SingleTicketView extends Component {
     static propTypes = {
         user: PropTypes.object.isRequired,
-        roles: PropTypes.object.isRequired,
+        role: PropTypes.object.isRequired,
         ticket: PropTypes.object.isRequired,
-        unselect: PropTypes.func.isRequired,
-        submitComment: PropTypes.func.isRequired,
-        openNewAuctionModal: PropTypes.func.isRequired,
+        actions: PropTypes.object.isRequired,
     }
 
     constructor(props, context) {
@@ -32,21 +30,19 @@ export default class SingleTicketView extends Component {
     }
 
     render() {
-        const { user, roles, ticket, unselect, submitComment, openNewAuctionModal } = this.props;
+        const { ticket, actions, role, user } = this.props;
+        const isManager = role.type == 'manager';
         // TODO: refactor this so that TicketHeader and TicketDetails are in the same component. Current setup doesn't make sense.
         // That would also allow for a more sensical method for closing and opening the TicketDetails
+        console.log('ticket is ', ticket);
         return (
             <div className='contentView'>
-                <TicketHeader unselect={unselect} title={ticket.title} toggleDetails={this.toggleDetails}>
-                    { roles.items.get(user.current_role.id).type == 'manager' ? <button onClick={openNewAuctionModal}>Find Developers</button> : null}
+                <TicketHeader unselect={() => actions.selectTicket(null)} title={ticket.title} toggleDetails={this.toggleDetails}>
+                    { isManager ? <button onClick={actions.openNewAuctionModal}>Find Developers</button> : null}
                 </TicketHeader>
-                <DetailsPanel
-                    hidden={!this.state.detailsOpen}
-                    ticket={ticket}
-                    clone={ticket.project.work_repo.clone}
-                />
+                <DetailsPanel hidden={!this.state.detailsOpen} ticket={ticket} clone={ticket.project.work_repo.clone} />
                 <CommentList comments={ticket.comments}/>
-                <CommentBox submit={submitComment} />
+                <CommentBox submit={actions.commentOnTicket.bind(null, user, ticket)} />
             </div>
         );
     }
