@@ -1,5 +1,7 @@
 import Immutable from 'immutable';
 
+import { getAuctionTicket } from '../utils/getters';
+
 import ActionConstants from '../constants/ActionConstants';
 import { PENDING, SUCCESS, ERROR } from '../constants/RequestConstants';
 
@@ -17,9 +19,7 @@ export default function auctions(auctions = initialAuctions, action) {
         case ActionConstants.CREATE_AUCTION: return handleNewAuction(action.status, auctions, action.response.auction); break;
         case ActionConstants.BID_ON_AUCTION: return handleBidOnAuction(action.status, auctions, action.response.auction || action.response.bid.auction); break;
         case ActionConstants.APPROVE_NOMINATION: return handleApprovedNomination(action.status, auctions, action.response.auction, action.response.nomination); break;
-        case ActionConstants.COMMENT_ON_AUCTION:
-            return handleCommentOnAuction(action.status, auctions, action.response.comment || action.response);
-            break;
+        case ActionConstants.COMMENT_ON_AUCTION: return handleCommentOnAuction(action.status, auctions, action.response.comment || action.response); break;
         case ActionConstants.LOGOUT: return initialAuctions; break;
         default: return auctions; break;
     }
@@ -34,8 +34,8 @@ function handleNewAuctions(requestStatus, oldAuctions, newAuctions) {
 }
 
 function handleApprovedNomination(requestStatus, auctions, auction, nomination) {
-    const auctionID = auction.id || nomination.auction.id;
-    const nominationIndex = auctions.getIn(['items', auctionID, 'ticket_set', 'nominations']).findIndex(n => n.contractor.id == nomination.contractor.id);
+    const auctionID = (auction || nomination.auction).id;
+    const nominationIndex = auctions.getIn(['items', auctionID, 'ticket_set', 'nominations']).findIndex(n => n.getIn(['contractor','id']) == nomination.contractor.id);
     switch (requestStatus) {
         case PENDING: return auctions.setIn(['items', auctionID, 'ticket_set', 'nominations', nominationIndex, 'isFetching'], true);
         case ERROR: return auctions.setIn(['items', auctionID, 'ticket_set', 'nominations', nominationIndex, 'isFetching'], false);
@@ -46,19 +46,19 @@ function handleApprovedNomination(requestStatus, auctions, auction, nomination) 
 }
 
 function handleCommentOnAuction(requestStatus, auctions, comment) {
-    const oldAuctions = Array.from(auctions.items.values());
-    let modifiedAuction = oldAuctions.find(a => a.ticket.id == comment.ticket.id);
+    // "auction" comments really go on the ticket...but that probably should be changed
+    const auctionId = auctions.get('items').findKey(a => getAuctionTicket(a.toJS()).id == comment.ticket.id);
+    const commentKeyPath = ['items', auctionId, 'ticket_set', 'bid_limits', 0, 'ticket_snapshot', 'ticket', 'comments'];
+    const commentIndex = auctions.getIn(commentKeyPath).findIndex(c => c.content == comment.content);
     switch (requestStatus) {
-        case PENDING: modifiedAuction = Object.assign({}, modifiedAuction, {isFetching: true}); break;
-        case ERROR: modifiedAuction = Object.assign({}, modifiedAuction, {isFetching: false}); break;
+        case PENDING:
+            comment = Immutable.Map(comment).set('isFetching', true);
+            return auctions.updateIn(commentKeyPath, comments => comments.push(comment));
+        case ERROR:
+            return auctions.deleteIn(commentKeyPath.concat(commentIndex));
         case SUCCESS:
-            modifiedAuction = addSyntheticProperties(Object.assign({}, modifiedAuction, {isFetching: false}));
-            modifiedAuction.ticket.comments = modifiedAuction.ticket.comments.map(c => c);
-            modifiedAuction.ticket.comments.push(comment);
-        break;
+            return auctions.mergeIn(commentKeyPath.concat(commentIndex), comment, { isFetching: false });
     }
-    const newAuctions = oldAuctions.map(t => t.id == modifiedAuction.id ? modifiedAuction : t);
-    return { isFetching: false, items: new Map(newAuctions.map(a => [a.id, addSyntheticProperties(a)])) }
 }
 
 function handleNewRole(requestStatus, oldTickets, user) {

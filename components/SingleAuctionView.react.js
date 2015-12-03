@@ -5,21 +5,20 @@ import CommentList from './CommentList.react';
 import CommentBox from './CommentBox.react';
 import FindTalentView from './FindTalentView.react';
 import DetailsPanel from './DetailsPanel.react';
-import {humanReadableDate} from '../utils/date';
-
+import { humanReadableDate } from '../utils/date';
+import { getAuctionTicket } from '../utils/getters';
 
 export default class SingleAuctionView extends Component {
     static propTypes = {
         user: PropTypes.object.isRequired,
-        roles: PropTypes.object.isRequired,
-        unselect: PropTypes.func.isRequired,
+        role: PropTypes.object.isRequired,
         auction: PropTypes.object.isRequired,
-        submitComment: PropTypes.func.isRequired,
+        actions: PropTypes.object.isRequired,
     }
 
     constructor(props, context) {
         super(props, context);
-        this.state = { detailsOpen: false, showTalent: props.roles.items.get(props.user.current_role.id).type == 'manager' }
+        this.state = { detailsOpen: false, showTalent: props.role.type == 'manager' }
         this.toggleDetails = this.toggleDetails.bind(this);
     }
 
@@ -32,33 +31,21 @@ export default class SingleAuctionView extends Component {
     }
 
     render() {
-        const { user, roles, auction, unselect, approveNomination, submitComment, openBidModal } = this.props;
-        const roleType = roles.items.get(user.current_role.id).type;
-
-        // TODO: refactor this so that TicketHeader and AuctionDetails are in the same component. Current setup doesn't make sense.
-        // That would also allow for a more sensical method for closing and opening the AuctionDetails
-        // TODO: Deal with all of the states below more cleanly. Probably requires a refactor into multiple components
-        // TODO: Only display 'View Talent' button when not showing the FindTalentView
-        // TODO: Build components ontop of TicketHeader like AuctionHeader, ContractHeader, etc (and probably rename TicketHeader -> ContentHeader)
+        const { user, role, auction, unselect, actions } = this.props;
+        const ticket = getAuctionTicket(auction);
+        const unselectAction = this.state.showTalent ? () => this.setState({ showTalent: false }) : actions.selectAuction.bind(null, null);
         return (
             <div className='contentView'>
-                <TicketHeader
-                    title={auction.ticket.title}
-                    unselect={this.state.showTalent ? () => this.setState({ showTalent: false }) : unselect}
-                    toggleDetails={this.toggleDetails}>
-                    { roleType == 'contractor' ? <button onClick={openBidModal}>Bid Now</button> : null }
-                    { roleType == 'manager' && !this.state.showTalent ? <button onClick={() => this.setState({ showTalent: true })}>View Developers</button> : null }
+                <TicketHeader unselect={unselectAction} title={ticket.title} toggleDetails={this.toggleDetails}>
+                    { role.type == 'contractor' ? <button onClick={actions.openBidModal}>Bid Now</button> : null }
+                    { (role.type == 'manager' && !this.state.showTalent) ? <button onClick={() => this.setState({ showTalent: true })}>View Developers</button> : null }
                 </TicketHeader>
-                <DetailsPanel
-                    hidden={!this.state.detailsOpen}
-                    ticket={auction.ticket}
-                    clone={auction.ticket.project.work_repo.clone}
-                    >
-                    <span>{'Finish work by '+humanReadableDate(auction.finish_work_by)}</span>
+                <DetailsPanel hidden={!this.state.detailsOpen} ticket={ticket} clone={ticket.project.work_repo.clone} >
+                    <span>{ 'Finish work by ' + humanReadableDate(auction.finish_work_by) }</span>
                 </DetailsPanel>
-                { this.state.showTalent ? <FindTalentView auction={auction} approveNomination={approveNomination} /> : null }
-                { this.state.showTalent ? null : <CommentList comments={auction.ticket.comments}/> }
-                { this.state.showTalent ? null : <CommentBox submit={submitComment} /> }
+                { this.state.showTalent ? <FindTalentView auction={auction} approve={actions.approveNomination} /> : null }
+                { this.state.showTalent ? null : <CommentList comments={ticket.comments}/> }
+                { this.state.showTalent ? null : <CommentBox submit={actions.commentOnAuction.bind(null, user, auction)} /> }
             </div>
         );
     }

@@ -37,7 +37,7 @@ export default class Comment extends Component {
                 </div>
                 <div className='content'>
                     <div className='name'>{comment.user.name}</div>
-                    <div className='date'>{comment.created ? humanReadableDate(comment.created) : '(pending)'}</div>
+                    <div className='date'>{humanReadableDate(comment.created ? comment.created : new Date())}</div>
                     { comment.isFetching ? <PendingIcon /> : null }
                     <div className='text' dangerouslySetInnerHTML={this.rawMarkup()}/>
                 </div>
