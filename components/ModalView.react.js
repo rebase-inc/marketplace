@@ -45,7 +45,7 @@ export default class ModalView extends Component {
                 return <CreateAuctionModal isLoading={ticket.isFetching} close={userActions.closeModal} create={createAuction}/>;
             case ModalConstants.BID_MODAL:
                 const bid = auctionActions.bidOnAuction.bind(null, user, auctions.items.get(auction.id));
-                return <BidModal auction={auctions.items.get(auction.id)} bid={bid} close={userActions.closeModal} actions={auctionActions}/>;
+                return <BidModal auction={auctions.items.get(auction.id)} bid={bid} close={userActions.closeModal} actions={auctionActions} role={roles.items.get(user.current_role.id)}/>;
             case ModalConstants.SUBMIT_WORK_MODAL:
                 const submitWork = contractActions.submitWork.bind(null, contracts.items.get(contract.id).work);
                 return <SubmitWorkModal close={userActions.closeModal} submitWork={submitWork} />; break;

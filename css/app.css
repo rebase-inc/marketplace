@@ -319,66 +319,9 @@ html, body {
     height: calc(100% - 130px - 50px - 30px);
     overflow: auto;
 }
-
-.comment {
-    overflow: auto;
-    padding-left: 28px;
-    padding-right: 28px;
-    padding-top: 10px;
-    padding-bottom: 10px;
-    font-size: 18px;
-}
-
-.comment:first-of-type {
-    padding-top: 28px;
-}
-
-.comment > .content {
-    display: inline;
-    float: left;
-    width: calc(100% - 50px);
-}
-
-.comment > .content > .name {
-    display: inline;
-    float: left;
-    margin: 7px;
-}
-
-.comment > .photo {
-    float: left;
-    display: inline;
-    top: 0;
-    left: 0;
-    bottom: 0;
-}
-
 img.profilePicture {
     border-radius: 50%;
 }
-
-.comment > .photo img, .comment > .photo svg {
-    padding: 7px;
-    width: 35px;
-    height: 35px;
-    border-radius: 50%;
-}
-
-.comment > .content > .date {
-    display: inline;
-    float: left;
-    color: hsla(211, 22%, 73%, 1);
-    margin: 7px;
-}
-
-.comment > .content > .text {
-    display: block;
-    float: left;
-    margin-left: 7px;
-    font-size: 14px;
-    width: 100%;
-}
-
 #ticketSearchBar {
     background-color: hsla(200, 20%, 93%, 1);
     height: 40px;
@@ -599,16 +542,6 @@ img.profilePicture {
     box-shadow: inset 0 6px 4px -6px rgba(0,0,0,.22), inset 0 -6px 4px -6px rgba(0,0,0,.22);
 }
 
-
-/** tbody animation test **/
-.newComment-enter {
-   background-color: hsla(167, 48%, 49%, 0.7);
-}
-
-.newComment-enter.newComment-enter-active {
-    background-color: transparent;
-    transition: background 2.5s ease-out;
-}
 
 /** Animated spinner **/
 

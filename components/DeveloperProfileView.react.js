@@ -25,8 +25,9 @@ export default class DeveloperProfileView extends Component {
         if (!contractor) {
             return (
                 <NothingHere>
-                    <h3>You haven't registered as a developer</h3>
-                    <button>Register Now</button>
+                    <h3>Developer Profile</h3>
+                    <h4>If you sign up as a developer, information about your skills will show up here.</h4>
+                    <button>Sign Up</button>
                 </NothingHere>
             );
         }

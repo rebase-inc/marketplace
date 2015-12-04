@@ -21,9 +21,8 @@ class CloneInstructions extends Component {
         return (
             <div className='cloneInstructions'>
                 <CodeField name='Clone' value={clone} />
-                <CodeField name='Navigate' value={'cd ' + dir} />
-                { deploy ? <CodeField value={deploy} /> : null }
-                { test ? <CodeField value={test} /> : null }
+                <CodeField name='Deploy' value={deploy} />
+                <CodeField name='Test' value={test} />
             </div>
         );
     }
@@ -56,8 +55,8 @@ export default class BidModal extends Component {
     }
 
     render() {
-        const { auction, bid, isLoading, minPrice, maxPrice, defaultPrice, sliderWidth, close } = this.props;
-        if (!auction.bids.length) {
+        const { role, auction, bid, actions, isLoading, minPrice, maxPrice, defaultPrice, sliderWidth, close } = this.props;
+        if (!auction.bids.find(b => b.contractor.id == role.id)) {
             return (
                 <ModalContainer close={close}>
                     <h3>Name your price to start working</h3>
@@ -69,12 +68,12 @@ export default class BidModal extends Component {
                     </button>
                 </ModalContainer>
             );
-        } else if (!auction.bids[0].contract) {
+        } else if (!auction.bids.find(b => b.contractor.id == role.id).contract) {
             return (
                 <ModalContainer close={close}>
                     <h3>Your bid was not accepted.</h3>
                     <h4>{'But there are other tasks waiting for you!'}</h4>
-                    <button onClick={close.bind(null, OFFERED)}>Show tasks</button>
+                    <button onClick={() => { close(); actions.selectAuction(null); }}>Show tasks</button>
                 </ModalContainer>
             );
         } else {

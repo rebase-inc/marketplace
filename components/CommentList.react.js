@@ -33,9 +33,9 @@ export default class CommentList extends Component {
     render() {
         const { comments } = this.props;
         return (
-                <ReactCSSTransitionGroup component='div' transitionLeaveTimeout={300} id='commentList' transitionName='newComment'>
+                <div id='commentList'>
                     { comments.map( comment => <Comment comment={comment} key={comment.id} /> ) }
-                </ReactCSSTransitionGroup>
+                </div>
            );
     }
 };

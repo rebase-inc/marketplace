@@ -4,6 +4,7 @@ import { bindActionCreators } from 'redux';
 
 import * as ContractActions from '../actions/ContractActions';
 import { COMPLETE } from '../constants/WorkStates';
+import { OFFERED } from '../constants/ViewConstants';
 
 // Components
 import SearchBar from './SearchBar.react';
@@ -45,7 +46,7 @@ export default class ContractView extends Component {
         this.props.actions.getContracts()
     }
     componentDidUpdate(prevProps) {
-        if (prevProps.user.current_role != this.props.user.current_role) {
+        if (prevProps.user.current_role.id != this.props.user.current_role.id) {
             this.props.actions.getContracts()
         }
     }
@@ -53,13 +54,18 @@ export default class ContractView extends Component {
         this.setState({ searchText: searchText });
     }
     render() {
-        const { contract, contracts, user, roles, actions } = this.props;
+        const { contract, contracts, user, roles, actions, selectView } = this.props;
         const viewableContracts = Array.from(contracts.items.values()).filter(c => _shouldBeVisible(c));
+        const isManager = roles.items.get(user.current_role.id).type == 'manager';
         if (!viewableContracts.length && !contracts.isFetching) {
+            const nothingHereString = isManager ?
+                'Any tickets that you have currently being worked on will show up here with a summary of who is working on it and its status.' :
+                    'Any work that you\'re in the progress of completing will show up here with a summary of who the work is for and its status.';
             return (
                 <NothingHere>
-                    <h3>You don't have any in progress tickets</h3>
-                    <button>View Offered Tickets</button>
+                    <h3>{'Your Current Work'}</h3>
+                    <h4>{ nothingHereString }</h4>
+                    <button onClick={selectView.bind(null, OFFERED)}>{ isManager ? 'View Auctions' : 'View Offers' }</button>
                 </NothingHere>
             );
         }

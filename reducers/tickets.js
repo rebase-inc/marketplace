@@ -75,14 +75,23 @@ function handleNewTickets(requestStatus, oldTickets, newTickets) {
 function handleCommentOnTicket(requestStatus, tickets, comment) {
     const oldTickets = Array.from(tickets.items.values());
     let modifiedTicket = oldTickets.find(t => t.id == comment.ticket.id);
+    // push the comment onto the stack as soon as we know about it. Delete or
+    // confirm on Error/Success
     switch (requestStatus) {
-        case PENDING: modifiedTicket = Object.assign({}, modifiedTicket, {isFetching: true}); break;
-        case ERROR: modifiedTicket = Object.assign({}, modifiedTicket, {isFetching: false}); break;
+        case PENDING: 
+            modifiedTicket.comments = modifiedTicket.comments.map(c => Object.assign({}, c));
+            comment.isFetching = true;
+            modifiedTicket.comments.push(Object.assign({}, comment));
+            modifiedTicket = Object.assign({}, modifiedTicket);
+            break;
+        case ERROR:
+            modifiedTicket.comments = modifiedTicket.comments.filter(c => c.content != comment.content).map(c => Object.assign({}, c));
+            modifiedTicket = Object.assign({}, modifiedTicket);
+            break;
         case SUCCESS:
-            modifiedTicket.comments = modifiedTicket.comments.map(c => c);
-            modifiedTicket.comments.push(comment);
-            modifiedTicket = Object.assign({}, modifiedTicket, {isFetching: false});
-        break;
+            modifiedTicket.comments = modifiedTicket.comments.map(c => c.content == comment.content ? Object.assign({}, comment, {isFetching: false}) : Object.assign({}, c));
+            modifiedTicket = Object.assign({}, modifiedTicket);
+            break;
     }
     const newTickets = oldTickets.map(t => t.id == modifiedTicket.id ? modifiedTicket : t);
     return { isFetching: false, items: new Map(newTickets.map(t => [t.id, t])) }

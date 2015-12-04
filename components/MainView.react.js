@@ -21,13 +21,13 @@ export default class MainView extends Component {
         const { user, view, roles, actions } = this.props;
         switch (view.type) {
             case NEW:
-                return <TicketView key='ticketView' user={user} roles={roles} />; break;
+                return <TicketView key='ticketView' user={user} roles={roles} selectView={actions.selectView} />; break;
             case OFFERED:
-                return <AuctionView key='auctionView' user={user} roles={roles} />; break;
+                return <AuctionView key='auctionView' user={user} roles={roles} selectView={actions.selectView} />; break;
             case IN_PROGRESS:
-                return <ContractView user={user} roles={roles} />; break;
+                return <ContractView user={user} roles={roles} selectView={actions.selectView} />; break;
             case COMPLETED:
-                return <ReviewView user={user} roles={roles} />; break;
+                return <ReviewView user={user} roles={roles} selectView={actions.selectView} />; break;
             case PROFILE:
                 return <ProfileView user={user} roles={roles}
                             updateProfile={actions.updateProfile.bind(null, user)}

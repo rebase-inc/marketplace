@@ -10,7 +10,7 @@ let ManagerViews = new Map([
 ].map(view => [ view.type, view ]));
 
 let ContractorViews = new Map([
-    { name: 'Auctions', type: OFFERED },
+    { name: 'Offers', type: OFFERED },
     { name: 'Work', type: IN_PROGRESS },
     { name: 'Reviews', type: COMPLETED },
 ].map(view => [ view.type, view ]));
