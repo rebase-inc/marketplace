@@ -43,7 +43,7 @@ export default class SingleReviewView extends Component {
                     >
                     <span>{'Assigned to ' + contractor.user.name}</span>
                 </DetailsPanel>
-                <CommentList comments={review.ticket.comments}/>
+                <CommentList comments={review.all_comments}/>
                 <CommentBox submit={submitComment} />
             </div>
         );

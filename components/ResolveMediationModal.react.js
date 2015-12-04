@@ -64,7 +64,13 @@ export default class ResolveMediationModal extends Component {
                     <ModalContainer close={close}>
                         <h3>Mark the developer's work failed?</h3>
                         <h4>If agreed upon, the developer will not be paid.</h4>
-                        <textarea required ref='comment' placeholder="Leave a comment explaining why you don't think it's worth continuing." value={this.state.text} onChange={this.handleInput}/>
+                        <textarea
+                            required
+                            ref='comment'
+                            placeholder="Leave a comment explaining why you don't think it's worth continuing."
+                            value={this.state.text}
+                            onChange={this.handleInput.bind(this)}
+                        />
                         <button className='warning' onClick={this.answer.bind(this, FAIL)}>Mark Work Failed</button>
                         <h5 onClick={this.changeModalView.bind(this, ModalStates.NEW)}>Oops. Go back.</h5>
                     </ModalContainer>
@@ -75,7 +81,12 @@ export default class ResolveMediationModal extends Component {
                     <ModalContainer close={close}>
                         <h3>Have the developer go back to work?</h3>
                         <h4>If agreed upon, the developer will continue to work on the task.</h4>
-                        <textarea required ref='comment' placeholder="Leave a comment explaining your decision." value={this.state.text} onChange={this.handleInput}/>
+                        <textarea
+                            required
+                            ref='comment' placeholder="Leave a comment explaining your decision."
+                            value={this.state.text}
+                            onChange={this.handleInput.bind(this)}
+                        />
                         <button className='needsResolution' onClick={this.answer.bind(this, RESUME_WORK)}>Go back to work</button>
                         <h5 onClick={this.changeModalView.bind(this, ModalStates.NEW)}>Oops. Go back.</h5>
                     </ModalContainer>
@@ -86,7 +97,13 @@ export default class ResolveMediationModal extends Component {
                     <ModalContainer close={close}>
                         <h3>Mark the work finished?</h3>
                         <h4>The work will immediately be marked complete.</h4>
-                        <textarea required ref='comment' placeholder="Leave a comment explaining what changed your mind." value={this.state.text} onChange={this.handleInput}/>
+                        <textarea
+                            required
+                            ref='comment'
+                            placeholder="Leave a comment explaining what changed your mind."
+                            value={this.state.text}
+                            onChange={this.handleInput.bind(this)}
+                        />
                         <button onClick={this.answer.bind(this, COMPLETE)}>Mark Complete</button>
                         <h5 onClick={this.changeModalView.bind(this, ModalStates.NEW)}>Oops. Go back.</h5>
                     </ModalContainer>

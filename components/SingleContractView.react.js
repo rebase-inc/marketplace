@@ -42,7 +42,7 @@ export default class SingleContractView extends Component {
                     clone={contract.work.clone}>
                     <span>{'Assigned to ' + contract.bid.contractor.user.name}</span>
                 </DetailsPanel>
-                <CommentList comments={contract.ticket.comments}/>
+                <CommentList comments={contract.comments}/>
                 <CommentBox submit={actions.commentOnContract.bind(null, user, contract)}/>
             </div>
         );

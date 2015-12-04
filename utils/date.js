@@ -10,3 +10,7 @@ export function humanReadableDate(isoDate, time=true) {
     let ampm = date.getHours() < 12 ? 'AM' : 'PM';
     return month + ' ' + day + (time ? ' at ' + hours + ':' + minutes + ampm : '');
 };
+
+export function compareCommentsByDateAscending(commentA, commentB) {
+    return new Date(commentA.created) - new Date(commentB.created);
+};

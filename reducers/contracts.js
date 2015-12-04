@@ -1,6 +1,7 @@
 import ActionConstants from '../constants/ActionConstants';
 import { PENDING, SUCCESS, ERROR } from '../constants/RequestConstants';
 import { COMPLETE } from '../constants/WorkStates';
+import { compareCommentsByDateAscending } from '../utils/date';
 
 let initialContracts = { items: new Map(), isFetching: false };
 
@@ -8,18 +9,8 @@ function _shouldBeVisible() { return true; }
 
 export default function contracts(contracts = initialContracts, action) {
     let modifiedContract;
-    let newContracts;
     switch (action.type) {
-        case ActionConstants.GET_CONTRACTS: {
-            switch (action.status) {
-                case PENDING:
-                    return Object.assign({}, contracts, { isFetching: true });
-                    break;
-                case SUCCESS:
-                    newContracts = new Map(action.response.contracts.filter(_shouldBeVisible).map(c => [c.id, addSyntheticProperties(c)]));
-                    return { isFetching: false, items: newContracts };
-            }
-        }
+        case ActionConstants.GET_CONTRACTS: return handleGetContracts(contracts, action);
         case ActionConstants.COMMENT_ON_CONTRACT: return handleCommentOnContract(action.status, contracts, action.response.comment || action.response);
         case ActionConstants.BID_ON_AUCTION: return addNewContract(action.status, contracts, action.response.auction);
         case ActionConstants.SUBMIT_WORK: return updateWorkOnContract(action.status, contracts, action.response.work);
@@ -31,6 +22,17 @@ export default function contracts(contracts = initialContracts, action) {
         case ActionConstants.LOGOUT: return initialContracts; break;
         case ActionConstants.SELECT_ROLE: return handleNewRole(action.status, contracts, action.response.user); break;
         default: return contracts; break;
+    }
+}
+
+function handleGetContracts(contracts, action) {
+    switch (action.status) {
+        case PENDING: return Object.assign({}, contracts, { isFetching: true }); break;
+        case ERROR: return Object.assign({}, contracts, { isFetching: false }); break;
+        case SUCCESS: {
+            let newContracts = new Map(action.response.contracts.filter(_shouldBeVisible).map(c => [c.id, addSyntheticProperties(c)]));
+            return { isFetching: false, items: newContracts };
+        }
     }
 }
 
@@ -65,14 +67,37 @@ function* removeOneContract(contracts, work_id) {
     }
 }
 
+function newContracts(iterator) {
+    let _newContracts = {};
+    _newContracts[Symbol.iterator] = iterator;
+    return { isFetching: false, items: new Map(_newContracts) };
+}
+
 function removeContract(requestStatus, contracts, work) {
     switch (requestStatus) {
         case PENDING: return Object.assign({}, contracts, { isFetching: true }); break;
         case ERROR: return Object.assign({}, contracts, { isFetching: false }); break;
-        case SUCCESS: {
-            let newContracts = {};
-            newContracts[Symbol.iterator] = removeOneContract.bind(null, contracts.items.values(), work.id);
-            return { isFetching: false, items: new Map(newContracts) };
+        case SUCCESS: return newContracts(removeOneContract.bind(null, contracts.items.values(), work.id));
+    }
+}
+
+function createContract(contract, newWork) {
+    const newWorkOffer = Object.assign({}, contract.bid.work_offers[0]);
+    newWorkOffer.work = newWork;
+    const newBid = Object.assign({}, contract.bid);
+    newBid.work_offers = new Array(newWorkOffer);
+    const newContract = Object.assign({}, contract);
+    newContract.bid = newBid;
+    return newContract;
+}
+
+function* updateOneWork(contracts, work) {
+    for(let contract of contracts) {
+        if(contract.work.id == work.id) {
+                const newWork = Object.assign({}, work);
+                yield [contract.id, addSyntheticProperties(createContract(contract, newWork))];
+        } else {
+            yield [contract.id, contract];
         }
     }
 }
@@ -81,14 +106,7 @@ function updateWorkOnContract(requestStatus, contracts, work) {
     switch (requestStatus) {
         case PENDING: return Object.assign({}, contracts, { isFetching: true }); break;
         case ERROR: return Object.assign({}, contracts, { isFetching: false }); break;
-        case SUCCESS: {
-            const oldContract = Array.from(contracts.items.values()).find(c => c.work.id == work.id);
-            const newContract = addSyntheticProperties(Object.assign({}, oldContract, { isFetching: requestStatus == PENDING }));
-            newContract.work = work; // this can't be done with Object.assign above because it's using a synthetic property
-            const newContracts = Array.from(contracts.items.values()).map(c => c.id == newContract.id ? newContract : c);
-            // we probably don't actually need to call addSyntheticProperties again below...TODO: See if that's true
-            return { isFetching: false, items: new Map(newContracts.map(c => [c.id, c])) };
-        }
+        case SUCCESS: return newContracts(updateOneWork.bind(null, contracts.items.values(), work));
     }
 }
 
@@ -99,15 +117,9 @@ function* updateOneMediation(contracts, mediation) {
                 // that effectively removes this contract from the new list of contracts
                 continue;
             } else {
-                const new_work = Object.assign({}, mediation.work);
-                new_work.mediation = mediation;
-                const new_work_offer = Object.assign({}, contract.bid.work_offers[0]);
-                new_work_offer.work = new_work;
-                const new_bid = Object.assign({}, contract.bid);
-                new_bid.work_offers = new Array(new_work_offer);
-                const new_contract = Object.assign({}, contract);
-                new_contract.bid = new_bid;
-                yield [contract.id, addSyntheticProperties(new_contract)];
+                const newWork = Object.assign({}, mediation.work);
+                newWork.mediation = mediation;
+                yield [contract.id, addSyntheticProperties(createContract(contract, newWork))];
             }
         } else {
             yield [contract.id, contract];
@@ -119,11 +131,7 @@ function updateMediation(requestStatus, contracts, response) {
     switch (requestStatus) {
         case PENDING: return Object.assign({}, contracts, { isFetching: true }); break;
         case ERROR: return Object.assign({}, contracts, { isFetching: false }); break;
-        case SUCCESS: {
-            let newContracts = {};
-            newContracts[Symbol.iterator] = updateOneMediation.bind(null, contracts.items.values(), response.mediation);
-            return { isFetching: false, items: new Map(newContracts) };
-        }
+        case SUCCESS: return newContracts(updateOneMediation.bind(null, contracts.items.values(), response.mediation));
     }
 }
 
@@ -145,8 +153,18 @@ function addSyntheticProperties(contract) {
     Object.defineProperty(newContract, 'work', {
         get: function() {
             if (!newContract.bid.work_offers[0]) { console.warn('Invalid contract object'); return null; }
-            return newContract.bid.work_offers[0].work; },
+            return newContract.bid.work_offers[0].work;
+        },
         set: function(work) { newContract.bid.work_offers[0].work = work; },
+        configurable: true, // a hack to let us repeatedly set the property so we don't have to be careful
+    });
+    Object.defineProperty(newContract, 'comments', {
+        get: function() {
+            let offer = newContract.bid.work_offers[0];
+            const comments = offer.ticket_snapshot.ticket.comments.concat(offer.work.comments);
+            offer.work.mediations.forEach((mediation) => Array.prototype.push.apply(comments, mediation.comments));
+            return comments.sort(compareCommentsByDateAscending);
+        },
         configurable: true, // a hack to let us repeatedly set the property so we don't have to be careful
     });
     return newContract;

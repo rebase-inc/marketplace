@@ -1,6 +1,7 @@
 import ActionConstants from '../constants/ActionConstants';
 import { PENDING, SUCCESS, ERROR } from '../constants/RequestConstants';
 import { COMPLETE } from '../constants/WorkStates';
+import { compareCommentsByDateAscending } from '../utils/date';
 
 let initialReviews = { items: [], isFetching: false };
 
@@ -55,6 +56,16 @@ function addNewReview(reviews, work) {
         value: work.offer.ticket_snapshot.ticket,
         configurable: true,
     });
+    Object.defineProperty(newReview, 'all_comments', {
+        get: function() {
+            const comments = work.offer.ticket_snapshot.ticket.comments.concat(work.comments);
+            work.mediations.forEach((mediation) => Array.prototype.push.apply(comments, mediation.comments));
+            Array.prototype.push.apply(comments, work.review.comments)
+            return comments.sort(compareCommentsByDateAscending);
+        },
+        configurable: true,
+    });
+        configurable: true, // a hack to let us repeatedly set the property so we don't have to be careful
     newReviews.set(newReview.id, newReview);
     return { isFetching: false, items: newReviews };
 }
@@ -86,6 +97,15 @@ function addSyntheticProperties(review) {
     Object.defineProperty(review, 'ticket', {
         get: function() { return review.work.offer.ticket_snapshot.ticket; },
         set: function(ticket) { review.work.offer.ticket_snapshot.ticket = ticket; },
+        configurable: true, // a hack to let us repeatedly set the property so we don't have to be careful
+    });
+    Object.defineProperty(review, 'all_comments', {
+        get: function() {
+            const comments = review.work.offer.ticket_snapshot.ticket.comments.concat(review.work.comments);
+            review.work.mediations.forEach((mediation) => Array.prototype.push.apply(comments, mediation.comments));
+            Array.prototype.push.apply(comments, review.comments)
+            return comments.sort(compareCommentsByDateAscending);
+        },
         configurable: true, // a hack to let us repeatedly set the property so we don't have to be careful
     });
     return review;
