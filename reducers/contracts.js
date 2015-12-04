@@ -58,14 +58,14 @@ function removeContractByWork(requestStatus, contracts, work) {
         case PENDING: return contracts.set('isFetching', true); break;
         case ERROR: return contracts.set('isFetching', false); break;
         case SUCCESS:
-            const contractId = contracts.items.findKey(c => c.getIn(['bid', 'work_offers', 0, 'work']).id == work.id);
+            const contractId = contracts.items.findKey(c => c.getIn(['bid', 'work_offers', 0, 'work','id']) == work.id);
             return contracts.deleteIn(['items', contractId]).set('isFetching', false);
             break;
     }
 }
 
 function updateWorkOnContract(requestStatus, contracts, work) {
-    const contractId = contracts.items.findKey(c => c.getIn(['bid', 'work_offers', 0, 'work']).id == work.id);
+    const contractId = contracts.items.findKey(c => c.getIn(['bid', 'work_offers', 0, 'work', 'id']) == work.id);
     switch (requestStatus) {
         case PENDING: return contracts.setIn(['items', contractId, 'bid', 'work_offers', 0, 'work', 'isFetching'], true);
         case ERROR: return contracts.set(['items', contractId, 'bid', 'work_offers', 0, 'work', 'isFetching'], false);
