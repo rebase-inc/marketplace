@@ -9,14 +9,14 @@ export default function reviewID(reviewID = initialReviewID, action) {
         case ActionConstants.SELECT_ROLE: return removeID(action.status, reviewID); break;
         case ActionConstants.SELECT_REVIEW: return setID(action.status, reviewID, action.response.reviewId); break;
         case ActionConstants.SELECT_VIEW: return removeID(action.status, reviewID); break;
-        case ActionConstants.ACCEPT_WORK: return setID(action.status, reviewID, action.response.work ? action.response.work.review.id : null); break;
-        case ActionConstants.MEDIATION_WORK: return setID(action.status, reviewID, action.response.work ? action.response.work.review.id : null); break;
+        case ActionConstants.ACCEPT_WORK: return setID(action.status, reviewID, (action.response.work.review || {}).id); break;
+        case ActionConstants.MEDIATION_WORK: return setID(action.status, reviewID, (action.response.work.review || {}).id); break;
         case ActionConstants.LOGOUT: return initialReviewID; break;
         default: return reviewID; break;
     }
 }
 
-function removeID(requestStatus, oldreviewID) {
+function removeID(requestStatus, oldReviewID) {
     switch (requestStatus) {
         case PENDING: return oldReviewID; break;
         case ERROR: return oldReviewID; break;
@@ -24,7 +24,7 @@ function removeID(requestStatus, oldreviewID) {
     }
 }
 
-function setID(requestStatus, oldreviewID, reviewID) {
+function setID(requestStatus, oldReviewID, reviewID) {
     switch (requestStatus) {
         case PENDING: return oldReviewID; break;
         case ERROR: return oldReviewID; break;
