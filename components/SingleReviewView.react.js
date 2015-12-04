@@ -30,21 +30,22 @@ export default class SingleReviewView extends Component {
     }
 
     render() {
-        const { user, roles, review, unselect, submitComment } = this.props;
-        let contractor = review.work.offer.contractor;
+        const { user, role, review, actions, unselect, submitComment } = this.props;
+        const contractor = review.work.offer.contractor;
+        const ticket = review.work.offer.ticket_snapshot.ticket;
         return (
             <div className='contentView'>
-                <TicketHeader title={review.ticket.title} unselect={unselect} toggleDetails={this.toggleDetails} />
-                <ReviewStatusHeader review={review} role={roles.items.get(user.current_role.id)}/>
+                <TicketHeader title={ticket.title} unselect={actions.selectReview.bind(null, null)} toggleDetails={this.toggleDetails} />
+                <ReviewStatusHeader review={review} role={role}/>
                 <DetailsPanel
                     hidden={!this.state.detailsOpen}
-                    ticket={review.ticket}
+                    ticket={ticket}
                     clone={review.work.clone}
                     >
                     <span>{'Assigned to ' + contractor.user.name}</span>
                 </DetailsPanel>
-                <CommentList comments={review.ticket.comments}/>
-                <CommentBox submit={submitComment} />
+                <CommentList comments={ticket.comments}/>
+                <CommentBox submit={actions.commentOnReview.bind(null, user, review)} />
             </div>
         );
     }

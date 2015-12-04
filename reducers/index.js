@@ -9,7 +9,7 @@ export { default as tickets } from './tickets';
 export { default as ticketID } from './ticketID';
 
 export { default as reviews } from './reviews';
-export { default as review } from './review';
+export { default as reviewID } from './reviewID';
 
 export { default as auctions } from './auctions';
 export { default as auctionID } from './auctionID';

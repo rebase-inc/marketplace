@@ -1,0 +1,33 @@
+import ActionConstants from '../constants/ActionConstants';
+import { PENDING, SUCCESS, ERROR } from '../constants/RequestConstants';
+import { COMPLETE } from '../constants/WorkStates';
+
+let initialReviewID = null;
+
+export default function reviewID(reviewID = initialReviewID, action) {
+    switch (action.type) {
+        case ActionConstants.SELECT_ROLE: return removeID(action.status, reviewID); break;
+        case ActionConstants.SELECT_REVIEW: return setID(action.status, reviewID, action.response.reviewId); break;
+        case ActionConstants.SELECT_VIEW: return removeID(action.status, reviewID); break;
+        case ActionConstants.ACCEPT_WORK: return setID(action.status, reviewID, action.response.work ? action.response.work.review.id : null); break;
+        case ActionConstants.MEDIATION_WORK: return setID(action.status, reviewID, action.response.work ? action.response.work.review.id : null); break;
+        case ActionConstants.LOGOUT: return initialReviewID; break;
+        default: return reviewID; break;
+    }
+}
+
+function removeID(requestStatus, oldreviewID) {
+    switch (requestStatus) {
+        case PENDING: return oldReviewID; break;
+        case ERROR: return oldReviewID; break;
+        case SUCCESS: return initialReviewID; break;
+    }
+}
+
+function setID(requestStatus, oldreviewID, reviewID) {
+    switch (requestStatus) {
+        case PENDING: return oldReviewID; break;
+        case ERROR: return oldReviewID; break;
+        case SUCCESS: return reviewID; break;
+    }
+}

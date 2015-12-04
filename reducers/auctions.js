@@ -54,10 +54,8 @@ function handleCommentOnAuction(requestStatus, auctions, comment) {
         case PENDING:
             comment = Immutable.Map(comment).set('isFetching', true);
             return auctions.updateIn(commentKeyPath, comments => comments.push(comment));
-        case ERROR:
-            return auctions.deleteIn(commentKeyPath.concat(commentIndex));
-        case SUCCESS:
-            return auctions.mergeIn(commentKeyPath.concat(commentIndex), comment, { isFetching: false });
+        case ERROR: return auctions.deleteIn(commentKeyPath.concat(commentIndex));
+        case SUCCESS: return auctions.mergeIn(commentKeyPath.concat(commentIndex), comment, { isFetching: false });
     }
 }
 
