@@ -15,6 +15,6 @@ export { default as auctions } from './auctions';
 export { default as auctionID } from './auctionID';
 
 export { default as contracts } from './contracts';
-export { default as contract } from './contract';
+export { default as contractID } from './contractID';
 
 export { default as githubAccounts } from './githubAccounts';

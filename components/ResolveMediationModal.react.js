@@ -19,7 +19,7 @@ var ResolveMediationModal = React.createClass({
     },
     propTypes: {
         close: React.PropTypes.func.isRequired,
-        role_type: React.PropTypes.string.isRequired,
+        role: React.PropTypes.string.isRequired,
         mediation: React.PropTypes.object.isRequired,
         sendAnswer: React.PropTypes.func.isRequired,
     },
@@ -30,12 +30,12 @@ var ResolveMediationModal = React.createClass({
         this.setState({ view: state });
     },
     answer: function(response) {
-        const { close, role_type, mediation, sendAnswer } = this.props;
-        sendAnswer(role_type, mediation, response);
+        const { close, role, mediation, sendAnswer } = this.props;
+        sendAnswer(role.type, mediation, response);
         close();
     },
     render: function() {
-        const { close, role_type, mediation } = this.props;
+        const { close, role, mediation } = this.props;
         switch (this.state.view) {
             case ModalStates.NEW:
                 return (

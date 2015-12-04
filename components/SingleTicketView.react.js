@@ -34,7 +34,6 @@ export default class SingleTicketView extends Component {
         const isManager = role.type == 'manager';
         // TODO: refactor this so that TicketHeader and TicketDetails are in the same component. Current setup doesn't make sense.
         // That would also allow for a more sensical method for closing and opening the TicketDetails
-        console.log('ticket is ', ticket);
         return (
             <div className='contentView'>
                 <TicketHeader unselect={() => actions.selectTicket(null)} title={ticket.title} toggleDetails={this.toggleDetails}>

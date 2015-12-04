@@ -14,8 +14,8 @@ function _shouldBeVisible(auction) {
 
 export default function auctions(auctions = initialAuctions, action) {
     switch (action.type) {
-        case ActionConstants.SELECT_ROLE: return handleNewRole(action.status, auctions, action.response.user); break;
         case ActionConstants.GET_AUCTIONS: return handleNewAuctions(action.status, auctions, action.response.auctions); break;
+        case ActionConstants.SELECT_ROLE: return handleNewRole(action.status, auctions, action.response.user); break;
         case ActionConstants.CREATE_AUCTION: return handleNewAuction(action.status, auctions, action.response.auction); break;
         case ActionConstants.BID_ON_AUCTION: return handleBidOnAuction(action.status, auctions, action.response.auction || action.response.bid.auction); break;
         case ActionConstants.APPROVE_NOMINATION: return handleApprovedNomination(action.status, auctions, action.response.auction, action.response.nomination); break;
@@ -73,7 +73,7 @@ function handleNewAuction(requestStatus, oldAuctions, newAuction) {
     switch (requestStatus) {
         case PENDING: return oldAuctions.set('isFetching', true);
         case ERROR: return oldAuctions.set('isFetching', false);
-        case SUCCESS: return oldAuctions.mergeDeep({ items: [newAuction.id, newAuction], isFetching: false });
+        case SUCCESS: return oldAuctions.mergeDeepIn(['items', newAuction.id], newAuction).set('isFetching', false);
     }
 }
 
@@ -81,6 +81,6 @@ function handleBidOnAuction(requestStatus, auctions, auction) {
     switch (requestStatus) {
         case PENDING: return auctions.setIn(['items', auction.id, 'isFetching'], true);
         case ERROR: return auctions.setIn(['items', auction.id, 'isFetching'], false);
-        case SUCCESS: return auctions.mergeIn(['items', auction.id], auction);
+        case SUCCESS: return auctions.mergeDeepIn(['items', auction.id], auction);
     }
 }

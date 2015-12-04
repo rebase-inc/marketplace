@@ -57,7 +57,7 @@ function handleCreateAuction(requestStatus, oldTickets, auctionedTicket) {
     switch (requestStatus) {
         case PENDING: return oldTickets.set('isFetching', true);
         case ERROR: return oldTickets.set('isFetching', false);
-        case SUCCESS: return oldTickets.deleteIn({ items: auctionedTicket.id }).set('isFetching', false);
+        case SUCCESS: return oldTickets.deleteIn(['items', auctionedTicket.id ]).set('isFetching', false);
     }
 }
 

@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from 'react';
 
 import TicketHeader from './TicketHeader.react';
 import { DISCUSSION, WAITING_FOR_DEV, WAITING_FOR_CLIENT } from '../constants/MediationStates';
+import { getContractWork, getContractTicket } from '../utils/getters';
 
 export default class ContractHeader extends Component {
     static propTypes = {
@@ -14,12 +15,13 @@ export default class ContractHeader extends Component {
 
     render() {
         const { role, contract, unselect, toggleDetails, actions } = this.props;
-        switch (contract.work.state) {
+        const work = getContractWork(contract);
+        switch (work.state) {
             case 'in_progress': return <InProgressContractHeader contract={contract} actions={actions} role={role} unselect={unselect} toggleDetails={toggleDetails} />;
             case 'in_review': return <InReviewContractHeader contract={contract} actions={actions} role={role} unselect={unselect} toggleDetails={toggleDetails} />;
             case 'blocked': return <BlockedContractHeader contract={contract} actions={actions} role={role} unselect={unselect} toggleDetails={toggleDetails} />;
             case 'in_mediation': return <InMediationContractHeader contract={contract} actions={actions} role={role} unselect={unselect} toggleDetails={toggleDetails} />;
-            default: console.warn('Invalid work state: ', contract.work.state); break;
+            default: console.warn('Invalid work state: ', work.state); break;
         }
     }
 }
@@ -34,8 +36,9 @@ export class InProgressContractHeader extends Component {
 
     render() {
         const { role, contract, unselect, toggleDetails, actions } = this.props;
+        const ticket = getContractTicket(contract);
         return (
-            <TicketHeader title={contract.ticket.title} unselect={unselect} toggleDetails={toggleDetails}>
+            <TicketHeader title={ticket.title} unselect={unselect} toggleDetails={toggleDetails}>
                 { role.type == 'contractor' ? <button onClick={actions.openSubmitWorkModal} key='finished'>Finished</button> : null }
                 { role.type == 'contractor' ? <button data-alert onClick={actions.openBlockWorkModal} key='blocked'>Blocked</button>: null }
             </TicketHeader>
@@ -54,8 +57,9 @@ export class InReviewContractHeader extends Component {
 
     render() {
         const { role, contract, unselect, toggleDetails, actions } = this.props;
+        const ticket = getContractTicket(contract);
         return (
-            <TicketHeader title={contract.ticket.title} unselect={unselect} toggleDetails={toggleDetails}>
+            <TicketHeader title={ticket.title} unselect={unselect} toggleDetails={toggleDetails}>
                 { role.type == 'manager' ? <button data-okay onClick={actions.openAcceptWorkModal} key='acceptWork'>Accept Work</button> : null }
                 { role.type == 'manager' ? <button data-warning onClick={actions.openDisputeWorkModal} data-alert key='dispute'>Dispute</button> : null }
             </TicketHeader>
@@ -73,8 +77,9 @@ export class BlockedContractHeader extends Component {
 
     render() {
         const { contract, unselect, toggleDetails, actions } = this.props;
+        const ticket = getContractTicket(contract);
         return (
-            <TicketHeader title={contract.ticket.title} unselect={unselect} toggleDetails={toggleDetails}>
+            <TicketHeader title={ticket.title} unselect={unselect} toggleDetails={toggleDetails}>
                 <button data-alert onClick={actions.openUnblockWorkModal} key='unblockWork'>Unblock</button>
             </TicketHeader>
         );
@@ -92,12 +97,14 @@ export class InMediationContractHeader extends Component {
 
     render() {
         const { contract, unselect, role, toggleDetails, actions } = this.props;
-        const mediation = contract.work.mediations[contract.work.mediations.length-1];
+        const work = getContractWork(contract);
+        const mediation = work.mediations[work.mediations.length-1];
+        const ticket = getContractTicket(contract);
         let waitingForResponse = (mediation.state == DISCUSSION);
         waitingForResponse = waitingForResponse || (role.type == 'contractor' && mediation.state == WAITING_FOR_DEV);
         waitingForResponse = waitingForResponse || (role.type == 'manager' && mediation.state == WAITING_FOR_CLIENT);
         return (
-            <TicketHeader title={contract.ticket.title} unselect={unselect} toggleDetails={toggleDetails}>
+            <TicketHeader title={ticket.title} unselect={unselect} toggleDetails={toggleDetails}>
                 { waitingForResponse ? <button onClick={actions.openResolveMediationModal} key='resolveMediation'>Resolve Issue</button> : null }
             </TicketHeader>
         );

@@ -15,12 +15,11 @@ import { getAuctionTicket } from '../utils/getters';
 export default class Auction extends Component {
     static propTypes = {
         select: PropTypes.func.isRequired,
-        user: PropTypes.object.isRequired,
         role: PropTypes.object.isRequired,
         auction: PropTypes.object.isRequired,
     }
     render() {
-        const { role, user, auction, select } = this.props;
+        const { role, auction, select } = this.props;
         switch (role.type) {
             case 'manager': return <ManagerViewAuction auction={auction} select={select} />; break;
             case 'contractor': return <DeveloperViewAuction auction={auction} select={select} />; break;

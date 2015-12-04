@@ -45,6 +45,7 @@ export function dispatchedRequest(method, url, actionType, data, json = true) {
                 body: json ? JSON.stringify(data) : data })
             .then(handleStatus)
             .then(response => response.json())
+            //.then(json => { console.log(json); return json })
             .then(json => dispatch({ type: actionType, status: SUCCESS, response: json }))
             .catch(error => {
                 const warn = (console.warn || console.log).bind(console);

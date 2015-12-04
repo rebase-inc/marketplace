@@ -31,12 +31,12 @@ export default class SingleAuctionView extends Component {
     }
 
     render() {
-        const { user, role, auction, unselect, actions } = this.props;
+        const { user, role, auction, actions } = this.props;
         const ticket = getAuctionTicket(auction);
-        const unselectAction = this.state.showTalent ? () => this.setState({ showTalent: false }) : actions.selectAuction.bind(null, null);
+        const unselect = this.state.showTalent ? () => this.setState({ showTalent: false }) : actions.selectAuction.bind(null, null);
         return (
             <div className='contentView'>
-                <TicketHeader unselect={unselectAction} title={ticket.title} toggleDetails={this.toggleDetails}>
+                <TicketHeader unselect={unselect} title={ticket.title} toggleDetails={this.toggleDetails}>
                     { role.type == 'contractor' ? <button onClick={actions.openBidModal}>Bid Now</button> : null }
                     { (role.type == 'manager' && !this.state.showTalent) ? <button onClick={() => this.setState({ showTalent: true })}>View Developers</button> : null }
                 </TicketHeader>

@@ -3,6 +3,7 @@ import ActionConstants from '../constants/ActionConstants';
 import { dispatchedRequest } from '../utils/Api';
 import { SUCCESS } from '../constants/RequestConstants';
 import { SUBMIT_WORK_MODAL, ACCEPT_WORK_MODAL, DISPUTE_WORK_MODAL, BLOCK_WORK_MODAL, UNBLOCK_WORK_MODAL, RESOLVE_MEDIATION_MODAL } from '../constants/ModalConstants';
+import { getContractTicket } from '../utils/getters';
 
 export function getContracts() {
     return (dispatch, getState) => (!!getState().contracts.isFetching) ? Promise.resolve() : dispatch(dispatchedRequest('GET', '/contracts', ActionConstants.GET_CONTRACTS));
@@ -97,9 +98,10 @@ export function openResolveMediationModal() {
 // this is intentionally duplicated because as far as react is concerned it is a different
 // action than commenting on a ticket, contract, review, etc.
 export function commentOnContract(user, contract, text) {
+    const ticket = getContractTicket(contract);
     const data = {
-        user: { id: user.id }, // We need this for now, until the api is fixed
-        ticket: {id: contract.ticket.id},
+        user: { id: user.id, name: user.name }, // We need this for now, until the api is fixed
+        ticket: {id: ticket.id},
         content: text
     };
     return dispatchedRequest('POST', '/comments', ActionConstants.COMMENT_ON_CONTRACT, data);

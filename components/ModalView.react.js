@@ -27,46 +27,46 @@ import * as MediationActions from '../actions/MediationActions';
 // it's worth looking into.
 export default class ModalView extends Component {
     render() {
-        const { modal, user, roles } = this.props;
+        const { modal, user, role } = this.props;
         const { userActions, ticketActions, auctionActions, contractActions, mediationActions } = this.props;
-        const { ticket, tickets, auction, auctions, contract, contracts, review } = this.props;
+        const { ticketID, tickets, auctionID, auctions, contractID, contracts } = this.props;
+        const work = contracts.items.getIn([contractID, 'bid', 'work_offers', 0, 'work']);
         switch (modal.type) {
             case null: return null; break;
             case undefined: return null; break;
             case ModalConstants.CREATE_TICKET_MODAL:
-                return <NewTicketModal project={roles.items.get(user.current_role.id).project}
+                return <NewTicketModal project={role.project}
                         createInternalTicket={ticketActions.createInternalTicket}
                         createGithubTicket={ticketActions.createGithubTicket}
                         close={userActions.closeModal} />;
             case ModalConstants.CREATE_AUCTION_MODAL:
-                // the following two lines constitute a hack required because API requires the ticket organization
-                const mergedTicket = Object.assign({}, ticket, tickets.items.get(ticket.id)); // Hack pt1: Merge ticket (w/ loading status) and full detailed ticket
-                const createAuction = ticketActions.createAuction.bind(null, mergedTicket); // Hack pt2: Use merged ticket to curry createAuction function
+                const ticket = tickets.items.get(ticketID).toJS();
+                const createAuction = ticketActions.createAuction.bind(null, ticket);
                 return <CreateAuctionModal isLoading={ticket.isFetching} close={userActions.closeModal} create={createAuction}/>;
             case ModalConstants.BID_MODAL:
-                const bid = auctionActions.bidOnAuction.bind(null, user, auctions.items.get(auction.id));
-                return <BidModal auction={auctions.items.get(auction.id)} bid={bid} close={userActions.closeModal} actions={auctionActions} role={roles.items.get(user.current_role.id)}/>;
+                const auction = auctions.items.get(auctionID).toJS();
+                const bid = auctionActions.bidOnAuction.bind(null, user, auction);
+                return <BidModal auction={auction} bid={bid} close={userActions.closeModal} actions={auctionActions} role={role}/>;
             case ModalConstants.SUBMIT_WORK_MODAL:
-                const submitWork = contractActions.submitWork.bind(null, contracts.items.get(contract.id).work);
+                const submitWork = contractActions.submitWork.bind(null, work.toJS());
                 return <SubmitWorkModal close={userActions.closeModal} submitWork={submitWork} />; break;
             case ModalConstants.ACCEPT_WORK_MODAL:
-                const acceptWork = contractActions.acceptWork.bind(null, contracts.items.get(contract.id).work);
+                const acceptWork = contractActions.acceptWork.bind(null, work.toJS());
                 return <AcceptWorkModal close={userActions.closeModal} acceptWork={acceptWork} />; break;
             case ModalConstants.DISPUTE_WORK_MODAL:
-                const disputeWork = contractActions.disputeWork.bind(null, contracts.items.get(contract.id).work);
+                const disputeWork = contractActions.disputeWork.bind(null, work.toJS());
                 return <DisputeWorkModal close={userActions.closeModal} disputeWork={disputeWork} />; break;
             case ModalConstants.UNBLOCK_WORK_MODAL:
-                const markWorkUnblocked = contractActions.markWorkUnblocked.bind(null, contracts.items.get(contract.id).work);
-                return <ResumeWorkModal close={userActions.closeModal} markWorkUnblocked={markWorkUnblocked} role={roles.items.get(user.current_role.id)}/>; break;
+                const markWorkUnblocked = contractActions.markWorkUnblocked.bind(null, work.toJS());
+                return <ResumeWorkModal close={userActions.closeModal} markWorkUnblocked={markWorkUnblocked} role={role}/>; break;
             case ModalConstants.BLOCK_WORK_MODAL:
-                const markWorkBlocked = contractActions.markWorkBlocked.bind(null, contracts.items.get(contract.id).work);
+                const markWorkBlocked = contractActions.markWorkBlocked.bind(null, work.toJS());
                 return <HaltWorkModal close={userActions.closeModal} markWorkBlocked={markWorkBlocked} />; break;
             case ModalConstants.RESOLVE_MEDIATION_MODAL: {
-                let mediations = contracts.items.get(contract.id).work.mediations;
+                let mediations = work.mediations;
                 let mediation = mediations[mediations.length-1];
-                return <ResolveMediationModal
-                    close={userActions.closeModal}
-                    role_type={roles.items.get(user.current_role.id).type}
+                return <ResolveMediationModal close={userActions.closeModal}
+                    role={role}
                     mediation={mediation}
                     sendAnswer={mediationActions.sendAnswer}
                     resolveMediation={() => alert('oops')}
@@ -81,12 +81,12 @@ export default class ModalView extends Component {
 
 let mapStateToProps = state => ({
     modal: state.modal,
-    ticket: state.ticket,
     tickets: state.tickets,
-    auction: state.auction,
+    ticketID: state.ticketID,
     auctions: state.auctions,
-    contract: state.contract,
-    contracts: state.contracts, 
+    auctionID: state.auctionID,
+    contracts: state.contracts,
+    contractID: state.contractID,
 });
 let mapActionsToProps = dispatch => ({
     userActions: bindActionCreators(UserActions, dispatch),
