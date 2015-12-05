@@ -6,7 +6,7 @@ import CommentList from './CommentList.react';
 import CommentBox from './CommentBox.react';
 import DetailsPanel from './DetailsPanel.react';
 import { humanReadableDate } from '../utils/date';
-import { getContractTicket, getContractWork } from '../utils/getters';
+import { getContractTicket, getContractWork, getContractComments } from '../utils/getters';
 
 export default class SingleContractView extends Component {
     static propTypes = {
@@ -34,6 +34,7 @@ export default class SingleContractView extends Component {
         const { contract, user, role, actions } = this.props;
         const ticket = getContractTicket(contract);
         const work = getContractWork(contract);
+        console.log('comments are ', getContractComments(contract));
         return (
             <div className='contentView'>
                 <ContractHeader actions={actions} contract={contract} role={role} unselect={actions.selectContract.bind(null, null)} toggleDetails={this.toggleDetails} />
@@ -41,7 +42,7 @@ export default class SingleContractView extends Component {
                 <DetailsPanel hidden={!this.state.detailsOpen} ticket={ticket} clone={work.clone}>
                     <span>{'Assigned to ' + contract.bid.contractor.user.name}</span>
                 </DetailsPanel>
-                <CommentList comments={ticket.comments}/>
+                <CommentList comments={getContractComments(contract)}/>
                 <CommentBox submit={actions.commentOnContract.bind(null, user, contract)}/>
             </div>
         );
