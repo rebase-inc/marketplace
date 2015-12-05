@@ -12,3 +12,8 @@ export const getContractComments = (contract) => {
 }
 
 export const getReviewTicket = (review) => review.work.offer.ticket_snapshot.ticket;
+export const getReviewComments = (review) => {
+    const comments = getReviewTicket(review).comments.concat(review.work.comments);
+    review.work.mediations.forEach((m) => Array.prototype.push.apply(comments, m.comments));
+    return comments.concat(review.comments).sort((c1, c2) => new Date(c1.created) - new Date(c2.created));
+}

@@ -5,6 +5,7 @@ import CommentList from './CommentList.react';
 import CommentBox from './CommentBox.react';
 import DetailsPanel from './DetailsPanel.react';
 import ReviewStatusHeader from './ReviewStatusHeader.react';
+import { getReviewTicket, getReviewComments } from '../utils/getters';
 
 export default class SingleReviewView extends Component {
     static propTypes = {
@@ -40,7 +41,7 @@ export default class SingleReviewView extends Component {
                 <DetailsPanel hidden={!this.state.detailsOpen} ticket={ticket} clone={review.work.clone} >
                     <span>{'Assigned to ' + contractor.user.name}</span>
                 </DetailsPanel>
-                <CommentList comments={ticket.comments}/>
+                <CommentList comments={getReviewComments(review)}/>
                 <CommentBox submit={actions.commentOnReview.bind(null, user, review)} />
             </div>
         );
