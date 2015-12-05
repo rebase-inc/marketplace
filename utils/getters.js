@@ -10,3 +10,5 @@ export const getContractComments = (contract) => {
     contract.bid.work_offers[0].work.mediations.forEach((m) => Array.prototype.push.apply(comments, m.comments));
     return comments.sort((c1, c2) => new Date(c1.created) - new Date(c2.created));
 }
+
+export const getReviewTicket = (review) => review.work.offer.ticket_snapshot.ticket;
