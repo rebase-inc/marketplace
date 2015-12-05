@@ -6,6 +6,8 @@ import SortOptions from './SortOptions.react';
 import SearchBar from './SearchBar.react';
 import Contract from './Contract.react';
 
+import { getContractTicket } from '../utils/getters';
+
 export default class ContractListView extends Component {
     static propTypes = {
         select: PropTypes.func.isRequired,
