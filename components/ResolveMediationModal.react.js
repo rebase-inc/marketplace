@@ -12,7 +12,7 @@ var ModalStates = keyMirror({ NEW: null, GIVE_UP: null, BACK_TO_WORK: null, COMP
 export default class ResolveMediationModal extends Component {
     static propTypes = {
         close: React.PropTypes.func.isRequired,
-        role_type: React.PropTypes.string.isRequired,
+        role: React.PropTypes.string.isRequired,
         mediation: React.PropTypes.object.isRequired,
         sendAnswer: React.PropTypes.func.isRequired,
     }
@@ -34,13 +34,13 @@ export default class ResolveMediationModal extends Component {
     }
 
     answer(response) {
-        const { close, role_type, mediation, sendAnswer } = this.props;
-        sendAnswer(role_type, mediation, response, this.state.text);
+        const { close, role, mediation, sendAnswer } = this.props;
+        sendAnswer(role.type, mediation, response, this.state.text);
         close();
     }
 
     render() {
-        const { close, role_type, mediation } = this.props;
+        const { close, role, mediation } = this.props;
         switch (this.state.view) {
             case ModalStates.NEW:
                 return (
@@ -113,5 +113,3 @@ export default class ResolveMediationModal extends Component {
         }
     }
 };
-
-module.exports = ResolveMediationModal;

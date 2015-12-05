@@ -19,19 +19,18 @@ export default class MainView extends Component {
 
     render() {
         const { user, view, roles, actions } = this.props;
+        const role = roles.items.get(user.current_role.id);
         switch (view.type) {
             case NEW:
-                return <TicketView key='ticketView' user={user} roles={roles} selectView={actions.selectView} />; break;
+                return <TicketView key='ticketView' user={user} role={role} selectView={actions.selectView} />; break;
             case OFFERED:
-                return <AuctionView key='auctionView' user={user} roles={roles} selectView={actions.selectView} />; break;
+                return <AuctionView key='auctionView' user={user} role={role} selectView={actions.selectView} />; break;
             case IN_PROGRESS:
-                return <ContractView user={user} roles={roles} selectView={actions.selectView} />; break;
+                return <ContractView user={user} role={role} selectView={actions.selectView} />; break;
             case COMPLETED:
-                return <ReviewView user={user} roles={roles} selectView={actions.selectView} />; break;
+                return <ReviewView user={user} role={role} selectView={actions.selectView} />; break;
             case PROFILE:
-                return <ProfileView user={user} roles={roles}
-                            updateProfile={actions.updateProfile.bind(null, user)}
-                            uploadPhoto={actions.uploadProfilePhoto} />; break;
+                return <ProfileView user={user} roles={roles} updateProfile={actions.updateProfile.bind(null, user)} uploadPhoto={actions.uploadProfilePhoto} />; break;
             case PROJECTS:
                 return <ProjectView roles={Array.from(roles.items.values())} />; break;
             case DEVELOPER_PROFILE:

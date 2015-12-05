@@ -8,6 +8,7 @@ import { Provider } from 'react-redux';
 import thunkMiddleware from 'redux-thunk';
 import createLogger from 'redux-logger';
 import * as reducers from '../reducers';
+import Immutable from 'immutable';
 
 const reducer = combineReducers(reducers);
 
@@ -18,10 +19,22 @@ switch (process.env.NODE_ENV) {
         break;
     }
     default: {
-        const loggerMiddleware = createLogger();
+        const loggerMiddleware = createLogger({
+            transformer: (state) => {
+                var newState = {};
+                for (var i of Object.keys(state)) {
+                    if (Immutable.Iterable.isIterable(state[i])) {
+                        newState[i] = state[i].toJS();
+                    } else {
+                        newState[i] = state[i];
+                    }
+                };
+                return newState;
+            }
+        });
         const debugSession = window.location.href.match(/[?&]debug_session=([^&]+)\b/);
         store = compose(
-            applyMiddleware(loggerMiddleware, thunkMiddleware),
+            applyMiddleware(thunkMiddleware, loggerMiddleware),
             require('redux-devtools').devTools(),
             require('redux-devtools').persistState(debugSession)
         )(createStore)(reducer);
@@ -41,7 +54,7 @@ export default class App extends Component {
             <RebaseApp />
             </Provider>
             <DebugPanel top right bottom>
-                <DevTools store={store} monitor={LogMonitor} visibleOnLoad={false} />
+                <DevTools select={(state) => state.contracts.get('items')} store={store} monitor={LogMonitor} visibleOnLoad={false} />
             </DebugPanel>
             </div>
         );

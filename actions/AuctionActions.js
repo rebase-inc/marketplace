@@ -1,5 +1,7 @@
 import ActionConstants from '../constants/ActionConstants';
 
+import { getAuctionTicket } from '../utils/getters';
+
 import { dispatchedRequest } from '../utils/Api';
 import { SUCCESS } from '../constants/RequestConstants';
 import { BID_MODAL } from '../constants/ModalConstants';
@@ -52,8 +54,8 @@ export function openBidModal() {
 // action than commenting on a ticket, contract, review, etc.
 export function commentOnAuction(user, auction, text) {
     const data = {
-        user: { id: user.id }, // We need this for now, until the api is fixed
-        ticket: {id: auction.ticket.id},
+        user: { id: user.id, name: user.name }, // We need this for now, until the api is fixed
+        ticket: {id: getAuctionTicket(auction).id},
         content: text
     };
     return dispatchedRequest('POST', '/comments', ActionConstants.COMMENT_ON_AUCTION, data);

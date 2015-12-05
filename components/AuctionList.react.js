@@ -1,35 +1,29 @@
 import React, { Component, PropTypes } from 'react';
 import ReactDOM from 'react-dom';
 
-import LoadingAnimation from './LoadingAnimation.react';
 import Auction from './Auction.react';
 
 import Fuse from '../utils/Fuse';
 
-function searchAuctions(auctions, searchText) {
-    var fuseSearch = new Fuse(auctions, {threshold: 0.35, keys: ['ticket.title', 'ticket.project.name', 'ticket.project.organization.name'], id: 'id'});
-    return fuseSearch.search(searchText.substring(0, 32));
-}
-
 export default class AuctionList extends Component {
     static propTypes = {
         auctions: PropTypes.array.isRequired,
-        roles: PropTypes.object.isRequired,
-        user: PropTypes.object.isRequired,
         select: PropTypes.func.isRequired,
+        searchText: PropTypes.string.isRequired,
         sort: PropTypes.func.isRequired,
+        role: PropTypes.object.isRequired,
     }
 
     render() {
-        // TODO: Refactor so this takes a role, instead of user and list of roles
-        const { auctions, user, roles, select, loading, sort } = this.props;
-        let searchResults = !!this.props.searchText ? searchAuctions(auctions, this.props.searchText) : auctions.map(a => a.id);
-        if (loading && !auctions.length) { return <LoadingAnimation />; }
+        const { auctions, loading, select, searchText, sort, role } = this.props;
+        const searchResults = !!searchText ? searchAuctions(auctions, searchText) : auctions.map(a => a.id);
+        const sortedAuctions = auctions.sort(sort).filter(_shouldBeVisible.bind(null, role)).filter(a => searchResults.find(id => id == a.id));
+        if (!sortedAuctions.length && loading) { return <LoadingAnimation />; } 
+        console.log('sorted auctions are ', sortedAuctions);
         return (
             <table className='contentList'>
                 <tbody ref='tableBody'>
-                    { auctions.filter(a => searchResults.indexOf(a.id) != -1).sort(sort).map(a =>
-                         <Auction user={user} roles={roles} auction={a} select={select.bind(null, a.id)} key={a.id} />) }
+                    { sortedAuctions.map(a => <Auction auction={a} role={role} select={() => select(a.id)} key={a.id} />) }
                 </tbody>
             </table>
         );

@@ -9,17 +9,18 @@ import ProjectInfoPanel from './ProjectInfoPanel.react';
 import SkillsRequiredPanel from './SkillsRequiredPanel.react';
 import TalentOverviewPanel from './TalentOverviewPanel.react';
 
+import { getAuctionTicket } from '../utils/getters';
+
 // Effectively just a passthrough component based on current role
 export default class Auction extends Component {
     static propTypes = {
         select: PropTypes.func.isRequired,
-        user: PropTypes.object.isRequired,
-        roles: PropTypes.object.isRequired,
+        role: PropTypes.object.isRequired,
         auction: PropTypes.object.isRequired,
     }
     render() {
-        const { roles, user, auction, select} = this.props;
-        switch (roles.items.get(user.current_role.id).type) {
+        const { role, auction, select } = this.props;
+        switch (role.type) {
             case 'manager': return <ManagerViewAuction auction={auction} select={select} />; break;
             case 'contractor': return <DeveloperViewAuction auction={auction} select={select} />; break;
         }
@@ -33,13 +34,14 @@ export class DeveloperViewAuction extends Component {
     }
     render() {
         const { auction, select } = this.props;
+        const ticket = getAuctionTicket(auction);
         return (
             <tr className='auction' onClick={select}>
-                <ProjectInfoPanel project={auction.ticket.project} />
-                <TitlePanel title={auction.ticket.title} />
-                <SkillsRequiredPanel skills={auction.ticket.skill_requirement.skills} />
+                <ProjectInfoPanel project={ticket.project} />
+                <TitlePanel title={ticket.title} />
+                <SkillsRequiredPanel skills={ticket.skill_requirement.skills} />
                 <TimerPanel text='Auction Ends' expires={auction.expires} />
-                <CommentsPanel comments={auction.ticket.comments} />
+                <CommentsPanel comments={ticket.comments} />
             </tr>
         );
     }
@@ -52,12 +54,13 @@ export class ManagerViewAuction extends Component {
     }
     render() {
         const { auction, select } = this.props;
+        const ticket = getAuctionTicket(auction);
         return (
             <tr className='auction' onClick={select}>
                 <TimerPanel text='Auction Ends' expires={auction.expires} />
-                <TitlePanel title={auction.ticket.title} />
+                <TitlePanel title={ticket.title} />
                 <TalentOverviewPanel auction={auction} />
-                <SkillsRequiredPanel skills={auction.ticket.skill_requirement.skills} />
+                <SkillsRequiredPanel skills={ticket.skill_requirement.skills} />
                 <BudgetPanel auction={auction} />
             </tr>
         );

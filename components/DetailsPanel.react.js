@@ -3,6 +3,8 @@ import { humanReadableDate } from '../utils/date';
 import CodeField from './CodeField.react';
 
 export default class DetailsPanel extends Component {
+    // why does this take clone as a separate prop? It should
+    // just infer where to get it from based on the ticket type
     static propTypes = {
         hidden: PropTypes.bool.isRequired,
         ticket: PropTypes.object.isRequired,

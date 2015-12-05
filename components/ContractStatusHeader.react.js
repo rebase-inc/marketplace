@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 
 import { humanReadableDate } from '../utils/date';
+import { getContractWork, getContractTicket } from '../utils/getters';
 
 export default class ContractStatusHeader extends Component {
     static propTypes = {
@@ -10,8 +11,10 @@ export default class ContractStatusHeader extends Component {
 
     render() {
         const { contract, role } = this.props;
+        const work = getContractWork(contract);
+        const ticket = getContractTicket(contract);
         let statusText = '';
-        switch (contract.work.state) {
+        switch (work.state) {
             case 'in_progress':
                 statusText += 'Being worked on by ';
                 statusText += role.type == 'manager' ? contract.bid.contractor.user.name : 'you';;
@@ -22,7 +25,7 @@ export default class ContractStatusHeader extends Component {
                 break;
             case 'in_review':
                 statusText += 'Being reviewed by ';
-                statusText += contract.ticket.project.organization.name;
+                statusText += ticket.project.organization.name;
                 statusText += role.type == 'manager' ? ' (you)' : '';
                 statusText += '. ';
                 statusText += 'To be accepted by ';
@@ -36,25 +39,25 @@ export default class ContractStatusHeader extends Component {
                 statusText += role.type == 'contractor' ? ' (you)' : '';
                 statusText += '. ';
                 statusText += 'Waiting to be unblocked by ';
-                statusText += contract.ticket.project.organization.name;
+                statusText += ticket.project.organization.name;
                 statusText += role.type == 'manager' ? ' (you)' : '';
                 statusText += '.';
                 break;
             case 'in_mediation':
-                const mediation = contract.work.mediations[contract.work.mediations.length - 1];
+                const mediation = work.mediations[work.mediations.length - 1];
                 statusText += 'There is disagreement about the state of this work. Waiting for response from ';
                 statusText += mediation.state == 'discussion' ? 'both parties.' : '';
                 statusText += mediation.state == 'waiting_for_dev' ? contract.bid.contractor.user.name : '';
-                statusText += mediation.state == 'waiting_for_client' ? contract.ticket.project.organization.name : '';
+                statusText += mediation.state == 'waiting_for_client' ? ticket.project.organization.name : '';
                 statusText += '.';
                 break;
         }
         return (
             <div id='statusHeader'
                 data-neutral={undefined}
-                data-notification={contract.work.state == 'in_progress' || undefined}
-                data-okay={contract.work.state == 'in_review' || undefined}
-                data-alert={contract.work.state == 'blocked' || contract.work.state == 'in_mediation' || undefined}
+                data-notification={work.state == 'in_progress' || undefined}
+                data-okay={work.state == 'in_review' || undefined}
+                data-alert={work.state == 'blocked' || work.state == 'in_mediation' || undefined}
                 data-warning={undefined} >
                 { statusText }
             </div>

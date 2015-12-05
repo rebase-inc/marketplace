@@ -8,18 +8,22 @@ import SkillsRequiredPanel from './SkillsRequiredPanel.react';
 import CommentsPanel from './CommentsPanel.react';
 import TalentPanel from './TalentPanel.react';
 
+import { getContractTicket, getContractWork } from '../utils/getters';
+
 export default class Contract extends Component {
     render() {
         const { contract, select, role } = this.props;
+        const ticket = getContractTicket(contract);
+        const work = getContractWork(contract);
         return (
             <tr className='ticket' onClick={select}>
-                <StatusPanel state={contract.work.state} />
+                <StatusPanel state={work.state} />
                 { role.type == 'manager' ? <TalentPanel contractor={contract.bid.contractor} />
-                    : <ProjectInfoPanel project={contract.ticket.project} /> }
-                <TitlePanel title={contract.ticket.title} />
-                <SkillsRequiredPanel skills={contract.ticket.skill_requirement.skills} />
+                    : <ProjectInfoPanel project={ticket.project} /> }
+                <TitlePanel title={ticket.title} />
+                <SkillsRequiredPanel skills={ticket.skill_requirement.skills} />
                 <TimerPanel expires={contract.bid.auction.finish_work_by} text={'Finish before'}/>
-                <CommentsPanel comments={contract.ticket.comments} />
+                <CommentsPanel comments={ticket.comments} />
             </tr>
         );
     }

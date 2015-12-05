@@ -6,19 +6,19 @@ import CommentList from './CommentList.react';
 import CommentBox from './CommentBox.react';
 import DetailsPanel from './DetailsPanel.react';
 import { humanReadableDate } from '../utils/date';
+import { getContractTicket, getContractWork } from '../utils/getters';
 
 export default class SingleContractView extends Component {
     static propTypes = {
         user: PropTypes.object.isRequired,
         role: PropTypes.object.isRequired,
         contract: PropTypes.object.isRequired,
-        unselect: PropTypes.func.isRequired,
         actions: PropTypes.object.isRequired,
     }
 
     constructor(props, context) {
         super(props, context);
-        this.state = { modalType: null, detailsOpen: false };
+        this.state = { detailsOpen: false };
         this.toggleDetails = this.toggleDetails.bind(this);
     }
 
@@ -31,18 +31,17 @@ export default class SingleContractView extends Component {
     }
 
     render() {
-        const { contract, user, role, unselect, actions } = this.props;
+        const { contract, user, role, actions } = this.props;
+        const ticket = getContractTicket(contract);
+        const work = getContractWork(contract);
         return (
             <div className='contentView'>
-                <ContractHeader actions={actions} contract={contract} role={role} unselect={unselect} toggleDetails={this.toggleDetails} />
+                <ContractHeader actions={actions} contract={contract} role={role} unselect={actions.selectContract.bind(null, null)} toggleDetails={this.toggleDetails} />
                 <ContractStatusHeader contract={contract} role={role} />
-                <DetailsPanel
-                    hidden={!this.state.detailsOpen}
-                    ticket={contract.ticket}
-                    clone={contract.work.clone}>
+                <DetailsPanel hidden={!this.state.detailsOpen} ticket={ticket} clone={work.clone}>
                     <span>{'Assigned to ' + contract.bid.contractor.user.name}</span>
                 </DetailsPanel>
-                <CommentList comments={contract.comments}/>
+                <CommentList comments={ticket.comments}/>
                 <CommentBox submit={actions.commentOnContract.bind(null, user, contract)}/>
             </div>
         );

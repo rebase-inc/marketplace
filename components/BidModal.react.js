@@ -7,6 +7,7 @@ import CodeField from './CodeField.react';
 import Slider from './Slider.react';
 import { OFFERED } from '../constants/ViewConstants';
 import { humanReadableDate } from '../utils/date';
+import { getAuctionWork, getAuctionTicket } from '../utils/getters';
 
 class CloneInstructions extends Component {
     static propTypes = {
@@ -77,11 +78,13 @@ export default class BidModal extends Component {
                 </ModalContainer>
             );
         } else {
+            const work = getAuctionWork(auction);
+            const ticket = getAuctionTicket(auction);
             return (
                 <ModalContainer close={close}>
                     <h3>Your bid was accepted!</h3>
                     <h4>Get started by cloning and running the tests</h4>
-                    <CloneInstructions clone={auction.work.clone} deploy={auction.ticket.project.deploy} test={auction.ticket.project.test} />
+                    <CloneInstructions clone={work.clone} deploy={ticket.project.deploy} test={ticket.project.test} />
                     <button onClick={close}>Show task</button>
                 </ModalContainer>
             );

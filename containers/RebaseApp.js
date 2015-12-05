@@ -23,7 +23,7 @@ class RebaseApp extends Component {
             return (
                 <div id='app'>
                     <MainHeader user={user} roles={roles} view={view} views={views} actions={actions}/>
-                    <ModalView user={user} roles={roles} />
+                    <ModalView user={user} role={roles.items.get(user.current_role.id)} />
                     <MainView view={view} user={user} roles={roles} actions={actions}/>
                 </div>
             );

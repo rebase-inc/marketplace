@@ -1,112 +1,63 @@
+import Immutable from 'immutable';
+
 import ActionConstants from '../constants/ActionConstants';
 import { PENDING, SUCCESS, ERROR } from '../constants/RequestConstants';
 import { COMPLETE } from '../constants/WorkStates';
-import { compareCommentsByDateAscending } from '../utils/date';
+import { getReviewTicket } from '../utils/getters';
 
-let initialReviews = { items: [], isFetching: false };
+const initialReviews = new Immutable.Record({ items: Immutable.OrderedMap(), isFetching: false })();
 
 export default function reviews(reviews = initialReviews, action) {
     switch (action.type) {
-        case ActionConstants.SELECT_ROLE: return handleNewRole(action.status, reviews, action.response.user); break;
-        case ActionConstants.GET_REVIEWS: {
-            switch (action.status) {
-                case PENDING: return Object.assign({}, reviews, { isFetching: true }); break;
-                case SUCCESS:
-                    const newReviews = new Map(action.response.reviews.map(r => [r.id, addSyntheticProperties(r)]));
-                    return { isFetching: false, items: newReviews };
-            }
-        }
-        case ActionConstants.COMMENT_ON_REVIEW: {
-            // on pending, the comment is not nested in a comment object, but it is on response (success)
-            // hence the weird or statement for the last argument in the below function
-            return handleCommentOnReview(action.status, reviews, action.response.comment || action.response);
-            break;
-        }
-        case ActionConstants.ACCEPT_WORK: {
-            switch (action.status) {
-                case PENDING: return Object.assign({}, reviews, { isFetching: true }); break;
-                case ERROR: return Object.assign({}, reviews, { isFetching: false }); break;
-                case SUCCESS: return addNewReview(reviews, action.response.work); break;
-            }
-        }
-        case ActionConstants.MEDIATION_ANSWER: {
-            switch (action.status) {
-                case PENDING: return Object.assign({}, reviews, { isFetching: true });
-                case ERROR: return Object.assign({}, reviews, { isFetching: false });
-                case SUCCESS: if(action.response.mediation.work.state == COMPLETE) {
-                    return addNewReview(reviews, action.response.mediation.work);
-                } else {
-                    return reviews;
-                }
-            }
-        }
+        case ActionConstants.SELECT_ROLE: return handleNewRole(action.status, reviews); break;
+        case ActionConstants.GET_REVIEWS: return handleNewReviews(action.status, reviews, action.response.reviews); break;
+        case ActionConstants.COMMENT_ON_REVIEW: return handleCommentOnReview(action.status, reviews, action.response.comment || action.response);
+        case ActionConstants.ACCEPT_WORK: return makeNewReviewFromWork(action.status, reviews, action.response.work); break;
+        case ActionConstants.MEDIATION_ANSWER: return makeNewReviewFromWork(action.status, reviews, action.response.work); break;
         case ActionConstants.LOGOUT: return initialReviews; break;
         default: return reviews; break;
     }
 }
 
-function addNewReview(reviews, work) {
-    const newReviews = new Map(reviews.items);
-    const newReview = work.review;
-    Object.defineProperty(newReview, 'work', {
-        value: work,
-        configurable: true, // allows reload in redux
-    });
-    Object.defineProperty(newReview, 'ticket', {
-        value: work.offer.ticket_snapshot.ticket,
-        configurable: true,
-    });
-    Object.defineProperty(newReview, 'all_comments', {
-        get: function() {
-            const comments = work.offer.ticket_snapshot.ticket.comments.concat(work.comments);
-            work.mediations.forEach((mediation) => Array.prototype.push.apply(comments, mediation.comments));
-            Array.prototype.push.apply(comments, work.review.comments)
-            return comments.sort(compareCommentsByDateAscending);
-        },
-        configurable: true,
-    });
-        configurable: true, // a hack to let us repeatedly set the property so we don't have to be careful
-    newReviews.set(newReview.id, newReview);
-    return { isFetching: false, items: newReviews };
+function handleNewReviews(requestStatus, reviews, newReviews) {
+    switch (requestStatus) {
+        case PENDING: return reviews.set('isFetching', true); break;
+        case ERROR: return reviews.set('isFetching', false); break;
+        case SUCCESS: return reviews.mergeDeep({ isFetching: false, items: newReviews.map(r => [r.id, r]) }); break;
+    }
 }
+
+function makeNewReviewFromWork(requestStatus, reviews, work) {
+    switch (requestStatus) {
+        case PENDING: return reviews.set('isFetching', true); break;
+        case ERROR: return reviews.set('isFetching', false); break;
+        case SUCCESS:
+            const review = Immutable.Map(work.review);
+            const work = Immutable.Map(work).delete('review');
+            return reviews.mergeIn(['items', review.get('id')], review).mergeIn(['items', review.get('id'), 'work'], work);
+    }
+}
+
 
 function handleCommentOnReview(requestStatus, reviews, comment) {
-    const oldReviews = Array.from(reviews.items.values());
-    let modifiedReview = oldReviews.find(r => r.work.offer.ticket_snapshot.ticket.id == comment.ticket.id);
+    // "auction" comments really go on the ticket...but that probably should be changed
+    const reviewId = reviews.get('items').findKey(r => getReviewTicket(r.toJS()).id == comment.ticket.id);
+    const commentKeyPath = ['items', reviewId, 'work', 'offer', 'ticket_snapshot', 'ticket', 'comments'];
+    // we have no way of knowing the comment id yet, so we look it up by content. This sucks, I know...
+    const commentIndex = reviews.getIn(commentKeyPath).findIndex(c => c.content == comment.content);
     switch (requestStatus) {
-        case PENDING: modifiedReview = Object.assign({}, modifiedReview, {isFetching: true}); break;
-        case ERROR: modifiedReview = Object.assign({}, modifiedReview, {isFetching: false}); break;
-        case SUCCESS:
-            modifiedReview = addSyntheticProperties(Object.assign({}, modifiedReview, {isFetching: false}));
-            modifiedReview.ticket.comments.push(comment);
-        break;
-    }
-    const newReviews = oldReviews.map(r => r.id == modifiedReview.id ? modifiedReview : r);
-    return { isFetching: false, items: new Map(newReviews.map(r => [r.id, addSyntheticProperties(r)])) }
-}
-
-function handleNewRole(requestStatus, oldReviews, user) {
-    switch (requestStatus) {
-        case PENDING: return Object.assign({}, oldReviews, { isFetching: true }); break;
-        case ERROR: return Object.assign({}, oldReviews, { isFetching: false }); break;
-        case SUCCESS: return initialReviews; break;
+        case PENDING:
+            comment = Immutable.Map(comment).set('isFetching', true);
+            return reviews.updateIn(commentKeyPath, comments => comments.push(comment));
+        case ERROR: return reviews.deleteIn(commentKeyPath.concat(commentIndex));
+        case SUCCESS: return reviews.mergeIn(commentKeyPath.concat(commentIndex), comment, { isFetching: false });
     }
 }
 
-function addSyntheticProperties(review) {
-    Object.defineProperty(review, 'ticket', {
-        get: function() { return review.work.offer.ticket_snapshot.ticket; },
-        set: function(ticket) { review.work.offer.ticket_snapshot.ticket = ticket; },
-        configurable: true, // a hack to let us repeatedly set the property so we don't have to be careful
-    });
-    Object.defineProperty(review, 'all_comments', {
-        get: function() {
-            const comments = review.work.offer.ticket_snapshot.ticket.comments.concat(review.work.comments);
-            review.work.mediations.forEach((mediation) => Array.prototype.push.apply(comments, mediation.comments));
-            Array.prototype.push.apply(comments, review.comments)
-            return comments.sort(compareCommentsByDateAscending);
-        },
-        configurable: true, // a hack to let us repeatedly set the property so we don't have to be careful
-    });
-    return review;
+function handleNewRole(requestStatus, reviews) {
+    switch (requestStatus) {
+        case PENDING: return reviews.set('isFetching', true);
+        case ERROR: return reviews.set('isFetching', false);
+        case SUCCESS: return reviews;
+    }
 }
