@@ -54,7 +54,7 @@ export default class App extends Component {
             <RebaseApp />
             </Provider>
             <DebugPanel top right bottom>
-                <DevTools select={(state) => state.contracts.get('items')} store={store} monitor={LogMonitor} visibleOnLoad={false} />
+                <DevTools select={state => state} store={store} monitor={LogMonitor} visibleOnLoad={false} />
             </DebugPanel>
             </div>
         );
