@@ -7,8 +7,9 @@ import ReviewView from './ReviewView.react';
 import ProfileView from './ProfileView.react';
 import ProjectView from './ProjectView.react';
 import DeveloperProfileView from './DeveloperProfileView.react';
+import BillingAndPaymentView from './BillingAndPaymentView.react';
 
-import { NEW, OFFERED, IN_PROGRESS, COMPLETED, PROFILE, PROJECTS, DEVELOPER_PROFILE } from '../constants/ViewConstants';
+import { NEW, OFFERED, IN_PROGRESS, COMPLETED, PROFILE, PROJECTS, DEVELOPER_PROFILE, BILLING_AND_PAYMENTS } from '../constants/ViewConstants';
 
 export default class MainView extends Component {
     static propTypes = {
@@ -35,6 +36,8 @@ export default class MainView extends Component {
                 return <ProjectView roles={Array.from(roles.items.values())} />; break;
             case DEVELOPER_PROFILE:
                 return <DeveloperProfileView user={user} contractor={Array.from(roles.items.values()).find(r => r.type == 'contractor')} />; break;
+            case BILLING_AND_PAYMENTS:
+                return <BillingAndPaymentView user={user} role={role} selectView={actions.selectView}/>; break;
             default:
                 let warn = (console.warn || console.log).bind(console);
                 warn('Invalid view ' + view.type); return null;
