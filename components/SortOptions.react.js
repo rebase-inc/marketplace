@@ -10,7 +10,7 @@ export default class SortOptions extends Component {
         return (
             <div className='sortOptions noselect'>
                 <span></span>
-                { [...options].map(option => <span className={sort == option[1] ? 'selected' : ''} onClick={select.bind(null, option[1])}>{ option[0] }</span>) }
+                { [...options].map((option, i) => <span key={i} className={sort == option[1] ? 'selected' : ''} onClick={select.bind(null, option[1])}>{ option[0] }</span>) }
             </div>
         );
     }
