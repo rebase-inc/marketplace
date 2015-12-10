@@ -22,13 +22,8 @@
     margin: 0;
 }
 
-#commentBox > textarea {
-    background-color: hsla(204, 45%, 99%, 1);
-}
-
 #commentBox > textarea,
 #commentBox > #commentPreview {
-    border: 1px solid hsla(199, 19%, 78%, 1);
     padding: 14px;
     margin: 20px;
     margin-bottom: 15px;

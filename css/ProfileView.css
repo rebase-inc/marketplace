@@ -1,33 +1,60 @@
+#profileView label {
+    height: 32px;
+    padding: 14px;
+    display: block;
+    text-align: center;
+}
+
 #profileView input {
+    padding: 5px;
     text-align: left;
-    height: 50px;
+    text-align: center;
+    height: 100%;
+    box-sizing: border-box;
     font-size: 16px;
     border: none;
-    border-bottom: 1px solid #BFC4CB;
-    padding-top: 8px;
-    background-color: transparent;
-    display: block;
-    margin: 14px auto;
-    width: 360px;
+    background-color: #EBEDF0;
+    border-radius: 4px;
+    display: inline;
+    width: 300px;
+    vertical-align: top;
+}
+
+#profileView input + span {
+    text-align: center;
+    font-size: 10px;
+    opacity: 0.5;
+    margin: 2px;
+}
+
+#profileView input + .loadingAnimation {
+    display: inline-block;
+    position: absolute;
+    left: calc(50% + 150px + 5px);
+    height: 22px;
+    width: 20px;
+    padding: 5px;
+    vertical-align: top;
 }
 
 #profileView input:focus {
-    border-bottom: 1px solid #1C2D41;
     transition: border 500ms;
 }
 
 #profileView button {
     display: block;
     margin: 56px auto;
-    width: 360px;
+    width: 300px;
     height: 50px;
+    height: 32px;
+    padding: 5px;
 }
 
 #profileView .profilePicture {
     display: block;
     margin: 4px auto;
-    height: 70px;
-    width: 70px;
+    height: 50px;
+    width: 50px;
     cursor: pointer;
 }
 
@@ -42,8 +69,34 @@
 #profileView > .profileSettings {
     display: block;
     position: absolute;
+    width: 90%;
     margin: 0 auto;
     top: 50%;
     left: 50%;
     transform: translateX(-50%) translateY(-50%);
+}
+
+.profileSettings > #sshKeys,
+.profileSettings > #githubAccounts {
+    display: block;
+    text-align: center;
+    margin: 20px auto;
+}
+
+.profileSettings > #sshKeys > span,
+.profileSettings > #githubAccounts > span {
+    display: block;
+    font-size: 14px;
+    opacity: 0.5;
+    cursor: pointer;
+}
+
+.profileSettings > #sshKeys > span:hover,
+.profileSettings > #githubAccounts > span:hover {
+    opacity: 1;
+}
+
+.profileSettings > #sshKeys > svg,
+.profileSettings > #githubAccounts > svg {
+    padding: 6px;
 }

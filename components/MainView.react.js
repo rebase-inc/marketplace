@@ -30,7 +30,12 @@ export default class MainView extends Component {
             case COMPLETED:
                 return <ReviewView user={user} role={role} selectView={actions.selectView} />; break;
             case PROFILE:
-                return <ProfileView user={user} roles={roles} updateProfile={actions.updateProfile.bind(null, user)} uploadPhoto={actions.uploadProfilePhoto} />; break;
+                return <ProfileView user={user}
+                    roles={roles}
+                    openAddSSHKeyModal={actions.openAddSSHKeyModal}
+                    updateProfile={actions.updateProfile.bind(null, user)}
+                    uploadPhoto={actions.uploadProfilePhoto} />;
+                    break;
             case PROJECTS:
                 return <ProjectView roles={Array.from(roles.items.values())} />; break;
             case DEVELOPER_PROFILE:
