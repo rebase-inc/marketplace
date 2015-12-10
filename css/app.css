@@ -13,7 +13,7 @@ input:focus, select:focus, textarea:focus, button:focus {
     fill: #F0F3F5;
 }
 
-.loadingAnimation {
+#app > .loadingAnimation {
     position: absolute;
     height: 60px;
     top: 50%;
@@ -125,12 +125,18 @@ input[type=range]::-ms-track {
 
 textarea {
     resize: none;
-    border: 1px solid hsla(199, 19%, 78%, 1);
-    border-radius: 4px;
     box-sizing: border-box;
-    background-color: hsla(204, 45%, 99%, 1);
+    padding: 10px;
+    text-align: left;
+    height: 100%;
+    box-sizing: border-box;
     font-size: 14px;
-    padding: 14px;
+    border: none;
+    background-color: #EBEDF0;
+    border-radius: 4px;
+    display: inline;
+    width: 100%;
+    vertical-align: top;
 }
 
 textarea.error {

@@ -2,6 +2,7 @@ import ActionConstants from '../constants/ActionConstants';
 
 import { dispatchedRequest } from '../utils/Api';
 import { SUCCESS } from '../constants/RequestConstants';
+import { ADD_SSH_KEY_MODAL } from '../constants/ModalConstants';
 
 export function logout() {
     return dispatchedRequest('DELETE', '/auth', ActionConstants.LOGOUT);
@@ -53,8 +54,21 @@ export function updateProfile(user, settings) {
     return dispatchedRequest('PUT', url, ActionConstants.UPDATE_PROFILE, data);
 }
 
+export function addSSHKey(user, key, title) {
+    const data = { key: key, title: title, user: { id: user.id } };
+    return dispatchedRequest('POST', '/ssh_keys', ActionConstants.ADD_SSH_KEY, data);
+}
+
 export function selectRole(user, roleId) {
     const data = { id: user.id, current_role: { id: roleId }};
     const url = '/users/' + user.id;
     return dispatchedRequest('PUT', url, ActionConstants.SELECT_ROLE, data);
+}
+
+export function openAddSSHKeyModal() {
+    return {
+        type: ActionConstants.SELECT_MODAL,
+        response: { type: ADD_SSH_KEY_MODAL },
+        status: SUCCESS
+    }
 }

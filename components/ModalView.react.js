@@ -12,6 +12,7 @@ import SubmitWorkModal from './SubmitWorkModal.react';
 import AcceptWorkModal from './AcceptWorkModal.react';
 import DisputeWorkModal from './DisputeWorkModal.react';
 import ResolveMediationModal from './ResolveMediationModal.react';
+import AddSSHKeyModal from './AddSSHKeyModal.react';
 
 
 import * as ModalConstants from '../constants/ModalConstants';
@@ -62,6 +63,8 @@ export default class ModalView extends Component {
             case ModalConstants.BLOCK_WORK_MODAL:
                 const markWorkBlocked = contractActions.markWorkBlocked.bind(null, work.toJS());
                 return <HaltWorkModal close={userActions.closeModal} markWorkBlocked={markWorkBlocked} />; break;
+            case ModalConstants.ADD_SSH_KEY_MODAL:
+                return <AddSSHKeyModal addSSHKey={userActions.addSSHKey.bind(null, user)} close={userActions.closeModal} />; break;
             case ModalConstants.RESOLVE_MEDIATION_MODAL: {
                 let mediations = work.toJS().mediations;
                 let mediation = mediations[mediations.length-1];

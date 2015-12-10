@@ -9,6 +9,7 @@ let UserActions = keyMirror({
     UPLOAD_PHOTO: null,
     UPDATE_PROFILE: null,
     RESTORE_SESSION: null,
+    ADD_SSH_KEY: null,
 });
 
 let TicketActions = keyMirror({
@@ -17,6 +18,14 @@ let TicketActions = keyMirror({
     SELECT_TICKET: null,
     CREATE_AUCTION: null, // this is a ticket action as far as scoping is considered...might imply we should change the REST API endpoint
     COMMENT_ON_TICKET: null,
+});
+
+let CreditActions = keyMirror({
+    GET_CREDITS: null,
+});
+
+let DebitActions = keyMirror({
+    GET_DEBITS: null,
 });
 
 let AuctionActions = keyMirror({
@@ -82,4 +91,4 @@ let __ActionConstants = keyMirror({
     DELETE_MANAGER: null,
 });
 
-export default Object.assign({}, UserActions, TicketActions, AuctionActions, ContractActions, ReviewActions, GithubAccountActions, MediationActions);
+export default Object.assign({}, UserActions, TicketActions, AuctionActions, ContractActions, ReviewActions, GithubAccountActions, MediationActions, CreditActions, DebitActions);
