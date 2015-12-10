@@ -1,26 +1,42 @@
 .githubAccountTag {
     cursor: pointer;
+    background-color: #5D7591;
+    height: 22px;
+    display: inline-block;
+    border-radius: 4px;
+    color: #F5F7FA;
+    line-height: 32px;
+    padding: 5px;
 }
 
-.githubAccountTag:hover rect {
-    fill: #6C88A8;
+.githubAccountTag:hover {
+    background-color: #6C88A8;
 }
 
 .githubAccountTag > .githubLogo {
     float: left;
     display: inline-block;
-    height: 24px;
-    padding: 3px;
+    height: 22px;
     fill: #F5F7FA;
 }
 
-.githubAccountTag > .title {
+.githubAccountTag > span {
+    max-width: 140px;
     float: left;
     display: inline-block;
     text-align: left;
     margin: 0;
     font-size: 14px;
-    line-height: 18px;
-    padding: 6px;
-    padding-right: 10px;
+    line-height: 22px;
+    padding-left: 5px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    transition: width 500ms;
+}
+
+.githubAccountTag:hover > span {
+    transition: width 500ms;
+    max-width: none;
+    overflow: visible;
 }
