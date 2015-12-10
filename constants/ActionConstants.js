@@ -9,6 +9,7 @@ let UserActions = keyMirror({
     UPLOAD_PHOTO: null,
     UPDATE_PROFILE: null,
     RESTORE_SESSION: null,
+    ADD_SSH_KEY: null,
 });
 
 let TicketActions = keyMirror({

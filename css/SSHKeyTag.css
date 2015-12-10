@@ -1,0 +1,26 @@
+.sshKeyTag {
+    cursor: pointer;
+}
+
+.sshKeyTag:hover rect {
+    fill: #6C88A8;
+}
+
+.sshKeyTag > .keylogo {
+    float: left;
+    display: inline-block;
+    height: 24px;
+    padding: 3px;
+    fill: #F5F7FA;
+}
+
+.sshKeyTag > .fingerprint {
+    float: left;
+    display: inline-block;
+    text-align: left;
+    margin: 0;
+    font-size: 14px;
+    line-height: 18px;
+    padding: 6px;
+    padding-right: 10px;
+}
