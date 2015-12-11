@@ -2,6 +2,7 @@
 *.swo
 *.swn
 build/
+dist/
 node_modules/
 .DS_Store
 src/react-tools.js

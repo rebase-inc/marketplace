@@ -39,6 +39,7 @@
   },
   "main": "server.js",
   "scripts": {
-    "start": "node server.js"
+    "start": "node server.js",
+    "compile": "NODE_ENV=production webpack -p --config webpack.production.config.js"
   }
 }
