@@ -2,10 +2,7 @@ var path = require('path');
 var webpack = require('webpack');
 
 module.exports = {
-    devtool: 'eval',
     entry: [
-        'webpack-dev-server/client?http://localhost:3000',
-        'webpack/hot/only-dev-server',
         './index' // entry js file for app
     ],
     output: {
@@ -14,12 +11,10 @@ module.exports = {
         publicPath: '/static/'
     },
     plugins: [
-        new webpack.HotModuleReplacementPlugin()
     ],
     resolve: {
         alias: {
             'react': path.join(__dirname, 'node_modules', 'react'),
-            'redux-devtools': path.join(__dirname, 'node_modules', 'redux-devtools')
         },
         extensions: ['', '.js']
     },
