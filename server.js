@@ -12,7 +12,7 @@ new WebpackDevServer(
         proxy: { '/api/*': { target:TARGET, secure: true } },
         historyApiFallback: true,
         stats: { colors: true }
-    }).listen(PORT, 'localhost', function (err) {
+    }).listen(PORT, function (err) {
         if (err) { console.log(err); }
         console.log('Listening at localhost:'+PORT);
         console.log('Remote backend:'+TARGET);
