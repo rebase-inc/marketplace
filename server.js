@@ -15,4 +15,5 @@ new WebpackDevServer(
     }).listen(PORT, 'localhost', function (err) {
         if (err) { console.log(err); }
         console.log('Listening at localhost:'+PORT);
+        console.log('Remote backend:'+TARGET);
 });
