@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 
-import Fuse from '../utils/Fuse';
+import Fuse from '../utils/fuse';
 import NothingHere from './NothingHere.react';
 import SearchBar from './SearchBar.react';
 import SortOptions from './SortOptions.react';
