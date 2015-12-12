@@ -1,6 +1,13 @@
 @font-face {
     font-family: GothamRounded;
     src: url("../font/GothamRnd-Light.otf") format("opentype");
+    font-weight: light;
+}
+
+@font-face {
+    font-family: GothamRounded;
+    src: url("../font/GothamRnd-Medium.otf") format("opentype");
+    font-weight: bold;
 }
 
 * { font-family: GothamRounded; font-weight: lighter; }
@@ -131,8 +138,8 @@ textarea {
     height: 100%;
     box-sizing: border-box;
     font-size: 14px;
-    border: none;
-    background-color: #EBEDF0;
+    border: 1px solid #D3E0E6;
+    background-color: transparent;
     border-radius: 4px;
     display: inline;
     width: 100%;
@@ -330,9 +337,12 @@ html, body {
 }
 
 #commentList {
-    height: calc(100% - 130px - 50px - 30px);
+    height: calc(100% - 80px);
+    position: absolute;
+    bottom: 0;
     overflow: auto;
 }
+
 img.profilePicture {
     border-radius: 50%;
 }

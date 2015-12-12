@@ -44,8 +44,7 @@ export default class SingleAuctionView extends Component {
                     <span>{ 'Finish work by ' + humanReadableDate(auction.finish_work_by) }</span>
                 </DetailsPanel>
                 { this.state.showTalent ? <FindTalentView auction={auction} approve={actions.approveNomination} /> : null }
-                { this.state.showTalent ? null : <CommentList comments={ticket.comments}/> }
-                { this.state.showTalent ? null : <CommentBox submit={actions.commentOnAuction.bind(null, user, auction)} /> }
+                { this.state.showTalent ? null : <CommentList comments={ticket.comments} submit={actions.commentOnAuction.bind(null, user, auction)}/> }
             </div>
         );
     }

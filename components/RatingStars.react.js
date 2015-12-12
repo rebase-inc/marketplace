@@ -7,7 +7,7 @@ export default class RatingStars extends Component {
     static propTypes = {
         dynamic: PropTypes.bool,
         colored: PropTypes.bool,
-        rating: PropTypes.number,
+        rating: props => !(props.rating >= 0 && props.rating <= 10) ? new Error("Rating must be between 0 and 10 (inclusive), got: " + props.rating) : null,
         setRating: PropTypes.func,
     }
 
@@ -30,7 +30,7 @@ export default class RatingStars extends Component {
             'empty': <path d="M33.4921682,12.025788 L22.2636735,10.2979722 L17.1548468,0.931918211 L12.0460202,10.2979722 L0.817525421,12.025788 L9.37967578,19.7317233 L6.80641496,30.8817509 L17.152539,25.7090736 L27.3401901,30.8817509 L24.9246329,19.7355697 L33.4921682,12.025788 Z" fill='#C2CBD5'/>,
         }[type];
         return (
-            <g fill={color} 
+            <g fill={color}
                 key={ratingNumber}
                 transform={'translate(' + (ratingNumber - 1) * 35 + ',0)'}
                 onMouseOver={() => { if (this.props.dynamic) this.setState({ dynamicRating: ratingNumber })}}

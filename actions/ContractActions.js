@@ -42,7 +42,7 @@ export function markWorkBlocked(work, comment) {
 }
 
 export function markWorkUnblocked(work, comment) {
-    const url = '/works/' + work.id + '/resume';
+    const url = '/works/' + work.id + '/resolve';
     const data = { comment: comment, work: work };
     return dispatchedRequest('POST', url, ActionConstants.MARK_WORK_UNBLOCKED, data);
 }

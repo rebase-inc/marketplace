@@ -32,7 +32,7 @@ export default class ReviewListView extends Component {
                 </SearchBar>
                 <table className='contentList'>
                     <tbody ref='tableBody'>
-                        { sortedReviews.map(a => <Review review={a} role={role} select={() => select(a.id)} key={a.id} />) }
+                        { sortedReviews.map(r => <Review review={r} role={role} select={() => select(r.id)} key={r.id} />) }
                     </tbody>
                 </table>
             </div>

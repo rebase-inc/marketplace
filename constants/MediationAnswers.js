@@ -1,4 +1,4 @@
-export const RESUME_WORK = 'resume_work';
+export const RESOLVE = 'resolve';
 export const COMPLETE = 'review';
 export const FAIL = 'fail';
 

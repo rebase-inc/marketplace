@@ -40,8 +40,7 @@ export default class SingleTicketView extends Component {
                     { isManager ? <button onClick={actions.openNewAuctionModal}>Find Developers</button> : null}
                 </TicketHeader>
                 <DetailsPanel hidden={!this.state.detailsOpen} ticket={ticket} clone={ticket.project.work_repo.clone} />
-                <CommentList comments={ticket.comments}/>
-                <CommentBox submit={actions.commentOnTicket.bind(null, user, ticket)} />
+                <CommentList comments={ticket.comments} submit={actions.commentOnTicket.bind(null, user, ticket)}/>
             </div>
         );
     }

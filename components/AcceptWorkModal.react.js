@@ -20,7 +20,7 @@ export default class AcceptWorkModal extends Component {
         return (
             <ModalContainer close={close}>
                 <h3>Rate Developer Work</h3>
-                <RatingStars rating={this.state.rating} setRating={(rating) => this.setState({ rating: rating})} dynamic={true} labeled={true} />
+                <RatingStars rating={this.state.rating/2} setRating={(rating) => this.setState({ rating: 2 * rating })} dynamic={true} labeled={true} />
                 <textarea required onChange={(e) => this.setState({ text: e.target.value })} ref='comment' placeholder="Leave a short review of the developer's work (optional)"/>
                 <button onClick={() => { acceptWork(this.state.text, this.state.rating); close(); }}>Accept Work</button>
             </ModalContainer>
