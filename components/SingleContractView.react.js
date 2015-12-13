@@ -37,10 +37,6 @@ export default class SingleContractView extends Component {
         return (
             <div className='contentView'>
                 <ContractHeader actions={actions} contract={contract} role={role} unselect={actions.selectContract.bind(null, null)} toggleDetails={this.toggleDetails} />
-                <ContractStatusHeader contract={contract} role={role} />
-                <DetailsPanel hidden={!this.state.detailsOpen} ticket={ticket} clone={work.clone}>
-                    <span>{'Assigned to ' + contract.bid.contractor.user.name}</span>
-                </DetailsPanel>
                 <CommentList comments={getContractComments(contract)}/>
             </div>
         );

@@ -14,14 +14,31 @@ export default class ContractHeader extends Component {
     }
 
     render() {
-        const work = getContractWork(this.props.contract);
-        switch (work.state) {
-            case 'in_progress': return <InProgressContractHeader {...this.props }/>;
-            case 'in_review': return <InReviewContractHeader {...this.props} />;
-            case 'blocked': return <BlockedContractHeader {...this.props} />;
-            case 'in_mediation': return <InMediationContractHeader {...this.props} />;
-            default: console.warn('Invalid work state: ', work.state); break;
-        }
+        const { contract } = this.props;
+        const ticket = getContractTicket(contract);
+        return (
+            <div className='infoHeader'>
+                <div className='mainInfo'>
+                    <span className='title'>{ticket.title}</span>
+                    <Status contract={contract} />
+                </div>
+                <div className='otherInfo'>
+                </div>
+            </div>
+        )
+    }
+}
+
+export class Status extends Component {
+    render() {
+        return (
+            <div className='status'>
+                <svg height='12px' width='12px' viewBox='0 0 12 12'>
+                    <circle cx='6' cy='6' r='6' fill='orange'/>
+                </svg>
+                <span>{'Some status that I will deal with later'}</span>
+            </div>
+        );
     }
 }
 

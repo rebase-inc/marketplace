@@ -1,0 +1,43 @@
+.infoHeader {
+   width: 100%;
+   box-sizing: border-box;
+   padding: 15px;
+}
+
+.infoHeader > .mainInfo {
+    width: 70%;
+    display: inline-block;
+    float: left;
+}
+
+.infoHeader > .otherInfo {
+    width: 70%;
+    display: inline-block;
+    float: left;
+}
+
+.infoHeader > .mainInfo > .title {
+    display: block;
+    text-align: left;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.infoHeader > .mainInfo > .status {
+    display: block;
+    text-align: left;
+}
+
+.infoHeader > .mainInfo > .status > svg {
+    padding: 4px;
+    display: inline-block;
+    float: left;
+}
+
+.infoHeader > .mainInfo > .status > span {
+    font-size: 12px;
+    line-height: 20px;
+    display: inline-block;
+    float: left;
+}
+

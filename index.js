@@ -22,5 +22,6 @@ import './css/CodeField.css';
 import './css/Talent.css';
 import './css/SortOptions.css';
 import './css/ModalDialog.css';
+import './css/InfoHeader.css';
 
 ReactDOM.render(<App/>, document.getElementById('react-app'));
