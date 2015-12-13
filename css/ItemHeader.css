@@ -24,7 +24,6 @@
     opacity: 0.6;
 }
 
-
 #itemHeader {
     height: 50px;
     width: 100%;
@@ -33,7 +32,6 @@
     font-size: 16px;
     line-height: 50px;
 }
-
 
 #itemHeader .dropbackIcon {
     display: inline;

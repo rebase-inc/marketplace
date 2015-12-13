@@ -30,6 +30,7 @@ export default class Comment extends Component {
     }
     render() {
         const { comment } = this.props;
+        let typeString;
         return (
             <div className='comment' key={comment.id}>
                 <div className='photo'>
@@ -37,6 +38,24 @@ export default class Comment extends Component {
                 </div>
                 <div className='content'>
                     <div className='name'>{comment.user.name}</div>
+                    { <svg className='commentType' viewBox='0 0 100 10' height='10px' width='100px'
+                        data-alert={comment.type == 'blockage_comment' || undefined}
+                        data-warning={comment.type == 'mediation_comment' || undefined}
+                        data-notification={comment.type == 'review_comment' || undefined}>
+                        <circle cx='5' cy='5' r='5'/>
+                        <text fontSize='10px' x='12' y='9'>
+                            {
+                                () => {
+                                    switch (comment.type) {
+                                        case 'blockage_comment': return 'Blocked';
+                                        case 'mediation_comment': return 'In Mediation';
+                                        case 'review_comment': return 'Review';
+                                        default: return null;
+                                    }
+                                }()
+                            }
+                        </text>
+                    </svg> }
                     <div className='date'>{humanReadableDate(comment.created ? comment.created : new Date())}</div>
                     { comment.isFetching ? <PendingIcon /> : null }
                     <div className='text' dangerouslySetInnerHTML={this.rawMarkup()}/>
@@ -50,7 +69,7 @@ export default class Comment extends Component {
 export class PendingIcon extends Component {
     render() {
         return (
-            <svg viewBox='0 0 32 32' className='rotate'>
+            <svg viewBox='0 0 32 32' height='16px' width='16px' className='rotate'>
                 <g transform="translate(31.2, 0) scale(-1, 1) translate(-0.2, 4.7)" stroke="none" strokeWidth="1" fill="#25AE90">
                     <path d="M4.5146,15.1094 C4.5056,15.1094 4.4966,15.1094 4.4886,15.1084 C4.3316,15.1004 4.1876,15.0184 4.0996,14.8874 L0.5846,9.6534 C0.4316,9.4244 0.4926,9.1144 0.7216,8.9604 C0.9506,8.8044 1.2606,8.8664 1.4146,9.0964 L4.5576,13.7774 L8.1716,9.4504 C8.3486,9.2394 8.6626,9.2094 8.8756,9.3864 C9.0876,9.5634 9.1156,9.8794 8.9386,10.0904 L4.8986,14.9294 C4.8036,15.0444 4.6626,15.1094 4.5146,15.1094"></path>
                     <path d="M29.4624,15.2988 C29.3014,15.2988 29.1434,15.2218 29.0464,15.0768 L25.9054,10.3968 L22.2904,14.7248 C22.1124,14.9368 21.7974,14.9658 21.5854,14.7878 C21.3734,14.6118 21.3454,14.2958 21.5224,14.0838 L25.5654,9.2438 C25.6664,9.1228 25.8184,9.0378 25.9754,9.0658 C26.1324,9.0728 26.2764,9.1548 26.3644,9.2858 L29.8774,14.5208 C30.0304,14.7488 29.9694,15.0608 29.7404,15.2138 C29.6544,15.2718 29.5584,15.2988 29.4624,15.2988"></path>

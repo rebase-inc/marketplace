@@ -63,7 +63,7 @@ table.contentList > tbody > tr:hover .matchesHoverState {
 }
 
 table.contentList > tbody > tr:hover {
-    background-color: hsla(200, 30%, 96%, 1);
+    background-color: #ECF3FA;
 }
 
 table.contentList > tbody > tr > td {

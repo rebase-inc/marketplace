@@ -2,6 +2,13 @@
     margin: 0;
 }
 
+.comment svg.commentType { fill: none; margin: 3px; }
+.comment svg.commentType > text { opacity: 0; transition: opacity 500ms; }
+.comment:hover svg.commentType > text { opacity: 1; }
+.comment svg.commentType[data-notification] { fill: hsla(167, 48%, 49%, 1); }
+.comment svg.commentType[data-alert] { fill: hsla(37, 87%, 61%, 1); }
+.comment svg.commentType[data-warning] { fill: hsla(351, 48%, 54%, 1); }
+
 .comment .text code {
     display: block;
     background-color: #EBF0F2;
@@ -25,7 +32,7 @@
 .comment > .content {
     display: inline;
     float: left;
-    width: calc(100% - 100px);
+    width: calc(100% - 40px);
 }
 
 .comment > .status {
@@ -34,18 +41,14 @@
     width: 50px;
 }
 
-.comment > .content > svg {
-    height: 30px;
-    margin: 7px;
-    height: 22px;
-    display: inline;
-}
-
 .comment > .content > .name {
+    font-size: 14px;
+    font-weight: bold;
     display: inline;
     float: left;
-    height: 22px;
-    margin: 7px;
+    height: 16px;
+    margin-left: 7px;
+    margin-left: 7px;
 }
 
 .comment > .photo {
@@ -58,25 +61,27 @@
 
 .comment > .photo img, 
 .comment > .photo svg {
-    padding: 7px;
     width: 35px;
     height: 35px;
     border-radius: 50%;
 }
 
 .comment > .content > .date {
+    font-size: 14px;
+    font-weight: bold;
     display: inline;
-    float: left;
+    float: right;
     color: hsla(211, 22%, 73%, 1);
-    margin: 7px;
+    margin-right: 7px;
 }
 
 .comment > .content > .text {
     display: block;
     float: left;
     margin-left: 7px;
+    margin-top: 4px;
     font-size: 14px;
-    width: 100%;
+    width: calc(100% - 100px);
 }
 
 .comment {

@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 
 import Comment from './Comment.react';
+import CommentBox from './CommentBox.react';
 
 export default class CommentList extends Component {
     static propTypes = {
@@ -31,10 +32,11 @@ export default class CommentList extends Component {
     }
 
     render() {
-        const { comments } = this.props;
+        const { comments, submit } = this.props;
         return (
                 <div id='commentList'>
                     { comments.map( comment => <Comment comment={comment} key={comment.id} /> ) }
+                    <CommentBox submit={submit} />
                 </div>
            );
     }

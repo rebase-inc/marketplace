@@ -14,13 +14,12 @@ export default class ContractHeader extends Component {
     }
 
     render() {
-        const { role, contract, unselect, toggleDetails, actions } = this.props;
-        const work = getContractWork(contract);
+        const work = getContractWork(this.props.contract);
         switch (work.state) {
-            case 'in_progress': return <InProgressContractHeader contract={contract} actions={actions} role={role} unselect={unselect} toggleDetails={toggleDetails} />;
-            case 'in_review': return <InReviewContractHeader contract={contract} actions={actions} role={role} unselect={unselect} toggleDetails={toggleDetails} />;
-            case 'blocked': return <BlockedContractHeader contract={contract} actions={actions} role={role} unselect={unselect} toggleDetails={toggleDetails} />;
-            case 'in_mediation': return <InMediationContractHeader contract={contract} actions={actions} role={role} unselect={unselect} toggleDetails={toggleDetails} />;
+            case 'in_progress': return <InProgressContractHeader {...this.props }/>;
+            case 'in_review': return <InReviewContractHeader {...this.props} />;
+            case 'blocked': return <BlockedContractHeader {...this.props} />;
+            case 'in_mediation': return <InMediationContractHeader {...this.props} />;
             default: console.warn('Invalid work state: ', work.state); break;
         }
     }

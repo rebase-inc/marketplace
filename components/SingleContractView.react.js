@@ -34,7 +34,6 @@ export default class SingleContractView extends Component {
         const { contract, user, role, actions } = this.props;
         const ticket = getContractTicket(contract);
         const work = getContractWork(contract);
-        console.log('comments are ', getContractComments(contract));
         return (
             <div className='contentView'>
                 <ContractHeader actions={actions} contract={contract} role={role} unselect={actions.selectContract.bind(null, null)} toggleDetails={this.toggleDetails} />
@@ -43,7 +42,6 @@ export default class SingleContractView extends Component {
                     <span>{'Assigned to ' + contract.bid.contractor.user.name}</span>
                 </DetailsPanel>
                 <CommentList comments={getContractComments(contract)}/>
-                <CommentBox submit={actions.commentOnContract.bind(null, user, contract)}/>
             </div>
         );
     }

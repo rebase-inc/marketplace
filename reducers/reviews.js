@@ -34,7 +34,7 @@ function makeNewReviewFromWork(requestStatus, reviews, work) {
         case SUCCESS:
             const review = Immutable.Map(work.review);
             const work = Immutable.Map(work).delete('review');
-            return reviews.mergeIn(['items', review.get('id')], review).mergeIn(['items', review.get('id'), 'work'], work);
+            return reviews.mergeIn(['items', review.get('id')], review).mergeIn(['items', review.get('id'), 'work'], work).set('isFetching', false);
     }
 }
 

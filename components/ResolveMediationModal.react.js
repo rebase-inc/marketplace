@@ -5,10 +5,11 @@ var keyMirror = require('keymirror');
 import ModalContainer from './ModalContainer.react';
 var RatingStars = require('../components/RatingStars.react');
 
-import { RESUME_WORK, COMPLETE, FAIL } from '../constants/MediationAnswers';
+import { RESOLVE, COMPLETE, FAIL } from '../constants/MediationAnswers';
 
 var ModalStates = keyMirror({ NEW: null, GIVE_UP: null, BACK_TO_WORK: null, COMPLETE: null });
 
+// TODO: Refactor
 export default class ResolveMediationModal extends Component {
     static propTypes = {
         close: React.PropTypes.func.isRequired,
@@ -87,7 +88,7 @@ export default class ResolveMediationModal extends Component {
                             value={this.state.text}
                             onChange={this.handleInput.bind(this)}
                         />
-                        <button className='needsResolution' onClick={this.answer.bind(this, RESUME_WORK)}>Go back to work</button>
+                        <button className='needsResolution' onClick={this.answer.bind(this, RESOLVE)}>Go back to work</button>
                         <h5 onClick={this.changeModalView.bind(this, ModalStates.NEW)}>Oops. Go back.</h5>
                     </ModalContainer>
                 );

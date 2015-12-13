@@ -42,7 +42,6 @@ export default class SingleReviewView extends Component {
                     <span>{'Assigned to ' + contractor.user.name}</span>
                 </DetailsPanel>
                 <CommentList comments={getReviewComments(review)}/>
-                <CommentBox submit={actions.commentOnReview.bind(null, user, review)} />
             </div>
         );
     }

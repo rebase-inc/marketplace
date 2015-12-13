@@ -129,7 +129,7 @@
 #modalDialog .cloneInstructions .codeField {
     width: 90%;
     height: 30px;
-    transform: translateX(-40px);
+    transform: translateX(-20px);
 }
 
 #modalDialog > * {
