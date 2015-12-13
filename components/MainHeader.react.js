@@ -103,7 +103,6 @@ class ProfileOptions extends Component {
                         <div className='option' onClick={() => actions.selectView(PROFILE)}>Profile</div>
                         <div className='option' onClick={() => actions.selectView(PROJECTS)}>Projects</div>
                         <div className='option' onClick={() => actions.selectView(DEVELOPER_PROFILE)}>Developer Profile</div>
-                        <div className='option' onClick={() => actions.selectView(BILLING_AND_PAYMENTS)}>Billing and Payments</div>
                         <div className='option' onClick={actions.logout}>Sign Out</div>
                     </DropdownMenu> : null }
             </div>

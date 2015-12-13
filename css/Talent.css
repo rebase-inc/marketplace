@@ -3,3 +3,6 @@
 .actionPanel:hover .approveTalentIcon > svg:first-child { display: none; }
 .actionPanel:hover .approveTalentIcon > svg:last-child { display: block; }
 .actionPanel .approveTalentIcon > svg { height: 36px; }
+.talentPanel .profilePicture { height: 26px; }
+.talentPanel span { font-size: 10px; display: block; margin: 0 auto; opacity: 0.7; }
+.talentPanel .ratingStars { height: 10px; display: block; margin: 0 auto; } 
