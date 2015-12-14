@@ -6,9 +6,7 @@ module.exports = {
         './index' // entry js file for app
     ],
     output: {
-        path: path.join(__dirname, 'dist'),
         filename: 'bundle.js',
-        publicPath: '/static/'
     },
     plugins: [
     ],
@@ -24,12 +22,12 @@ module.exports = {
     module: {
         loaders: [{
             test: /\.js$/,
-            loaders: ['react-hot', 'babel'],
+            loaders: ['babel'],
             exclude: /node_modules/,
             include: __dirname
         }, {
             test: /\.js$/,
-            loaders: ['react-hot', 'babel'],
+            loaders: ['babel'],
             include: path.join(__dirname, '..', '..', 'src')
         }, {
             test: /\.css?$/,
