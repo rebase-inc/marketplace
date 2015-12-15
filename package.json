@@ -21,8 +21,6 @@
     "react-json-tree": "^0.1.9",
     "react-redux": "^3.0.0",
     "redux": "^3.0.5",
-    "redux-devtools-dock-monitor": "^1.0.1",
-    "redux-devtools-log-monitor": "^1.0.1",
     "redux-logger": "^2.0.4",
     "redux-thunk": "^1.0.0",
     "underscore": ""
@@ -35,6 +33,8 @@
     "react-dnd": "^2.0.2",
     "react-hot-loader": "^1.3.0",
     "redux-devtools": "^3.0.0",
+    "redux-devtools-dock-monitor": "^1.0.1",
+    "redux-devtools-log-monitor": "^1.0.1",
     "style-loader": "^0.12.3",
     "webpack": "^1.12.2",
     "webpack-dev-server": "^1.12.1"
