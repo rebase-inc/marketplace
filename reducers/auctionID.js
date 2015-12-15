@@ -38,7 +38,7 @@ function handleNewAuctions(requestStatus, auctionID, auctions) {
         case ERROR: return auctionID; break;
         case SUCCESS:
             const newAuction = auctions.find(a => a.state == 'created' || a.state == 'waiting_for_bids');
-            return !!newAuction ? newAuction.id : auctionID;
+            return !!newAuction ? newAuction.id : initialAuctionID;
     }
 }
 

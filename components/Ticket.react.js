@@ -19,7 +19,7 @@ export default class Ticket extends Component {
                     { Object.keys(ticket.skill_requirement.skills).map(s => <div key={s} className='skill'>{s}</div>) }
                 </div>
                 <div className='extraInfo'>
-                    <span>{'Created ' + humanReadableDate(ticket.created, false, true)}</span>
+                    <span>{humanReadableDate(ticket.created, false, true)}</span>
                     <div>
                         <Comment />
                         <span>{ticket.comments.length}</span>

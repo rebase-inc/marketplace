@@ -200,11 +200,11 @@ export class DonutChart {
         data = !!totalOfAllCategories ? data : [{ color: '#F5B651', population: 1 }];
 
         let radius = dimensions.height / 2;
-        let arcWidth = dimensions.height / 5;
+        let arcWidth = dimensions.height / 7;
 
         let arc = d3.svg.arc()
             .outerRadius(d => d.data.category == 'approved' ? radius - arcWidth / 3 : radius)
-            .innerRadius(d => d.data.category == 'approved' ? radius - arcWidth *2/3 : radius - arcWidth);
+            .innerRadius(d => d.data.category == 'approved' ? radius - arcWidth * 2/3 : radius - arcWidth);
 
         let pie = d3.layout.pie().sort(null).value(function(d) { return d.population; });
 

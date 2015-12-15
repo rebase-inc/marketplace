@@ -37,7 +37,8 @@ function handleNewReviews(requestStatus, reviewID, reviews) {
         case PENDING: return reviewID; break;
         case ERROR: return reviewID; break;
         case SUCCESS:
-            return reviews.find(r => r).id;
+            const newReview = reviews.find(r => r);
+            return newReview ? newReview.id : null;
     }
 }
 
