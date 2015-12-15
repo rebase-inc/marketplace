@@ -18,6 +18,7 @@ export default class Review extends Component {
     render() {
         const { review, select, role } = this.props;
         const ticket = getReviewTicket(review);
+        return <div>foo</div>;
         return (
             <tr className='ticket' onClick={select}>
                 { role.type == 'manager' ? <DebitPanel debit={review.work.debit} /> : null }

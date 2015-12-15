@@ -12,6 +12,10 @@
     float: left;
 }
 
+.infoHeader > .mainInfo:only-child {
+    width: 100%;
+}
+
 .infoHeader > .otherInfo {
     width: 260px;
     max-width: calc(100% - 260px);

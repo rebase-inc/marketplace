@@ -26,15 +26,13 @@ export default class ReviewListView extends Component {
         if (!sortedReviews.length && loading) { return <LoadingAnimation />; }
         if (!sortedReviews.length) { return <NoReviewsView role={role} selectView={selectView} /> }
         return (
-            <div className='contentView'>
+            <div className='listView'>
                 <SearchBar placeholder='Search finished work' searchText={searchText} onUserInput={(input) => this.setState({ searchText: input })}>
-                    <SortOptions options={SortFunctions} select={(fn) => this.setState({ sort: fn })} sort={sort} />
+                    {/*<SortOptions options={SortFunctions} select={(fn) => this.setState({ sort: fn })} sort={sort} />*/}
                 </SearchBar>
-                <table className='contentList'>
-                    <tbody ref='tableBody'>
-                        { sortedReviews.map(r => <Review review={r} role={role} select={() => select(r.id)} key={r.id} />) }
-                    </tbody>
-                </table>
+                <div className='contentList'>
+                    { sortedReviews.map(r => <Review review={r} role={role} select={() => select(r.id)} key={r.id} />) }
+                </div>
             </div>
         );
     }
