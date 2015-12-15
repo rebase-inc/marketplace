@@ -1,10 +1,9 @@
 import React, { Component, PropTypes } from 'react';
 
-import TicketHeader from './TicketHeader.react';
-import CommentList from './CommentList.react';
+import AuctionHeader from './AuctionHeader.react';
+import Comment from './Comment.react';
+import Talent from './Talent.react';
 import CommentBox from './CommentBox.react';
-import FindTalentView from './FindTalentView.react';
-import DetailsPanel from './DetailsPanel.react';
 import { humanReadableDate } from '../utils/date';
 import { getAuctionTicket } from '../utils/getters';
 
@@ -34,18 +33,27 @@ export default class SingleAuctionView extends Component {
         const { user, role, auction, actions } = this.props;
         const ticket = getAuctionTicket(auction);
         const unselect = this.state.showTalent ? () => this.setState({ showTalent: false }) : actions.selectAuction.bind(null, null);
+        const sortedNominations = auction.ticket_set.nominations.sort(sort_nominations);
+        const { showTalent } = this.state;
         return (
-            <div className='contentView'>
-                <TicketHeader unselect={unselect} title={ticket.title} toggleDetails={this.toggleDetails}>
+            <div className='singleView'>
+                <AuctionHeader ticket={ticket}>
                     { role.type == 'contractor' ? <button onClick={actions.openBidModal}>Bid Now</button> : null }
-                    { (role.type == 'manager' && !this.state.showTalent) ? <button onClick={() => this.setState({ showTalent: true })}>View Developers</button> : null }
-                </TicketHeader>
-                <DetailsPanel hidden={!this.state.detailsOpen} ticket={ticket} clone={ticket.project.work_repo.clone} >
-                    <span>{ 'Finish work by ' + humanReadableDate(auction.finish_work_by) }</span>
-                </DetailsPanel>
-                { this.state.showTalent ? <FindTalentView auction={auction} approve={actions.approveNomination} /> : null }
-                { this.state.showTalent ? null : <CommentList comments={ticket.comments} submit={actions.commentOnAuction.bind(null, user, auction)}/> }
+                    { role.type == 'manager' ?
+                        <button onClick={() => this.setState({ showTalent: !showTalent })}>
+                            { showTalent ? 'View Details' : 'View Developers' }
+                        </button> : null }
+                </AuctionHeader>
+                { this.state.showTalent ?
+                    sortedNominations.map(n => <Talent auction={auction} nomination={n} key={n.id} approve={() => actions.approveNomination(auction, n)}/>) : null }
+                { !this.state.showTalent ?
+                    ticket.comments.map( comment => <Comment comment={comment} key={comment.id} /> ) : null }
+                { !this.state.showTalent ? <CommentBox submit={actions.commentOnAuction.bind(null, user, ticket)}/> : null }
             </div>
         );
     }
 };
+
+function sort_nominations(n1, n2) {
+    return (!!n2.job_fit ? n2.job_fit.score : -1) - (!!n1.job_fit ? n1.job_fit.score : -1)
+}

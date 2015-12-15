@@ -20,6 +20,7 @@ export default class Auction extends Component {
     }
     render() {
         const { role, auction, select } = this.props;
+        return <div>foo</div>;
         switch (role.type) {
             case 'manager': return <ManagerViewAuction auction={auction} select={select} />; break;
             case 'contractor': return <DeveloperViewAuction auction={auction} select={select} />; break;

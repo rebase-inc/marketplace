@@ -26,15 +26,13 @@ export default class AuctionListView extends Component {
         if (!sortedAuctions.length && loading) { return <LoadingAnimation />; }
         if (!sortedAuctions.length) { return <NoAuctionsView role={role} selectView={selectView} /> }
         return (
-            <div className='contentView'>
+            <div className='listView'>
                 <SearchBar searchText={searchText} onUserInput={(input) => this.setState({ searchText: input })}>
-                    <SortOptions options={SortFunctions} select={(fn) => this.setState({ sort: fn })} sort={sort} />
+                    {/*<SortOptions options={SortFunctions} select={(fn) => this.setState({ sort: fn })} sort={sort} />*/}
                 </SearchBar>
-                <table className='contentList'>
-                    <tbody ref='tableBody'>
-                        { sortedAuctions.map(a => <Auction auction={a} role={role} select={() => select(a.id)} key={a.id} />) }
-                    </tbody>
-                </table>
+                <div className='contentList'>
+                    { sortedAuctions.map(a => <Auction auction={a} role={role} select={() => select(a.id)} key={a.id} />) }
+                </div>
             </div>
         );
     }
