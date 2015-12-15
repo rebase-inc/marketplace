@@ -1,0 +1,68 @@
+.infoHeader {
+   width: 100%;
+   box-sizing: border-box;
+   padding: 15px;
+   overflow: auto;
+}
+
+.infoHeader > .mainInfo {
+    width: calc(100% - 260px);
+    min-width: 260px;
+    display: inline-block;
+    float: left;
+}
+
+.infoHeader > .mainInfo:only-child {
+    width: 100%;
+}
+
+.infoHeader > .otherInfo {
+    width: 260px;
+    max-width: calc(100% - 260px);
+    display: inline-block;
+    float: left;
+}
+
+.infoHeader > .otherInfo > button {
+    display: inline-block;
+    float: right;
+    margin: 0;
+}
+
+.infoHeader > .mainInfo > .title {
+    display: block;
+    text-align: left;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.infoHeader > .mainInfo > .status {
+    display: block;
+    text-align: left;
+}
+
+.infoHeader > .mainInfo > .status > svg {
+    padding-top: 4px;
+    padding-right: 4px;
+    display: inline-block;
+    float: left;
+    width: 12px;
+    height: 12px;
+}
+
+.infoHeader > .mainInfo > .status > span {
+    width: calc(100% - 19px);
+}
+
+.infoHeader > .mainInfo > .status[data-okay] > svg { fill: hsla(167, 48%, 49%, 1); }
+.infoHeader > .mainInfo > .status[data-notification] > svg { fill: hsla(212, 22%, 43%, 1); }
+.infoHeader > .mainInfo > .status[data-alert] > svg { fill: hsla(37, 87%, 61%, 1); }
+.infoHeader > .mainInfo > .status[data-warning] > svg { fill: hsla(37, 87%, 61%, 1); }
+
+.infoHeader > .mainInfo > .status > span {
+    font-size: 12px;
+    line-height: 20px;
+    display: inline-block;
+    float: left;
+}
+

@@ -1,0 +1,81 @@
+.ticket {
+    width: 100%;
+    overflow-y: auto;
+    overflow-x: hidden;
+    font-size: 12px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    cursor: default;
+}
+
+.ticket:hover, .ticket[data-selected] {
+    background-color: #ECF3FA;
+}
+
+.ticket > * {
+    display: inline-block;
+    float: left;
+    height: 100%;
+    padding: 5px;
+    box-sizing: border-box;
+}
+
+.ticket > .mainInfo {
+    width: calc(100% - 120px);
+    padding-left: 10px;
+}
+
+.ticket > .mainInfo > * {
+    padding-top: 2px;
+}
+
+.ticket > .mainInfo > span {
+    display: block;
+    font-weight: bold;
+}
+
+.ticket > .mainInfo > span:first-child {
+    color: #AAB9C9;
+    font-size: 12px;
+}
+
+.ticket > .mainInfo > .skill {
+    display: inline-block;
+    background-color: #92D0C2;
+    float: left;
+    margin-right: 4px;
+    margin-top: 4px;
+    padding: 4px;
+    border-radius: 4px;
+    color: #F7FAFC;
+    font-size: 10px;
+}
+
+.ticket > .extraInfo {
+    width: 120px;
+}
+
+.ticket > .extraInfo > * {
+    display: block;
+    font-weight: bold;
+    text-align: center;
+    color: #AAB9C9;
+    font-size: 10px;
+    padding-top: 2px;
+}
+
+.ticket > .extraInfo > div {
+    padding-top: 10px;
+    overflow: auto;
+    text-align: center;
+}
+
+.ticket > .extraInfo > div > * {
+    display: inline;
+    height: 10px;
+    font-size: 12px;
+    vertical-align: middle;
+    font-weight: bold;
+    fill: #AAB9C9;
+}
+

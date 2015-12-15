@@ -19,22 +19,20 @@ export default class AuctionListView extends Component {
         this.state = { searchText: '', sort: SortFunctions.get('ending soon') };
     }
     render() {
-        const { select, auctions, loading, role, selectView } = this.props;
+        const { select, auction, auctions, loading, role, selectView } = this.props;
         const { searchText, sort } = this.state;
         const searchResults = !!searchText ? searchAuctions(auctions, searchText) : auctions.map(a => a.id);
         const sortedAuctions = auctions.filter(_shouldBeVisible.bind(null, role)).sort(sort).filter(a => searchResults.find(id => id == a.id));
         if (!sortedAuctions.length && loading) { return <LoadingAnimation />; }
         if (!sortedAuctions.length) { return <NoAuctionsView role={role} selectView={selectView} /> }
         return (
-            <div className='contentView'>
+            <div className='listView'>
                 <SearchBar searchText={searchText} onUserInput={(input) => this.setState({ searchText: input })}>
-                    <SortOptions options={SortFunctions} select={(fn) => this.setState({ sort: fn })} sort={sort} />
+                    {/*<SortOptions options={SortFunctions} select={(fn) => this.setState({ sort: fn })} sort={sort} />*/}
                 </SearchBar>
-                <table className='contentList'>
-                    <tbody ref='tableBody'>
-                        { sortedAuctions.map(a => <Auction auction={a} role={role} select={() => select(a.id)} key={a.id} />) }
-                    </tbody>
-                </table>
+                <div className='contentList'>
+                    { sortedAuctions.map(a => <Auction auction={a} selected={auction.id == a.id} role={role} select={() => select(a.id)} key={a.id} />) }
+                </div>
             </div>
         );
     }

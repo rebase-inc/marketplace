@@ -134,7 +134,7 @@ tr.auction > td.findTalentPanel:hover {
 }
 
 .talentPanel {
-    width: 150px;
+    width: 100px;
     text-align: center;
     font-size: 14px;
 }

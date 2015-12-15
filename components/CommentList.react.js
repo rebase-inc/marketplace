@@ -35,8 +35,6 @@ export default class CommentList extends Component {
         const { comments, submit } = this.props;
         return (
                 <div id='commentList'>
-                    { comments.map( comment => <Comment comment={comment} key={comment.id} /> ) }
-                    <CommentBox submit={submit} />
                 </div>
            );
     }

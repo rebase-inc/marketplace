@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 
 import TicketHeader from './TicketHeader.react';
-import CommentList from './CommentList.react';
+import Comment from './Comment.react';
 import CommentBox from './CommentBox.react';
 import CreateAuctionModal from './CreateAuctionModal.react';
 import DetailsPanel from './DetailsPanel.react';
@@ -31,16 +31,11 @@ export default class SingleTicketView extends Component {
 
     render() {
         const { ticket, actions, role, user } = this.props;
-        const isManager = role.type == 'manager';
-        // TODO: refactor this so that TicketHeader and TicketDetails are in the same component. Current setup doesn't make sense.
-        // That would also allow for a more sensical method for closing and opening the TicketDetails
         return (
-            <div className='contentView'>
-                <TicketHeader unselect={() => actions.selectTicket(null)} title={ticket.title} toggleDetails={this.toggleDetails}>
-                    { isManager ? <button onClick={actions.openNewAuctionModal}>Find Developers</button> : null}
-                </TicketHeader>
-                <DetailsPanel hidden={!this.state.detailsOpen} ticket={ticket} clone={ticket.project.work_repo.clone} />
-                <CommentList comments={ticket.comments} submit={actions.commentOnTicket.bind(null, user, ticket)}/>
+            <div className='singleView'>
+                <TicketHeader openNewAuctionModal={actions.openNewAuctionModal} ticket={ticket}/>
+                { ticket.comments.map( comment => <Comment comment={comment} key={comment.id} /> ) }
+                <CommentBox submit={actions.commentOnTicket.bind(null, user, ticket)}/>
             </div>
         );
     }

@@ -22,5 +22,12 @@ import './css/CodeField.css';
 import './css/Talent.css';
 import './css/SortOptions.css';
 import './css/ModalDialog.css';
+import './css/InfoHeader.css';
+import './css/SearchBar.css';
+import './css/Contract.css';
+import './css/Review.css';
+import './css/Ticket.css';
+import './css/Auction.css';
+import './css/WorkStatus.css';
 
 ReactDOM.render(<App/>, document.getElementById('react-app'));

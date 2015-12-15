@@ -28,11 +28,13 @@ export default class ReviewView extends Component {
     }
     render() {
         const { reviewID, reviews, user, role, actions, selectView } = this.props;
-        if (reviewID) {
-            return <SingleReviewView review={reviews.items.get(reviewID).toJS()} actions={actions} role={role} user={user} />;
-        } else {
-            return <ReviewListView role={role} select={actions.selectReview} selectView={selectView} reviews={reviews.items.toList().toJS()} loading={reviews.isFetching} />;
-        }
+        const review = reviewID ? reviews.items.get(reviewID).toJS() : null;
+        return (
+            <div className='mainView'>
+                <ReviewListView review={review} role={role} select={actions.selectReview} selectView={selectView} reviews={reviews.items.toList().toJS()} loading={reviews.isFetching} />
+                { reviewID ? <SingleReviewView review={review} actions={actions} role={role} user={user} /> : null }
+            </div>
+        );
     }
 }
 

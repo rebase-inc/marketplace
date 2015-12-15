@@ -213,7 +213,7 @@ export class DonutChart {
 
         g.append('text')
             .attr('text-anchor', 'middle')
-            .attr('font-size', '14px')
+            .attr('font-size', '12px')
             .attr('fill', 'transparent')
             .attr('dy', '4px')
             .attr('class', 'percentage');
@@ -245,7 +245,7 @@ export class DonutChart {
             .style('fill', d => d.color)
             .style('stroke', d => d.color);
 
-        let fontSize = dimensions.height / 6;
+        let fontSize = dimensions.height / 5.5;
         legend.append('text')
             .text(d => d.population + ' ' + d.category)
             .attr('font-size', fontSize)

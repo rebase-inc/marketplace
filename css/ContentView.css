@@ -5,3 +5,26 @@
     height: calc(100% - 50px);
 }
 
+.mainView {
+    height: calc(100% - 50px);
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+}
+
+.listView {
+    float: left;
+    display: inline-block;
+    height: 100%;
+    width: 37%;
+}
+
+.singleView {
+    float: left;
+    display: inline-block;
+    height: 100%;
+    box-sizing: border-box;
+    width: 63%;
+    border-left: 1px solid #D3E0E6;
+    overflow: auto;
+}

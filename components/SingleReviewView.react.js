@@ -1,10 +1,10 @@
 import React, { Component, PropTypes } from 'react';
 
 import TicketHeader from './TicketHeader.react';
-import CommentList from './CommentList.react';
+import Comment from './Comment.react';
 import CommentBox from './CommentBox.react';
 import DetailsPanel from './DetailsPanel.react';
-import ReviewStatusHeader from './ReviewStatusHeader.react';
+import ReviewHeader from './ReviewHeader.react';
 import { getReviewTicket, getReviewComments } from '../utils/getters';
 
 export default class SingleReviewView extends Component {
@@ -35,13 +35,10 @@ export default class SingleReviewView extends Component {
         const contractor = review.work.offer.contractor;
         const ticket = review.work.offer.ticket_snapshot.ticket;
         return (
-            <div className='contentView'>
-                <TicketHeader title={ticket.title} unselect={actions.selectReview.bind(null, null)} toggleDetails={this.toggleDetails} />
-                <ReviewStatusHeader review={review} role={role}/>
-                <DetailsPanel hidden={!this.state.detailsOpen} ticket={ticket} clone={review.work.clone} >
-                    <span>{'Assigned to ' + contractor.user.name}</span>
-                </DetailsPanel>
-                <CommentList comments={getReviewComments(review)}/>
+            <div className='singleView'>
+                <ReviewHeader review={review} role={role} />
+                { getReviewComments(review).map( comment => <Comment comment={comment} key={comment.id} /> ) }
+                <CommentBox submit={actions.commentOnReview.bind(null, user, ticket)}/>
             </div>
         );
     }

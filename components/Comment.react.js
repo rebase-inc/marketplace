@@ -38,7 +38,7 @@ export default class Comment extends Component {
                 </div>
                 <div className='content'>
                     <div className='name'>{comment.user.name}</div>
-                    { <svg className='commentType' viewBox='0 0 100 10' height='10px' width='100px'
+                    <svg className='commentType' viewBox='0 0 100 10' height='10px' width='100px'
                         data-alert={comment.type == 'blockage_comment' || undefined}
                         data-warning={comment.type == 'mediation_comment' || undefined}
                         data-notification={comment.type == 'review_comment' || undefined}>
@@ -55,7 +55,7 @@ export default class Comment extends Component {
                                 }()
                             }
                         </text>
-                    </svg> }
+                    </svg>
                     <div className='date'>{humanReadableDate(comment.created ? comment.created : new Date())}</div>
                     { comment.isFetching ? <PendingIcon /> : null }
                     <div className='text' dangerouslySetInnerHTML={this.rawMarkup()}/>

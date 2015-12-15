@@ -1,12 +1,10 @@
 import React, { Component, PropTypes } from 'react';
 
-import TitlePanel from './TitlePanel.react';
-import ReviewPanel from './ReviewPanel.react';
-import CommentsPanel from './CommentsPanel.react';
-import ProjectInfoPanel from './ProjectInfoPanel.react';
-import SkillsRequiredPanel from './SkillsRequiredPanel.react';
+import WorkStatus from './WorkStatus.react';
+import ProfilePicture from './ProfilePicture.react';
 
 import { getReviewTicket } from '../utils/getters';
+import { humanReadableDate } from '../utils/date';
 
 export default class Review extends Component {
     static propTypes = {
@@ -14,12 +12,29 @@ export default class Review extends Component {
         review: PropTypes.object.isRequired,
     }
     render() {
-        const { review, select, role } = this.props;
+        const { review, select, role, selected } = this.props;
         const ticket = getReviewTicket(review);
         return (
+            <div className='review' onClick={select} data-selected={selected || undefined}>
+                <div className='status'>
+                    <WorkStatus state={'complete'} />
+                </div>
+                <ProfilePicture user={review.work.offer.contractor.user} />
+                <div className='mainInfo'>
+                    <span>{ review.work.offer.contractor.user.name }</span>
+                    <span>{ ticket.title }</span>
+                </div>
+                <div className='extraInfo'>
+                    <span>{'Finished on'}</span>
+                    <span>{ humanReadableDate(review.created, false, true) }</span>
+                </div>
+            </div>
+        );
+        return (
             <tr className='ticket' onClick={select}>
-                { role.type == 'manager' ? <ReviewPanel review={review} />
-                    : <ProjectInfoPanel project={ticket.project} /> }
+                { role.type == 'manager' ? <DebitPanel debit={review.work.debit} /> : null }
+                <ReviewPanel review={review} />
+                <DatePanel text={'Finished'} date={review.created} />
                 <TitlePanel title={ticket.title} />
                 <SkillsRequiredPanel skills={ticket.skill_requirement.skills} />
                 <CommentsPanel comments={ticket.comments} />

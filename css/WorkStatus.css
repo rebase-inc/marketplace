@@ -1,0 +1,5 @@
+.workStatus[data-okay] { fill: hsla(167, 48%, 49%, 1); }
+.workStatus[data-notification] { fill: hsla(212, 22%, 43%, 1); }
+.workStatus[data-notification] { fill: none; }
+.workStatus[data-alert] { fill: hsla(37, 87%, 61%, 1); }
+.workStatus[data-warning] { fill: hsla(37, 87%, 61%, 1); }
