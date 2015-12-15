@@ -18,7 +18,8 @@ module.exports = {
     resolve: {
         alias: {
             'react': path.join(__dirname, 'node_modules', 'react'),
-            'redux-devtools': path.join(__dirname, 'node_modules', 'redux-devtools')
+            'redux-devtools': path.join(__dirname, 'node_modules', 'redux-devtools'),
+            'redux-devtools/lib': path.join(__dirname, 'node_modules', 'redux-devtools'),
         },
         extensions: ['', '.js']
     },
@@ -26,6 +27,7 @@ module.exports = {
         'fallback': path.join(__dirname, 'node_modules')
     },
     module: {
+        noParse: [/autoit.js/],
         loaders: [{
             test: /\.js$/,
             loaders: ['react-hot', 'babel'],

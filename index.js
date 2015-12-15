@@ -1,6 +1,6 @@
 import ReactDOM from 'react-dom';
 import React from 'react';
-import App from './containers/App';
+import Root from './containers/Root';
 import './css/app.css';
 import './css/components.css';
 import './css/RatingStars.css';
@@ -30,4 +30,4 @@ import './css/Ticket.css';
 import './css/Auction.css';
 import './css/WorkStatus.css';
 
-ReactDOM.render(<App/>, document.getElementById('react-app'));
+ReactDOM.render(<Root />, document.getElementById('react-app'));
