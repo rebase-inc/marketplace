@@ -10,9 +10,12 @@ function _dataURItoBlob(dataURI) {
     return new Blob([new Uint8Array(array)], {type: 'image/jpeg'});
 }
 
+const Colors = ['#3B9B8A', '#74C89A', '#5C9FCC', '#9778A3', '#53687D', '#E1C64D', '#C46E62', '#7FB5B9', '#E69F6F'];
+
+
 export default class ProfilePicture extends Component {
     static propTypes = {
-        dynamic: React.PropTypes.bool ,
+        dynamic: React.PropTypes.bool,
         user: React.PropTypes.object.isRequired,
         uploadPhoto: React.PropTypes.func.isRequired,
     };
@@ -66,11 +69,12 @@ export default class ProfilePicture extends Component {
         }
         else {
             const initials = user.name.match(/\b(\w)/g).join('');
+            const color = Colors[(user.id - 1) % Colors.length];
             return (
                 <div>
                     <svg onClick={dynamic ? this.openFileDialog : null} className='profilePicture' width="140px" height="140px" viewBox="0 0 140 140" version="1.1">
                         <g id="UI" stroke="none" strokeWidth="1" fill="none" fill-rule="evenodd">
-                            <circle id="Oval-276" fill="#718296" cx="70" cy="70" r="70"></circle>
+                            <circle id="Oval-276" fill={color} cx="70" cy="70" r="70"></circle>
                             <text id="intials" x='70' y='70' fontFamily="Gotham Rounded" fontSize="54px" dy="18px" fill="#F5F7FA" textAnchor='middle'>
                                 {initials}
                             </text>

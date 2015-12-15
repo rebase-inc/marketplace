@@ -63,7 +63,7 @@ const InProgressCommentBox = (props) => {
     return (
         <CommentBox submit={submit}>
             { role.type == 'contractor' ? <button data-okay onClick={actions.submitWork.bind(null, work)} key='submit'>Submit Work</button> : undefined }
-            { role.type == 'contractor' ? <button data-warning onClick={actions.markWorkBlocked.bind(null, work)} data-alert key='blocked'>Mark Blocked</button> : undefined }
+            { role.type == 'contractor' ? <button data-alert onClick={actions.markWorkBlocked.bind(null, work)} data-alert key='blocked'>Mark Blocked</button> : undefined }
         </CommentBox>
     );
 }
