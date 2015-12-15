@@ -6,7 +6,7 @@ import SortOptions from './SortOptions.react';
 import SearchBar from './SearchBar.react';
 import Contract from './Contract.react';
 
-import Fuse from '../utils/Fuse';
+import Fuse from '../utils/fuse';
 
 import { getContractTicket } from '../utils/getters';
 
