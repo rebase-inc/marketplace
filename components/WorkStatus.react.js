@@ -9,7 +9,7 @@ export default class WorkStatus extends Component {
                 className='workStatus'
                 data-neutral={undefined}
                 data-notification={state == 'in_progress' || undefined}
-                data-okay={state == 'in_review' || undefined}
+                data-okay={state == 'in_review' || state == 'complete' || undefined}
                 data-alert={state == 'blocked' || state == 'in_mediation' || undefined}
                 data-warning={undefined}>
                 <circle cx='6' cy='6' r='6' />
