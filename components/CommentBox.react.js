@@ -31,22 +31,30 @@ export default class CommentBox extends Component {
 
     render() {
         const { submit } = this.props;
+        const children = React.Children.map(this.props.children, item => {
+            if (item) {
+                return React.cloneElement(item, { 
+                    onClick: item.props.onClick.bind(null, this.state.text, 10),
+                    disabled: !this.state.text.length || undefined,
+                });
+            }
+        });
         return (
             <div id='commentBox'>
                 <textarea
                     ref='comment' type='text' placeholder='Leave a comment'
                     value={this.state.text}
-                    onFocus={() => this.setState({focused:true})}
-                    onBlur={() => this.setState({focused:false})}
                     onChange={(e) => this.setState({ text: e.target.value })} />
                 <div className='buttons'>
                     <TrashIcon onClick={() => this.setState({ text: '' })} />
-                    <button data-okay disabled={!this.state.text.length || undefined} onClick={() => { submit(this.state.text); this.setState({ preview: false, focused: false, text: ''});}}>Comment</button>
+                    { children }
+                    <button data-okay disabled={!this.state.text.length || undefined} onClick={() => { submit(this.state.text); this.setState({ text: ''});}}>Comment</button>
                 </div>
             </div>
         );
     }
 };
+
 
 export class TrashIcon extends Component {
     render() {

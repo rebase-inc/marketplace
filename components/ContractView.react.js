@@ -33,16 +33,13 @@ export default class ContractView extends Component {
     }
     render() {
         const { contractID, contracts, user, role, actions, selectView } = this.props;
-        if (contractID) {
-            return <SingleContractView contract={contracts.items.get(contractID).toJS()} actions={actions} role={role} user={user} />;
-        } else {
-            return <ContractListView
-                role={role}
-                contracts={contracts.items.toList().toJS()}
-                loading={contracts.isFetching}
-                select={actions.selectContract}
-                selectView={selectView} />;
-        }
+        const contract = contractID ? contracts.items.get(contractID).toJS() : null;
+        return (
+            <div className='mainView'>
+                <ContractListView role={role} contract={contract} contracts={contracts.items.toList().toJS()} loading={contracts.isFetching} select={actions.selectContract} selectView={selectView} />
+                { contractID ? <SingleContractView contract={contract} actions={actions} role={role} user={user} /> : null }
+            </div>
+        );
     }
 }
 

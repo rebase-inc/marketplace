@@ -6,6 +6,8 @@ import SortOptions from './SortOptions.react';
 import SearchBar from './SearchBar.react';
 import Contract from './Contract.react';
 
+import Fuse from '../utils/Fuse';
+
 import { getContractTicket } from '../utils/getters';
 
 export default class ContractListView extends Component {
@@ -21,28 +23,27 @@ export default class ContractListView extends Component {
         this.state = { searchText: '', sort: SortFunctions.get('ending soon') };
     }
     render() {
-        const { select, contracts, loading, role, selectView } = this.props;
+        const { select, contracts, loading, role, selectView, contract } = this.props;
         const { searchText, sort } = this.state;
         const searchResults = !!searchText ? searchContracts(contracts, searchText) : contracts.map(a => a.id);
         const sortedContracts = contracts.sort(sort).filter(a => searchResults.find(id => id == a.id));
         if (!sortedContracts.length && loading) { return <LoadingAnimation />; }
         if (!sortedContracts.length) { return <NoContractsView role={role} selectView={selectView} /> }
         return (
-            <div className='contentView'>
-                <SearchBar searchText={searchText} onUserInput={(input) => this.setState({ searchText: input })}>
-                    <SortOptions options={SortFunctions} select={(fn) => this.setState({ sort: fn })} sort={sort} />
+            <div className='listView'>
+                <SearchBar text={searchText} onChange={(input) => this.setState({ searchText: input })}>
+                {/*<SortOptions options={SortFunctions} select={(fn) => this.setState({ sort: fn })} sort={sort} />*/}
                 </SearchBar>
-                <table className='contentList'>
-                    <tbody ref='tableBody'>
-                        { sortedContracts.map(c => <Contract contract={c} role={role} select={() => select(c.id)} key={c.id} />) }
-                    </tbody>
-                </table>
+                <div className='contentList'>
+                    { sortedContracts.map(c => <Contract contract={c} selected={contract.id == c.id} role={role} select={() => select(c.id)} key={c.id} />) }
+                </div>
             </div>
         );
     }
 }
 
 function searchContracts(contracts, searchText) {
+    console.log('searching through ', contracts, ' for ', searchText);
     contracts = contracts.map(c => { ticket: getContractTicket(c) });
     var fuseSearch = new Fuse(contracts, {threshold: 0.35, keys: ['ticket.title', 'ticket.skillsRequired', 'ticket.project.name', 'ticket.project.organization.name'], id: 'id'});
     return fuseSearch.search(searchText.substring(0, 32));

@@ -2,16 +2,19 @@
    width: 100%;
    box-sizing: border-box;
    padding: 15px;
+   overflow: auto;
 }
 
 .infoHeader > .mainInfo {
-    width: 70%;
+    width: calc(100% - 260px);
+    min-width: 260px;
     display: inline-block;
     float: left;
 }
 
 .infoHeader > .otherInfo {
-    width: 70%;
+    width: 260px;
+    max-width: calc(100% - 260px);
     display: inline-block;
     float: left;
 }
@@ -29,10 +32,22 @@
 }
 
 .infoHeader > .mainInfo > .status > svg {
-    padding: 4px;
+    padding-top: 4px;
+    padding-right: 4px;
     display: inline-block;
     float: left;
+    width: 12px;
+    height: 12px;
 }
+
+.infoHeader > .mainInfo > .status > span {
+    width: calc(100% - 19px);
+}
+
+.infoHeader > .mainInfo > .status[data-okay] > svg { fill: hsla(167, 48%, 49%, 1); }
+.infoHeader > .mainInfo > .status[data-notification] > svg { fill: hsla(212, 22%, 43%, 1); }
+.infoHeader > .mainInfo > .status[data-alert] > svg { fill: hsla(37, 87%, 61%, 1); }
+.infoHeader > .mainInfo > .status[data-warning] > svg { fill: hsla(37, 87%, 61%, 1); }
 
 .infoHeader > .mainInfo > .status > span {
     font-size: 12px;

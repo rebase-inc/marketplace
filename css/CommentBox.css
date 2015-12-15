@@ -41,6 +41,18 @@
     font-size: 12px;
     font-weight: bold;
     line-height: 12px;
+    margin-left: 20px;
+}
+
+#commentBox > .buttons > button:last-of-type:not(:first-of-type) {
+    background-color: transparent;
+    color: #1C2D41;
+    padding: 0;
+    opacity: 0.6;
+}
+
+#commentBox > .buttons > button:last-of-type:hover {
+    opacity: 1;
 }
 
 #commentBox > #commentSubmissionButtons > button:first-of-type { margin-bottom: 6px; }

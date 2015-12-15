@@ -1,5 +1,6 @@
 import ActionConstants from '../constants/ActionConstants';
 import { PENDING, SUCCESS, ERROR } from '../constants/RequestConstants';
+import { COMPLETE } from '../constants/WorkStates';
 
 let initialContractID = null;
 
@@ -8,9 +9,19 @@ export default function contractID(contractID = initialContractID, action) {
         case ActionConstants.SELECT_CONTRACT: return action.response.contractId; break;
         case ActionConstants.SELECT_ROLE: return handleNewRole(action.status, contract); break;
         case ActionConstants.BID_ON_AUCTION: return handleBidOnAuction(action.status, contractID, action.response.auction); break;
-        case ActionConstants.SELECT_VIEW: return initialContractID; break;
+        case ActionConstants.GET_CONTRACTS: return handleNewContracts(action.status, contractID, action.response.contracts); break;
         case ActionConstants.LOGOUT: return initialContractID; break;
         default: return contractID; break;
+    }
+}
+
+function handleNewContracts(requestStatus, contractID, contracts) {
+    switch (requestStatus) {
+        case PENDING: return contractID; break;
+        case ERROR: return contractID; break;
+        case SUCCESS:
+            const newContract = contracts.find(c => c.bid.work_offers[0].work.state != COMPLETE);
+            return !!newContract ? newContract.id : contractID;
     }
 }
 
