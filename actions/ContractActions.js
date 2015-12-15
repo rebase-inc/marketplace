@@ -106,3 +106,12 @@ export function commentOnContract(user, contract, text) {
     };
     return dispatchedRequest('POST', '/comments', ActionConstants.COMMENT_ON_CONTRACT, data);
 }
+
+export function sendMediationAnswer(role_type, mediation, answer, comment) {
+    const url = '/mediations/' + mediation.id + '/'+ (role_type == 'manager' ? 'client_answer' : 'dev_answer'); 
+    const data = {
+        answer: answer,
+        comment: comment
+    };
+    return dispatchedRequest('POST', url, ActionConstants.MEDIATION_ANSWER, data);
+};

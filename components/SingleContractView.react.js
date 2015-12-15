@@ -8,6 +8,8 @@ import Comment from './Comment.react';
 import DetailsPanel from './DetailsPanel.react';
 import { humanReadableDate } from '../utils/date';
 import { getContractTicket, getContractWork, getContractComments } from '../utils/getters';
+import { FAIL, COMPLETE, RESOLVE } from '../constants/MediationAnswers';
+import { DISCUSSION, WAITING_FOR_DEV, WAITING_FOR_CLIENT } from '../constants/MediationStates';
 
 export default class SingleContractView extends Component {
     static propTypes = {
@@ -81,6 +83,21 @@ const BlockedCommentBox = (props) => {
     return (
         <CommentBox submit={submit}>
             <button data-alert onClick={actions.markWorkUnblocked.bind(null, work)} key='unblockWork'>Unblock</button>
+        </CommentBox>
+    );
+}
+
+const InMediationCommentBox = (props) => {
+    const { actions, role, user, work, submit } = props;
+    const mediation = work.mediations[work.mediations.length - 1];
+    let waitingForResponse = (mediation.state == DISCUSSION);
+    waitingForResponse = waitingForResponse || (role.type == 'contractor' && mediation.state == WAITING_FOR_DEV);
+    waitingForResponse = waitingForResponse || (role.type == 'manager' && mediation.state == WAITING_FOR_CLIENT);
+    return (
+        <CommentBox submit={submit}>
+        { waitingForResponse ? <button data-okay onClick={actions.sendMediationAnswer.bind(null, role.type, mediation, RESOLVE)} key='resolve'>{ role.type == 'manager' ? 'Fix issues' : 'Fix issues'}</button> : null }
+        { waitingForResponse ? <button data-alert onClick={actions.sendMediationAnswer.bind(null, role.type, mediation, COMPLETE)} key='complete'>{ role.type == 'manager' ? 'Ignore Issues' : 'Ignore issues'}</button>  : null }
+        { waitingForResponse ? <button data-warning onClick={actions.sendMediationAnswer.bind(null, role.type, mediation, FAIL)} key='fail'>{ role.type == 'manager' ? 'Give up' : 'Give Up'}</button>  : null }
         </CommentBox>
     );
 }

@@ -47,7 +47,8 @@ export default class ContractStatus extends Component {
                 const mediation = work.mediations[work.mediations.length - 1];
                 statusText += 'There is disagreement about the state of this work. Waiting for response from ';
                 statusText += mediation.state == 'discussion' ? 'both parties.' : '';
-                statusText += mediation.state == 'waiting_for_dev' ? contract.bid.contractor.user.name : '';
+                statusText += (mediation.state == 'waiting_for_dev' && role.type == 'manager') ? contract.bid.contractor.user.name : '';
+                statusText += (mediation.state == 'waiting_for_dev' && role.type == 'contractor') ? 'you' : '';
                 statusText += mediation.state == 'waiting_for_client' ? ticket.project.organization.name : '';
                 statusText += '.';
                 break;

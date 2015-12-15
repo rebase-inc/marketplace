@@ -177,8 +177,8 @@ button[data-notification]:hover { background-color: hsla(212, 22%, 53%, 1); }
 button[data-alert] { background-color: hsla(37, 87%, 61%, 1); }
 button[data-alert]:hover { background-color: hsla(37, 87%, 71%, 1); }
 
-button.warning { background-color: hsla(351, 50%, 50%, 1); }
-button.warning:hover { background-color: hsla(351, 50%, 60%, 1); }
+button[data-warning] { background-color: hsla(351, 50%, 50%, 1); }
+button[data-warning]:hover { background-color: hsla(351, 50%, 60%, 1); }
 
 span[data-warning] { color: hsla(351, 50%, 60%, 1); }
 

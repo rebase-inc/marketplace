@@ -21,7 +21,6 @@ import * as UserActions from '../actions/UserActions';
 import * as TicketActions from '../actions/TicketActions';
 import * as AuctionActions from '../actions/AuctionActions';
 import * as ContractActions from '../actions/ContractActions';
-import * as MediationActions from '../actions/MediationActions';
 
 // might be worth expanding this into four components (TicketModal, AuctionModal, ContractModal, ReviewModal)
 // so that we don't have to over-connect the state into this component. Not 100% sure it would work well, but
@@ -96,6 +95,5 @@ let mapActionsToProps = dispatch => ({
     ticketActions: bindActionCreators(TicketActions, dispatch),
     auctionActions: bindActionCreators(AuctionActions, dispatch),
     contractActions: bindActionCreators(ContractActions, dispatch),
-    mediationActions: bindActionCreators(MediationActions, dispatch),
 });
 export default connect(mapStateToProps, mapActionsToProps)(ModalView);
