@@ -4,7 +4,7 @@ import thunkMiddleware from 'redux-thunk';
 
 const finalCreateStore = compose(
     // Middleware you want to use in production:
-    applyMiddleware(thunkMiddleWare),
+    applyMiddleware(thunkMiddleware),
     // Other store enhancers if you use any
 )(createStore);
 
