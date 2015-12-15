@@ -19,6 +19,12 @@
     float: left;
 }
 
+.infoHeader > .otherInfo > button {
+    display: inline-block;
+    float: right;
+    margin: 0;
+}
+
 .infoHeader > .mainInfo > .title {
     display: block;
     text-align: left;

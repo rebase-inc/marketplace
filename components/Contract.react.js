@@ -30,6 +30,10 @@ export default class Contract extends Component {
                 <div className='extraInfo'>
                     <span>{'Finish by'}</span>
                     <span>{ humanReadableDate(contract.bid.auction.finish_work_by, false, true) }</span>
+                    <div>
+                        <Comment />
+                        <span>{getContractComments(contract).length}</span>
+                    </div>
                 </div>
             </div>
         );

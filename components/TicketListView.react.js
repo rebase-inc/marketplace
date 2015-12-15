@@ -17,23 +17,21 @@ export default class TicketListView extends Component {
         this.state = { searchText: '', sort: SortFunctions.get('newest') };
     }
     render() {
-        const { select, tickets, loading, role } = this.props;
+        const { select, ticket, tickets, loading, role } = this.props;
         const { searchText, sort } = this.state;
         const searchResults = !!searchText ? searchTickets(tickets, searchText) : tickets.map(t => t.id);
         const sortedTickets = tickets.sort(sort).filter(t => searchResults.find(id => id == t.id));
         if (!sortedTickets.length && loading) { return <LoadingAnimation />; }
         if (!sortedTickets.length) { return <NoTicketsView role={role} />; }
         return (
-            <div className='contentView'>
+            <div className='listView'>
                 <SearchBar searchText={searchText} onUserInput={(input) => this.setState({ searchText: input })}>
                     {/*<PlusIcon onClick={actions.openNewTicketModal} text={'Add ticket'} />*/}
-                    <SortOptions options={SortFunctions} select={(fn) => this.setState({ sort: fn })} sort={sort} />
+                    {/*<SortOptions options={SortFunctions} select={(fn) => this.setState({ sort: fn })} sort={sort} />*/}
                 </SearchBar>
-                <table className='contentList'>
-                    <tbody ref='tableBody'>
-                        { sortedTickets.map(t => <Ticket ticket={t} select={() => select(t.id)} key={t.id} />) }
-                    </tbody>
-                </table>
+                <div className='contentList'>
+                    { sortedTickets.map(t => <Ticket ticket={t} selected={ticket.id == t.id} select={() => select(t.id)} key={t.id} />) }
+                </div>
             </div>
         );
     }

@@ -84,10 +84,7 @@
 
 .comment {
     overflow: auto;
-    padding-left: 28px;
-    padding-right: 28px;
-    padding-top: 10px;
-    padding-bottom: 10px;
+    padding: 10px 18px 10px 18px;
     font-size: 18px;
 }
 

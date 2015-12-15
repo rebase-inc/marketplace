@@ -25,6 +25,7 @@ import './css/ModalDialog.css';
 import './css/InfoHeader.css';
 import './css/SearchBar.css';
 import './css/Contract.css';
+import './css/Ticket.css';
 import './css/WorkStatus.css';
 
 ReactDOM.render(<App/>, document.getElementById('react-app'));

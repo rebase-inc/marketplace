@@ -45,7 +45,7 @@ export default class SingleContractView extends Component {
         const submitComment = actions.commentOnContract.bind(null, user, contract);
         return (
             <div className='singleView'>
-                <ContractHeader actions={actions} contract={contract} role={role} unselect={actions.selectContract.bind(null, null)} toggleDetails={this.toggleDetails} />
+                <ContractHeader actions={actions} contract={contract} role={role} />
                 { getContractComments(contract).map( comment => <Comment comment={comment} key={comment.id} /> ) }
                 { work.state == 'in_progress' ? <InProgressCommentBox submit={submitComment} work={work} user={user} role={role} actions={actions} /> : null }
                 { work.state == 'in_review' ? <InReviewCommentBox submit={submitComment} work={work} user={user} role={role} actions={actions}  /> : null }

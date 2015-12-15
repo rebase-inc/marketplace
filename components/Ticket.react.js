@@ -1,10 +1,9 @@
 import React, { Component, PropTypes } from 'react';
 
-import FindTalentPanel from './FindTalentPanel.react';
-import SkillsRequiredPanel from './SkillsRequiredPanel.react';
-import DatePanel from './DatePanel.react';
-import TitlePanel from './TitlePanel.react';
-import CommentsPanel from './CommentsPanel.react';
+import ProfilePicture from './ProfilePicture.react';
+import { Comment } from './Icons.react';
+
+import { humanReadableDate } from '../utils/date';
 
 export default class Ticket extends Component {
     static propTypes = {
@@ -12,15 +11,21 @@ export default class Ticket extends Component {
         select: PropTypes.func.isRequired,
     }
     render() {
-        const { ticket, select } = this.props;
+        const { ticket, select, selected } = this.props;
         return (
-            <tr className='ticket' onClick={select}>
-                <DatePanel text={'Created'} date={ticket.created} />
-                <TitlePanel title={ticket.title} />
-                <SkillsRequiredPanel skills={ticket.skill_requirement.skills} />
-                <SpacerPanel />
-                <CommentsPanel comments={ticket.comments} />
-            </tr>
+            <div className='ticket' onClick={select} data-selected={selected || undefined}>
+                <div className='mainInfo'>
+                    <span>{ ticket.title }</span>
+                    { Object.keys(ticket.skill_requirement.skills).map(s => <div key={s} className='skill'>{s}</div>) }
+                </div>
+                <div className='extraInfo'>
+                    <span>{'Created ' + humanReadableDate(ticket.created, false, true)}</span>
+                    <div>
+                        <Comment />
+                        <span>{ticket.comments.length}</span>
+                    </div>
+                </div>
+            </div>
         );
     }
 };

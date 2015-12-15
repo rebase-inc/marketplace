@@ -16,20 +16,17 @@ export default class TicketHeader extends Component {
     }
 
     render() {
-        const { title, unselect, toggleDetails, children } = this.props;
-        const { neutral, notification, okay, alert, warning } = this.props;
+        const { ticket, openNewAuctionModal, role  } = this.props;
         return (
-            <div id='itemHeader' className='noselect'
-                data-neutral={neutral}
-                data-notification={notification}
-                data-okay={okay}
-                data-alert={alert}
-                data-warning={warning} >
-                <DropbackIcon onClick={unselect} />
-                { children }
-                <ThreeDotsIcon onClick={toggleDetails} />
-                <span className='title'>{title}</span>
+            <div className='infoHeader'>
+                <div className='mainInfo'>
+                    <span className='title'>{ticket.title}</span>
+                    {/*<ContractStatus contract={contract} role={role} />*/}
+                </div>
+                <div className='otherInfo'>
+                    <button onClick={openNewAuctionModal}>Find Developers</button>
+                </div>
             </div>
-        );
+        )
     }
 };

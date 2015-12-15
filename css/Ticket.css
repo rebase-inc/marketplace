@@ -1,4 +1,4 @@
-.contract {
+.ticket {
     width: 100%;
     overflow-y: auto;
     overflow-x: hidden;
@@ -8,11 +8,11 @@
     cursor: default;
 }
 
-.contract:hover, .contract[data-selected] {
+.ticket:hover, .ticket[data-selected] {
     background-color: #ECF3FA;
 }
 
-.contract > * {
+.ticket > * {
     display: inline-block;
     float: left;
     height: 100%;
@@ -20,51 +20,42 @@
     box-sizing: border-box;
 }
 
-.contract > .status {
-    width: 20px;
+.ticket > .mainInfo {
+    width: calc(100% - 120px);
+    padding-left: 10px;
 }
 
-.contract > .status > svg {
-    padding-top: 10px;
-    width: 10px;
-    height: 10px;
-}
-
-.contract .profilePicture {
-    width: 40px;
-    height: 40px;
-}
-
-.contract > .mainInfo {
-    width: calc(100% - 150px);
-}
-
-.contract > .mainInfo > * {
+.ticket > .mainInfo > * {
     padding-top: 2px;
 }
 
-.contract > .mainInfo > span {
+.ticket > .mainInfo > span {
     display: block;
     font-weight: bold;
 }
 
-.contract > .mainInfo > span:first-child {
+.ticket > .mainInfo > span:first-child {
     color: #AAB9C9;
     font-size: 12px;
 }
 
-.contract > .mainInfo > .skill {
+.ticket > .mainInfo > .skill {
     display: inline-block;
     background-color: #92D0C2;
     float: left;
-    margin: 2px;
+    margin-right: 4px;
+    margin-top: 4px;
     padding: 4px;
     border-radius: 4px;
     color: #F7FAFC;
     font-size: 10px;
 }
 
-.contract > .extraInfo > * {
+.ticket > .extraInfo {
+    width: 120px;
+}
+
+.ticket > .extraInfo > * {
     display: block;
     font-weight: bold;
     text-align: center;
@@ -73,13 +64,13 @@
     padding-top: 2px;
 }
 
-.contract > .extraInfo > div {
+.ticket > .extraInfo > div {
     padding-top: 10px;
     overflow: auto;
     text-align: center;
 }
 
-.contract > .extraInfo > div > * {
+.ticket > .extraInfo > div > * {
     display: inline;
     height: 10px;
     font-size: 12px;
