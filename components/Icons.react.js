@@ -24,7 +24,7 @@ export class Timer extends Component {
         wholeHoursRemaining = (wholeHoursRemaining < 10) ? '0' + wholeHoursRemaining : wholeHoursRemaining;
         wholeMinutesRemaining = (wholeMinutesRemaining < 10) ? '0' + wholeMinutesRemaining : wholeMinutesRemaining;
         return (
-            <svg width="92px" height="24px">
+            <svg className='timer' width="92px" height="24px">
                 <g stroke="none" strokeWidth="1" fill="none" fill-rule="evenodd">
                     <g fill="#2C4568">
                         <g transform="translate(2.0, 12.0)">
@@ -153,7 +153,7 @@ export class FindTalentOverview extends Component {
         height: React.PropTypes.number,
         margin: React.PropTypes.number,
     }
-    static defaultProps = { width: 160, height: 60, margin: 6 }
+    static defaultProps = { width: 130, height: 46, margin: 3 }
 
     constructor(props, context) {
         super(props, context);

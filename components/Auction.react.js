@@ -1,15 +1,9 @@
 import React, { Component, PropTypes } from 'react';
 
-import FindTalentPanel from './FindTalentPanel.react';
-import TitlePanel from './TitlePanel.react';
-import TimerPanel from './TimerPanel.react';
-import BudgetPanel from './BudgetPanel.react';
-import CommentsPanel from './CommentsPanel.react';
-import ProjectInfoPanel from './ProjectInfoPanel.react';
-import SkillsRequiredPanel from './SkillsRequiredPanel.react';
-import TalentOverviewPanel from './TalentOverviewPanel.react';
+import { FindTalentOverview, Timer } from './Icons.react';
 
 import { getAuctionTicket } from '../utils/getters';
+import { humanReadableTimeRemaining } from '../utils/date';
 
 // Effectively just a passthrough component based on current role
 export default class Auction extends Component {
@@ -19,51 +13,21 @@ export default class Auction extends Component {
         auction: PropTypes.object.isRequired,
     }
     render() {
-        const { role, auction, select } = this.props;
-        return <div>foo</div>;
-        switch (role.type) {
-            case 'manager': return <ManagerViewAuction auction={auction} select={select} />; break;
-            case 'contractor': return <DeveloperViewAuction auction={auction} select={select} />; break;
-        }
+        const { role, auction, select, selected } = this.props;
+        const ticket = getAuctionTicket(auction);
+        return (
+            <div className='auction' onClick={select} data-selected={selected || undefined}>
+                <div className='mainInfo'>
+                    <span>{ role.type == 'manager' ? 'Expires in ' + humanReadableTimeRemaining(auction.expires) : ticket.project.name + ',' + ticket.project.organization.name }</span>
+                    <span>{ ticket.title }</span>
+                    { Object.keys(ticket.skill_requirement.skills).map(s => <div key={s} className='skill'>{s}</div>) }
+                </div>
+                <div className='extraInfo'>
+                    { role.type == 'manager' ? <span>{'$' + auction.ticket_set.bid_limits[0].price}</span> : null }
+                    { role.type == 'manager' ? <FindTalentOverview auction={auction} /> : null }
+                    { role.type == 'contractor' ? <Timer expires={auction.expires} /> : null }
+                </div>
+            </div>
+        );
     }
 }
-
-export class DeveloperViewAuction extends Component {
-    static propTypes = {
-        select: PropTypes.func.isRequired,
-        auction: PropTypes.object.isRequired,
-    }
-    render() {
-        const { auction, select } = this.props;
-        const ticket = getAuctionTicket(auction);
-        return (
-            <tr className='auction' onClick={select}>
-                <ProjectInfoPanel project={ticket.project} />
-                <TitlePanel title={ticket.title} />
-                <SkillsRequiredPanel skills={ticket.skill_requirement.skills} />
-                <TimerPanel text='Auction Ends' expires={auction.expires} />
-                <CommentsPanel comments={ticket.comments} />
-            </tr>
-        );
-    }
-};
-
-export class ManagerViewAuction extends Component {
-    static propTypes = {
-        select: PropTypes.func.isRequired,
-        auction: PropTypes.object.isRequired,
-    }
-    render() {
-        const { auction, select } = this.props;
-        const ticket = getAuctionTicket(auction);
-        return (
-            <tr className='auction' onClick={select}>
-                <TimerPanel text='Auction Ends' expires={auction.expires} />
-                <TitlePanel title={ticket.title} />
-                <TalentOverviewPanel auction={auction} />
-                <SkillsRequiredPanel skills={ticket.skill_requirement.skills} />
-                <BudgetPanel auction={auction} />
-            </tr>
-        );
-    }
-};

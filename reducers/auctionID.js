@@ -11,7 +11,6 @@ export default function auctionID(auctionID = initialAuctionID, action) {
         case ActionConstants.GET_AUCTIONS: return handleNewAuctions(action.status, auctionID, action.response.auctions); break;
         case ActionConstants.CREATE_AUCTION: return handleNewAuction(action.status, auctionID, action.response.auction); break;
         case ActionConstants.SELECT_ROLE: return handleNewRole(action.status, auctionID); break;
-        case ActionConstants.SELECT_VIEW: return (action.response.viewType == OFFERED) ? initialAuctionID : auctionID; break;
         case ActionConstants.LOGOUT: return initialAuctionID; break;
         default: return auctionID; break;
     }

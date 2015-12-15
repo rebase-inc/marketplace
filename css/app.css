@@ -20,7 +20,7 @@ input:focus, select:focus, textarea:focus, button:focus {
     fill: #F0F3F5;
 }
 
-#app > .loadingAnimation {
+.mainView > .loadingAnimation {
     position: absolute;
     height: 60px;
     top: 50%;

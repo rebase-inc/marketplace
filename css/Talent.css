@@ -39,7 +39,7 @@
 }
 
 .talent > .mainInfo {
-    width: calc(100% - 220px);
+    width: calc(100% - 240px);
 }
 
 .talent > .mainInfo > * {

@@ -33,7 +33,7 @@ export default class AuctionView extends Component {
         const auction = auctionID ? auctions.items.get(auctionID).toJS() : null;
         return (
             <div className='mainView'>
-                <AuctionListView role={role} select={actions.selectAuction} selectView={selectView} auctions={auctions.items.toList().toJS()} loading={auctions.isFetching} />
+                <AuctionListView role={role} auction={auction} select={actions.selectAuction} selectView={selectView} auctions={auctions.items.toList().toJS()} loading={auctions.isFetching} />
                 { auctionID ? <SingleAuctionView auction={auctions.items.get(auctionID).toJS()} actions={actions} role={role} user={user} /> : null }
             </div>
         );
