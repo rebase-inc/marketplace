@@ -34,11 +34,6 @@
     font-weight: bold;
 }
 
-.ticket > .mainInfo > span:first-child {
-    color: #AAB9C9;
-    font-size: 12px;
-}
-
 .ticket > .mainInfo > .skill {
     display: inline-block;
     background-color: #92D0C2;
