@@ -2,7 +2,9 @@ var webpack = require('webpack');
 var WebpackDevServer = require('webpack-dev-server');
 var config = require('./webpack.config');
 
-const TARGET=process.env.REBASE_HOST || 'http://localhost:5000'
+// web_1 is a /etc/hosts entry pointing at a container hosting the backend (api).
+// web_1 is setup by a link in <repos>/api/docker-compose.yml
+const TARGET=process.env.REBASE_HOST || 'http://web_1:5000' || 'http://localhost:5000'
 const PORT=process.env.PORT || 3000;
 
 new WebpackDevServer(
@@ -14,6 +16,6 @@ new WebpackDevServer(
         stats: { colors: true }
     }).listen(PORT, function (err) {
         if (err) { console.log(err); }
-        console.log('Listening at localhost:'+PORT);
+        console.log('Listening at 0.0.0.0:'+PORT);
         console.log('Remote backend:'+TARGET);
 });
