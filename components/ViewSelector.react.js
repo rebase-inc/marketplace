@@ -18,9 +18,11 @@ export default class ViewSelector extends Component {
         this._svg = new ViewSelectorSVG(node, options);
     }
 
-    componentDidUpdate() {
-        const { views, view } = this.props;
-        this._svg.update(views.findIndex(v => v.type == view.type));
+    componentDidUpdate(prevProps) {
+        if (prevProps.view.type != this.props.view.type) {
+            const { views, view } = this.props;
+            this._svg.update(views.findIndex(v => v.type == view.type));
+        }
     }
     render() {
         const { view, views, selectView } = this.props;
