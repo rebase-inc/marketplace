@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react';
+import ReactDOM from 'react-dom';
 
 import TicketHeader from './TicketHeader.react';
 import Comment from './Comment.react';
@@ -26,6 +27,13 @@ export default class SingleTicketView extends Component {
             this.setState({ detailsOpen: newState });
         } else {
             this.setState({ detailsOpen: !this.state.detailsOpen });
+        }
+    }
+
+    componentDidUpdate(prevProps) {
+        if (this.props.ticket.id != prevProps.ticket.id) {
+            const node = ReactDOM.findDOMNode(this);
+            node.scrollTop = 0;
         }
     }
 

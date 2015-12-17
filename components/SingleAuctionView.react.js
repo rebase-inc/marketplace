@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react';
+import ReactDOM from 'react-dom';
 
 import AuctionHeader from './AuctionHeader.react';
 import Comment from './Comment.react';
@@ -26,6 +27,13 @@ export default class SingleAuctionView extends Component {
             this.setState({ detailsOpen: newState });
         } else {
             this.setState({ detailsOpen: !this.state.detailsOpen });
+        }
+    }
+
+    componentDidUpdate(prevProps) {
+        if (this.props.auction.id != prevProps.auction.id) {
+            const node = ReactDOM.findDOMNode(this);
+            node.scrollTop = 0;
         }
     }
 

@@ -28,3 +28,9 @@
     border-left: 1px solid #D3E0E6;
     overflow: auto;
 }
+
+.contentList {
+    height: calc(100% - 64px);
+    padding-bottom: 40px;
+    box-sizing: border-box;
+}
