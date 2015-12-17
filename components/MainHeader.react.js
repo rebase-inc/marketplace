@@ -4,6 +4,7 @@ import { bindActionCreators } from 'redux';
 
 import ProfilePicture from './ProfilePicture.react';
 import DropdownMenu from './DropdownMenu.react';
+import ViewSelector from './ViewSelector.react';
 import { Logo, Dropdown } from './Icons.react';
 
 import { ViewTypes, ContractorViews, ManagerViews } from '../constants/ViewConstants';
@@ -27,35 +28,12 @@ export default class MainHeader extends Component {
         let filteredRoles = Array.from(roles.items.values()).filter(r => r.type != 'owner'); // hack to deal with owner roles
         return (
             <div id='mainHeader' className='noselect'>
-                <Logo />
-                <ViewList view={view} views={Array.from(views.items.values())} selectView={actions.selectView} />
+            {/*<ViewList view={view} views={Array.from(views.items.values())} selectView={actions.selectView} />*/}
+                <ViewSelector view={view} views={Array.from(views.items.values())} selectView={actions.selectView}/>
                 <ProjectSelector user={user} role={user.current_role} selectRole={(role) => actions.selectRole(user, role.id)} roles={filteredRoles}/>
                 <ProfileOptions actions={actions} user={user} />
             </div>
         );
-        return (
-            <div id='mainHeader' className='noselect'>
-                <Logo />
-                <SidebarNav user={user} roles={roles} view={view} views={views} actions={actions} />
-                <SidebarProfile actions={actions} user={user} />
-            </div>
-        );
-    }
-}
-
-class ViewList extends Component {
-    static propTypes = {
-        view: PropTypes.object.isRequired,
-        views: PropTypes.array.isRequired,
-        selectView: PropTypes.func.isRequired,
-    }
-    render() {
-        const { view, views, selectView } = this.props;
-        return (
-            <div id='viewList'>
-                { views.map(v => <ViewSelection key={v.type} select={() => selectView(v.type)} selected={v.type == view.type} name={v.name} />) }
-            </div>
-        )
     }
 }
 

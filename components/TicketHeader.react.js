@@ -24,6 +24,7 @@ export default class TicketHeader extends Component {
                     {/*<ContractStatus contract={contract} role={role} />*/}
                 </div>
                 <div className='otherInfo'>
+                    
                     <button onClick={openNewAuctionModal}>Find Developers</button>
                 </div>
             </div>

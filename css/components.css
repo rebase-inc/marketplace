@@ -28,7 +28,6 @@ input[type=checkbox]:checked + label {
 .contentList {
     display: block;
     border-collapse: collapse;
-    height: calc(100% - 44px);
     width: 100%;
     overflow: auto;
 }

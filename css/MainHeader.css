@@ -6,7 +6,7 @@
     background-color: #1C2D41;
 }
 
-#mainHeader > svg.logo {
+#mainHeader > svg {
     float: left;
     height: 100%;
     padding: 10px;

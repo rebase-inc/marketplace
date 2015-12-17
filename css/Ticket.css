@@ -1,15 +1,17 @@
 .ticket {
     width: 100%;
+    box-sizing: border-box;
     overflow-y: auto;
     overflow-x: hidden;
     font-size: 12px;
     padding-top: 5px;
     padding-bottom: 5px;
+    padding: 20px;
     cursor: default;
 }
 
 .ticket:hover, .ticket[data-selected] {
-    background-color: #ECF3FA;
+    background-color: #EDF2F7;
 }
 
 .ticket > * {
@@ -21,33 +23,56 @@
 }
 
 .ticket > .mainInfo {
-    width: calc(100% - 80px);
-    padding-left: 10px;
+    width: calc(100% - 110px);
+}
+
+.ticket > .createdOn > svg {
+    height: 30px;
+    width: 30px;
+    padding-top: 7px;
 }
 
 .ticket > .mainInfo > * {
     padding-top: 2px;
 }
 
+.ticket > .mainInfo > .link {
+    height: 14px;
+    line-height: 14px;
+    font-size: 12px;
+    color: #AAB9C9;
+}
+
+.ticket > .mainInfo > .title {
+    height: 14px;
+    line-height: 14px;
+    font-size: 14px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: block;
+}
+
 .ticket > .mainInfo > span {
     display: block;
     font-weight: bold;
+    font-size: 12px;
 }
 
-.ticket > .mainInfo > .skill {
-    display: inline-block;
-    background-color: #5E7795;
-    float: left;
-    margin-right: 4px;
-    margin-top: 4px;
-    padding: 4px;
-    border-radius: 4px;
-    color: #F7FAFC;
-    font-size: 10px;
+.ticket > .mainInfo > .skills {
+    display: block;
+    font-size: 12px;
+    height: 14px;
+    line-height: 14px;
+    font-weight: bold;
+    color: #AAB9C9;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .ticket > .extraInfo {
-    width: 80px;
+    width: 70px;
 }
 
 .ticket > .extraInfo > * {
@@ -55,21 +80,26 @@
     text-align: center;
     color: #AAB9C9;
     font-size: 12px;
+    font-weight: bold;
     padding-top: 2px;
 }
 
 .ticket > .extraInfo > div {
-    padding-top: 10px;
     overflow: auto;
     text-align: center;
+    height: 14px;
 }
 
 .ticket > .extraInfo > div > * {
     display: inline;
-    height: 10px;
+    height: 14px;
     font-size: 12px;
     vertical-align: middle;
-    fill: #5E7795;
-    color: #5E7795;
+    fill: #AAB9C9;
+    color: #AAB9C9;
+    font-weight: bold;
 }
 
+.ticket > .extraInfo > div > svg {
+    height: 10px;
+}
