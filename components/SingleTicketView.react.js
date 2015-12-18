@@ -41,7 +41,7 @@ export default class SingleTicketView extends Component {
         const { ticket, actions, role, user } = this.props;
         return (
             <div className='singleView'>
-                <TicketHeader openNewAuctionModal={actions.openNewAuctionModal} ticket={ticket}/>
+                <TicketHeader openNewAuctionModal={actions.openNewAuctionModal} ticket={ticket} role={role} />
                 { ticket.comments.map( comment => <Comment comment={comment} key={comment.id} /> ) }
                 <CommentBox submit={actions.commentOnTicket.bind(null, user, ticket)}/>
             </div>

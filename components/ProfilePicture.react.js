@@ -10,7 +10,7 @@ function _dataURItoBlob(dataURI) {
     return new Blob([new Uint8Array(array)], {type: 'image/jpeg'});
 }
 
-const Colors = ['#3B9B8A', '#74C89A', '#5C9FCC', '#9778A3', '#53687D', '#E0CF80', '#C46E62', '#7FB5B9', '#E69F6F'];
+const Colors = ['#3B9B8A', '#74C89A', '#5C9FCC', '#53687D', '#C46E62', '#7FB5B9', '#E69F6F'];
 
 
 export default class ProfilePicture extends Component {

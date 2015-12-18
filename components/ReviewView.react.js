@@ -28,7 +28,7 @@ export default class ReviewView extends Component {
     }
     render() {
         const { reviewID, reviews, user, role, actions, selectView } = this.props;
-        const review = reviewID ? reviews.items.get(reviewID).toJS() : null;
+        const review = reviews.items.size ? (reviews.items.get(reviewID) || reviews.items.first()).toJS() : null;
         return (
             <div className='mainView'>
                 <ReviewListView review={review} role={role} select={actions.selectReview} selectView={selectView} reviews={reviews.items.toList().toJS()} loading={reviews.isFetching} />

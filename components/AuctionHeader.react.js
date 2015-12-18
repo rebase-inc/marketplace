@@ -1,7 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 
-import DropbackIcon from './DropbackIcon.react';
-import ThreeDotsIcon from './ThreeDotsIcon.react';
+import TicketTimeline from './TicketTimeline.react';
 
 export default class TicketHeader extends Component {
     static propTypes = {
@@ -15,9 +14,10 @@ export default class TicketHeader extends Component {
             <div className='infoHeader'>
                 <div className='mainInfo'>
                     <span className='title'>{ticket.title}</span>
+                    { this.props.children }
                 </div>
                 <div className='otherInfo'>
-                    { this.props.children }
+                    <TicketTimeline role={role} current={'auction'} />
                 </div>
             </div>
         )

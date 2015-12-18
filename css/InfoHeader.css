@@ -23,10 +23,21 @@
     float: left;
 }
 
-.infoHeader > .otherInfo > button {
+.infoHeader > .otherInfo > svg {
+    width: 100%;
+}
+
+.infoHeader > .mainInfo > button {
     display: inline-block;
-    float: right;
+    float: left;
     margin: 0;
+    margin-top: 10px;
+}
+
+.infoHeader > .mainInfo > .codeField > input {
+    margin-left: 0;
+    width: 100%;
+    box-sizing: border-box;
 }
 
 .infoHeader > .mainInfo > .title {
@@ -39,6 +50,7 @@
 .infoHeader > .mainInfo > .status {
     display: block;
     text-align: left;
+    overflow: auto;
 }
 
 .infoHeader > .mainInfo > .status > svg {

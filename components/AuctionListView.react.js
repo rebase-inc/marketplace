@@ -10,6 +10,7 @@ export default class AuctionListView extends Component {
     static propTypes = {
         select: PropTypes.func.isRequired,
         auctions: PropTypes.array.isRequired,
+        auction: PropTypes.object.isRequired,
         loading: PropTypes.bool.isRequired,
         role: PropTypes.object.isRequired,
         selectView: PropTypes.func.isRequired,
@@ -21,8 +22,8 @@ export default class AuctionListView extends Component {
     render() {
         const { select, auction, auctions, loading, role, selectView } = this.props;
         const { searchText, sort } = this.state;
-        const searchResults = !!searchText ? searchAuctions(auctions, searchText) : auctions.map(a => a.id);
-        const sortedAuctions = auctions.filter(_shouldBeVisible.bind(null, role)).sort(sort).filter(a => searchResults.find(id => id == a.id));
+        const sortedAuctions = auctions.filter(_shouldBeVisible.bind(null, role)).sort(sort);
+        const searchResults = !!searchText ? searchAuctions(sortedAuctions, searchText) : sortedAuctions.map(a => a.id);
         if (!sortedAuctions.length && loading) { return <LoadingAnimation />; }
         if (!sortedAuctions.length) { return <NoAuctionsView role={role} selectView={selectView} /> }
         return (

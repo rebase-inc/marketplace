@@ -3,6 +3,7 @@ import React, { Component, PropTypes } from 'react';
 import TicketHeader from './TicketHeader.react';
 import CodeField from './CodeField.react';
 import ContractStatus from './ContractStatus.react';
+import TicketTimeline from './TicketTimeline.react';
 import { DISCUSSION, WAITING_FOR_DEV, WAITING_FOR_CLIENT } from '../constants/MediationStates';
 import { getContractWork, getContractTicket } from '../utils/getters';
 
@@ -24,10 +25,10 @@ export default class ContractHeader extends Component {
                 <div className='mainInfo'>
                     <span className='title'>{ticket.title}</span>
                     <ContractStatus contract={contract} role={role} />
+                    <CodeField name='' value={work.clone} />
                 </div>
                 <div className='otherInfo'>
-                    <CodeField name='Clone (ssh)' value={work.clone} />
-                    <CodeField name='Deploy' value={ticket.project.deploy} />
+                    <TicketTimeline role={role} current={'work'} />
                 </div>
             </div>
         )

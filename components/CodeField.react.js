@@ -9,7 +9,7 @@ export default class CodeField extends Component {
         const { name, value } = this.props;
         return (
             <div className='codeField'>
-                {name}     
+                {!!name.length ? <span>{name}</span> : null}
                 <input onClick={e => e.target.select()} readOnly value={value || 'n/a'}/>
             </div>
         );
