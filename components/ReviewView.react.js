@@ -19,7 +19,6 @@ export default class ReviewView extends Component {
         this.componentDidUpdate = this.componentDidUpdate.bind(this);
     }
     componentDidMount() {
-        console.log('getting reviews?');
         this.props.actions.getReviews()
     }
     componentDidUpdate(prevProps) {

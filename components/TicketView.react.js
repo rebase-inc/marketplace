@@ -35,7 +35,7 @@ export default class TicketView extends Component {
         return (
             <div className='mainView'>
                 <TicketListView select={actions.selectTicket} ticket={ticket} tickets={tickets.items.toList().toJS()} loading={tickets.isFetching} />
-                { ticket ? <SingleTicketView ticket={tickets.items.get(ticketID).toJS()} actions={actions} role={role} user={user} /> : null }
+                { ticket ? <SingleTicketView ticket={ticket} actions={actions} role={role} user={user} /> : null }
             </div>
         );
     }
