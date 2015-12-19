@@ -1,8 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import ReactDOM from 'react-dom';
 
-import d3 from 'd3';
-
 export default class ViewSelector extends Component {
     static propTypes = {
         view: PropTypes.object.isRequired,
