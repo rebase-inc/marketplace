@@ -6,6 +6,7 @@
 }
 
 .infoHeader > .mainInfo {
+    display: none;
     width: calc(100% - 260px);
     min-width: 260px;
     display: inline-block;

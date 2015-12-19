@@ -45,13 +45,12 @@ export default class SingleAuctionView extends Component {
         const { showTalent } = this.state;
         return (
             <div className='singleView'>
-                <AuctionHeader ticket={ticket} role={role}>
-                    { role.type == 'contractor' ? <button onClick={actions.openBidModal}>Bid Now</button> : null }
-                    { role.type == 'manager' ?
-                        <button onClick={() => this.setState({ showTalent: !showTalent })}>
-                            { showTalent ? 'View Details' : 'View Developers' }
-                        </button> : null }
-                </AuctionHeader>
+                <AuctionHeader
+                    title={ticket.title}
+                    role={role}
+                    toggleTalentView={() => this.setState({ showTalent: !showTalent })}
+                    showTalent={showTalent}
+                    openBidModal={actions.openBidModal} />
                 { this.state.showTalent ?
                     sortedNominations.map(n => <Talent auction={auction} nomination={n} key={n.id} approve={() => actions.approveNomination(auction, n)}/>) : null }
                 { !this.state.showTalent ?

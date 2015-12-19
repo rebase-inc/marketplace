@@ -9,14 +9,14 @@ export default class AuctionHeader extends Component {
     }
 
     render() {
-        const { ticket, openNewAuctionModal, role  } = this.props;
-        console.log('children are ', this.props.children);
+        const { title, openNewAuctionModal, role, toggleTalentView, showTalent  } = this.props;
+        const clickHandler = role.type == 'contractor' ? openBidModal : toggleTalentView;
+        const buttonString = role.type == 'contractor' ? 'Bid Now' : (showTalent ? 'View Details' : 'View Developers');
         return (
             <div className='infoHeader'>
                 <div className='mainInfo'>
-                    <span className='title'>{ticket.title}</span>
-                    { this.props.children.filter(c => !!c) }
-                    { /* the filter above is to get around a weird chrome/react bug where having null and non-null children mixed causes rendering issues */}
+                    <span className='title'>{title}</span>
+                    <button onClick={clickHandler}>{buttonString}</button>
                 </div>
                 <div className='otherInfo'>
                     <TicketTimeline role={role} current={'auction'} />
