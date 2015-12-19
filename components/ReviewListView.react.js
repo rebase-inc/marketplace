@@ -27,6 +27,7 @@ export default class ReviewListView extends Component {
         if (!sortedReviews.length) { return <NoReviewsView role={role} selectView={selectView} /> }
         return (
             <div className='listView'>
+                <div className='title'>{'All Completed Work'}</div>
                 <SearchBar placeholder='Search finished work' searchText={searchText} onUserInput={(input) => this.setState({ searchText: input })}>
                     {/*<SortOptions options={SortFunctions} select={(fn) => this.setState({ sort: fn })} sort={sort} />*/}
                 </SearchBar>

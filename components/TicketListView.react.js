@@ -25,6 +25,7 @@ export default class TicketListView extends Component {
         if (!sortedTickets.length) { return <NoTicketsView role={role} />; }
         return (
             <div className='listView'>
+                <div className='title'>All Tickets</div>
                 <SearchBar searchText={searchText} onUserInput={(input) => this.setState({ searchText: input })}>
                     {/*<PlusIcon onClick={actions.openNewTicketModal} text={'Add ticket'} />*/}
                     {/*<SortOptions options={SortFunctions} select={(fn) => this.setState({ sort: fn })} sort={sort} />*/}

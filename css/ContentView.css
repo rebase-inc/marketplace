@@ -19,6 +19,16 @@
     width: 37%;
 }
 
+.listView > .title {
+    display: block;
+    text-align: left;
+    font-weight: bold;
+    text-align: center;
+    font-size: 18px;
+    padding: 20px;
+    padding-bottom: 0;
+}
+
 .singleView {
     float: left;
     display: inline-block;
