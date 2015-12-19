@@ -31,10 +31,12 @@ export default class ContractListView extends Component {
         if (!sortedContracts.length) { return <NoContractsView role={role} selectView={selectView} /> }
         return (
             <div className='listView'>
-                <div className='title'>{'All Ongoing Work'}</div>
                 <SearchBar text={searchText} onChange={(input) => this.setState({ searchText: input })}>
                 {/*<SortOptions options={SortFunctions} select={(fn) => this.setState({ sort: fn })} sort={sort} />*/}
                 </SearchBar>
+                <div className='info'>
+                    {'All Ongoing Work'}
+                </div>
                 <div className='contentList'>
                     { sortedContracts.map(c => <Contract contract={c} selected={contract.id == c.id} role={role} select={() => select(c.id)} key={c.id} />) }
                 </div>

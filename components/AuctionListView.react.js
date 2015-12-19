@@ -28,10 +28,12 @@ export default class AuctionListView extends Component {
         if (!sortedAuctions.length) { return <NoAuctionsView role={role} selectView={selectView} /> }
         return (
             <div className='listView'>
-                <div className='title'>{ role.type == 'manager' ? 'All Auctions' : 'All Offers' }</div>
                 <SearchBar searchText={searchText} onUserInput={(input) => this.setState({ searchText: input })}>
                     {/*<SortOptions options={SortFunctions} select={(fn) => this.setState({ sort: fn })} sort={sort} />*/}
                 </SearchBar>
+                <div className='info'>
+                    { role.type == 'manager' ? 'All Auctions' : 'All Offers' }
+                </div>
                 <div className='contentList'>
                     { sortedAuctions.map(a => <Auction auction={a} selected={auction.id == a.id} role={role} select={() => select(a.id)} key={a.id} />) }
                 </div>

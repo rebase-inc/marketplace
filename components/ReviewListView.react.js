@@ -27,10 +27,12 @@ export default class ReviewListView extends Component {
         if (!sortedReviews.length) { return <NoReviewsView role={role} selectView={selectView} /> }
         return (
             <div className='listView'>
-                <div className='title'>{'All Completed Work'}</div>
                 <SearchBar placeholder='Search finished work' searchText={searchText} onUserInput={(input) => this.setState({ searchText: input })}>
                     {/*<SortOptions options={SortFunctions} select={(fn) => this.setState({ sort: fn })} sort={sort} />*/}
                 </SearchBar>
+                <div className='info'>
+                    {'All Completed Work'}
+                </div>
                 <div className='contentList'>
                     { sortedReviews.map(r => <Review review={r} role={role} select={() => select(r.id)} key={r.id} />) }
                 </div>

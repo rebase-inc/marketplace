@@ -19,14 +19,12 @@
     width: 37%;
 }
 
-.listView > .title {
+.listView > .info {
     display: block;
     text-align: left;
-    font-weight: bold;
-    text-align: center;
     font-size: 18px;
     padding: 20px;
-    padding-bottom: 0;
+    padding-top: 0;
 }
 
 .singleView {
