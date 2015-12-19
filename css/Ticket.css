@@ -59,16 +59,15 @@
     font-size: 12px;
 }
 
-.ticket > .mainInfo > .skills {
-    display: block;
-    font-size: 12px;
-    height: 14px;
-    line-height: 14px;
+.ticket > .mainInfo > .skill {
+    display: inline-block;
+    float: left;
+    margin: 2px;
+    margin-left: 0;
+    padding: 1px;
+    border-radius: 4px;
+    font-size: 10px;
     font-weight: bold;
-    color: #AAB9C9;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
 }
 
 .ticket > .extraInfo {
@@ -80,7 +79,6 @@
     text-align: center;
     color: #AAB9C9;
     font-size: 12px;
-    font-weight: bold;
     padding-top: 2px;
 }
 

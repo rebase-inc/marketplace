@@ -1,5 +1,5 @@
 import ActionConstants from '../constants/ActionConstants';
-import { PENDING, SUCCESS, ERROR } from '../constants/RequestConstants';
+import { PENDING, SUCCESS, ERROR, UNAUTHORIZED } from '../constants/RequestConstants';
 import { COMPLETE } from '../constants/WorkStates';
 
 let initialContractID = null;
@@ -7,7 +7,7 @@ let initialContractID = null;
 export default function contractID(contractID = initialContractID, action) {
     switch (action.type) {
         case ActionConstants.SELECT_CONTRACT: return action.response.contractId; break;
-        case ActionConstants.SELECT_ROLE: return handleNewRole(action.status, contract); break;
+        case ActionConstants.SELECT_ROLE: return handleNewRole(action.status, contractID); break;
         case ActionConstants.BID_ON_AUCTION: return handleBidOnAuction(action.status, contractID, action.response.auction); break;
         case ActionConstants.GET_CONTRACTS: return handleNewContracts(action.status, contractID, action.response.contracts); break;
         case ActionConstants.LOGOUT: return initialContractID; break;

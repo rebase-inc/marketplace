@@ -1,0 +1,78 @@
+#projectSelectionView {
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    top: 0;
+    background-color: #F7FAFC;
+}
+
+#projectSelectionView .logo {
+    position: absolute;
+    top: 0;
+    left: 0;
+    font-size: 24px;
+}
+
+#projectSelectionView .logo svg {
+    position: relative;
+    margin-left: 10px;
+    margin-top: 10px;
+    height: 30px;
+    display: inline-block;
+    float: left;
+}
+
+#projectSelectionView .logo span {
+    position: relative;
+    margin-top: 10px;
+    display: inline-block;
+    float: left;
+    line-height: 36px;
+}
+
+#projectSelectionView .content {
+    position: absolute;
+    padding: 25px;
+    top: 50%;
+    left: 50%;
+    transform: translateX(-50%) translateY(-50%);
+    border-radius: 4px;
+    text-align: center;
+}
+
+#projectSelectionView .content .projects .project {
+    width: 400px;
+}
+
+#projectSelectionView .content .title {
+    font-size: 36px;
+    padding: 10px;
+}
+
+#projectSelectionView .content .or {
+    padding: 20px;
+    opacity: 0.2;
+}
+
+#projectSelectionView .content button {
+    font-size: 16px;
+    padding: 10px;
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+#projectSelectionView .content .projects .project { opacity: 0.5; cursor: default; }
+#projectSelectionView .content .projects .project:hover { opacity: 1; }
+
+#projectSelectionView .content .projects .project div:first-child {
+    display: inline-block;
+    margin: 5px;
+    font-size: 20px;
+    opacity: 0.7;
+}  
+
+#projectSelectionView .content .projects .project div:last-child {
+    display: inline-block;
+    font-size: 20px;
+    margin: 5px;
+}  

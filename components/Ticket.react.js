@@ -20,10 +20,8 @@ export default class Ticket extends Component {
                     { ticket.discriminator == 'github_ticket' ? <GithubIcon /> : <RebaseIcon /> }
                 </div>
                 <div className='mainInfo'>
-                    <div className='skills'>
-                        { Object.keys(ticket.skill_requirement.skills).join(', ') }
-                    </div>
                     <span className='title'>{ ticket.title }</span>
+                    { Object.keys(ticket.skill_requirement.skills).map(s => <div key={s} className='skill'>{s}</div>) }
                 </div>
                 <div className='extraInfo'>
                     <span>{humanReadableDate(ticket.created, false, true)}</span>

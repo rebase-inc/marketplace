@@ -52,25 +52,22 @@
 .auction > .mainInfo > span:first-child {
     color: #AAB9C9;
     font-size: 12px;
+    font-weight: lighter;
 }
 
 .auction > .mainInfo > .skill {
     display: inline-block;
-    background-color: #5E7795;
     float: left;
     margin: 2px;
     margin-left: 0;
-    padding: 4px;
-    padding-top: 2px;
-    padding-bottom: 2px;
+    padding: 1px;
     border-radius: 4px;
-    color: #F7FAFC;
     font-size: 10px;
+    font-weight: bold;
 }
 
 .auction > .extraInfo > * {
     display: block;
-    font-weight: bold;
     text-align: right;
     color: #AAB9C9;
     font-size: 10px;

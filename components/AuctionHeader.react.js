@@ -9,9 +9,9 @@ export default class AuctionHeader extends Component {
     }
 
     render() {
-        const { title, openNewAuctionModal, role, toggleTalentView, showTalent  } = this.props;
+        const { title, openBidModal, role, toggleTalentView, showTalent  } = this.props;
         const clickHandler = role.type == 'contractor' ? openBidModal : toggleTalentView;
-        const buttonString = role.type == 'contractor' ? 'Bid Now' : (showTalent ? 'View Details' : 'View Developers');
+        const buttonString = role.type == 'contractor' ? 'Bid Now' : (showTalent ? 'View Ticket Details' : 'View Suggested Developers');
         return (
             <div className='infoHeader'>
                 <div className='mainInfo'>

@@ -58,6 +58,6 @@ function handleNewRole(requestStatus, reviews) {
     switch (requestStatus) {
         case PENDING: return reviews.set('isFetching', true);
         case ERROR: return reviews.set('isFetching', false);
-        case SUCCESS: return reviews;
+        case SUCCESS: return initialReviews;
     }
 }

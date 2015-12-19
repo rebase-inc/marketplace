@@ -29,5 +29,6 @@ import './css/Review.css';
 import './css/Ticket.css';
 import './css/Auction.css';
 import './css/WorkStatus.css';
+import './css/ProjectSelectionView.css';
 
 ReactDOM.render(<Root />, document.getElementById('react-app'));

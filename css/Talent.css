@@ -61,15 +61,11 @@
 
 .talent > .mainInfo > .skill {
     display: inline-block;
-    background-color: #5E7795;
     float: left;
-    margin: 2px;
-    padding: 4px;
-    padding-top: 2px;
-    padding-bottom: 2px;
+    padding: 3px;
     border-radius: 4px;
-    color: #F7FAFC;
     font-size: 10px;
+    font-weight: bold;
 }
 
 /*.talent > .mainInfo > span { font-size: 10px; display: block; margin: 0 auto; opacity: 0.7; }*/

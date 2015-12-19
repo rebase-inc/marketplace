@@ -20,7 +20,6 @@ export default class Auction extends Component {
                 <div className='mainInfo'>
                     <span>{ role.type == 'manager' ? 'Expires in ' + humanReadableTimeRemaining(auction.expires) : ticket.project.name + ',' + ticket.project.organization.name }</span>
                     <span>{ ticket.title }</span>
-                    { Object.keys(ticket.skill_requirement.skills).map(s => <div key={s} className='skill'>{s}</div>) }
                 </div>
                 <div className='extraInfo'>
                     { role.type == 'manager' ? <span>{'$' + auction.ticket_set.bid_limits[0].price}</span> : null }

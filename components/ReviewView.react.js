@@ -19,6 +19,7 @@ export default class ReviewView extends Component {
         this.componentDidUpdate = this.componentDidUpdate.bind(this);
     }
     componentDidMount() {
+        console.log('getting reviews?');
         this.props.actions.getReviews()
     }
     componentDidUpdate(prevProps) {
@@ -32,7 +33,7 @@ export default class ReviewView extends Component {
         return (
             <div className='mainView'>
                 <ReviewListView review={review} role={role} select={actions.selectReview} selectView={selectView} reviews={reviews.items.toList().toJS()} loading={reviews.isFetching} />
-                { reviewID ? <SingleReviewView review={review} actions={actions} role={role} user={user} /> : null }
+                { review ? <SingleReviewView review={review} actions={actions} role={role} user={user} /> : null }
             </div>
         );
     }
