@@ -4,10 +4,9 @@
     overflow-y: auto;
     overflow-x: hidden;
     font-size: 12px;
-    padding-top: 5px;
-    padding-bottom: 5px;
-    padding: 20px;
+    padding: 15px;
     cursor: default;
+    height: 80px;
 }
 
 .ticket:hover, .ticket[data-selected] {
@@ -29,7 +28,7 @@
 .ticket > .createdOn > svg {
     height: 30px;
     width: 30px;
-    padding-top: 7px;
+    padding-top: 5px;
 }
 
 .ticket > .mainInfo > * {
@@ -44,8 +43,8 @@
 }
 
 .ticket > .mainInfo > .title {
-    height: 14px;
-    line-height: 14px;
+    height: 20px;
+    line-height: 20px;
     font-size: 14px;
     white-space: nowrap;
     overflow: hidden;
@@ -68,6 +67,7 @@
     border-radius: 4px;
     font-size: 10px;
     font-weight: bold;
+    opacity: 0.5;
 }
 
 .ticket > .extraInfo {
@@ -75,6 +75,8 @@
 }
 
 .ticket > .extraInfo > * {
+    height: 16px;
+    line-height: 16px;
     display: block;
     text-align: center;
     color: #AAB9C9;
@@ -85,7 +87,6 @@
 .ticket > .extraInfo > div {
     overflow: auto;
     text-align: center;
-    height: 14px;
 }
 
 .ticket > .extraInfo > div > * {

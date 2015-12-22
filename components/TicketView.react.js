@@ -34,7 +34,7 @@ export default class TicketView extends Component {
         const ticket = tickets.items.size ? (tickets.items.get(ticketID) || tickets.items.first()).toJS() : null;
         return (
             <div className='mainView'>
-                <TicketListView select={actions.selectTicket} ticket={ticket} tickets={tickets.items.toList().toJS()} loading={tickets.isFetching} />
+                <TicketListView createTicket={actions.openNewTicketModal} select={actions.selectTicket} ticket={ticket} tickets={tickets.items.toList().toJS()} loading={tickets.isFetching} />
                 { ticket ? <SingleTicketView ticket={ticket} actions={actions} role={role} user={user} /> : null }
             </div>
         );

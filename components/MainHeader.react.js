@@ -68,7 +68,7 @@ class ProfileOptions extends Component {
     }
 
     close() {
-        this.setState({ open: false });
+        this.setState({ open: true });
     }
 
     render() {

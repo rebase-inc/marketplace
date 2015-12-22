@@ -1,0 +1,14 @@
+.dropdownMenu {
+    display: block;
+    position: static;
+    padding-left: 20px;
+    padding-right: 20px;
+    background-color: #1C2D41;
+    margin-top: 10px;
+    border-radius: 4px;
+    z-index: 999;
+}
+
+/*hacks to deal with the dropdown sitting against the edge*/
+.dropdownMenu { padding: 10px; margin-right: 10px; }
+.dropdownMenu .arrowUp { transform: translateY(-20px) translateX(-50%) translateX(-5px); }

@@ -35,7 +35,7 @@ export default class NewTicketModal extends Component {
             <ModalContainer close={close}>
                 <h3>Create New Ticket</h3>
                 <h4>{`${project.name} (${project.organization.name})`}</h4>
-                <Checkbox toggle={this.toggleGithubSync} checked={this.state.syncWithGithub} label='Sync with GitHub'/>
+                {/*<Checkbox toggle={this.toggleGithubSync} checked={this.state.syncWithGithub} label='Sync with GitHub'/>*/}
                 <textarea required ref='title' placeholder="Give your ticket a title" />
                 <button onClick={this.createTicket}>Create Ticket</button>
             </ModalContainer>

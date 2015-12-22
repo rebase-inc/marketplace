@@ -1,13 +1,22 @@
-.sortOptions > span {
-    font-size: 12px;
-    opacity: 0.4;
-    height: 40px;
-    line-height: 40px;
-    padding-left: 8px;
-    padding-right: 8px;
+.sortOptions {
+    display: block;
+    overflow: auto;
+    height: 20px;
+    clear: both;
+    position: relative;
+    margin: 0 auto;
+    position: absolute;
     cursor: pointer;
-    display: inline-block;
-    float: left;
+    z-index: 999;
+    height: auto;
+    overflow: auto;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.sortOptions > * {
+    display: inline;
+    box-sizing: border-box;
 }
 
 .sortOptions > span.selected,
@@ -15,8 +24,29 @@
     opacity: 1;
 }
 
-.sortOptions > span:first-child {
-    font-size: 16px;
-    opacity: 1;
+.sortOptions > svg {
+    padding-top: 5px;
+    padding-bottom: 5px;
+    height: 20px;
+    margin: 0;
+    vertical-align: middle;
+}
+
+.sortOptions > .dropdownMenu {
+    background-color: #DADEE6;
+    padding: 10px;
+    top: 20px;
     cursor: default;
+}
+
+.sortOptions > .dropdownMenu > .option {
+    display: block;
+    height: 18px;
+    line-height: 18px;
+    font-size: 14px;
+    opacity: 0.5;
+}
+
+.sortOptions > .dropdownMenu > .option:hover {
+    opacity: 1;
 }
