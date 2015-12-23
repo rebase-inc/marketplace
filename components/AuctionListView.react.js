@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 
-import Fuse from '../utils/Fuse';
+import Fuse from '../utils/fuse';
 
 import LoadingAnimation from './LoadingAnimation.react';
 import NoAuctionsView from './NoAuctionsView.react';
