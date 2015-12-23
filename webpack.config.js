@@ -1,10 +1,14 @@
 var path = require('path');
 var webpack = require('webpack');
 
+var HOST=process.env.WEBPACK_HOST
+var PORT=process.env.WEBPACK_PORT
+console.log('Webpack: http://'+HOST+':'+PORT);
+
 module.exports = {
     devtool: 'eval',
     entry: [
-        'webpack-dev-server/client?http://localhost:3000',
+        'webpack-dev-server/client?http://'+HOST+':'+PORT,
         'webpack/hot/only-dev-server',
         './index' // entry js file for app
     ],
