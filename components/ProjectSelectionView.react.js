@@ -5,6 +5,7 @@ export default class ProjectSelectionView extends Component {
     render() {
         const { roles, select } = this.props;
         const projectRoles = roles.filter(role => role.type == 'manager');
+        console.log(projectRoles);
         return (
             <div id='projectSelectionView'>
                 <div className='logo'>
@@ -16,8 +17,8 @@ export default class ProjectSelectionView extends Component {
                     <div className='projects'>
                         { projectRoles.map(role => <Project project={role.project} select={select.bind(null, role.id)} />) }
                     </div>
-                    <div className='or'>OR</div>
-                    <button>Create a New Project</button>
+                    {/*<div className='or'>OR</div>*/}
+                    {/*<button>Create a New Project</button>*/}
                 </div>
             </div>
         );
