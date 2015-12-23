@@ -1,10 +1,15 @@
 import React, { Component, PropTypes } from 'react';
 
+import Fuse from '../utils/Fuse';
+
 import LoadingAnimation from './LoadingAnimation.react';
 import NoAuctionsView from './NoAuctionsView.react';
+import DropdownIcon from './DropdownIcon.react';
 import SortOptions from './SortOptions.react';
 import SearchBar from './SearchBar.react';
 import Auction from './Auction.react';
+
+import { getAuctionTicket } from '../utils/getters';
 
 export default class AuctionListView extends Component {
     static propTypes = {
@@ -22,17 +27,24 @@ export default class AuctionListView extends Component {
     render() {
         const { select, auction, auctions, loading, role, selectView } = this.props;
         const { searchText, sort } = this.state;
-        const sortedAuctions = auctions.filter(_shouldBeVisible.bind(null, role)).sort(sort);
+        let sortedAuctions = auctions.filter(_shouldBeVisible.bind(null, role)).sort(sort);
         const searchResults = !!searchText ? searchAuctions(sortedAuctions, searchText) : sortedAuctions.map(a => a.id);
         if (!sortedAuctions.length && loading) { return <LoadingAnimation />; }
         if (!sortedAuctions.length) { return <NoAuctionsView role={role} selectView={selectView} /> }
+        sortedAuctions = sortedAuctions.filter(a => searchResults.find(id => id == a.id));
+        const sortFunctions = new Map([...SortFunctions, ...(role.type == 'manager' ? ManagerSortFunctions : DeveloperSortFunctions)]);
         return (
             <div className='listView'>
-                <SearchBar searchText={searchText} onUserInput={(input) => this.setState({ searchText: input })}>
-                    {/*<SortOptions options={SortFunctions} select={(fn) => this.setState({ sort: fn })} sort={sort} />*/}
+                <SearchBar searchText={searchText} onChange={(input) => this.setState({ searchText: input })}>
                 </SearchBar>
                 <div className='info'>
                     { role.type == 'manager' ? 'All Auctions' : 'All Offers' }
+                    <DropdownIcon open={this.state.open} onClick={() => this.setState({ open: !this.state.open })} />
+                    {this.state.open ?
+                        <SortOptions
+                            options={sortFunctions}
+                            select={(fn) => this.setState({ sort: fn, open: false })}
+                            sort={sort} onMouseLeave={() => this.setState({ open: false })}/> : null }
                 </div>
                 <div className='contentList'>
                     { sortedAuctions.map(a => <Auction auction={a} selected={auction.id == a.id} role={role} select={() => select(a.id)} key={a.id} />) }
@@ -43,6 +55,7 @@ export default class AuctionListView extends Component {
 }
 
 function searchAuctions(auctions, searchText) {
+    auctions = auctions.map(a => ({ ticket: getAuctionTicket(a), id: a.id }));
     var fuseSearch = new Fuse(auctions, {threshold: 0.35, keys: ['ticket.title', 'ticket.project.name', 'ticket.project.organization.name'], id: 'id'});
     return fuseSearch.search(searchText.substring(0, 32));
 }

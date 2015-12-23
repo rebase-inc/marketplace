@@ -5,6 +5,7 @@ import Fuse from '../utils/Fuse';
 import Ticket from './Ticket.react';
 import SearchBar from './SearchBar.react';
 import SortOptions from './SortOptions.react';
+import DropdownIcon from './DropdownIcon.react';
 import NoTicketsView from './NoTicketsView.react';
 import LoadingAnimation from './LoadingAnimation.react';
 
@@ -32,12 +33,7 @@ export default class TicketListView extends Component {
                 </SearchBar>
                 <div className='info'>
                     {'All Tickets'}
-                    <svg data-selected={this.state.open || undefined } viewBox="0 0 22 14" onClick={() => this.setState({ open: !this.state.open })}>
-                        <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-                            <rect fill="#EBEDF0" x="0" y="0" width="22" height="14" rx="2"></rect>
-                            <path d="M6,5 L11,10 L16,5" stroke="#F8FBFD" stroke-linecap="square"></path>
-                        </g>
-                    </svg>
+                    <DropdownIcon open={this.state.open} onClick={() => this.setState({ open: !this.state.open })} />
                     {this.state.open ?
                         <SortOptions
                             options={SortFunctions}

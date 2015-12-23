@@ -46,7 +46,7 @@ export default class SingleAuctionView extends Component {
         return (
             <div className='singleView'>
                 <AuctionHeader
-                    title={ticket.title}
+                    auction={auction}
                     role={role}
                     toggleTalentView={() => this.setState({ showTalent: !showTalent })}
                     showTalent={showTalent}

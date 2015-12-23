@@ -48,6 +48,15 @@
     font-weight: bold;
 }
 
+.infoHeader > .mainInfo > .extra {
+    display: block;
+    text-align: left;
+    font-size: 14px;
+    font-weight: bold;
+    padding-top: 5px;
+    opacity: 0.5;
+}
+
 .infoHeader > .mainInfo > .status {
     display: block;
     text-align: left;
