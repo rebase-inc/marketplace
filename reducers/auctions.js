@@ -59,7 +59,7 @@ function handleCommentOnAuction(requestStatus, auctions, comment) {
     }
 }
 
-function handleNewRole(requestStatus, oldTickets, user) {
+function handleNewRole(requestStatus, oldAuctions, user) {
     switch (requestStatus) {
         case PENDING: return oldAuctions.set('isFetching', true);
         case ERROR: return oldAuctions.set('isFetching', false);

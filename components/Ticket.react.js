@@ -2,6 +2,8 @@ import React, { Component, PropTypes } from 'react';
 
 import ProfilePicture from './ProfilePicture.react';
 import { Comment } from './Icons.react';
+import RebaseIcon from './RebaseIcon.react';
+import GithubIcon from './GithubIcon.react';
 
 import { humanReadableDate } from '../utils/date';
 
@@ -14,8 +16,11 @@ export default class Ticket extends Component {
         const { ticket, select, selected } = this.props;
         return (
             <div className='ticket' onClick={select} data-selected={selected || undefined}>
+                <div className='createdOn'>
+                    { ticket.discriminator == 'github_ticket' ? <GithubIcon /> : <RebaseIcon /> }
+                </div>
                 <div className='mainInfo'>
-                    <span>{ ticket.title }</span>
+                    <span className='title'>{ ticket.title }</span>
                     { Object.keys(ticket.skill_requirement.skills).map(s => <div key={s} className='skill'>{s}</div>) }
                 </div>
                 <div className='extraInfo'>
@@ -30,7 +35,11 @@ export default class Ticket extends Component {
     }
 };
 
-// This problem can almost certainly be solved with CSS
-class SpacerPanel extends Component {
-    render() { return <td className='spacerPanel'/> }
+export const GithubTicketLink = (props) => {
+    const url = 'https://github.com/' + props.ticket.project.organization.name + '/' + props.ticket.project.name;
+    return <span className='link' onClick={window.open(url)}>{'View on GitHub'}</span>;
+}
+
+export const RebaseTicketLink = (props) => {
+    return <span className='link'>{'Created on Rebase'}</span>;
 }

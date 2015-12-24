@@ -1,23 +1,28 @@
 import React, { Component, PropTypes } from 'react';
 
-import DropbackIcon from './DropbackIcon.react';
-import ThreeDotsIcon from './ThreeDotsIcon.react';
+import TicketTimeline from './TicketTimeline.react';
 
-export default class TicketHeader extends Component {
+import { getAuctionTicket } from '../utils/getters';
+
+export default class AuctionHeader extends Component {
     static propTypes = {
         title: PropTypes.string.isRequired,
         warning: PropTypes.bool,
     }
 
     render() {
-        const { ticket, openNewAuctionModal, role  } = this.props;
+        const { auction, openBidModal, role, toggleTalentView, showTalent  } = this.props;
+        const clickHandler = role.type == 'contractor' ? openBidModal : toggleTalentView;
+        const buttonString = role.type == 'contractor' ? 'Bid Now' : (showTalent ? 'View Ticket Details' : 'View Suggested Developers');
         return (
             <div className='infoHeader'>
                 <div className='mainInfo'>
-                    <span className='title'>{ticket.title}</span>
+                    <span className='title'>{getAuctionTicket(auction).title}</span>
+                    { role.type == 'manager' ? <span className='extra'>{'Offered to developers for a maximum of $' + auction.ticket_set.bid_limits[0].price}</span> : null }
+                    <button onClick={clickHandler}>{buttonString}</button>
                 </div>
                 <div className='otherInfo'>
-                    { this.props.children }
+                    <TicketTimeline role={role} current={'auction'} />
                 </div>
             </div>
         )

@@ -7,6 +7,7 @@ import LoginDialog from '../components/LoginDialog.react';
 import MainHeader from '../components/MainHeader.react';
 import ModalView from '../components/ModalView.react';
 import MainView from '../components/MainView.react';
+import RoleSelectionView from '../components/RoleSelectionView.react';
 
 import * as UserActions from '../actions/UserActions';
 
@@ -16,9 +17,11 @@ class RebaseApp extends Component {
         this.props.actions.restoreSession();
     }
     render() {
-        const { user, view, views, roles, actions } = this.props;
+        const { user, roleID, view, views, roles, actions } = this.props;
         if (!user.email) {
             return <LoginDialog isLoading={user.isFetching} onLogin={actions.login} error={user.error} />
+        } else if (!roleID) {
+            return <RoleSelectionView roles={Array.from(roles.items.values())} select={actions.selectRole.bind(null, user)} />
         } else {
             return (
                 <div id='app'>
@@ -31,6 +34,6 @@ class RebaseApp extends Component {
     }
 }
 
-let mapStateToProps = state => ({ user: state.user, roles: state.roles, view: state.view, views: state.views });
+let mapStateToProps = state => ({ user: state.user, roleID: state.roleID, roles: state.roles, view: state.view, views: state.views });
 let mapDispatchToProps = dispatch => ({ actions: bindActionCreators(UserActions, dispatch)});
 export default connect(mapStateToProps, mapDispatchToProps)(RebaseApp);

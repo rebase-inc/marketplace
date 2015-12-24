@@ -3,8 +3,8 @@
 .talent > .approveTalentIcon > svg:first-child { display: block; }
 .talent > .approveTalentIcon:hover > svg:first-child { display: none; }
 .talent > .approveTalentIcon:hover > svg:last-child { display: block; }
-.talent > .approveTalentIcon > svg { padding-top: 12px; width: 60px; }
-.talent > .approveTalentIcon { width: 60px }
+.talent > .approveTalentIcon > svg { padding-top: 12px; width: 100px; }
+.talent > .approveTalentIcon { width: 100px }
 
 .talent {
     width: 100%;
@@ -26,6 +26,7 @@
     height: 100%;
     padding: 5px;
     box-sizing: border-box;
+    overflow: auto;
 }
 
 .talent .talentScore {
@@ -39,7 +40,7 @@
 }
 
 .talent > .mainInfo {
-    width: calc(100% - 240px);
+    width: calc(100% - 280px);
 }
 
 .talent > .mainInfo > * {
@@ -60,15 +61,11 @@
 
 .talent > .mainInfo > .skill {
     display: inline-block;
-    background-color: #5E7795;
     float: left;
-    margin: 2px;
-    padding: 4px;
-    padding-top: 2px;
-    padding-bottom: 2px;
+    padding: 3px;
     border-radius: 4px;
-    color: #F7FAFC;
     font-size: 10px;
+    font-weight: bold;
 }
 
 /*.talent > .mainInfo > span { font-size: 10px; display: block; margin: 0 auto; opacity: 0.7; }*/

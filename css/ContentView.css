@@ -19,6 +19,44 @@
     width: 37%;
 }
 
+.listView > .info {
+    display: block;
+    text-align: center;
+    font-size: 16px;
+    padding: 20px;
+    padding-top: 0;
+    position: relative;
+}
+
+.listView > .info > *:not(.sortOptions) {
+    vertical-align: middle;
+    display: inline;
+    height: 20px;
+    line-height: 20px;
+    margin-left: 2px;
+    margin-right: 2px;
+}
+
+.listView > .info > span:last-child {
+    display: block;
+    font-size: 10px;
+    opacity: 0.5;
+    cursor: default;
+    height: 12px;
+}
+
+.listView > .info > span:last-child:hover {
+    opacity: 1;
+}
+
+.listView > .info .dropdownMenu > .arrowUp {
+    border-color: transparent transparent transparent;
+}
+.listView > .info > svg[data-selected] rect,
+.listView > .info > svg:hover rect {
+    fill: #DADEE6;
+}
+
 .singleView {
     float: left;
     display: inline-block;
@@ -27,4 +65,11 @@
     width: 63%;
     border-left: 1px solid #D3E0E6;
     overflow: auto;
+    -webkit-transform: translate3d(0,0,0); /*force hardware acceleration to get around chrome rendering bug*/
+}
+
+.contentList {
+    height: calc(100% - 64px);
+    padding-bottom: 40px;
+    box-sizing: border-box;
 }

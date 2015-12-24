@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react';
+import ReactDOM from 'react-dom';
 
 import TicketHeader from './TicketHeader.react';
 import Comment from './Comment.react';
@@ -29,11 +30,18 @@ export default class SingleTicketView extends Component {
         }
     }
 
+    componentDidUpdate(prevProps) {
+        if (this.props.ticket.id != prevProps.ticket.id) {
+            const node = ReactDOM.findDOMNode(this);
+            node.scrollTop = 0;
+        }
+    }
+
     render() {
         const { ticket, actions, role, user } = this.props;
         return (
             <div className='singleView'>
-                <TicketHeader openNewAuctionModal={actions.openNewAuctionModal} ticket={ticket}/>
+                <TicketHeader openNewAuctionModal={actions.openNewAuctionModal} ticket={ticket} role={role} />
                 { ticket.comments.map( comment => <Comment comment={comment} key={comment.id} /> ) }
                 <CommentBox submit={actions.commentOnTicket.bind(null, user, ticket)}/>
             </div>

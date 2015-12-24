@@ -31,13 +31,11 @@ export default class TicketView extends Component {
     }
     render() {
         const { ticketID, tickets, user, role, actions } = this.props;
-        console.log('ticket id is ', ticketID);
-        console.log('tickets are ', tickets.toJS());
-        const ticket = ticketID ? tickets.items.get(ticketID).toJS() : null;
+        const ticket = tickets.items.size ? (tickets.items.get(ticketID) || tickets.items.first()).toJS() : null;
         return (
             <div className='mainView'>
-                <TicketListView select={actions.selectTicket} ticket={ticket} tickets={tickets.items.toList().toJS()} loading={tickets.isFetching} />
-                { ticketID ? <SingleTicketView ticket={tickets.items.get(ticketID).toJS()} actions={actions} role={role} user={user} /> : null }
+                <TicketListView createTicket={actions.openNewTicketModal} select={actions.selectTicket} ticket={ticket} tickets={tickets.items.toList().toJS()} loading={tickets.isFetching} />
+                { ticket ? <SingleTicketView ticket={ticket} actions={actions} role={role} user={user} /> : null }
             </div>
         );
     }

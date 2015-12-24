@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react';
+import ReactDOM from 'react-dom';
 
 import AuctionHeader from './AuctionHeader.react';
 import Comment from './Comment.react';
@@ -29,6 +30,13 @@ export default class SingleAuctionView extends Component {
         }
     }
 
+    componentDidUpdate(prevProps) {
+        if (this.props.auction.id != prevProps.auction.id) {
+            const node = ReactDOM.findDOMNode(this);
+            node.scrollTop = 0;
+        }
+    }
+
     render() {
         const { user, role, auction, actions } = this.props;
         const ticket = getAuctionTicket(auction);
@@ -37,13 +45,12 @@ export default class SingleAuctionView extends Component {
         const { showTalent } = this.state;
         return (
             <div className='singleView'>
-                <AuctionHeader ticket={ticket}>
-                    { role.type == 'contractor' ? <button onClick={actions.openBidModal}>Bid Now</button> : null }
-                    { role.type == 'manager' ?
-                        <button onClick={() => this.setState({ showTalent: !showTalent })}>
-                            { showTalent ? 'View Details' : 'View Developers' }
-                        </button> : null }
-                </AuctionHeader>
+                <AuctionHeader
+                    auction={auction}
+                    role={role}
+                    toggleTalentView={() => this.setState({ showTalent: !showTalent })}
+                    showTalent={showTalent}
+                    openBidModal={actions.openBidModal} />
                 { this.state.showTalent ?
                     sortedNominations.map(n => <Talent auction={auction} nomination={n} key={n.id} approve={() => actions.approveNomination(auction, n)}/>) : null }
                 { !this.state.showTalent ?

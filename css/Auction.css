@@ -1,11 +1,10 @@
 .auction {
     width: 100%;
-    overflow-y: auto;
-    overflow-x: hidden;
     font-size: 12px;
-    padding-top: 5px;
-    padding-bottom: 5px;
+    padding: 15px;
     cursor: default;
+    height: 80px;
+    box-sizing: border-box;
 }
 
 .auction:hover, .auction[data-selected] {
@@ -36,45 +35,56 @@
 }
 
 .auction > .mainInfo {
-    width: calc(100% - 150px);
+    width: calc(100% - 140px);
     padding-left: 8px;
 }
 
 .auction > .mainInfo > * {
     padding-top: 2px;
+    font-weight: bold;
+    font-size: 12px;
+    opacity: 0.5;
 }
 
-.auction > .mainInfo > span {
+.auction > .mainInfo > .title {
+    opacity: 1;
+    height: 20px;
+    line-height: 20px;
+    font-size: 14px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
     display: block;
     font-weight: bold;
-}
-
-.auction > .mainInfo > span:first-child {
-    color: #AAB9C9;
-    font-size: 12px;
 }
 
 .auction > .mainInfo > .skill {
     display: inline-block;
-    background-color: #5E7795;
     float: left;
     margin: 2px;
     margin-left: 0;
-    padding: 4px;
-    padding-top: 2px;
-    padding-bottom: 2px;
+    padding: 1px;
     border-radius: 4px;
-    color: #F7FAFC;
     font-size: 10px;
+    font-weight: bold;
+}
+
+.auction > .extraInfo {
+    width: 140px;
+    text-align: center;
 }
 
 .auction > .extraInfo > * {
+    display: inline;
+    text-align: center;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 5px;
     display: block;
-    font-weight: bold;
-    text-align: right;
     color: #AAB9C9;
     font-size: 10px;
-    padding-top: 2px;
+    padding-top: 0px;
+    padding-bottom: 0px;
     font-size: 12px;
 }
 
@@ -88,3 +98,11 @@
     padding: 20px;
     display: inline;
 }
+
+.auction > .extraInfo > svg.talentSummary rect {
+    opacity: 0.5;
+} 
+
+.auction > .extraInfo > svg.talentSummary rect:hover {
+    opacity: 1;
+} 

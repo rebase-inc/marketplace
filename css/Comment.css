@@ -67,7 +67,6 @@
 
 .comment > .content > .date {
     font-size: 14px;
-    font-weight: bold;
     display: inline;
     float: right;
     color: hsla(211, 22%, 73%, 1);
