@@ -17,7 +17,8 @@ module.exports = {
         filename: 'bundle.js',
     },
     plugins: [
-        new webpack.HotModuleReplacementPlugin()
+        new webpack.HotModuleReplacementPlugin(),
+        new webpack.ProgressPlugin(function handler(percentage, msg) { console.log(msg); }),
     ],
     resolve: {
         alias: {
