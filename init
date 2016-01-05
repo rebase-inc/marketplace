@@ -1,0 +1,13 @@
+#!/bin/bash
+
+pushd /www
+
+ln -s /code/bundle.js
+ln -s /code/index.html
+ln -s /code/font
+
+popd
+
+npm install
+npm run-script compile &
+npm start
