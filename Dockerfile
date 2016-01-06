@@ -1,4 +1,3 @@
 FROM node
-VOLUME /www
 WORKDIR /code
-CMD ./init
+CMD npm install && npm start
