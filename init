@@ -1,12 +1,8 @@
 #!/bin/bash
 
-pushd /www
-
-ln -s /code/bundle.js
-ln -s /code/index.html
-ln -s /code/font
-
-popd
+cp -f /code/bundle.js /www
+cp -f /code/index.html /www
+cp -rf /code/font /www
 
 npm install
 npm run-script compile &
