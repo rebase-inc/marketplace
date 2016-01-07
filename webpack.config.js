@@ -1,8 +1,8 @@
 var path = require('path');
 var webpack = require('webpack');
 
-var HOST=process.env.WEBPACK_HOST
-var PORT=process.env.WEBPACK_PORT
+var HOST=process.env.REBASE_CLIENT_HOST
+var PORT=process.env.REBASE_CLIENT_PORT
 console.log('Webpack: http://'+HOST+':'+PORT);
 
 module.exports = {
