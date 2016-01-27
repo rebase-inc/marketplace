@@ -17,11 +17,11 @@ class RebaseApp extends Component {
         this.props.actions.restoreSession();
     }
     render() {
-        const { user, roleID, view, views, roles, actions } = this.props;
+        const { user, roleID, view, views, roles, actions, githubAccounts } = this.props;
         if (!user.email) {
             return <LoginDialog isLoading={user.isFetching} onLogin={actions.login} error={user.error} />
         } else if (!roleID) {
-            return <RoleSelectionView roles={Array.from(roles.items.values())} select={actions.selectRole.bind(null, user)} />
+            return <RoleSelectionView user={user} roles={Array.from(roles.items.values())} select={actions.selectRole.bind(null, user)} githubAccounts={Array.from(githubAccounts.items.values())} />
         } else {
             return (
                 <div id='app'>
@@ -34,6 +34,13 @@ class RebaseApp extends Component {
     }
 }
 
-let mapStateToProps = state => ({ user: state.user, roleID: state.roleID, roles: state.roles, view: state.view, views: state.views });
+let mapStateToProps = state => ({
+    user: state.user, // need this for just about everything
+    roleID: state.roleID, // need this to get the current role from the roles
+    roles: state.roles, // need this to get the current role from
+    view: state.view, // need to know what view we have selected
+    views: state.views, // list of views available
+    githubAccounts: state.githubAccounts // need this to potentially import new projects in RoleSelectionView
+});
 let mapDispatchToProps = dispatch => ({ actions: bindActionCreators(UserActions, dispatch)});
 export default connect(mapStateToProps, mapDispatchToProps)(RebaseApp);

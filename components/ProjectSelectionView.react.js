@@ -10,7 +10,7 @@ export default class ProjectSelectionView extends Component {
         this.toggleImport = () => this.setState(s => ({ importingProject: !s.importingProject }));
     }
     render() {
-        const { roles, select } = this.props;
+        const { roles, select, user, githubAccounts } = this.props;
         const { importingProject } = this.state;
         return (
             <div id='projectSelectionView'>
@@ -18,7 +18,7 @@ export default class ProjectSelectionView extends Component {
                     <RebaseIcon />
                     {'REBASE'}
                 </div>
-                { importingProject ? <NewProjectView /> :
+                { importingProject ? <NewProjectView githubAccounts={githubAccounts} /> :
                     <ProjectListView toggleImport={this.toggleImport} roles={roles.filter(r => r.type == 'manager')} select={select} /> }
             </div>
         );
@@ -27,8 +27,10 @@ export default class ProjectSelectionView extends Component {
 
 export const NewProjectView = (props) => (
     <div className='content'>
-        <div className='title'>{'Select a Project'}</div>
-        <CheckboxList items={[{a: 'a', b: 'b'}, {a: 'c', b: 'd'}]} fieldsToDisplay={['a','b']} onSubmit={alert} buttonText={'fuckoff'} />
+        { props.githubAccounts.length ? <div className='title'>{'Select a Project'}</div> : null }
+        { props.githubAccounts.length ? <CheckboxList items={props.githubAccounts} fieldsToDisplay={['name']} onSubmit={alert} buttonText={'Import Selected'} /> : null }
+        { props.githubAccounts.length ? <div className='or'>OR</div> : null }
+        <button onClick={() => window.location.replace('/api/v1/github')}>Authorize GitHub</button>
     </div>
 )
 

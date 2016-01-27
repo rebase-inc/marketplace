@@ -15,7 +15,7 @@ export default class RoleSelectionView extends Component {
         if (roles.find(role => role.type == 'contractor')) {
             return <div>Youre a dev!</div>;
         } else {
-            return <ProjectSelectionView {...this.props} />; 
+            return <ProjectSelectionView {...this.props} />;
         }
     }
 }
