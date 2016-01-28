@@ -1,10 +1,12 @@
 import ActionConstants from '../constants/ActionConstants';
-import { PENDING, SUCCESS, ERROR } from '../constants/RequestConstants';
+import { PENDING, SUCCESS, ERROR, UNAUTHORIZED } from '../constants/RequestConstants';
 
 let initialGithubAccounts = { items: new Map(), isFetching: false };
 
+// TODO: Switch to using ImmutableJS
 export default function githubAccounts(githubAccounts = initialGithubAccounts, action) {
     switch (action.type) {
+        case ActionConstants.LOGIN: return handleNewUserData(action.status, githubAccounts, action.response.user); break;
         case ActionConstants.GET_GITHUB_ACCOUNTS: {
             switch (action.status) {
                 case PENDING: return Object.assign({}, githubAccounts, { isFetching: true }); break;
@@ -26,5 +28,17 @@ export default function githubAccounts(githubAccounts = initialGithubAccounts, a
             }
         }
         default: return githubAccounts; break;
+    }
+}
+
+function handleNewUserData(requestStatus, githubAccounts, user) {
+    return githubAccounts; // temporarily not sure if we actually want to load github account data on login
+    switch (requestStatus) {
+        case PENDING: return Object.assign({}, githubAccounts, { isFetching: true }); break;
+        case ERROR: return Object.assign({}, githubAccounts, { isFetching: false }); break;
+        case UNAUTHORIZED: return Object.assign({}, githubAccounts, { isFetching: false }); break;
+        case SUCCESS:
+            return { isFetching: false, items: new Map(user.github_accounts.map(ga => [ga.id, ga])) };
+            break;
     }
 }

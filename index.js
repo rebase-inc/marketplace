@@ -31,5 +31,6 @@ import './css/Auction.css';
 import './css/WorkStatus.css';
 import './css/ProjectSelectionView.css';
 import './css/DropdownMenu.css';
+import './css/CheckboxList.css';
 
 ReactDOM.render(<Root />, document.getElementById('react-app'));

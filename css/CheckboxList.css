@@ -1,0 +1,18 @@
+.checkboxList table {
+    text-align: left;
+    margin: 0 auto;
+}
+
+.checkboxList table td {
+    padding-top: 6px;
+    padding-bottom: 6px;
+}
+
+.checkboxList table td:not(.checkbox) {
+    padding-right: 3px;
+}
+
+.checkboxList table td:nth-child(3) {
+    font-size: 12px;
+    opacity: 0.35;
+}
