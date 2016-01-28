@@ -7,6 +7,7 @@ export default function roleID(roleID = initialRoleID, action) {
     switch (action.type) {
         case ActionConstants.SELECT_ROLE: return setID(action.status, roleID, action.response.user ? action.response.user.id : null); break;
         case ActionConstants.IMPORT_GITHUB_REPOS: return setID(action.status, roleID, action.response.roles ? action.response.roles[0].id : null); break;
+        case ActionConstants.LOGOUT: return initialRoleID; break;
         default: return roleID; break;
     }
 }
