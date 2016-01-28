@@ -21,15 +21,16 @@ export default class ProjectSelectionView extends Component {
     }
 
     render() {
-        const { roles, select, user, githubAccounts } = this.props;
+        const { roles, select, user, githubAccounts, actions } = this.props;
         const { importingProject } = this.state;
+        console.log
         return (
             <div id='projectSelectionView'>
                 <div className='logo'>
                     <RebaseIcon />
                     {'REBASE'}
                 </div>
-                { importingProject ? <NewProjectView githubAccounts={githubAccounts} getImportableRepos={this.props.actions.getImportableRepos} /> :
+                { importingProject ? <NewProjectView githubAccounts={githubAccounts} getImportableRepos={actions.getImportableRepos} importGithubRepos={actions.importGithubRepos} /> :
                     <ProjectListView toggleImport={this.toggleImport} roles={roles.filter(r => r.type == 'manager')} select={select} /> }
             </div>
         );
@@ -44,12 +45,12 @@ export class NewProjectView extends Component {
     }
 
     render() {
-        const { githubAccounts, getGithubProjects } = this.props;
+        const { githubAccounts, getGithubProjects, importGithubRepos } = this.props;
         const projects = githubAccounts.reduce((prev, curr) => prev.concat(curr.repos || []), []);
         return (
             <div className='content'>
                 <div className='title'>{ projects.length ? 'Select a Project' : 'Add New GitHub Account'}</div>
-                { projects.length ? <CheckboxList items={projects.map(p => Object.assign(p, {login: p.owner.login}))} fieldsToDisplay={['name','login']} onSubmit={alert} buttonText={'Import Selected'} /> : null }
+                { projects.length ? <CheckboxList items={projects.map(p => Object.assign(p, {login: p.owner.login}))} fieldsToDisplay={['name','login']} onSubmit={importGithubRepos} buttonText={'Import Selected'} /> : null }
                 { projects.length ? <div>{'Add a New GitHub Account'}</div> : null }
                 { projects.length ? null : <button onClick={() => window.location.replace('/api/v1/github')}>Authorize GitHub</button> }
             </div>
