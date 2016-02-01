@@ -7,6 +7,8 @@ import DropdownMenu from './DropdownMenu.react';
 import ViewSelector from './ViewSelector.react';
 import { Logo, Dropdown } from './Icons.react';
 
+import Tooltip from 'rc-tooltip';
+
 import { ViewTypes, ContractorViews, ManagerViews } from '../constants/ViewConstants';
 import { PROFILE, PROJECTS, DEVELOPER_PROFILE, BILLING_AND_PAYMENTS } from '../constants/ViewConstants';
 
@@ -17,6 +19,7 @@ export default class MainHeader extends Component {
         view: PropTypes.object.isRequired,
         views: PropTypes.object.isRequired,
         actions: PropTypes.object.isRequired,
+        walkthrough: PropTypes.object.isRequired,
     };
 
     constructor(props, context) {
@@ -24,12 +27,13 @@ export default class MainHeader extends Component {
     }
 
     render() {
-        const { user, roles, view, views, actions } = this.props;
+        const { user, walkthrough, roles, view, views, actions } = this.props;
         let filteredRoles = Array.from(roles.items.values()).filter(r => r.type != 'owner'); // hack to deal with owner roles
         return (
             <div id='mainHeader' className='noselect'>
-            {/*<ViewList view={view} views={Array.from(views.items.values())} selectView={actions.selectView} />*/}
-                <ViewSelector view={view} views={Array.from(views.items.values())} selectView={actions.selectView}/>
+                <Tooltip >
+                    <ViewSelector view={view} views={Array.from(views.items.values())} selectView={actions.selectView}/>
+                </Tooltip>
                 <ProjectSelector user={user} role={user.current_role} selectRole={(role) => actions.selectRole(user, role.id)} roles={filteredRoles}/>
                 <ProfileOptions actions={actions} user={user} />
             </div>

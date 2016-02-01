@@ -32,5 +32,8 @@ import './css/WorkStatus.css';
 import './css/ProjectSelectionView.css';
 import './css/DropdownMenu.css';
 import './css/CheckboxList.css';
+import 'rc-tooltip/assets/bootstrap.css';
+import './css/Tooltip.css';
+import './css/WalkthroughMask.css';
 
 ReactDOM.render(<Root />, document.getElementById('react-app'));

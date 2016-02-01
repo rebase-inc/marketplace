@@ -1,6 +1,7 @@
 export { default as user } from './user';
 
 export { default as modal } from './modal';
+export { default as walkthrough } from './walkthrough';
 
 export { default as roles } from './roles';
 export { default as roleID } from './roleID';
@@ -24,3 +25,4 @@ export { default as githubAccounts } from './githubAccounts';
 
 export { default as credits } from './credits';
 export { default as debits } from './debits';
+

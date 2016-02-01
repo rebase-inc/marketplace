@@ -4,6 +4,8 @@ import DesktopComputerGraphic from './DesktopComputerGraphic.react';
 import KeyboardGraphic from './KeyboardGraphic.react';
 import HeadphonesGraphic from './HeadphonesGraphic.react';
 
+import Tooltip from 'rc-tooltip';
+
 export default class NothingHere extends Component {
     render() {
         return (
@@ -12,7 +14,9 @@ export default class NothingHere extends Component {
                 <KeyboardGraphic />
                 <HeadphonesGraphic />
                 <div id='content'>
-                    {this.props.children}
+                    <Tooltip placement="top" trigger={['click']} overlay={<span>tooltip</span>}>
+                        <a href='#'>hover</a>
+                    </Tooltip>
                 </div>
            </div>
         );

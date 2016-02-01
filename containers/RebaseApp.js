@@ -11,13 +11,15 @@ import RoleSelectionView from '../components/RoleSelectionView.react';
 
 import * as UserActions from '../actions/UserActions';
 
+const WalkthroughMask = () => <div className='walkthroughMask'/>;
+
 class RebaseApp extends Component {
     constructor(props, context) {
         super(props, context);
         this.props.actions.restoreSession();
     }
     render() {
-        const { user, roleID, view, views, roles, actions, githubAccounts } = this.props;
+        const { user, roleID, walkthrough, view, views, roles, actions, githubAccounts } = this.props;
         if (!user.email) {
             return <LoginDialog isLoading={user.isFetching} onLogin={actions.login} error={user.error} />
         } else if (!roleID) {
@@ -25,7 +27,8 @@ class RebaseApp extends Component {
         } else {
             return (
                 <div id='app'>
-                    <MainHeader user={user} roles={roles} view={view} views={views} actions={actions}/>
+                    { walkthrough.steps.length ? <WalkthroughMask /> : null }
+                    <MainHeader user={user} roles={roles} view={view} views={views} walkthrough={walkthrough} actions={actions}/>
                     <ModalView user={user} role={roles.items.get(user.current_role.id)} />
                     <MainView view={view} user={user} roles={roles} actions={actions}/>
                 </div>
@@ -40,6 +43,7 @@ let mapStateToProps = state => ({
     roles: state.roles, // need this to get the current role from
     view: state.view, // need to know what view we have selected
     views: state.views, // list of views available
+    walkthrough: state.walkthrough,
     githubAccounts: state.githubAccounts // need this to potentially import new projects in RoleSelectionView
 });
 let mapDispatchToProps = dispatch => ({ actions: bindActionCreators(UserActions, dispatch)});
