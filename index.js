@@ -35,5 +35,6 @@ import './css/CheckboxList.css';
 import 'rc-tooltip/assets/bootstrap.css';
 import './css/Tooltip.css';
 import './css/WalkthroughMask.css';
+import './css/WalkthroughStep.css';
 
 ReactDOM.render(<Root />, document.getElementById('react-app'));

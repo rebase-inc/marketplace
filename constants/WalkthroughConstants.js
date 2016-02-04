@@ -1,5 +1,6 @@
 import keyMirror from 'keymirror';
 
+export const NEW_TICKETS = 'NEW_TICKETS';
 export const WORK_OFFERS = 'WORK_OFFERS';
 export const ONGOING_WORK = 'ONGOING_WORK';
 export const PAST_WORK = 'PAST_WORK';

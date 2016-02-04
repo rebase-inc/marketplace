@@ -10,6 +10,7 @@ import MainView from '../components/MainView.react';
 import RoleSelectionView from '../components/RoleSelectionView.react';
 
 import * as UserActions from '../actions/UserActions';
+import * as WalkthroughActions from '../actions/WalkthroughActions';
 
 const WalkthroughMask = () => <div className='walkthroughMask'/>;
 
@@ -19,7 +20,7 @@ class RebaseApp extends Component {
         this.props.actions.restoreSession();
     }
     render() {
-        const { user, roleID, walkthrough, view, views, roles, actions, githubAccounts } = this.props;
+        const { user, roleID, walkthrough, view, views, roles, actions, walkthroughActions, githubAccounts } = this.props;
         if (!user.email) {
             return <LoginDialog isLoading={user.isFetching} onLogin={actions.login} error={user.error} />
         } else if (!roleID) {
@@ -28,7 +29,7 @@ class RebaseApp extends Component {
             return (
                 <div id='app'>
                     { walkthrough.steps.length ? <WalkthroughMask /> : null }
-                    <MainHeader user={user} roles={roles} view={view} views={views} walkthrough={walkthrough} actions={actions}/>
+                    <MainHeader user={user} roles={roles} view={view} views={views} walkthrough={walkthrough} actions={actions} walkthroughActions={walkthroughActions} />
                     <ModalView user={user} role={roles.items.get(user.current_role.id)} />
                     <MainView view={view} user={user} roles={roles} actions={actions}/>
                 </div>
@@ -46,5 +47,8 @@ let mapStateToProps = state => ({
     walkthrough: state.walkthrough,
     githubAccounts: state.githubAccounts // need this to potentially import new projects in RoleSelectionView
 });
-let mapDispatchToProps = dispatch => ({ actions: bindActionCreators(UserActions, dispatch)});
+let mapDispatchToProps = dispatch => ({ 
+    actions: bindActionCreators(UserActions, dispatch), 
+    walkthroughActions: bindActionCreators(WalkthroughActions, dispatch),
+});
 export default connect(mapStateToProps, mapDispatchToProps)(RebaseApp);
