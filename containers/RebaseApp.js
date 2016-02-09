@@ -31,7 +31,7 @@ class RebaseApp extends Component {
                     { walkthrough.steps.length ? <WalkthroughMask /> : null }
                     <MainHeader user={user} roles={roles} view={view} views={views} walkthrough={walkthrough} actions={actions} walkthroughActions={walkthroughActions} />
                     <ModalView user={user} role={roles.items.get(user.current_role.id)} />
-                    <MainView view={view} user={user} roles={roles} actions={actions}/>
+                    <MainView view={view} user={user} roles={roles} actions={actions} walkthrough={walkthrough} walkthroughActions={walkthroughActions} />
                 </div>
             );
         }

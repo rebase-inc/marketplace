@@ -19,17 +19,14 @@ export default class MainView extends Component {
     }
 
     render() {
-        const { user, view, roles, actions } = this.props;
+        const { user, view, roles, actions, walkthrough, walkthroughActions } = this.props;
         const role = roles.items.get(user.current_role.id);
+        const props = { user, role, walkthrough, walkthroughActions, selectView: actions.selectView };
         switch (view.type) {
-            case NEW:
-                return <TicketView key='ticketView' user={user} role={role} selectView={actions.selectView} />; break;
-            case OFFERED:
-                return <AuctionView key='auctionView' user={user} role={role} selectView={actions.selectView} />; break;
-            case IN_PROGRESS:
-                return <ContractView user={user} role={role} selectView={actions.selectView} />; break;
-            case COMPLETED:
-                return <ReviewView user={user} role={role} selectView={actions.selectView} />; break;
+            case NEW: return <TicketView key='ticketView' {...props} />; break;
+            case OFFERED: return <AuctionView key='auctionView' {...props} />; break;
+            case IN_PROGRESS: return <ContractView {...props} />; break;
+            case COMPLETED: return <ReviewView {...props} />; break;
             case PROFILE:
                 return <ProfileView user={user}
                     roles={roles}

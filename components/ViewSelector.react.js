@@ -1,6 +1,8 @@
 import React, { Component, PropTypes } from 'react';
 import ReactDOM from 'react-dom';
 
+import WalkthroughStep from './WalkthroughStep.react';
+
 import Tooltip from 'rc-tooltip';
 
 import { NEW, OFFERED, IN_PROGRESS, COMPLETED } from '../constants/ViewConstants';
@@ -46,7 +48,7 @@ export class NewViewSelectoror extends Component {
         const tooltipVisible = walkthrough.steps[walkthrough.current] == WalkthroughConstants.NEW_TICKETS;
 
         return (
-            <Tooltip visible={tooltipVisible} overlay={<OfferedWorkWalkthrough {...walkthroughActions} />} placement='bottomLeft'>
+            <Tooltip visible={tooltipVisible} overlay={<WalkthroughStep {...walkthroughActions} first={true} />} placement='bottomLeft'>
                 <ViewSelection {...this.props} name='new'/>
             </Tooltip>
         );
@@ -64,9 +66,13 @@ export class OfferedViewSelector extends Component {
     render() {
         const { walkthrough, walkthroughActions, select, selected, role } = this.props
         const tooltipVisible = walkthrough.steps[walkthrough.current] == WalkthroughConstants.WORK_OFFERS;
-
+        const walkthroughProps = {
+            title: 'Your Work Offers',
+            description: 'Review and bid on work that has been offered to you.',
+            ...walkthroughActions
+        };
         return (
-            <Tooltip visible={tooltipVisible} overlay={<OfferedWorkWalkthrough {...walkthroughActions} />} placement='bottomLeft'>
+            <Tooltip visible={tooltipVisible} overlay={<WalkthroughStep {...walkthroughProps} first={role.type != 'manager'} />} placement='bottomLeft'>
                 <ViewSelection {...this.props} name={role.type == 'manager' ? 'auctions' : 'offered'}/>
             </Tooltip>
         );
@@ -82,11 +88,16 @@ export class InProgressViewSelector extends Component {
         role: PropTypes.object.isRequired,
     }
     render() {
-        const { walkthrough, walkthroughActions, select, selected, role } = this.props
-        const tooltipVisible = walkthrough.steps[walkthrough.current] == WalkthroughConstants.NEW_TICKETS;
+        const { walkthrough, walkthroughActions, select, selected, role } = this.props;
+        const tooltipVisible = walkthrough.steps[walkthrough.current] == WalkthroughConstants.ONGOING_WORK;
+        const walkthroughProps = {
+            title: 'Your Ongoing Work',
+            description: 'Review deadlines, budgets, technical details, fix issues, and ask questions about your ongoing work.',
+            ...walkthroughActions
+        };
 
         return (
-            <Tooltip visible={tooltipVisible} overlay={<OfferedWorkWalkthrough {...walkthroughActions} />} placement='bottomLeft'>
+            <Tooltip visible={tooltipVisible} overlay={<WalkthroughStep {...walkthroughProps} />} placement='bottomLeft'>
                 <ViewSelection {...this.props} name={'work'}/>
             </Tooltip>
         );
@@ -102,26 +113,19 @@ export class CompletedViewSelector extends Component {
         role: PropTypes.object.isRequired,
     }
     render() {
-        const { walkthrough, walkthroughActions, select, selected, role } = this.props
-        const tooltipVisible = walkthrough.steps[walkthrough.current] == WalkthroughConstants.NEW_TICKETS;
+        const { walkthrough, walkthroughActions, select, selected, role } = this.props;
+        const tooltipVisible = walkthrough.steps[walkthrough.current] == WalkthroughConstants.PAST_WORK;
+        const walkthroughProps = {
+            title: 'Your Completed Work',
+            description: 'Review past work and see how much you earned, what you did right, and what projects you worked on.',
+            ...walkthroughActions
+        };
 
         return (
-            <Tooltip visible={tooltipVisible} overlay={<OfferedWorkWalkthrough {...walkthroughActions} />} placement='bottomLeft'>
+            <Tooltip visible={tooltipVisible} overlay={<WalkthroughStep {...walkthroughProps} />} placement='bottomLeft'>
                 <ViewSelection {...this.props} name={role.type == 'manager' ? 'completed' : 'reviews'}/>
             </Tooltip>
         );
     }
 }
-
-export const OfferedWorkWalkthrough = (props) => (
-    <div className='walkthroughStep'>
-        <h3>Your Work Offers</h3>
-        <h4>Review and bid on work that has been offered to you.</h4>
-        <div className='buttons'>
-            <button data-quiet onClick={props.previousStep}>Back</button>
-            <button data-notification onClick={props.exit}>Exit</button>
-            <button data-okay onClick={props.nextStep}>Next</button>
-        </div>
-    </div>
-);
 

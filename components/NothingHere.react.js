@@ -14,9 +14,7 @@ export default class NothingHere extends Component {
                 <KeyboardGraphic />
                 <HeadphonesGraphic />
                 <div id='content'>
-                    <Tooltip placement="top" trigger={['click']} overlay={<span>tooltip</span>}>
-                        <a href='#'>hover</a>
-                    </Tooltip>
+                    { this.props.children }
                 </div>
            </div>
         );

@@ -27,13 +27,16 @@ export default class AuctionView extends Component {
         if (prevProps.user.current_role.id != this.props.user.current_role.id) {
             this.props.actions.getAuctions()
         }
+        if (this.props.auctions.items.size && !this.props.auctions.items.get(this.props.auctionID)) {
+            this.props.actions.selectAuction(this.props.auctions.items.first().id);
+        }
     }
     render() {
         const { auctionID, auctions, user, role, actions, selectView } = this.props;
-        const auction = auctions.items.size ? (auctions.items.get(auctionID) || auctions.items.first()).toJS() : null;
+        const auction = auctions.items.get(auctionID);
         return (
             <div className='mainView'>
-                <AuctionListView role={role} auction={auction} select={actions.selectAuction} selectView={selectView} auctions={auctions.items.toList().toJS()} loading={auctions.isFetching} />
+                <AuctionListView {...this.props} select={actions.selectAuction} auctions={auctions.items.toList().toJS()} loading={auctions.isFetching} />
                 { auction ? <SingleAuctionView auction={auction} actions={actions} role={role} user={user} /> : null }
             </div>
         );

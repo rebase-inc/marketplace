@@ -25,12 +25,12 @@ export default class AuctionListView extends Component {
         this.state = { searchText: '', sort: SortFunctions.get('ending soon') };
     }
     render() {
-        const { select, auction, auctions, loading, role, selectView } = this.props;
+        const { select, auction, auctions, loading, role, selectView, walkthrough, walkthroughActions } = this.props;
         const { searchText, sort } = this.state;
         let sortedAuctions = auctions.filter(_shouldBeVisible.bind(null, role)).sort(sort);
         const searchResults = !!searchText ? searchAuctions(sortedAuctions, searchText) : sortedAuctions.map(a => a.id);
         if (!sortedAuctions.length && loading) { return <LoadingAnimation />; }
-        if (!sortedAuctions.length) { return <NoAuctionsView role={role} selectView={selectView} /> }
+        if (!sortedAuctions.length) { return <NoAuctionsView role={role} selectView={selectView} walkthrough={walkthrough} walkthroughActions={walkthroughActions} /> }
         sortedAuctions = sortedAuctions.filter(a => searchResults.find(id => id == a.id));
         const sortFunctions = new Map([...SortFunctions, ...(role.type == 'manager' ? ManagerSortFunctions : DeveloperSortFunctions)]);
         return (

@@ -10,6 +10,12 @@ import { Logo, Dropdown } from './Icons.react';
 import { ViewTypes, ContractorViews, ManagerViews } from '../constants/ViewConstants';
 import { PROFILE, PROJECTS, DEVELOPER_PROFILE, BILLING_AND_PAYMENTS } from '../constants/ViewConstants';
 
+import WalkthroughStep from './WalkthroughStep.react';
+
+import * as WalkthroughConstants from '../constants/WalkthroughConstants';
+
+import Tooltip from 'rc-tooltip';
+
 export default class MainHeader extends Component {
     static propTypes = {
         user: PropTypes.object.isRequired,
@@ -33,7 +39,7 @@ export default class MainHeader extends Component {
             <div id='mainHeader' className='noselect'>
                 <ViewSelector views={Array.from(views.items.values())} selectView={actions.selectView} {...otherProps} />
                 <ProjectSelector user={user} role={user.current_role} selectRole={(role) => actions.selectRole(user, role.id)} roles={filteredRoles}/>
-                <ProfileOptions actions={actions} user={user} />
+                <ProfileOptions actions={actions} user={user} {...otherProps} />
             </div>
         );
     }
@@ -74,21 +80,42 @@ class ProfileOptions extends Component {
     }
 
     render() {
-        const { user, actions } = this.props;
+        const { user, actions, walkthrough, walkthroughActions } = this.props;
+        const walkthroughProps = { 
+            title: 'Your Profile', 
+            description: 'Manage all of your personal settings, including personal details, integrations, and banking information.',
+            walkthrough,
+            ...walkthroughActions,
+        };
+        const tooltipVisible = walkthrough.steps[walkthrough.current] == WalkthroughConstants.PROFILE;
         return (
-            <div id='profileOptions' onMouseEnter={this.open} onMouseLeave={this.close} data-open={this.state.open}>
-                <CurrentProfile user={user} />
-                { this.state.open ?
-                    <DropdownMenu>
-                        <div className='option' onClick={() => actions.selectView(PROFILE)}>Profile</div>
-                        <div className='option' onClick={() => actions.selectView(PROJECTS)}>Projects</div>
-                        <div className='option' onClick={() => actions.selectView(DEVELOPER_PROFILE)}>Developer Profile</div>
-                        <div className='option' onClick={actions.logout}>Sign Out</div>
-                    </DropdownMenu> : null }
-            </div>
+            <Tooltip visible={tooltipVisible} overlay={<WalkthroughStep {...walkthroughProps} />} placement='bottomLeft'>
+                <div id='profileOptions' onMouseEnter={this.open} onMouseLeave={this.close} data-open={this.state.open}>
+                    <CurrentProfile user={user} />
+                    { this.state.open ?
+                        <DropdownMenu>
+                            <div className='option' onClick={() => actions.selectView(PROFILE)}>Profile</div>
+                            <div className='option' onClick={() => actions.selectView(PROJECTS)}>Projects</div>
+                            <div className='option' onClick={() => actions.selectView(DEVELOPER_PROFILE)}>Developer Profile</div>
+                            <div className='option' onClick={actions.logout}>Sign Out</div>
+                        </DropdownMenu> : null }
+                </div>
+            </Tooltip>
        );
     }
 }
+
+export const ProfileWalkthrough = (props) => (
+    <div className='walkthroughStep'>
+        <h3>Your Profile</h3>
+        <h4>Manage all of your personal settings, including personal details, integrations, and banking information.</h4>
+        <div className='buttons'>
+            <button data-quiet onClick={props.previousStep}>Back</button>
+            <button data-notification onClick={props.exit}>Exit</button>
+            <button data-okay onClick={props.nextStep}>Next</button>
+        </div>
+    </div>
+);
 
 class CurrentProfile extends Component {
     static propTypes = {
