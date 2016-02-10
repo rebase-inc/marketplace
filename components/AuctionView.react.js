@@ -7,7 +7,6 @@ import { NEW } from '../constants/ViewConstants';
 
 import SingleAuctionView from './SingleAuctionView.react';
 import AuctionListView from './AuctionListView.react';
-import NothingHere from './NothingHere.react';
 
 export default class AuctionView extends Component {
     static propTypes = {

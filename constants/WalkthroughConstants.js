@@ -16,4 +16,10 @@ export const CONTRACTOR_WALKTHROUGH = [
 ]
 
 export const MANAGER_WALKTHROUGH = [
+    NEW_TICKETS,
+    WORK_OFFERS,
+    ONGOING_WORK,
+    PAST_WORK,
+    PROFILE,
+    CURRENT_VIEW,
 ]

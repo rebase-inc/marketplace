@@ -9,6 +9,11 @@ import DropdownIcon from './DropdownIcon.react';
 import NoTicketsView from './NoTicketsView.react';
 import LoadingAnimation from './LoadingAnimation.react';
 
+import Tooltip from 'rc-tooltip';
+
+import * as WalkthroughConstants from '../constants/WalkthroughConstants';
+import WalkthroughStep from './WalkthroughStep.react';
+
 export default class TicketListView extends Component {
     static propTypes = {
         select: PropTypes.func.isRequired,
@@ -20,10 +25,17 @@ export default class TicketListView extends Component {
         this.state = { searchText: '', sort: SortFunctions.get('newest'), open: false };
     }
     render() {
-        const { select, createTicket, ticket, tickets, loading, role, actions } = this.props;
+        const { select, createTicket, ticket, tickets, loading, role, actions, walkthrough, walkthroughActions } = this.props;
         const { searchText, sort } = this.state;
         const searchResults = !!searchText ? searchTickets(tickets, searchText) : tickets.map(t => t.id);
         const sortedTickets = tickets.sort(sort).filter(t => searchResults.find(id => id == t.id));
+        const tooltipVisible = walkthrough.steps[walkthrough.current] == WalkthroughConstants.CURRENT_VIEW;
+        const walkthroughProps = {
+            title: 'You don\'t have any offered tickets',
+            description: 'You can either check back in a few hours, or try out a sample piece of work for a $20 credit.',
+            ...walkthroughActions
+        };
+
         if (!tickets.length && loading) { return <LoadingAnimation />; }
         if (!tickets.length) { return <NoTicketsView role={role} />; }
         return (
@@ -41,9 +53,11 @@ export default class TicketListView extends Component {
                             sort={sort} onMouseLeave={() => this.setState({ open: false })}/> : null }
                     {/*<span onClick={createTicket} className='extra'>{'Create New Ticket'}</span>*/}
                 </div>
-                <div className='contentList'>
-                    { sortedTickets.map(t => <Ticket ticket={t} selected={ticket.id == t.id} select={() => select(t.id)} key={t.id} />) }
-                </div>
+                <Tooltip visible={tooltipVisible} overlay={<WalkthroughStep {...walkthroughProps} last={true} />} placement='right'>
+                    <div className='contentList'>
+                        { sortedTickets.map(t => <Ticket ticket={t} selected={ticket.id == t.id} select={() => select(t.id)} key={t.id} />) }
+                    </div>
+                </Tooltip>
             </div>
         );
     }

@@ -28,13 +28,16 @@ export default class TicketView extends Component {
         if (prevProps.user.current_role.id != this.props.user.current_role.id) {
             this.props.actions.getTickets()
         }
+        if (this.props.tickets.items.size && !this.props.tickets.items.get(this.props.ticketID)) {
+            this.props.actions.selectTicket(this.props.tickets.items.first().id);
+        }
     }
     render() {
         const { ticketID, tickets, user, role, actions } = this.props;
         const ticket = tickets.items.size ? (tickets.items.get(ticketID) || tickets.items.first()).toJS() : null;
         return (
             <div className='mainView'>
-                <TicketListView createTicket={actions.openNewTicketModal} select={actions.selectTicket} ticket={ticket} tickets={tickets.items.toList().toJS()} loading={tickets.isFetching} />
+                <TicketListView {...this.props} ticket={ticket} createTicket={actions.openNewTicketModal} select={actions.selectTicket} tickets={tickets.items.toList().toJS()} loading={tickets.isFetching} />
                 { ticket ? <SingleTicketView ticket={ticket} actions={actions} role={role} user={user} /> : null }
             </div>
         );
