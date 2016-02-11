@@ -26,7 +26,6 @@ import './css/InfoHeader.css';
 import './css/SearchBar.css';
 import './css/Contract.css';
 import './css/Review.css';
-import './css/Ticket.css';
 import './css/Auction.css';
 import './css/WorkStatus.css';
 import './css/ProjectSelectionView.css';
@@ -36,5 +35,8 @@ import 'rc-tooltip/assets/bootstrap.css';
 import './css/Tooltip.css';
 import './css/WalkthroughMask.css';
 import './css/WalkthroughStep.css';
+import './css/ListTitleBar.css';
+import './css/ListView.css';
+import './css/ListElement.css';
 
 ReactDOM.render(<Root />, document.getElementById('react-app'));

@@ -1,0 +1,91 @@
+.listElement {
+    width: 100%;
+    box-sizing: border-box;
+    overflow-y: auto;
+    overflow-x: hidden;
+    font-size: 12px;
+    padding: 10px;
+    cursor: default;
+    height: 70px;
+    position: relative;
+}
+.listElement:before {
+    content: '';
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    height: 1px;
+    width: calc(100% - 40px);
+    border-bottom: 1px solid hsla(199, 28%, 92%, 1);
+}
+
+.listElement[data-selected] {
+    background-color: #EDF2F7;
+}
+
+.listElement > div {
+    display: inline-block;
+    box-sizing: border-box;
+    float: left;
+    height: 100%;
+    padding: 5px;
+}
+
+.listElement > div.icon { width: 50px; }
+.listElement > div.mainInfo { width: calc(100% - 120px); }
+.listElement > div.extraInfo { width: 70px; }
+
+.listElement > div.icon > * {
+    width: 100%;
+    height: 100%;
+}
+
+.listElement > div.mainInfo > *:first-child {
+    height: 20px;
+    line-height: 20px;
+    font-size: 12px;
+    font-weight: bold;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: block;
+}
+
+.listElement > div.extraInfo > *:first-child {
+    height: 20px;
+    line-height: 20px;
+    font-size: 12px;
+    font-weight: bold;
+    display: block;
+    text-align: right;
+}
+
+.listElement > div.extraInfo > *:last-child {
+    height: 20px;
+    line-height: 20px;
+    font-size: 12px;
+    display: block;
+    opacity: 0;
+}
+.listElement:hover > div.extraInfo > *:last-child {
+    opacity: 0.4;
+}
+
+.listElement > div.extraInfo > *:last-child > * { 
+    box-sizing: border-box;
+    height: 20px;
+    padding-top: 4px;
+    padding-bottom: 4px;
+    line-height: 12px;
+    float: right;
+    fill: hsla(215, 41%, 29%, 1);
+    color: hsla(215, 41%, 29%, 1);
+}
+
+.listElement:hover > div.extraInfo > *:first-child {
+    height: 20px;
+    line-height: 20px;
+    font-size: 12px;
+    font-weight: bold;
+    display: block;
+}

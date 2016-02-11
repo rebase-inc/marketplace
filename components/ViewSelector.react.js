@@ -44,11 +44,16 @@ export class NewViewSelectoror extends Component {
     render() {
         const { walkthrough, walkthroughActions, select, selected, role } = this.props
         if ( role.type != 'manager' ) { return null; } // manager only view
+        const walkthroughProps = {
+            title: 'Your Tickets',
+            description: 'Review all of the tickets you\'ve created or imported from other sites and find people to work on them.',
+            ...walkthroughActions
+        };
 
         const tooltipVisible = walkthrough.steps[walkthrough.current] == WalkthroughConstants.NEW_TICKETS;
 
         return (
-            <Tooltip visible={tooltipVisible} overlay={<WalkthroughStep {...walkthroughActions} first={true} />} placement='bottomLeft'>
+            <Tooltip visible={tooltipVisible} overlay={<WalkthroughStep {...walkthroughProps} first={true} />} placement='bottomLeft'>
                 <ViewSelection {...this.props} name='new'/>
             </Tooltip>
         );

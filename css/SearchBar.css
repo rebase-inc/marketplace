@@ -5,10 +5,9 @@
 
 .searchBar input {
     box-sizing: border-box;
-    width: calc(100% - 40px);
+    width: calc(100% - 30px);
     height: 24px;
-    margin: 20px;
-    margin-top: 10px;
+    margin: 15px;
     background-color: #EBEDF0;
     border-radius: 4px;
     border: none;

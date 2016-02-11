@@ -12,51 +12,6 @@
     width: 100%;
 }
 
-.listView {
-    float: left;
-    display: inline-block;
-    height: 100%;
-    width: 37%;
-}
-
-.listView > .info {
-    display: block;
-    text-align: center;
-    font-size: 16px;
-    padding: 20px;
-    padding-top: 0;
-    position: relative;
-}
-
-.listView > .info > *:not(.sortOptions) {
-    vertical-align: middle;
-    display: inline;
-    height: 20px;
-    line-height: 20px;
-    margin-left: 2px;
-    margin-right: 2px;
-}
-
-.listView > .info > span:last-child {
-    display: block;
-    font-size: 10px;
-    opacity: 0.5;
-    cursor: default;
-    height: 12px;
-}
-
-.listView > .info > span:last-child:hover {
-    opacity: 1;
-}
-
-.listView > .info .dropdownMenu > .arrowUp {
-    border-color: transparent transparent transparent;
-}
-.listView > .info > svg[data-selected] rect,
-.listView > .info > svg:hover rect {
-    fill: #DADEE6;
-}
-
 .singleView {
     float: left;
     display: inline-block;

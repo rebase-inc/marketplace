@@ -31,8 +31,8 @@ export default class TicketListView extends Component {
         const sortedTickets = tickets.sort(sort).filter(t => searchResults.find(id => id == t.id));
         const tooltipVisible = walkthrough.steps[walkthrough.current] == WalkthroughConstants.CURRENT_VIEW;
         const walkthroughProps = {
-            title: 'You don\'t have any offered tickets',
-            description: 'You can either check back in a few hours, or try out a sample piece of work for a $20 credit.',
+            title: 'Your New Tickets',
+            description: 'A list of all of the tickets in this project with information about their technology requirements.',
             ...walkthroughActions
         };
 
@@ -53,7 +53,7 @@ export default class TicketListView extends Component {
                             sort={sort} onMouseLeave={() => this.setState({ open: false })}/> : null }
                     {/*<span onClick={createTicket} className='extra'>{'Create New Ticket'}</span>*/}
                 </div>
-                <Tooltip visible={tooltipVisible} overlay={<WalkthroughStep {...walkthroughProps} last={true} />} placement='right'>
+                <Tooltip visible={tooltipVisible} overlay={<WalkthroughStep {...walkthroughProps} last={true} />} placement='rightTop'>
                     <div className='contentList'>
                         { sortedTickets.map(t => <Ticket ticket={t} selected={ticket.id == t.id} select={() => select(t.id)} key={t.id} />) }
                     </div>
