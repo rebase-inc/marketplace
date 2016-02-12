@@ -16,6 +16,10 @@ input:focus, select:focus, textarea:focus, button:focus {
     outline: none;
 }
 
+svg.findTalent:hover g {
+    fill: #5FC0AA;
+}
+
 .keyboard path:not(.background):hover {
     fill: #F0F3F5;
 }

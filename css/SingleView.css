@@ -1,0 +1,15 @@
+.singleView {
+    float: left;
+    display: inline-block;
+    height: 100%;
+    box-sizing: border-box;
+    width: 63%;
+    border-left: 1px solid #D3E0E6;
+    -webkit-transform: translate3d(0,0,0); /*force hardware acceleration to get around chrome rendering bug*/
+}
+
+.singleView > .scrollable {
+    height: calc(100% - 50px);
+    overflow-y: auto;
+}
+

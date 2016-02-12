@@ -34,3 +34,11 @@
     fill: #DADEE6;
 }
 
+.listView > .listTitleBar {
+    height: 50px;
+}
+
+.listView > .scrollable {
+    height: calc(100% - 50px);
+    overflow-y: auto;
+}

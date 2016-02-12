@@ -1,42 +1,33 @@
-import Immutable from 'immutable';
 import React, { Component, PropTypes } from 'react';
 
+// Redux imports
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import SingleTicketView from './SingleTicketView.react';
-import ListTitleBar from './ListTitleBar.react';
-import ListElement from './ListElement.react';
-
-import RoundIcon from './RoundIcon.react';
-import GithubIcon from './GithubIcon.react';
+// External imports
 import Tooltip from 'rc-tooltip';
-import WalkthroughStep from './WalkthroughStep.react';
 
+// Project Component Imports
+import SingleTicketView from './SingleTicketView.react';
+import WalkthroughStep from './WalkthroughStep.react';
+import ListTitleBar from './ListTitleBar.react';
 import SearchBar from './SearchBar.react';
+import Ticket from './Ticket.react';
+
+// Project Action Imports
 import * as TicketActions from '../actions/TicketActions';
 import * as WalkthroughActions from '../actions/WalkthroughActions';
 
+// Project Constant Imports
 import { CURRENT_VIEW } from '../constants/WalkthroughConstants';
 
-const Ticket = (props) => (
-    <ListElement {...props} date={props.created}
-        icon={props.discriminator == 'github_ticket' ? <GithubIcon /> : <RoundIcon />}
-        subtitle={ Object.keys(props.skill_requirement.skills).join(' ') } />
-);
-
-const TicketViewWalkthrough = (props) => (
-    <WalkthroughStep {...props}
-        title={'Your New Tickets'} 
-        description={'A list of all of the tickets in this project with information about their technology requirements.'} />
-);
-
+// TODO: Handle ticket lifecycle with a higher order component
 class TicketView extends Component {
     static propTypes = {
         searchText: PropTypes.string,
         updateSearchText: PropTypes.func,
         user: PropTypes.object.isRequired,
-        tickets: PropTypes.instanceOf(Immutable.Record).isRequired,
+        tickets: PropTypes.array.isRequired,
     }
     constructor(props, context) {
         super(props, context);
@@ -44,13 +35,16 @@ class TicketView extends Component {
         this.componentDidUpdate = this.componentDidUpdate.bind(this);
     }
     componentDidMount() {
-        console.log('actions are ', this.props.actions);
         this.props.actions.getTickets()
     }
     componentDidUpdate(prevProps) {
+        // If the role has changed, we want to make sure to get the new role's tickets
         if (prevProps.user.current_role.id != this.props.user.current_role.id) {
             this.props.actions.getTickets()
         }
+
+        // If a ticket hasn't been selected by the user, we'll select the first available
+        // just so that we have something to render
         if (this.props.tickets.length && !this.props.ticket) {
             this.props.actions.selectTicket(this.props.tickets[0].id);
         }
@@ -64,8 +58,10 @@ class TicketView extends Component {
                         <ListTitleBar title={'All Tickets'}>
                             {/*<RebaseIcon />*/}
                         </ListTitleBar>
-                        <SearchBar searchText={searchText} onChange={updateSearchText} />
-                        { tickets.map(t => <Ticket {...t} handleClick={actions.selectTicket.bind(null, t.id)} selected={t.id == ticket.id} />) }
+                        <div className='scrollable'>
+                            <SearchBar searchText={searchText} onChange={updateSearchText} />
+                            { tickets.map(t => <Ticket {...t} handleClick={actions.selectTicket.bind(null, t.id)} selected={t.id == ticket.id} />) }
+                        </div>
                     </div>
                 </Tooltip>
                 { ticket ? <SingleTicketView ticket={ticket} actions={actions} role={role} user={user} /> : null }
@@ -74,14 +70,20 @@ class TicketView extends Component {
     }
 }
 
+const TicketViewWalkthrough = (props) => (
+    <WalkthroughStep {...props}
+        title={'Your New Tickets'}
+        description={'A list of all of the tickets in this project with information about their technology requirements.'} />
+);
+
 let mapStateToProps = state => ({
     tickets: state.tickets.items.toList().toJS(),
     ticket: state.ticketID ? state.tickets.items.get(state.ticketID).toJS() : null,
     walkthrough: state.walkthrough.steps[state.walkthrough.current],
 });
-let mapDispatchToProps = dispatch => ({ 
-    actions: Object.assign({}, 
-               bindActionCreators(TicketActions, dispatch), 
-               bindActionCreators(WalkthroughActions, dispatch)) 
-}) 
+let mapDispatchToProps = dispatch => ({
+    actions: Object.assign({},
+               bindActionCreators(TicketActions, dispatch),
+               bindActionCreators(WalkthroughActions, dispatch))
+})
 export default connect(mapStateToProps, mapDispatchToProps)(TicketView);

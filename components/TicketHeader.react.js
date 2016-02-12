@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 
 import TicketTimeline from './TicketTimeline.react';
+import FindTalentIcon from './FindTalentIcon.react';
 
 export default class TicketHeader extends Component {
     static propTypes = {
@@ -18,12 +19,14 @@ export default class TicketHeader extends Component {
         const { ticket, openNewAuctionModal, role  } = this.props;
         return (
             <div className='infoHeader'>
+                <div className='tool'>
+                    {/*<TicketTimeline role={role} current={'create'} />*/}
+                </div> 
                 <div className='mainInfo'>
-                    <span className='title'>{ticket.title}</span>
-                    <button onClick={openNewAuctionModal}>Find Developers</button>
+                    {ticket.title}
                 </div>
-                <div className='otherInfo'>
-                    <TicketTimeline role={role} current={'create'} />
+                <div className='tool'>
+                    <FindTalentIcon onClick={openNewAuctionModal} i/>
                 </div>
             </div>
         )

@@ -12,17 +12,6 @@
     width: 100%;
 }
 
-.singleView {
-    float: left;
-    display: inline-block;
-    height: 100%;
-    box-sizing: border-box;
-    width: 63%;
-    border-left: 1px solid #D3E0E6;
-    overflow: auto;
-    -webkit-transform: translate3d(0,0,0); /*force hardware acceleration to get around chrome rendering bug*/
-}
-
 .contentList {
     height: calc(100% - 64px);
     padding-bottom: 40px;

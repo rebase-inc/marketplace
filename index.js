@@ -37,6 +37,7 @@ import './css/WalkthroughMask.css';
 import './css/WalkthroughStep.css';
 import './css/ListTitleBar.css';
 import './css/ListView.css';
+import './css/SingleView.css';
 import './css/ListElement.css';
 
 ReactDOM.render(<Root />, document.getElementById('react-app'));
