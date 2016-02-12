@@ -20,6 +20,11 @@ svg.findTalent:hover g {
     fill: #5FC0AA;
 }
 
+svg.sort:hover g {
+    stroke: #5FC0AA;
+}
+
+
 .keyboard path:not(.background):hover {
     fill: #F0F3F5;
 }

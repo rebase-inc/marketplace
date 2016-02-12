@@ -10,6 +10,7 @@
     padding: 10px;
     border-bottom: 1px solid hsla(199, 28%, 92%, 1);
     position: relative;
+    overflow: hidden;
 }
 
 .infoHeader > .tool {

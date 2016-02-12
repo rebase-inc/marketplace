@@ -16,6 +16,12 @@
     height: 30px;
     width: 30px;
 }
+.listTitleBar > .tool > svg {
+    box-sizing: border-box;
+    padding: 3px;
+    float: right;
+    height: 100%;
+}
 
 .listTitleBar > .tool:first-of-type {
     float: left;

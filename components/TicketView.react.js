@@ -13,6 +13,7 @@ import WalkthroughStep from './WalkthroughStep.react';
 import ListTitleBar from './ListTitleBar.react';
 import SearchBar from './SearchBar.react';
 import Ticket from './Ticket.react';
+import SortIcon from './SortIcon.react';
 
 // Project Action Imports
 import * as TicketActions from '../actions/TicketActions';
@@ -20,6 +21,7 @@ import * as WalkthroughActions from '../actions/WalkthroughActions';
 
 // Project Constant Imports
 import { CURRENT_VIEW } from '../constants/WalkthroughConstants';
+import { NEWEST, OLDEST } from '../utils/sort';
 
 // TODO: Handle ticket lifecycle with a higher order component
 class TicketView extends Component {
@@ -33,6 +35,7 @@ class TicketView extends Component {
         super(props, context);
         this.componentDidMount = this.componentDidMount.bind(this);
         this.componentDidUpdate = this.componentDidUpdate.bind(this);
+        this.state = { sort: NEWEST };
     }
     componentDidMount() {
         this.props.actions.getTickets()
@@ -56,11 +59,11 @@ class TicketView extends Component {
                 <Tooltip visible={walkthrough == CURRENT_VIEW} overlay={<TicketViewWalkthrough {...actions} last={true} />} placement='right'>
                     <div className='listView noselect'>
                         <ListTitleBar title={'All Tickets'}>
-                            {/*<RebaseIcon />*/}
+                            <SortIcon onClick={() => this.setState((s) => ({ sort: s.sort == NEWEST ? OLDEST : NEWEST }))}/>
                         </ListTitleBar>
                         <div className='scrollable'>
                             <SearchBar searchText={searchText} onChange={updateSearchText} />
-                            { tickets.map(t => <Ticket {...t} handleClick={actions.selectTicket.bind(null, t.id)} selected={t.id == ticket.id} />) }
+                            { tickets.sort(this.state.sort).map(t => <Ticket {...t} handleClick={actions.selectTicket.bind(null, t.id)} selected={t.id == ticket.id} />) }
                         </div>
                     </div>
                 </Tooltip>
