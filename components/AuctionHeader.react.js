@@ -16,13 +16,15 @@ export default class AuctionHeader extends Component {
         const buttonString = role.type == 'contractor' ? 'Bid Now' : (showTalent ? 'View Ticket Details' : 'View Suggested Developers');
         return (
             <div className='infoHeader'>
+                <div className='tool'>
+                    {/*<TicketTimeline role={role} current={'auction'} />*/}
+                </div>
                 <div className='mainInfo'>
                     <span className='title'>{getAuctionTicket(auction).title}</span>
-                    { role.type == 'manager' ? <span className='extra'>{'Offered to developers for a maximum of $' + auction.ticket_set.bid_limits[0].price}</span> : null }
-                    <button onClick={clickHandler}>{buttonString}</button>
+                    {/*<button onClick={clickHandler}>{buttonString}</button>*/}
                 </div>
-                <div className='otherInfo'>
-                    <TicketTimeline role={role} current={'auction'} />
+                <div className='tool'>
+                    {/*<TicketTimeline role={role} current={'auction'} />*/}
                 </div>
             </div>
         )

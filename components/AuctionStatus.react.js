@@ -12,14 +12,14 @@ export default class AuctionStatus extends Component {
         const overbid = this.props.bids.filter(b => !b.contract).length;
         const approved = this.props.approved_talents.length - overbid;
         const suggested = this.props.ticket_set.nominations.filter(n => !this.props.approved_talents.find(t => t.contractor.id == n.contractor.id)).length;
-        const total = overbid + approved + suggested;
+        const total = 1.02 * (overbid + approved + suggested); // factor of 1.02 is to make sure start and end points aren't the same
 
         const xStart = 50;
         const yStart = 4;
-        
+
         const xEndOverbid = 50 + xValue(overbid / total);
         const yEndOverbid = 50 - yValue(overbid / total);
-        
+
         const xEndApproved = 50 + xValue((overbid + approved) / total);
         const yEndApproved = 50 - yValue((overbid + approved) / total);
 
@@ -30,11 +30,11 @@ export default class AuctionStatus extends Component {
         return (
             <svg width='100px' height='100px' viewBox='0 0 100 100'>
                 <circle fill='none' stroke='#E5EDF1' strokeWidth='8' cx='50' cy='50' r='46'></circle>
-                <path id='overbid' fill='none' stroke={'#CC6070'} strokeWidth='8' 
+                <path id='overbid' fill='none' stroke={'#CC6070'} strokeWidth='8'
                     d={'M' + xStart + ' ' + yStart + ' A 46 46 1 ' + overbidLargeArc + ' 1 ' + xEndOverbid + ' ' + yEndOverbid}/>
-                <path id='approved' fill='none' stroke={'#546C8A'} strokeWidth='8' 
+                <path id='approved' fill='none' stroke={'#546C8A'} strokeWidth='8'
                     d={'M' + xEndOverbid + ' ' + yEndOverbid + ' A 46 46 1 ' + approvedLargeArc + ' 1 ' + xEndApproved + ' ' + yEndApproved}/>
-                <path id='suggested' fill='none' stroke={'#E5EDF1'} strokeWidth='8' 
+                <path id='suggested' fill='none' stroke={'#E5EDF1'} strokeWidth='8'
                     d={'M' + xEndApproved + ' ' + yEndApproved + ' A 46 46 1 ' + suggestedLargeArc + ' 1 ' + xStart + ' ' + yStart}/>
             </svg>
         );
