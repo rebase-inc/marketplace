@@ -4,16 +4,42 @@ import ListElement from './ListElement.react';
 import ScoredProfilePicture from './ScoredProfilePicture.react';
 import RatingStars from './RatingStars.react';
 import ApproveIcon from './ApproveIcon.react';
+import UndoIcon from './UndoIcon.react';
 
-const Talent = (props) => (
-    <ListElement 
-        className={'talent'}
-        title={props.nomination.contractor.user.name}
-        subtitle={ Object.keys(props.nomination.contractor.skill_set.skills).join(' ') }
-        date={<RatingStars rating={props.nomination.contractor.rating ? props.nomination.contractor.rating / 2 : 3.5} />}
-        icon={<ScoredProfilePicture user={props.nomination.contractor.user} score={props.nomination.job_fit ? props.nomination.job_fit.score : null} />}
-        hidden={<ApproveIcon onClick={props.approve} />}
-        />
-);
+function isUnapproved(auction, nomination) {
+    return (auction.approved_talents.every(t => t.contractor.id != nomination.contractor.id));
+}
 
-export default Talent;
+function isWaitingForResponse(auction, nomination) {
+    return (auction.bids.every(bid => bid.contractor.id != nomination.contractor.id));
+}
+
+function isRejected(auction, nomination) {
+    return (auction.bids.some(bid => bid.contractor.id == nomination.contractor.id && bid.contract));
+}
+
+export default class Talent extends Component {
+    render() {
+        const { nomination, auction, approve } = this.props;
+        let hiddenIcon;
+        if (isUnapproved(auction, nomination)) {
+            hiddenIcon = <ApproveIcon onClick={approve} />;
+        } else if (isWaitingForResponse(auction, nomination)) {
+            hiddenIcon = <UndoIcon onClick={() => console.warn('Not yet implemented!!')} />;
+        } else if (isRejected(auction, nomination)) {
+            hiddenIcon = null;
+        } else {
+           hiddenIcon = null;
+        }
+        return (
+            <ListElement
+                className={'talent'}
+                title={nomination.contractor.user.name}
+                subtitle={ Object.keys(nomination.contractor.skill_set.skills).join(' ') }
+                date={<RatingStars rating={nomination.contractor.rating ? nomination.contractor.rating / 2 : 3.5} />}
+                icon={<ScoredProfilePicture user={nomination.contractor.user} score={nomination.job_fit ? nomination.job_fit.score : null} />}
+                hidden={hiddenIcon}
+                />
+        );
+    }
+}

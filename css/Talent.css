@@ -6,8 +6,12 @@
     padding-top: 15px;
 }
 
-.talent.listElement > .hidden > svg:hover > g {
-    fill: #40B89E; 
+.talent.listElement > .hidden > svg.approve:hover > g {
+    fill: #40B89E;
+}
+
+.talent.listElement > .hidden > svg.undo:hover > g {
+    fill: #CC6070;
 }
 
 .talent.listElement:hover .profilePicture > .picture {
@@ -16,4 +20,4 @@
 
 .talent.listElement:hover .profilePicture > .picture {
    opacity: 0;
-} 
+}
