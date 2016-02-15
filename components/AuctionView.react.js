@@ -10,7 +10,6 @@ import SingleAuctionView from './SingleAuctionView.react';
 import SortIcon from './SortIcon.react';
 import SearchBar from './SearchBar.react';
 import ListTitleBar from './ListTitleBar.react';
-import AuctionListView from './AuctionListView.react';
 import NoAuctionsView from './NoAuctionsView.react';
 import Auction from './Auction.react';
 
