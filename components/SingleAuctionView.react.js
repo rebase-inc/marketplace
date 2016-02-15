@@ -51,11 +51,15 @@ export default class SingleAuctionView extends Component {
                     toggleTalentView={() => this.setState({ showTalent: !showTalent })}
                     showTalent={showTalent}
                     openBidModal={actions.openBidModal} />
-                { this.state.showTalent ?
-                    sortedNominations.map(n => <Talent auction={auction} nomination={n} key={n.id} approve={() => actions.approveNomination(auction, n)}/>) : null }
-                { !this.state.showTalent ?
-                    ticket.comments.map( comment => <Comment comment={comment} key={comment.id} /> ) : null }
-                { !this.state.showTalent ? <CommentBox submit={actions.commentOnAuction.bind(null, user, ticket)}/> : null }
+                <div className='content'>
+                    <div className='scrollable'>
+                        { ticket.comments.map( comment => <Comment comment={comment} key={comment.id} /> ) }
+                        <CommentBox submit={actions.commentOnAuction.bind(null, user, ticket)}/>
+                    </div>
+                    <div className='scrollable talentList'>
+                        { sortedNominations.map(n => <Talent auction={auction} nomination={n} key={n.id} approve={() => actions.approveNomination(auction, n)}/>) }
+                    </div>
+                </div>
             </div>
         );
     }

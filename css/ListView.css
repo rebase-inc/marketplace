@@ -2,7 +2,7 @@
     float: left;
     display: inline-block;
     height: 100%;
-    width: 37%;
+    width: 33.4%;
 }
 
 .listView > .info > *:not(.sortOptions) {

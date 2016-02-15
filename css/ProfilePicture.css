@@ -1,0 +1,7 @@
+.profilePicture > .picture {
+    transition: 300ms opacity;
+}
+
+.profilePicture:hover > .picture {
+   opacity: 0;
+} 

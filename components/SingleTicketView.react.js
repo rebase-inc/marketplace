@@ -42,9 +42,11 @@ export default class SingleTicketView extends Component {
         return (
             <div className='singleView'>
                 <TicketHeader openNewAuctionModal={actions.openNewAuctionModal} ticket={ticket} role={role} />
-                <div className='scrollable'>
-                    { ticket.comments.map( comment => <Comment comment={comment} key={comment.id} /> ) }
-                    <CommentBox submit={actions.commentOnTicket.bind(null, user, ticket)}/>
+                <div className='content'>
+                    <div className='scrollable'>
+                        { ticket.comments.map( comment => <Comment comment={comment} key={comment.id} /> ) }
+                        <CommentBox submit={actions.commentOnTicket.bind(null, user, ticket)}/>
+                    </div>
                 </div>
             </div>
         );

@@ -21,7 +21,7 @@ export default class TicketHeader extends Component {
             <div className='infoHeader'>
                 <div className='tool'>
                     {/*<TicketTimeline role={role} current={'create'} />*/}
-                </div> 
+                </div>
                 <div className='mainInfo'>
                     {ticket.title}
                 </div>

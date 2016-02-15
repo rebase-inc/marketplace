@@ -34,9 +34,9 @@ export function humanReadableTimeRemaining(isoDate) {
     if (days > 1) {
         return days + ' days';
     } else if (hours > 1) {
-        return (24 * days + hours) + ' hours';
+        return (24 * days + hours) + ' hrs';
     } else if (minutes > 1) {
-        return (60 * hours + minutes) + ' minutes';
+        return (60 * hours + minutes) + ' mins';
     } else {
         return 'expired';
     }

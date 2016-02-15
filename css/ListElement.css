@@ -1,14 +1,14 @@
 .listElement {
     width: 100%;
     box-sizing: border-box;
-    overflow-y: auto;
-    overflow-x: hidden;
+    overflow: hidden;
     font-size: 12px;
     padding: 5px;
     cursor: default;
     height: 70px;
     position: relative;
 }
+
 .listElement:before {
     content: '';
     position: absolute;
@@ -35,7 +35,7 @@
 .listElement > div.mainInfo { width: calc(100% - 130px); }
 .listElement > div.extraInfo { width: 70px; }
 
-.listElement > div.icon > * {
+.listElement > div.icon svg {
     width: 100%;
     height: 100%;
 }

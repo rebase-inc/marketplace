@@ -39,5 +39,6 @@ import './css/ListTitleBar.css';
 import './css/ListView.css';
 import './css/SingleView.css';
 import './css/ListElement.css';
+import './css/ProfilePicture.css';
 
 ReactDOM.render(<Root />, document.getElementById('react-app'));
