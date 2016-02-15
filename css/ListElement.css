@@ -74,6 +74,7 @@
     opacity: 0.4;
 }
 
+.listElement > div.extraInfo > *:last-child,
 .listElement > div.extraInfo > *:last-child > * { 
     box-sizing: border-box;
     height: 20px;
