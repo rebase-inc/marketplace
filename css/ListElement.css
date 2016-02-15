@@ -4,7 +4,7 @@
     overflow-y: auto;
     overflow-x: hidden;
     font-size: 12px;
-    padding: 10px;
+    padding: 5px;
     cursor: default;
     height: 70px;
     position: relative;
@@ -31,8 +31,8 @@
     padding: 5px;
 }
 
-.listElement > div.icon { width: 50px; }
-.listElement > div.mainInfo { width: calc(100% - 120px); }
+.listElement > div.icon { width: 60px; }
+.listElement > div.mainInfo { width: calc(100% - 130px); }
 .listElement > div.extraInfo { width: 70px; }
 
 .listElement > div.icon > * {
@@ -49,6 +49,9 @@
     overflow: hidden;
     text-overflow: ellipsis;
     display: block;
+}
+.listElement > div.mainInfo > *:last-child {
+    opacity: 0.6;
 }
 
 .listElement > div.extraInfo > *:first-child {
