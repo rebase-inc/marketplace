@@ -1,12 +1,11 @@
 import React, { Component, PropTypes } from 'react';
 
-import { FindTalentOverview, Timer } from './Icons.react';
 import ListElement from './ListElement.react';
 
 import { getAuctionTicket } from '../utils/getters';
 import { humanReadableTimeRemaining } from '../utils/date';
 
-import RoundIcon from './RoundIcon.react';
+import AuctionStatus from './AuctionStatus.react';
 
 const CommentDetails = (props) => (
     <div>
@@ -16,8 +15,9 @@ const CommentDetails = (props) => (
 );
 
 const Auction = (props) => (
-    <ListElement {...getAuctionTicket(props)} date={humanReadableTimeRemaining(props.expires)}
-        icon={<RoundIcon/>}
+    <ListElement {...getAuctionTicket(props)} {...props} 
+        date={humanReadableTimeRemaining(props.expires)}
+        icon={<AuctionStatus {...props}/>}
         subtitle={ Object.keys(getAuctionTicket(props).skill_requirement.skills).join(' ') }
         extra={ props.role.type == 'manager' ?  <span>{'$' + props.ticket_set.bid_limits[0].price}</span> : <CommentDetails {...props.ticket} /> }
         />

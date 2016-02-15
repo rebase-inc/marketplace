@@ -40,7 +40,6 @@ export default class AuctionView extends Component {
     }
     render() {
         const { auction, auctions, searchText, updateSearchText, user, role, actions, selectView } = this.props;
-        console.log('rendering with auctions ', auctions);
         if (!auctions.length) { return <NoAuctionsView {...this.props} /> }
         return (
             <div className='mainView'>

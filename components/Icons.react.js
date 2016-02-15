@@ -146,39 +146,6 @@ export class Comment extends Component {
     }
 };
 
-export class FindTalentOverview extends Component {
-    static propTypes = {
-        auction: React.PropTypes.object.isRequired,
-        width: React.PropTypes.number,
-        height: React.PropTypes.number,
-        margin: React.PropTypes.number,
-    }
-    static defaultProps = { width: 130, height: 46, margin: 3 }
-
-    constructor(props, context) {
-        super(props, context);
-        this.componentDidMount = this.componentDidMount.bind(this);
-    }
-
-    componentDidMount() {
-        const { auction } = this.props;
-        let element = ReactDOM.findDOMNode(this);
-        const overbid = auction.bids.filter(b => !b.contract).length;
-        const approved = auction.approved_talents.length - overbid;
-        const suggested = auction.ticket_set.nominations.filter(n => !auction.approved_talents.find(t => t.contractor.id == n.contractor.id)).length;
-        let data = [
-            { category: 'suggested', population: suggested, color: '#507196' },
-            { category: 'approved', population: approved, color: '#CBD0D4' },
-            { category: 'not interested', population: overbid, color: '#CC6070' }
-        ];
-
-        new DonutChart(element, this.props, data);
-    }
-    render() {
-        return <div className='findTalentOverview'/>;
-    }
-};
-
 export class ProjectGraph extends Component {
     static propTypes = {
         width: PropTypes.number,
