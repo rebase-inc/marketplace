@@ -1,72 +1,19 @@
-/* The approveTalentIcon rules really should be in their own file */
-.talent > .approveTalentIcon > svg:last-child { display: none; }
-.talent > .approveTalentIcon > svg:first-child { display: block; }
-.talent > .approveTalentIcon:hover > svg:first-child { display: none; }
-.talent > .approveTalentIcon:hover > svg:last-child { display: block; }
-.talent > .approveTalentIcon > svg { padding-top: 12px; width: 100px; }
-.talent > .approveTalentIcon { width: 100px }
-
-.talent {
-    width: 100%;
-    overflow-y: auto;
-    overflow-x: hidden;
-    font-size: 12px;
-    padding-top: 5px;
-    padding-bottom: 5px;
-    cursor: default;
+.talent.listElement > .hidden > svg {
+    width: 20px;
+    height: 20px;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-top: 15px;
 }
 
-.talent:hover {
-    background-color: #ECF3FA;
+.talent.listElement > .hidden > svg:hover > g {
+    fill: #40B89E; 
 }
 
-.talent > * {
-    display: inline-block;
-    float: left;
-    height: 100%;
-    padding: 5px;
-    box-sizing: border-box;
-    overflow: auto;
+.talent.listElement:hover .profilePicture > .picture {
+    transition: 300ms opacity;
 }
 
-.talent .talentScore {
-    padding-top: 14px;
-    width: 100px;
-}
-
-.talent .profilePicture {
-    width: 40px;
-    height: 40px;
-}
-
-.talent > .mainInfo {
-    width: calc(100% - 280px);
-}
-
-.talent > .mainInfo > * {
-    padding-top: 2px;
-}
-
-.talent > .mainInfo > span {
-    display: block;
-    font-weight: bold;
-    font-size: 14px;
-}
-
-.talent > .mainInfo > .ratingStars {
-    display: block;
-    height: 16px;
-    margin-bottom: 4px;
-}
-
-.talent > .mainInfo > .skill {
-    display: inline-block;
-    float: left;
-    padding: 3px;
-    border-radius: 4px;
-    font-size: 10px;
-    font-weight: bold;
-}
-
-/*.talent > .mainInfo > span { font-size: 10px; display: block; margin: 0 auto; opacity: 0.7; }*/
-/*.talent > .ratingStars { height: 10px; display: block; margin: 0 auto; }*/
+.talent.listElement:hover .profilePicture > .picture {
+   opacity: 0;
+} 

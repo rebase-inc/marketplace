@@ -9,6 +9,24 @@
     position: relative;
 }
 
+.listElement > .sliding {
+    transition: 300ms transform;
+}
+.listElement > .hidden {
+    position: absolute;
+    opacity: 0;
+    left: 0;
+    width: 40px;
+    height: 100%;
+    transition: 300ms opacity;
+}
+.listElement:hover > .hidden {
+    opacity: 1;
+}
+.listElement:hover > .sliding {
+    transform: translateX(40px);
+}
+
 .listElement:before {
     content: '';
     position: absolute;
@@ -40,6 +58,10 @@
     height: 100%;
 }
 
+.listElement > div.mainInfo > *:last-child {
+    opacity: 0.6;
+}
+
 .listElement > div.mainInfo > *:first-child {
     height: 20px;
     line-height: 20px;
@@ -49,18 +71,6 @@
     overflow: hidden;
     text-overflow: ellipsis;
     display: block;
-}
-.listElement > div.mainInfo > *:last-child {
-    opacity: 0.6;
-}
-
-.listElement > div.extraInfo > *:first-child {
-    height: 20px;
-    line-height: 20px;
-    font-size: 12px;
-    font-weight: bold;
-    display: block;
-    text-align: right;
 }
 
 .listElement > div.extraInfo > *:last-child {
@@ -86,10 +96,22 @@
     color: hsla(215, 41%, 29%, 1);
 }
 
+.listElement > div.extraInfo > *:first-child {
+    height: 20px;
+    width: 100%;
+    line-height: 20px;
+    font-size: 12px;
+    font-weight: bold;
+    display: block;
+    text-align: right;
+    opacity: 1;
+}
+
 .listElement:hover > div.extraInfo > *:first-child {
     height: 20px;
     line-height: 20px;
     font-size: 12px;
     font-weight: bold;
     display: block;
+    opacity: 1;
 }

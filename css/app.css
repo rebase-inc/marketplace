@@ -368,9 +368,6 @@ html, body {
     overflow: auto;
 }
 
-img.profilePicture {
-    border-radius: 50%;
-}
 #ticketSearchBar {
     background-color: hsla(200, 20%, 93%, 1);
     height: 40px;
