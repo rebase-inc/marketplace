@@ -1,35 +1,29 @@
 import React, { Component, PropTypes } from 'react';
 
 import { FindTalentOverview, Timer } from './Icons.react';
+import ListElement from './ListElement.react';
 
 import { getAuctionTicket } from '../utils/getters';
 import { humanReadableTimeRemaining } from '../utils/date';
 
-// Effectively just a passthrough component based on current role
-export default class Auction extends Component {
-    static propTypes = {
-        select: PropTypes.func.isRequired,
-        role: PropTypes.object.isRequired,
-        auction: PropTypes.object.isRequired,
-    }
-    render() {
-        const { role, auction, select, selected } = this.props;
-        const ticket = getAuctionTicket(auction);
-        return (
-            <div className='auction' onClick={select} data-selected={selected || undefined}>
-                <div className='mainInfo'>
-                    <span className='title'>{ ticket.title }</span>
-                    <span>{ role.type == 'manager' ? 'Expires in ' + humanReadableTimeRemaining(auction.expires) : ticket.project.name + ',' + ticket.project.organization.name }</span>
-                </div>
-                <div className='extraInfo'>
-                    { role.type == 'manager' ? <span>{'$' + auction.ticket_set.bid_limits[0].price}</span> : null }
-                    { role.type == 'manager' ? <TalentSummary auction={auction} /> : null }
-                    { role.type == 'contractor' ? <Timer expires={auction.expires} /> : null }
-                </div>
-            </div>
-        );
-    }
-}
+import RoundIcon from './RoundIcon.react';
+
+const CommentDetails = (props) => (
+    <div>
+        <Comment />
+        <span>{props.comments.length}</span>
+    </div>
+);
+
+const Auction = (props) => (
+    <ListElement {...getAuctionTicket(props)} date={humanReadableTimeRemaining(props.expires)}
+        icon={<RoundIcon/>}
+        subtitle={ Object.keys(getAuctionTicket(props).skill_requirement.skills).join(' ') }
+        extra={ props.role.type == 'manager' ?  <span>{'$' + props.ticket_set.bid_limits[0].price}</span> : <CommentDetails {...props.ticket} /> }
+        />
+);
+
+export default Auction;
 
 export class TalentSummary extends Component {
     constructor(props, context) {

@@ -1,19 +1,16 @@
 import React, { Component, PropTypes } from 'react';
 
-import { humanReadableDate } from '../utils/date';
-import { Comment } from './Icons.react';
 
 export default class ListElement extends Component {
     static propTypes = {
-        date: PropTypes.string.isRequired,
         icon: PropTypes.element.isRequired,
         title: PropTypes.string.isRequired,
-        comments: PropTypes.array.isRequired,
+        extra: PropTypes.element,
         selected: PropTypes.bool,
         subtitle: PropTypes.oneOfType([ PropTypes.string, PropTypes.element ]),
     }
     render() {
-        const { icon, title, subtitle, date, comments, handleClick, selected } = this.props;
+        const { icon, title, subtitle, date, expires, extra, handleClick, selected } = this.props;
         return (
             <div className='listElement' onClick={handleClick} data-selected={selected || undefined}>
                 <div className='icon'>
@@ -24,11 +21,8 @@ export default class ListElement extends Component {
                     { subtitle }
                 </div>
                 <div className='extraInfo'>
-                    <span>{ humanReadableDate(date, false, true) }</span>
-                    <div>
-                        <Comment />
-                        <span>{comments.length}</span>
-                    </div>
+                    <span>{ date }</span>
+                    { extra }
                 </div>
             </div>
         );
