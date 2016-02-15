@@ -15,7 +15,7 @@
     right: 0;
     bottom: 0;
     height: 1px;
-    width: calc(100% - 40px);
+    width: calc(100% - 60px);
     border-bottom: 1px solid hsla(199, 28%, 92%, 1);
 }
 
