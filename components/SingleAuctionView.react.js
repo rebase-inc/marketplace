@@ -8,8 +8,8 @@ import CommentBox from './CommentBox.react';
 import { humanReadableDate } from '../utils/date';
 import { getAuctionTicket } from '../utils/getters';
 
-const SHOW_ALL_MATCHES = () => true;
-const SHOW_GOOD_MATCHES = (nomination) => nomination.job_fit ? (nomination.job_fit.score > 0.6) : false;
+const SHOW_POOR_MATCHES = () => true;
+const HIDE_POOR_MATCHES = (nomination) => nomination.job_fit ? (nomination.job_fit.score > 0.6) : false;
 
 export default class SingleAuctionView extends Component {
     static propTypes = {
@@ -27,7 +27,7 @@ export default class SingleAuctionView extends Component {
 
     toggleFilter() {
         console.log('toggling');
-        this.setState((s) => ({ matchFilter: s.matchFilter == SHOW_GOOD_MATCHES ? SHOW_ALL_MATCHES : SHOW_GOOD_MATCHES }));
+        this.setState((s) => ({ matchFilter: s.matchFilter == SHOW_POOR_MATCHES ? HIDE_POOR_MATCHES : SHOW_POOR_MATCHES }));
     }
 
     componentDidUpdate(prevProps) {
@@ -56,7 +56,7 @@ export default class SingleAuctionView extends Component {
                     <div className='scrollable talentList'>
                         <div>Suggested Developers</div>
                         { sortedNominations.filter(matchFilter).map(n => <Talent auction={auction} nomination={n} key={n.id} approve={() => actions.approveNomination(auction, n)}/>) }
-                        <div onClick={this.toggleFilter}>{ matchFilter == SHOW_GOOD_MATCHES ?  'Show All Matches' : 'Only Show Quality Matches'}</div>
+                        <div onClick={this.toggleFilter}>{ matchFilter == HIDE_POOR_MATCHES ?  'Show Poor Matches' : 'Hide Poor Matches'}</div>
                     </div>
                 </div>
             </div>
