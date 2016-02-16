@@ -22,7 +22,7 @@ export default class SingleAuctionView extends Component {
     constructor(props, context) {
         super(props, context);
         this.toggleFilter = this.toggleFilter.bind(this);
-        this.state = { detailsOpen: false, matchFilter: SHOW_GOOD_MATCHES }
+        this.state = { detailsOpen: false, matchFilter: HIDE_POOR_MATCHES }
     }
 
     toggleFilter() {
