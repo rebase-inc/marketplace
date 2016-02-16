@@ -46,10 +46,8 @@ export default class SingleAuctionView extends Component {
         return (
             <div className='singleView'>
                 <AuctionHeader
-                    auction={auction}
                     role={role}
-                    toggleTalentView={() => this.setState({ showTalent: !showTalent })}
-                    showTalent={showTalent}
+                    auction={auction}
                     openBidModal={actions.openBidModal} />
                 <div className='content'>
                     <div className='scrollable'>

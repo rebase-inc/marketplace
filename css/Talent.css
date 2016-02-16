@@ -6,6 +6,10 @@
     padding-top: 15px;
 }
 
+.talent.listElement > .mainInfo svg { height: 12px; }
+.talent.listElement > .mainInfo svg.approve g { fill: #40B89E; }
+.talent.listElement > .mainInfo svg.waiting g { fill: #F2B046; }
+
 .talent.listElement > .hidden > svg.approve:hover > g {
     fill: #40B89E;
 }
