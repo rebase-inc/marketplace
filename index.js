@@ -39,5 +39,7 @@ import './css/ListView.css';
 import './css/SingleView.css';
 import './css/ListElement.css';
 import './css/ProfilePicture.css';
+import './css/TalentList.css';
+import './css/Auction.css';
 
 ReactDOM.render(<Root />, document.getElementById('react-app'));

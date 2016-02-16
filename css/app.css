@@ -20,6 +20,7 @@ svg.findTalent:hover g {
     fill: #5FC0AA;
 }
 
+svg.newTicket:hover g,
 svg.sort:hover g {
     stroke: #5FC0AA;
 }

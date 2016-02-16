@@ -8,6 +8,9 @@ import CommentBox from './CommentBox.react';
 import { humanReadableDate } from '../utils/date';
 import { getAuctionTicket } from '../utils/getters';
 
+const SHOW_ALL_MATCHES = () => true;
+const SHOW_GOOD_MATCHES = (nomination) => nomination.job_fit ? (nomination.job_fit.score > 0.6) : false;
+
 export default class SingleAuctionView extends Component {
     static propTypes = {
         user: PropTypes.object.isRequired,
@@ -18,16 +21,13 @@ export default class SingleAuctionView extends Component {
 
     constructor(props, context) {
         super(props, context);
-        this.state = { detailsOpen: false, showTalent: props.role.type == 'manager' }
-        this.toggleDetails = this.toggleDetails.bind(this);
+        this.toggleFilter = this.toggleFilter.bind(this);
+        this.state = { detailsOpen: false, matchFilter: SHOW_GOOD_MATCHES }
     }
 
-    toggleDetails(newState) {
-        if (typeof(newState) == 'boolean') {
-            this.setState({ detailsOpen: newState });
-        } else {
-            this.setState({ detailsOpen: !this.state.detailsOpen });
-        }
+    toggleFilter() {
+        console.log('toggling');
+        this.setState((s) => ({ matchFilter: s.matchFilter == SHOW_GOOD_MATCHES ? SHOW_ALL_MATCHES : SHOW_GOOD_MATCHES }));
     }
 
     componentDidUpdate(prevProps) {
@@ -40,9 +40,8 @@ export default class SingleAuctionView extends Component {
     render() {
         const { user, role, auction, actions } = this.props;
         const ticket = getAuctionTicket(auction);
-        const unselect = this.state.showTalent ? () => this.setState({ showTalent: false }) : actions.selectAuction.bind(null, null);
         const sortedNominations = auction.ticket_set.nominations.sort(sort_nominations);
-        const { showTalent } = this.state;
+        const { matchFilter } = this.state;
         return (
             <div className='singleView'>
                 <AuctionHeader
@@ -55,7 +54,9 @@ export default class SingleAuctionView extends Component {
                         <CommentBox submit={actions.commentOnAuction.bind(null, user, ticket)}/>
                     </div>
                     <div className='scrollable talentList'>
-                        { sortedNominations.map(n => <Talent auction={auction} nomination={n} key={n.id} approve={() => actions.approveNomination(auction, n)}/>) }
+                        <div>Suggested Developers</div>
+                        { sortedNominations.filter(matchFilter).map(n => <Talent auction={auction} nomination={n} key={n.id} approve={() => actions.approveNomination(auction, n)}/>) }
+                        <div onClick={this.toggleFilter}>{ matchFilter == SHOW_GOOD_MATCHES ?  'Show All Matches' : 'Only Show Quality Matches'}</div>
                     </div>
                 </div>
             </div>

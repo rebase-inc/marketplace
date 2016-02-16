@@ -20,7 +20,7 @@ export default class ScoredProfilePicture extends Component {
         const { user, score } = this.props;
         const initials = user.name.match(/\b(\w)/g).join('');
         const color = Colors[(user.id - 1) % Colors.length];
-    
+
         const largeArc = score < 0.5 ? 0: 1;
         const x = 50 + xValue(score);
         const y = 50 - yValue(score);
@@ -38,7 +38,7 @@ export default class ScoredProfilePicture extends Component {
                 <svg className='profilePicture' width='100px' height='100px' viewBox='0 0 100 100'>
                     <defs>
                         <clipPath id="circleView">
-                            <circle cx="50" cy="50" r="38" fill="#FFFFFF" />            
+                            <circle cx="50" cy="50" r="38" fill="#FFFFFF" />
                         </clipPath>
                     </defs>
                     <g className='score' stroke='none' fill='none'>

@@ -5,3 +5,7 @@
     padding-right: 10px;
     padding-top: calc(50% - 10px);
 }
+
+svg.end:hover g {
+    fill: #AA182D;
+}

@@ -28,6 +28,12 @@
     height: 100%;
 }
 
+.infoHeader > .tool:first-of-type > * {
+    float: left;
+}
+.infoHeader > .tool:last-of-type > * {
+    float: right;
+}
 
 /*.infoHeader > .mainInfo {*/
     /*display: none;*/

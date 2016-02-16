@@ -25,3 +25,21 @@
 .talent.listElement:hover .profilePicture > .picture {
    opacity: 0;
 }
+
+.talent.listElement > div.mainInfo > *:first-child > span {
+    height: 20px;
+    line-height: 20px;
+    font-size: 12px;
+    font-weight: bold;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: inline-block;
+    max-width: calc(100% - 20px);
+}
+
+.talent.listElement > div.mainInfo > *:first-child > svg {
+    height: 12px;
+    padding: 4px;
+    display: inline-block;
+}

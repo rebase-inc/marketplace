@@ -14,6 +14,7 @@ import ListTitleBar from './ListTitleBar.react';
 import SearchBar from './SearchBar.react';
 import Ticket from './Ticket.react';
 import SortIcon from './SortIcon.react';
+import NewTicketIcon from './NewTicketIcon.react';
 
 // Project Action Imports
 import * as TicketActions from '../actions/TicketActions';
@@ -60,6 +61,7 @@ class TicketView extends Component {
                     <div className='listView noselect'>
                         <ListTitleBar title={'All Tickets'}>
                             <SortIcon onClick={() => this.setState((s) => ({ sort: s.sort == NEWEST ? OLDEST : NEWEST }))}/>
+                            <NewTicketIcon onClick={actions.openNewTicketModal} />
                         </ListTitleBar>
                         <div className='scrollable'>
                             <SearchBar searchText={searchText} onChange={updateSearchText} />
