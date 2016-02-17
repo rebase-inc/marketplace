@@ -41,5 +41,6 @@ import './css/ListElement.css';
 import './css/ProfilePicture.css';
 import './css/TalentList.css';
 import './css/Auction.css';
+import './css/Ticket.css';
 
 ReactDOM.render(<Root />, document.getElementById('react-app'));

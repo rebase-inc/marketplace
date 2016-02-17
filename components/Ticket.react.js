@@ -18,7 +18,6 @@ const Ticket = (props) => (
     <ListElement {...props}
         date={humanReadableDate(props.created, false, true)}
         icon={props.discriminator == 'github_ticket' ? <GithubIcon /> : <TicketStatus {...props} />}
-        subtitle={ Object.keys(props.skill_requirement.skills).join(' ') }
         extra={<CommentDetails {...props}/>}
         />
 );

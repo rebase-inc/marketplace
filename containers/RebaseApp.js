@@ -32,6 +32,7 @@ class RebaseApp extends Component {
                     <MainHeader user={user} roles={roles} view={view} views={views} walkthrough={walkthrough} actions={actions} walkthroughActions={walkthroughActions} />
                     <ModalView user={user} role={roles.items.get(user.current_role.id)} />
                     <MainView view={view} user={user} roles={roles} actions={actions} walkthrough={walkthrough} walkthroughActions={walkthroughActions} />
+                    <div className='notification'>Ticket "Do this one thing and then the other thing" offered for $1400</div>
                 </div>
             );
         }

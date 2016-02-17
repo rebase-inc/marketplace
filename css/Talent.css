@@ -6,7 +6,7 @@
     padding-top: 15px;
 }
 
-.talent.listElement > .mainInfo svg { height: 12px; }
+.talent.listElement > .mainInfo svg { height: 13px; }
 .talent.listElement > .mainInfo svg.approve g { fill: #40B89E; }
 .talent.listElement > .mainInfo svg.waiting g { fill: #F2B046; }
 
@@ -27,9 +27,6 @@
 }
 
 .talent.listElement > div.mainInfo > *:first-child > span {
-    height: 20px;
-    line-height: 20px;
-    font-size: 12px;
     font-weight: bold;
     white-space: nowrap;
     overflow: hidden;
@@ -39,7 +36,6 @@
 }
 
 .talent.listElement > div.mainInfo > *:first-child > svg {
-    height: 12px;
-    padding: 4px;
+    height: 13px;
     display: inline-block;
 }

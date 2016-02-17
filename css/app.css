@@ -24,7 +24,23 @@ svg.newTicket:hover g,
 svg.sort:hover g {
     stroke: #5FC0AA;
 }
-
+div.notification:hover {
+    opacity: 0;
+}
+div.notification {
+    transition: 2000ms opacity;
+    font-size: 14px;
+    position: absolute;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    border-radius: 5px;
+    bottom: 20px;
+    left: 20px;
+    background-color: hsla(212, 40%, 18%, 0.8);
+    color: white;
+}
 
 .keyboard path:not(.background):hover {
     fill: #F0F3F5;

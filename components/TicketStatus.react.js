@@ -42,10 +42,6 @@ export default class TicketStatus extends Component {
                 <circle fill='none' stroke='#E5EDF1' strokeWidth='8' cx='50' cy='50' r='46'></circle>
                 <path fill='none' stroke={color} strokeWidth='8'
                 d={'M50 4 A 46 46 1 ' + largeArc + ' 1 ' + x + ' ' + y}/>
-                <text>
-                    <tspan x='50' y='45' textAnchor='middle' fontSize='18px' fill={color}>{ reason.split(' ')[0] }</tspan>
-                    <tspan x='50' y='65' textAnchor='middle' fontSize='18px' fill={color}>{ reason.split(' ')[1] }</tspan>
-                </text>
             </svg>
 
         );
