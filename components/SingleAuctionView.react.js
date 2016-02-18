@@ -51,7 +51,7 @@ export default class SingleAuctionView extends Component {
                 <div className='content'>
                     <div className='scrollable'>
                         { ticket.comments.map( comment => <Comment comment={comment} key={comment.id} /> ) }
-                        <CommentBox submit={actions.commentOnAuction.bind(null, user, ticket)}/>
+                        <CommentBox submit={actions.commentOnAuction.bind(null, user, auction)}/>
                     </div>
                     <div className='scrollable talentList'>
                         <div>Suggested Developers</div>

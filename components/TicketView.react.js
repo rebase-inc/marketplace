@@ -34,22 +34,29 @@ class TicketView extends Component {
     }
     constructor(props, context) {
         super(props, context);
-        this.componentDidMount = this.componentDidMount.bind(this);
-        this.componentDidUpdate = this.componentDidUpdate.bind(this);
+        this.componentWillMount = this.componentWillMount.bind(this);
+        this.componentWillUpdate = this.componentWillUpdate.bind(this);
         this.state = { sort: NEWEST };
     }
-    componentDidMount() {
+    componentWillMount() {
         this.props.actions.getTickets()
+        console.log('component will mount');
+        if (this.props.tickets.length && !this.props.ticket) {
+            console.log('selecting new ticket with id ', this.props.tickets[0].id);
+            this.props.actions.selectTicket(this.props.tickets[0].id);
+        }
     }
-    componentDidUpdate(prevProps) {
+    componentWillUpdate(prevProps) {
         // If the role has changed, we want to make sure to get the new role's tickets
         if (prevProps.user.current_role.id != this.props.user.current_role.id) {
             this.props.actions.getTickets()
         }
+        console.log('component will update');
 
         // If a ticket hasn't been selected by the user, we'll select the first available
         // just so that we have something to render
         if (this.props.tickets.length && !this.props.ticket) {
+            console.log('selecting new ticket with id ', this.props.tickets[0].id);
             this.props.actions.selectTicket(this.props.tickets[0].id);
         }
     }
@@ -65,7 +72,7 @@ class TicketView extends Component {
                         </ListTitleBar>
                         <div className='scrollable'>
                             <SearchBar searchText={searchText} onChange={updateSearchText} />
-                            { tickets.sort(this.state.sort).map(t => <Ticket {...t} handleClick={actions.selectTicket.bind(null, t.id)} selected={t.id == ticket.id} />) }
+                            { tickets.sort(this.state.sort).map(t => <Ticket {...t} handleClick={actions.selectTicket.bind(null, t.id)} selected={ticket ? t.id == ticket.id : false} />) }
                         </div>
                     </div>
                 </Tooltip>

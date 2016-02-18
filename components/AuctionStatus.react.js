@@ -30,6 +30,7 @@ export default class AuctionStatus extends Component {
         return (
             <svg width='100px' height='100px' viewBox='0 0 100 100'>
                 <circle fill='none' stroke='#E5EDF1' strokeWidth='8' cx='50' cy='50' r='46'></circle>
+                <circle fill={approved < 5 ? '#546C8A' : '#5FC0AA'} cx='50' cy='50' r='38'></circle>
                 <path id='overbid' fill='none' stroke={'#CC6070'} strokeWidth='8'
                     d={'M' + xStart + ' ' + yStart + ' A 46 46 1 ' + overbidLargeArc + ' 1 ' + xEndOverbid + ' ' + yEndOverbid}/>
                 <path id='approved' fill='none' stroke={'#546C8A'} strokeWidth='8'

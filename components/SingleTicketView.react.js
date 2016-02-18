@@ -19,15 +19,6 @@ export default class SingleTicketView extends Component {
     constructor(props, context) {
         super(props, context);
         this.state = { detailsOpen: false }
-        this.toggleDetails = this.toggleDetails.bind(this);
-    }
-
-    toggleDetails(newState) {
-        if (typeof(newState) == 'boolean') {
-            this.setState({ detailsOpen: newState });
-        } else {
-            this.setState({ detailsOpen: !this.state.detailsOpen });
-        }
     }
 
     componentDidUpdate(prevProps) {
