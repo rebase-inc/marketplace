@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 
 import EndIcon from './EndIcon.react';
+import BidIcon from './BidIcon.react';
 
 import { getAuctionTicket } from '../utils/getters';
 
@@ -22,7 +23,7 @@ export default class AuctionHeader extends Component {
                     <span className='title'>{getAuctionTicket(auction).title}</span>
                 </div>
                 <div className='tool'>
-                    { role.type == 'manager' ? <EndIcon /> : null }
+                    { role.type == 'manager' ? <EndIcon /> : <BidIcon onClick={openBidModal} /> }
                 </div>
             </div>
         )

@@ -16,6 +16,7 @@ input:focus, select:focus, textarea:focus, button:focus {
     outline: none;
 }
 
+svg.bid:hover g,
 svg.findTalent:hover g {
     fill: #5FC0AA;
 }
