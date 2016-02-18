@@ -2,8 +2,7 @@ import Months from '../constants/Months';
 
 export function humanReadableDate(isoDate, time=false, abbrev=false) {
     let date = new Date(isoDate);
-    let month = Months[date.getMonth()];
-    if (abbrev) { month = month.substr(0,3); }
+    let month = date.toLocaleString('en-us', { month: abbrev ? 'short' : 'long' });
     let day = date.getDate();
     let hours = date.getHours() % 12 || 12;
     let minutes = date.getMinutes();

@@ -2,31 +2,17 @@
     width: 100%;
     box-sizing: border-box;
     overflow: hidden;
-    font-size: 10px;
-    padding: 8px;
+    font-size: 12px;
+    padding: 15px;
     cursor: default;
-    height: 70px;
+    height: 100px;
     position: relative;
 }
+.listElement:hover { background-color: #F2F7FC; }
+.listElement[data-selected] { background-color: #EDF2F7; }
+.listElement[data-selected]:hover { background-color: #E9EFF5; }
 
-.listElement > .sliding {
-    transition: 300ms transform;
-}
-.listElement > .hidden {
-    position: absolute;
-    opacity: 0;
-    left: 0;
-    width: 40px;
-    height: 100%;
-    transition: 300ms opacity;
-}
-.listElement:hover > .hidden {
-    opacity: 1;
-}
-.listElement:hover > .sliding {
-    transform: translateX(40px);
-}
-
+/* border at the bottom of the list element that only goes partway across */
 .listElement:before {
     content: '';
     position: absolute;
@@ -37,97 +23,62 @@
     border-bottom: 1px solid hsla(199, 28%, 92%, 1);
 }
 
-.listElement[data-selected] {
-    background-color: #EDF2F7;
+/* Move content out of the way to show hidden item behind it */
+.listElement > .sliding { transition: 300ms transform; }
+.listElement:hover > .sliding { transform: translateX(40px); }
+
+.listElement > div.hidden {
+    position: absolute;
+    opacity: 0;
+    left: 0;
+    width: 40px;
+    height: 100%;
+    transition: 300ms opacity;
+}
+.listElement:hover > div.hidden {
+    opacity: 1;
 }
 
-.listElement > div {
+.listElement > div.icon { display: inline-block; float: left; width: 45px; height: 100%; padding-right: 10px; }
+.listElement > div.icon div { width: 100%; height: 100%; } /*I don't understand why theres a nested div here...*/
+.listElement > div.icon svg { width: 100%; height: 100%; }
+
+.listElement > div.content {
     display: inline-block;
-    box-sizing: border-box;
     float: left;
     height: 100%;
-    padding: 5px;
+    width: calc(100% - 55px);
 }
 
-.listElement > div.icon { width: 40px; }
-.listElement > div.mainInfo { width: calc(100% - 90px); }
-.listElement > div.extraInfo { width: 50px; padding-left: 0; }
-
-/*I don't understand why theres a nested div here...*/
-.listElement > div.icon div {
+.listElement > div.content > div.row {
+    display: block;
     width: 100%;
-    height: 100%;
-}
-.listElement > div.icon svg {
-    width: 100%;
-    height: 100%;
+    min-height: 15px;
+    overflow: auto;
 }
 
-.listElement > div.mainInfo > *:last-child {
+.listElement > div.content > div.row:first-child,
+.listElement > div.content > div.row:last-child {
+    font-size: 11px;
+}
+
+.listElement > div.content > div.row > .prefix,
+.listElement > div.content > div.row > .subtitle {
     opacity: 0.6;
-}
-.listElement > div.mainInfo > *:first-child {
-    opacity: 1;
+    line-height: 15px;
 }
 
-/*.listElement > div.mainInfo > *:first-child {*/
-    /*height: 13px;*/
-    /*line-height: 13px;*/
-    /*font-weight: bold;*/
-    /*white-space: nowrap;*/
-    /*overflow: hidden;*/
-    /*text-overflow: ellipsis;*/
-    /*display: block;*/
-/*}*/
+.listElement > div.content > div.row > .prefix { display: inline-block; float: left; width: calc(100% - 80px); height: 15px; }
+.listElement > div.content > div.row > .info { display: inline-block; float: left; text-align: right; width: 80px; height: 15px; }
+.listElement > div.content > div.row > .info svg { display: inline-block; float: right; height: 13px; width: 13px; }
+.listElement > div.content > div.row > .info span { display: inline-block; float: right; height: 13px; width: 13px; }
 
-.listElement > div.mainInfo > * {
-    line-height: 13px;
-    display: block;
-}
-
-.listElement > div.mainInfo > *:first-child {
+.listElement > div.content > div.row > .title {
     font-weight: bold;
-}
-.listElement > div.extraInfo > *:last-child {
-    height: 13px;
-    line-height: 13px;
+    height: 15px;
+    line-height: 15px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
     display: block;
-    opacity: 0;
-}
-.listElement > div.extraInfo > *:first-child {
-    height: 13px;
-    line-height: 13px;
-    display: block;
-    opacity: 0;
-}
-.listElement:hover > div.extraInfo > *:last-child {
-    opacity: 0.4;
-}
-
-.listElement > div.extraInfo > *:last-child,
-.listElement > div.extraInfo > *:last-child > * { 
-    box-sizing: border-box;
-    height: 13px;
-    line-height: 13px;
-    float: right;
-    fill: hsla(215, 41%, 29%, 1);
-    color: hsla(215, 41%, 29%, 1);
-}
-
-.listElement > div.extraInfo > *:first-child {
-    height: 13px;
-    width: 100%;
-    line-height: 13px;
-    font-weight: bold;
-    display: block;
-    text-align: right;
-    opacity: 1;
-}
-
-.listElement:hover > div.extraInfo > *:first-child {
-    height: 13px;
-    line-height: 13px;
-    font-weight: bold;
-    display: block;
-    opacity: 1;
 }

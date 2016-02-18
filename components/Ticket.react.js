@@ -4,21 +4,22 @@ import ListElement from './ListElement.react';
 
 import TicketStatus from './TicketStatus.react';
 import GithubIcon from './GithubIcon.react';
-import { Comment } from './Icons.react';
+import CommentIcon from './CommentIcon.react';
 import { humanReadableDate } from '../utils/date';
 
 const CommentDetails = (props) => (
     <div>
-        <Comment />
         <span>{props.comments.length}</span>
+        <CommentIcon />
     </div>
 );
 
 const Ticket = (props) => (
     <ListElement {...props}
-        date={humanReadableDate(props.created, false, true)}
-        icon={props.discriminator == 'github_ticket' ? <GithubIcon /> : <TicketStatus {...props} />}
-        extra={<CommentDetails {...props}/>}
+        subtitle={Object.keys(props.skill_requirement.skills).join(' ')}
+        prefix={'Created on ' + (props.discriminator == 'github_ticket' ? 'GitHub' : 'Rebase')}
+        info={props.comments.length + ' · ' + humanReadableDate(props.created, false, true)}
+        icon={<TicketStatus {...props}/>}
         />
 );
 

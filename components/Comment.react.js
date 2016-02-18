@@ -37,7 +37,7 @@ export default class Comment extends Component {
                     <ProfilePicture user={comment.user}/>
                 </div>
                 <div className='content'>
-                    <div className='header'>  
+                    <div className='header'>
                         <div className='name'>{comment.user.name}</div>
                         <svg className='commentType' viewBox='0 0 100 10' height='10px' width='100px'
                             data-alert={comment.type == 'blockage_comment' || undefined}

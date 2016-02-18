@@ -42,7 +42,7 @@ export default class Talent extends Component {
                 className={'talent'}
                 title={<div>{nomination.contractor.user.name}{statusIcon}</div>}
                 subtitle={ Object.keys(nomination.contractor.skill_set.skills).join(' ') }
-                date={<RatingStars rating={nomination.contractor.rating ? nomination.contractor.rating / 2 : 3.5} />}
+                prefix={<RatingStars rating={nomination.contractor.rating ? nomination.contractor.rating / 2 : 3.5} />}
                 icon={<ScoredProfilePicture user={nomination.contractor.user} score={nomination.job_fit ? nomination.job_fit.score : null} />}
                 hidden={hiddenIcon}
                 />

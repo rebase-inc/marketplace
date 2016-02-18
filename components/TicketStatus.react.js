@@ -15,7 +15,7 @@ function calculatePercentage(props) {
     const titlePenalty = 0.40 * Math.max(20 - props.title.length, 0) / 20;
     const commentsPenalty = 0.30 * Math.max(1 - Math.pow(0.15 * props.comments.length, 0.25), 0);
     const skillsPenalty = 0.25 * Math.max(5 - skills, 0) / 5;
-    const percentage = 0.95 - titlePenalty - commentsPenalty - skillsPenalty; 
+    const percentage = 0.95 - titlePenalty - commentsPenalty - skillsPenalty;
 
     if (percentage >= 0.80) {
         reason = 'Devs Waiting';
@@ -40,6 +40,7 @@ export default class TicketStatus extends Component {
         return (
             <svg width='100px' height='100px' viewBox='0 0 100 100'>
                 <circle fill='none' stroke='#E5EDF1' strokeWidth='8' cx='50' cy='50' r='46'></circle>
+                <circle fill={color} cx='50' cy='50' r='38'></circle>
                 <path fill='none' stroke={color} strokeWidth='8'
                 d={'M50 4 A 46 46 1 ' + largeArc + ' 1 ' + x + ' ' + y}/>
             </svg>
