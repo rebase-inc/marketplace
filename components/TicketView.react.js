@@ -40,9 +40,7 @@ class TicketView extends Component {
     }
     componentWillMount() {
         this.props.actions.getTickets()
-        console.log('component will mount');
         if (this.props.tickets.length && !this.props.ticket) {
-            console.log('selecting new ticket with id ', this.props.tickets[0].id);
             this.props.actions.selectTicket(this.props.tickets[0].id);
         }
     }
@@ -51,12 +49,10 @@ class TicketView extends Component {
         if (prevProps.user.current_role.id != this.props.user.current_role.id) {
             this.props.actions.getTickets()
         }
-        console.log('component will update');
 
         // If a ticket hasn't been selected by the user, we'll select the first available
         // just so that we have something to render
         if (this.props.tickets.length && !this.props.ticket) {
-            console.log('selecting new ticket with id ', this.props.tickets[0].id);
             this.props.actions.selectTicket(this.props.tickets[0].id);
         }
     }

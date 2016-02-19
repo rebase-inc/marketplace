@@ -21,7 +21,7 @@ export default class SingleAuctionView extends Component {
         const ticket = getAuctionTicket(auction);
         return (
             <div className='singleView'>
-                <AuctionHeader role={role} auction={auction} openBidModal={actions.openBidModal} />
+                <AuctionHeader role={role} auction={auction} openBidModal={actions.openBidModal} makeNotification={actions.makeNotification} />
                 <div className='content'>
                     <div className='scrollable'>
                         { ticket.comments.map( comment => <Comment comment={comment} key={comment.id} /> ) }

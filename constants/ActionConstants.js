@@ -13,7 +13,8 @@ let UserActions = keyMirror({
 });
 
 let NotificationActions = keyMirror({
-    CLEAR_NOTIFICATION: null
+    CLEAR_NOTIFICATION: null,
+    MAKE_NOTIFICATION: null,
 });
 
 let WalkthroughActions = keyMirror({

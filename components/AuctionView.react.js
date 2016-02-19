@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
 import * as AuctionActions from '../actions/AuctionActions';
+import * as NotificationActions from '../actions/NotificationActions';
 import { NEW } from '../constants/ViewConstants';
 import { NEWEST, OLDEST } from '../utils/sort';
 
@@ -62,5 +63,9 @@ let mapStateToProps = state => ({
     auctions: state.auctions.items.toList().toJS(),
     auction: state.auctionID ? state.auctions.items.get(state.auctionID).toJS() : null,
 });
-let mapDispatchToProps = dispatch => ({ actions: bindActionCreators(AuctionActions, dispatch)});
+let mapDispatchToProps = dispatch => ({
+    actions: Object.assign({},
+               bindActionCreators(AuctionActions, dispatch),
+               bindActionCreators(NotificationActions, dispatch))
+})
 export default connect(mapStateToProps, mapDispatchToProps)(AuctionView);

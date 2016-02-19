@@ -12,7 +12,7 @@ export default class AuctionHeader extends Component {
     }
 
     render() {
-        const { auction, openBidModal, role, toggleTalentView, showTalent  } = this.props;
+        const { auction, openBidModal, role, toggleTalentView, showTalent, makeNotification } = this.props;
         const clickHandler = role.type == 'contractor' ? openBidModal : toggleTalentView;
         return (
             <div className='infoHeader'>
@@ -23,7 +23,7 @@ export default class AuctionHeader extends Component {
                     <span className='title'>{getAuctionTicket(auction).title}</span>
                 </div>
                 <div className='tool'>
-                    { role.type == 'manager' ? <EndIcon /> : <BidIcon onClick={openBidModal} /> }
+                    { role.type == 'manager' ? <EndIcon onClick={makeNotification.bind(null, 'Not implemented!!')}/> : <BidIcon onClick={openBidModal} /> }
                 </div>
             </div>
         )
