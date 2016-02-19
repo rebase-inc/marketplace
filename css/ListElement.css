@@ -82,3 +82,19 @@
     text-overflow: ellipsis;
     display: block;
 }
+
+/* For the case where we shove an svg in the title... kind of hacky */
+.listElement > div.content > div.row > div.title svg { height: 13px; display: inline-block; float: left; }
+.listElement > div.content > div.row > div.title svg.approve g { fill: #40B89E; }
+.listElement > div.content > div.row > div.title svg.waiting g { fill: #F2B046; }
+.listElement > div.content > div.row > div.title span {
+    font-weight: bold;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: inline-block;
+    float: left;
+    max-width: calc(100% - 20px);
+}
+
+

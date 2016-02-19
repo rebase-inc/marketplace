@@ -7,13 +7,6 @@ import GithubIcon from './GithubIcon.react';
 import CommentIcon from './CommentIcon.react';
 import { humanReadableDate } from '../utils/date';
 
-const CommentDetails = (props) => (
-    <div>
-        <span>{props.comments.length}</span>
-        <CommentIcon />
-    </div>
-);
-
 const Ticket = (props) => (
     <ListElement {...props}
         subtitle={Object.keys(props.skill_requirement.skills).join(' ')}

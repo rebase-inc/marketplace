@@ -7,13 +7,6 @@ import { humanReadableTimeRemaining, humanReadableDate } from '../utils/date';
 
 import AuctionStatus from './AuctionStatus.react';
 
-const CommentDetails = (props) => (
-    <div>
-        <Comment />
-        <span>{props.comments.length}</span>
-    </div>
-);
-
 const Auction = (props) => (
     <ListElement {...getAuctionTicket(props)} {...props}
         prefix={'Expires in ' + humanReadableTimeRemaining(props.expires)}

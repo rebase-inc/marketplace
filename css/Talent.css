@@ -5,25 +5,11 @@
     padding-left: 20px;
 }
 
-.talent.listElement > div.content > div.row > div.title span {
-    font-weight: bold;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    display: inline-block;
-    float: left;
-    max-width: calc(100% - 20px);
-}
-
 .talent.listElement .ratingStars {
     height: 12px;
 }
 
 .talent.listElement > div.content > div.row > div.prefix { opacity: 1; }
-
-.talent.listElement > div.content > div.row > div.title svg { height: 13px; display: inline-block; float: left; }
-.talent.listElement > div.content > div.row > div.title svg.approve g { fill: #40B89E; }
-.talent.listElement > div.content > div.row > div.title svg.waiting g { fill: #F2B046; }
 
 .talent.listElement > .hidden > svg.approve:hover > g { fill: #40B89E; }
 .talent.listElement > .hidden > svg.undo:hover > g { fill: #CC6070; }

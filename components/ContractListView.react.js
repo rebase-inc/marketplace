@@ -44,19 +44,3 @@ export default class ContractListView extends Component {
         );
     }
 }
-
-function searchContracts(contracts, searchText) {
-    console.log('searching through ', contracts, ' for ', searchText);
-    contracts = contracts.map(c => { ticket: getContractTicket(c) });
-    var fuseSearch = new Fuse(contracts, {threshold: 0.35, keys: ['ticket.title', 'ticket.skillsRequired', 'ticket.project.name', 'ticket.project.organization.name'], id: 'id'});
-    return fuseSearch.search(searchText.substring(0, 32));
-}
-
-const SortFunctions = new Map([
-    ['finishing soon', (a, b) => new Date(a.bid.auction.finish_work_by) - new Date(b.bid.auction.finish_work_by) ],
-    ['time left', (a, b) => new Date(b.bid.auction.finish_work_by) - new Date(a.bid.auction.finish_work_by) ],
-    ['blocked', (a, b) => b.bid.work_offers[0].work.state == 'blocked' ],
-    ['in review', (a, b) => b.bid.work_offers[0].work.state == 'in_review' ],
-    ['in progress', (a, b) => b.bid.work_offers[0].work.state == 'in_progress' ],
-    //['recent comments', (a, b) => a.work.comments[0] != b.work.state ], // TODO: Implement once work comments are working
-]);
