@@ -12,6 +12,10 @@ let UserActions = keyMirror({
     ADD_SSH_KEY: null,
 });
 
+let NotificationActions = keyMirror({
+    CLEAR_NOTIFICATION: null
+});
+
 let WalkthroughActions = keyMirror({
     NEXT_WALKTHROUGH_STEP: null,
     PREVIOUS_WALKTHROUGH_STEP: null,
@@ -108,4 +112,5 @@ export default Object.assign({},
      CreditActions, 
      DebitActions,
      WalkthroughActions,
+     NotificationActions,
 );

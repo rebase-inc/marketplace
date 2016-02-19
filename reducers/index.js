@@ -26,3 +26,4 @@ export { default as githubAccounts } from './githubAccounts';
 export { default as credits } from './credits';
 export { default as debits } from './debits';
 
+export { default as notification } from './notification';

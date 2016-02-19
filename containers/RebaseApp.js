@@ -5,6 +5,7 @@ import { bindActionCreators } from 'redux';
 import { ViewTypes } from '../constants/ViewConstants';
 import LoginDialog from '../components/LoginDialog.react';
 import MainHeader from '../components/MainHeader.react';
+import NotificationView from '../components/NotificationView.react';
 import ModalView from '../components/ModalView.react';
 import MainView from '../components/MainView.react';
 import RoleSelectionView from '../components/RoleSelectionView.react';
@@ -32,7 +33,7 @@ class RebaseApp extends Component {
                     <MainHeader user={user} roles={roles} view={view} views={views} walkthrough={walkthrough} actions={actions} walkthroughActions={walkthroughActions} />
                     <ModalView user={user} role={roles.items.get(user.current_role.id)} />
                     <MainView view={view} user={user} roles={roles} actions={actions} walkthrough={walkthrough} walkthroughActions={walkthroughActions} />
-                    <div className='notification'>Ticket "Do this one thing and then the other thing" offered for $1400</div>
+                    <NotificationView />
                 </div>
             );
         }
