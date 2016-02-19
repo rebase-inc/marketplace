@@ -27,7 +27,11 @@ export default class SingleAuctionView extends Component {
                         { ticket.comments.map( comment => <Comment comment={comment} key={comment.id} /> ) }
                         <CommentBox submit={actions.commentOnAuction.bind(null, user, auction)}/>
                     </div>
-                    { role.type == 'manager' ? <TalentView nominations={auction.ticket_set.nominations} auction={auction} approve={actions.approveNomination} /> : null }
+                    { role.type == 'manager' ? <TalentView
+                        nominations={auction.ticket_set.nominations}
+                        auction={auction}
+                        approve={actions.approveNomination}
+                        makeNotification={actions.makeNotification} /> : null }
                 </div>
             </div>
         );

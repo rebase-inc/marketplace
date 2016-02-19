@@ -21,14 +21,14 @@ function isRejected(auction, nomination) {
 
 export default class Talent extends Component {
     render() {
-        const { nomination, auction, approve } = this.props;
+        const { nomination, auction, approve, undo } = this.props;
         let hiddenIcon;
         let statusIcon;
         if (isUnapproved(auction, nomination)) {
             hiddenIcon = <ApproveIcon onClick={approve} />;
             statusIcon = null;
         } else if (isWaitingForResponse(auction, nomination)) {
-            hiddenIcon = <UndoIcon onClick={() => console.warn('Not yet implemented!!')} />;
+            hiddenIcon = <UndoIcon onClick={undo} />;
             statusIcon = <WaitingIcon />;
         } else if (isRejected(auction, nomination)) {
             hiddenIcon = null;

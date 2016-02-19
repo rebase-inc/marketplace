@@ -17,12 +17,18 @@ export default class TalentView extends Component {
     }
 
     render() {
-        const { nominations, auction, approve } = this.props;
+        const { nominations, auction, approve, makeNotification } = this.props;
         const { matchFilter } = this.state;
         return (
             <div className='scrollable talentList'>
                 <div>Suggested Developers</div>
-                { nominations.sort(_sort).filter(matchFilter).map(n => <Talent auction={auction} nomination={n} key={n.id} approve={approve.bind(null, auction, n)}/>) }
+                { nominations.sort(_sort).filter(matchFilter).map(n => <Talent
+                                                                  auction={auction}
+                                                                  nomination={n}
+                                                                  key={n.id}
+                                                                  approve={approve.bind(null, auction, n)}
+                                                                  undo={makeNotification.bind(null, 'Not implemented!!')}
+                                                                  />) }
                 <div onClick={this.toggleFilter}>{ matchFilter == HIDE_POOR_MATCHES ?  'Show Poor Matches' : 'Hide Poor Matches'}</div>
             </div>
         );
