@@ -7,6 +7,9 @@ let initialNotification = null;
 
 const EVENT_STRINGS = [];
 EVENT_STRINGS[ActionConstants.CREATE_TICKET] = (response) => 'Ticket "' + response.internal_ticket.title + '" Created';
+EVENT_STRINGS[ActionConstants.CREATE_AUCTION] = (response) => ('Ticket "' +
+    response.auction.ticket_set.bid_limits[0].ticket_snapshot.ticket.title + '" Auctioned with a Maximum Budget of $' +
+        response.auction.ticket_set.bid_limits[0].price);
 
 export default function notification(notification = initialNotification, action) {
     switch (action.type) {
