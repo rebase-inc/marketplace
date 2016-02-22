@@ -8,6 +8,15 @@
     -webkit-transform: translate3d(0,0,0); /*force hardware acceleration to get around chrome rendering bug*/
 }
 
+.singleView > span {
+    width: 100%;
+    text-align: center;
+    display: block;
+    position: absolute;
+    top: 40%;
+    opacity: 0.6;
+}
+
 .singleView > div.content {
     height: calc(100% - 50px);
 }

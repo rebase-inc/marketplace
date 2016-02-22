@@ -5,7 +5,7 @@ import { bindActionCreators } from 'redux';
 import * as ContractActions from '../actions/ContractActions';
 import * as NotificationActions from '../actions/NotificationActions';
 import { COMPLETE } from '../constants/WorkStates';
-import { NEWEST, OLDEST } from '../utils/sort';
+import { ENDS_SOON, TIME_LEFT } from '../utils/sort';
 
 // Components
 import Contract from './Contract.react';
@@ -25,7 +25,7 @@ class ContractView extends Component {
         super(props, context);
         this.componentDidMount = this.componentDidMount.bind(this);
         this.componentDidUpdate = this.componentDidUpdate.bind(this);
-        this.state = { sort: NEWEST };
+        this.state = { sort: ENDS_SOON };
     }
     componentDidMount() {
         this.props.actions.getContracts()
@@ -35,12 +35,6 @@ class ContractView extends Component {
         if (prevProps.user.current_role.id != this.props.user.current_role.id) {
             this.props.actions.getContracts()
         }
-
-        // If a contract hasn't been selected by the user, we'll select the first available
-        // just so that we have something to render
-        if (this.props.contracts.length && !this.props.contract) {
-            this.props.actions.selectContract(this.props.contracts[0].id);
-        }
     }
     render() {
         const { contract, contracts, searchText, updateSearchText, user, role, actions, selectView } = this.props;
@@ -49,7 +43,7 @@ class ContractView extends Component {
             <div className='mainView'>
                 <div className='listView noselect'>
                     <ListTitleBar title={'All Ongoing Work'}>
-                        <SortIcon onClick={() => this.setState((s) => ({ sort: s.sort == NEWEST ? OLDEST : NEWEST }))}/>
+                        <SortIcon onClick={() => this.setState((s) => ({ sort: s.sort == ENDS_SOON ? TIME_LEFT : ENDS_SOON }))}/>
                     </ListTitleBar>
                     <div className='scrollable'>
                         <SearchBar searchText={searchText} onChange={updateSearchText} />

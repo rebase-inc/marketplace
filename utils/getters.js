@@ -5,6 +5,8 @@ export const getAuctionNominations = (auction) => auction.ticket_set.nominations
 
 export const getContractTicket = (contract) => contract.bid.work_offers[0].ticket_snapshot.ticket;
 export const getContractWork = (contract) => contract.bid.work_offers[0].work;
+export const getContractProject = (contract) => contract.bid.work_offers[0].ticket_snapshot.ticket.project;
+export const getContractOrganization = (contract) => contract.bid.work_offers[0].ticket_snapshot.ticket.project.organization;
 export const getContractComments = (contract) => {
     const comments = getContractTicket(contract).comments.concat(contract.bid.work_offers[0].work.comments);
     contract.bid.work_offers[0].work.mediations.forEach((m) => Array.prototype.push.apply(comments, m.comments));

@@ -32,12 +32,6 @@ export default class AuctionView extends Component {
         if (prevProps.user.current_role.id != this.props.user.current_role.id) {
             this.props.actions.getAuctions()
         }
-
-        // If an auction hasn't been selected by the user, we'll select the first available
-        // just so that we have something to render
-        if (this.props.auctions.length && !this.props.auction) {
-            this.props.actions.selectAuction(this.props.auctions[0].id);
-        }
     }
     render() {
         const { auction, auctions, searchText, updateSearchText, user, role, actions, selectView } = this.props;
@@ -50,10 +44,10 @@ export default class AuctionView extends Component {
                     </ListTitleBar>
                     <div className='scrollable'>
                         <SearchBar searchText={searchText} onChange={updateSearchText} />
-                        { auctions.sort(this.state.sort).map(a => <Auction {...a} role={role} handleClick={actions.selectAuction.bind(null, a.id)} selected={a.id == auction.id} />) }
+                        { auctions.sort(this.state.sort).map(a => <Auction {...a} role={role} handleClick={actions.selectAuction.bind(null, a.id)} selected={a.id == (auction || {}).id} />) }
                     </div>
                 </div>
-                { auction ? <SingleAuctionView auction={auction} actions={actions} role={role} user={user} /> : null }
+                <SingleAuctionView auction={auction} actions={actions} role={role} user={user} />
             </div>
         );
     }
@@ -61,7 +55,7 @@ export default class AuctionView extends Component {
 
 let mapStateToProps = state => ({
     auctions: state.auctions.items.toList().toJS(),
-    auction: state.auctionID ? state.auctions.items.get(state.auctionID).toJS() : null,
+    auction: state.auctions.items.get(state.auctionID) ? state.auctions.items.get(state.auctionID).toJS() : null,
 });
 let mapDispatchToProps = dispatch => ({
     actions: Object.assign({},

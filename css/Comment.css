@@ -2,7 +2,7 @@
     margin: 0;
 }
 
-.comment svg.commentType { fill: none; }
+.comment svg.commentType { padding-left: 4px; fill: none; }
 .comment svg.commentType > text { opacity: 0; transition: opacity 500ms; }
 .comment:hover svg.commentType > text { opacity: 1; }
 .comment svg.commentType[data-notification] { fill: hsla(167, 48%, 49%, 1); }

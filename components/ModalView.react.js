@@ -82,11 +82,11 @@ export default class ModalView extends Component {
 
 let mapStateToProps = state => ({
     modal: state.modal,
-    ticket: state.ticketID ? state.tickets.items.get(state.ticketID).toJS() : null,
+    ticket: state.tickets.items.get(state.ticketID) ? state.tickets.items.get(state.ticketID).toJS() : null,
     tickets: state.tickets,
-    auction: state.auctionID ? state.auctions.items.get(state.auctionID).toJS() : null,
+    auction: state.auctions.items.get(state.auctionID) ? state.auctions.items.get(state.auctionID).toJS() : null,
     auctions: state.auctions,
-    contract: state.contractID ? state.contracts.items.get(state.contractID).toJS() : null,
+    contract: state.contracts.items.get(state.contractID) ? state.contracts.items.get(state.contractID).toJS() : null,
     contracts: state.contracts,
 });
 let mapActionsToProps = dispatch => ({

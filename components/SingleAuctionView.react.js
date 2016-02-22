@@ -18,13 +18,13 @@ export default class SingleAuctionView extends Component {
 
     render() {
         const { user, role, auction, actions } = this.props;
-        const ticket = getAuctionTicket(auction);
+        if (!auction) { return <div className='singleView'> { 'No Auction Selected' } </div>; }
         return (
             <div className='singleView'>
                 <AuctionHeader role={role} auction={auction} openBidModal={actions.openBidModal} makeNotification={actions.makeNotification} />
                 <div className='content'>
                     <div className='scrollable'>
-                        { ticket.comments.map( comment => <Comment comment={comment} key={comment.id} /> ) }
+                        { getAuctionTicket(auction).comments.map( comment => <Comment comment={comment} key={comment.id} /> ) }
                         <CommentBox submit={actions.commentOnAuction.bind(null, user, auction)}/>
                     </div>
                     { role.type == 'manager' ? <TalentView

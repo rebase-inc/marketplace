@@ -68,7 +68,15 @@
     line-height: 15px;
 }
 
-.listElement > div.content > div.row > .prefix { display: inline-block; float: left; width: calc(100% - 80px); height: 15px; }
+.listElement > div.content > div.row > .prefix {
+    display: inline-block;
+    float: left;
+    width: calc(100% - 80px);
+    height: 15px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
 .listElement > div.content > div.row > .info { display: inline-block; float: left; text-align: right; width: 80px; height: 15px; }
 .listElement > div.content > div.row > .info svg { display: inline-block; float: right; height: 13px; width: 13px; }
 .listElement > div.content > div.row > .info span { display: inline-block; float: right; height: 13px; width: 13px; }
