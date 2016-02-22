@@ -1,45 +1,19 @@
 import React, { Component, PropTypes } from 'react';
 
-import ProfilePicture from './ProfilePicture.react';
-import { Comment } from './Icons.react';
-import RebaseIcon from './RebaseIcon.react';
-import GithubIcon from './GithubIcon.react';
+import ListElement from './ListElement.react';
 
+import TicketStatus from './TicketStatus.react';
+import GithubIcon from './GithubIcon.react';
+import CommentIcon from './CommentIcon.react';
 import { humanReadableDate } from '../utils/date';
 
-export default class Ticket extends Component {
-    static propTypes = {
-        ticket: PropTypes.object.isRequired,
-        select: PropTypes.func.isRequired,
-    }
-    render() {
-        const { ticket, select, selected } = this.props;
-        return (
-            <div className='ticket' onClick={select} data-selected={selected || undefined}>
-                <div className='createdOn'>
-                    { ticket.discriminator == 'github_ticket' ? <GithubIcon /> : <RebaseIcon /> }
-                </div>
-                <div className='mainInfo'>
-                    <span className='title'>{ ticket.title }</span>
-                    { Object.keys(ticket.skill_requirement.skills).map(s => <div key={s} className='skill'>{s}</div>) }
-                </div>
-                <div className='extraInfo'>
-                    <span>{humanReadableDate(ticket.created, false, true)}</span>
-                    <div>
-                        <Comment />
-                        <span>{ticket.comments.length}</span>
-                    </div>
-                </div>
-            </div>
-        );
-    }
-};
+const Ticket = (props) => (
+    <ListElement {...props}
+        subtitle={Object.keys(props.skill_requirement.skills).join(' ')}
+        prefix={'Created on ' + (props.discriminator == 'github_ticket' ? 'GitHub' : 'Rebase')}
+        info={props.comments.length + ' · ' + humanReadableDate(props.created, false, true)}
+        icon={<TicketStatus {...props}/>}
+        />
+);
 
-export const GithubTicketLink = (props) => {
-    const url = 'https://github.com/' + props.ticket.project.organization.name + '/' + props.ticket.project.name;
-    return <span className='link' onClick={window.open(url)}>{'View on GitHub'}</span>;
-}
-
-export const RebaseTicketLink = (props) => {
-    return <span className='link'>{'Created on Rebase'}</span>;
-}
+export default Ticket;

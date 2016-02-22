@@ -5,8 +5,6 @@ import TicketHeader from './TicketHeader.react';
 import Comment from './Comment.react';
 import CommentBox from './CommentBox.react';
 import CreateAuctionModal from './CreateAuctionModal.react';
-import DetailsPanel from './DetailsPanel.react';
-
 
 export default class SingleTicketView extends Component {
     static propTypes = {
@@ -19,15 +17,6 @@ export default class SingleTicketView extends Component {
     constructor(props, context) {
         super(props, context);
         this.state = { detailsOpen: false }
-        this.toggleDetails = this.toggleDetails.bind(this);
-    }
-
-    toggleDetails(newState) {
-        if (typeof(newState) == 'boolean') {
-            this.setState({ detailsOpen: newState });
-        } else {
-            this.setState({ detailsOpen: !this.state.detailsOpen });
-        }
     }
 
     componentDidUpdate(prevProps) {
@@ -42,8 +31,12 @@ export default class SingleTicketView extends Component {
         return (
             <div className='singleView'>
                 <TicketHeader openNewAuctionModal={actions.openNewAuctionModal} ticket={ticket} role={role} />
-                { ticket.comments.map( comment => <Comment comment={comment} key={comment.id} /> ) }
-                <CommentBox submit={actions.commentOnTicket.bind(null, user, ticket)}/>
+                <div className='content'>
+                    <div className='scrollable'>
+                        { ticket.comments.map( comment => <Comment comment={comment} key={comment.id} /> ) }
+                        <CommentBox submit={actions.commentOnTicket.bind(null, user, ticket)}/>
+                    </div>
+                </div>
             </div>
         );
     }

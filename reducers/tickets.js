@@ -49,7 +49,8 @@ function handleNewTicket(requestStatus, oldTickets, newTicket) {
     switch (requestStatus) {
         case PENDING: return oldTickets.set('isFetching', true);
         case ERROR: return oldTickets.set('isFetching', false);
-        case SUCCESS: return oldTickets.mergeDeep({ items: [newTicket.id, newTicket], isFetching: false });
+        case SUCCESS: 
+            return oldTickets.mergeDeep({ items: [[newTicket.id, newTicket]], isFetching: false });
     }
 }
 

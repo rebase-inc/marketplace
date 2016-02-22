@@ -1,0 +1,108 @@
+.listElement {
+    width: 100%;
+    box-sizing: border-box;
+    overflow: hidden;
+    font-size: 12px;
+    padding: 15px;
+    cursor: default;
+    height: 100px;
+    position: relative;
+}
+.listElement:hover { background-color: #F2F7FC; }
+.listElement[data-selected] { background-color: #EDF2F7; }
+.listElement[data-selected]:hover { background-color: #E9EFF5; }
+
+/* border at the bottom of the list element that only goes partway across */
+.listElement:before {
+    content: '';
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    height: 1px;
+    width: calc(100% - 50px);
+    border-bottom: 1px solid hsla(199, 28%, 92%, 1);
+}
+
+/* Move content out of the way to show hidden item behind it */
+.listElement > .sliding { transition: 300ms transform; }
+.listElement:hover > .sliding { transform: translateX(40px); }
+
+.listElement > div.hidden {
+    position: absolute;
+    opacity: 0;
+    left: 0;
+    width: 40px;
+    height: 100%;
+    transition: 300ms opacity;
+}
+.listElement:hover > div.hidden {
+    opacity: 1;
+}
+
+.listElement > div.icon { display: inline-block; float: left; width: 45px; height: 100%; padding-right: 10px; }
+.listElement > div.icon div { width: 100%; height: 100%; } /*I don't understand why theres a nested div here...*/
+.listElement > div.icon svg { width: 100%; height: 100%; }
+
+.listElement > div.content {
+    display: inline-block;
+    float: left;
+    height: 100%;
+    width: calc(100% - 55px);
+}
+
+.listElement > div.content > div.row {
+    display: block;
+    width: 100%;
+    min-height: 15px;
+    overflow: auto;
+}
+
+.listElement > div.content > div.row:first-child,
+.listElement > div.content > div.row:last-child {
+    font-size: 11px;
+}
+
+.listElement > div.content > div.row > .prefix,
+.listElement > div.content > div.row > .subtitle {
+    opacity: 0.6;
+    line-height: 15px;
+}
+
+.listElement > div.content > div.row > .prefix {
+    display: inline-block;
+    float: left;
+    width: calc(100% - 80px);
+    height: 15px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.listElement > div.content > div.row > .info { display: inline-block; float: left; text-align: right; width: 80px; height: 15px; }
+.listElement > div.content > div.row > .info svg { display: inline-block; float: right; height: 13px; width: 13px; }
+.listElement > div.content > div.row > .info span { display: inline-block; float: right; height: 13px; width: 13px; }
+
+.listElement > div.content > div.row > .title {
+    font-weight: bold;
+    height: 15px;
+    line-height: 15px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: block;
+}
+
+/* For the case where we shove an svg in the title... kind of hacky */
+.listElement > div.content > div.row > div.title svg { height: 13px; display: inline-block; float: left; }
+.listElement > div.content > div.row > div.title svg.approve g { fill: #40B89E; }
+.listElement > div.content > div.row > div.title svg.waiting g { fill: #F2B046; }
+.listElement > div.content > div.row > div.title span {
+    font-weight: bold;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: inline-block;
+    float: left;
+    max-width: calc(100% - 20px);
+}
+
+

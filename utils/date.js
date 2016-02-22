@@ -2,8 +2,7 @@ import Months from '../constants/Months';
 
 export function humanReadableDate(isoDate, time=false, abbrev=false) {
     let date = new Date(isoDate);
-    let month = Months[date.getMonth()];
-    if (abbrev) { month = month.substr(0,3); }
+    let month = date.toLocaleString('en-us', { month: abbrev ? 'short' : 'long' });
     let day = date.getDate();
     let hours = date.getHours() % 12 || 12;
     let minutes = date.getMinutes();
@@ -31,19 +30,14 @@ export function timeRemaining(isoDate) {
 
 export function humanReadableTimeRemaining(isoDate) {
     const [days, hours, minutes] = timeRemaining(isoDate);
-    let timeLeftString = '';
-    if (days > 0) {
-        timeLeftString += days;
-        timeLeftString += (days > 1) ? ' days, ' : ' day, ';
+    if (days > 1) {
+        return days + ' days';
+    } else if (hours > 1) {
+        return (24 * days + hours) + ' hrs';
+    } else if (minutes > 1) {
+        return (60 * hours + minutes) + ' mins';
+    } else {
+        return 'expired';
     }
-    if (hours > 0) {
-        timeLeftString += hours;
-        timeLeftString += (hours > 1) ? ' hours, ' : ' hour, ';
-    }
-    if (minutes > 0) {
-        timeLeftString += minutes;
-        timeLeftString += (minutes > 1) ? ' minutes, ' : ' minute';
-    }
-    return timeLeftString;
 }
 

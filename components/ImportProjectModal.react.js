@@ -68,6 +68,7 @@ export default class ImportProjectModal extends Component {
     }
 };
 
+// Switch this out to use CheckboxList Component
 export class ImportableGithubRepos extends Component {
     static propTypes = {
         githubAccounts: PropTypes.array.isRequired,
@@ -75,22 +76,9 @@ export class ImportableGithubRepos extends Component {
         importRepos: PropTypes.func.isRequired,
     }
 
-    constructor(props, context) {
-        super(props, context);
-        this.state = { selectedRepos: new Set() };
-        this.toggleRepo = this.toggleRepo.bind(this);
-    }
-
     componentDidMount() {
         // this is a horrible hack until we get the api fixed
         this.props.githubAccounts.forEach(a => !a.repos ? this.props.getImportableRepos(a) : null);
-    }
-
-    toggleRepo(repo) {
-        switch (this.state.selectedRepos.has(repo)) {
-            case true: this.setState((state) => state.selectedRepos.delete(repo)); break;
-            case false: this.setState((state) => state.selectedRepos.add(repo)); break;
-        }
     }
 
     render() {

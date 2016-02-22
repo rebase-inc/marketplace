@@ -1,4 +1,4 @@
-#nothingHere > #content {
+#nothingHere #content {
     top: 50%;
     left: 50%;
     width: 40%;
@@ -6,23 +6,23 @@
     transform: translateY(-80%) translateX(-50%);
 }
 
-#nothingHere > #content > * {
+#nothingHere #content > * {
     display: block;
     margin: 10px auto;
     text-align: center;
 }
 
-#nothingHere > #content > h3 {
+#nothingHere #content > h3 {
     font-size: 30px;
 }
 
-#nothingHere > #content > h4 {
+#nothingHere #content > h4 {
     font-size: 14px;
     max-width: 400px;
     opacity: 0.5;
 }
 
-#nothingHere > #content > span {
+#nothingHere #content > span {
     font-size: 14;
     opacity: 0.5;
 }

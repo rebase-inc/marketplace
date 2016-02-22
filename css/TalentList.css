@@ -1,0 +1,21 @@
+.talentList > div:not(.talent):first-child {
+    width: 100%;
+    box-sizing: border-box;
+    text-align: left;
+    opacity: 0.6;
+    padding: 12px;
+    font-size: 12px;
+}
+
+.talentList > div:not(.talent):last-child {
+    font-size: 12px;
+    width: 100%;
+    box-sizing: border-box;
+    text-align: center;
+    padding: 12px;
+}
+
+.talentList > div:not(.talent):last-child:hover {
+    color: #40B89E;
+    cursor: default;
+}

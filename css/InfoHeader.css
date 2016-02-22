@@ -1,90 +1,120 @@
 .infoHeader {
-   width: 100%;
-   box-sizing: border-box;
-   padding: 15px;
-   overflow: auto;
-}
-
-.infoHeader > .mainInfo {
-    display: none;
-    width: calc(100% - 260px);
-    min-width: 260px;
-    display: inline-block;
-    float: left;
-}
-
-.infoHeader > .mainInfo:only-child {
     width: 100%;
-}
-
-.infoHeader > .otherInfo {
-    width: 260px;
-    max-width: calc(100% - 260px);
-    display: inline-block;
-    float: left;
-}
-
-.infoHeader > .otherInfo > svg {
-    width: 100%;
-}
-
-.infoHeader > .mainInfo > button {
-    display: inline-block;
-    float: left;
-    margin: 0;
-    margin-top: 10px;
-}
-
-.infoHeader > .mainInfo > .codeField > input {
-    margin-left: 0;
-    width: 100%;
+    display: block;
     box-sizing: border-box;
-}
-
-.infoHeader > .mainInfo > .title {
-    display: block;
-    text-align: left;
-    font-size: 16px;
-    font-weight: bold;
-}
-
-.infoHeader > .mainInfo > .extra {
-    display: block;
-    text-align: left;
+    height: 50px;
+    line-height: 30px;
+    position: relative;
+    text-align: center;
     font-size: 14px;
-    font-weight: bold;
-    padding-top: 5px;
-    opacity: 0.5;
+    padding: 10px;
+    border-bottom: 1px solid hsla(199, 28%, 92%, 1);
+    position: relative;
+    overflow: hidden;
 }
 
-.infoHeader > .mainInfo > .status {
-    display: block;
-    text-align: left;
-    overflow: auto;
-}
-
-.infoHeader > .mainInfo > .status > svg {
-    padding-top: 4px;
-    padding-right: 4px;
+.infoHeader > .tool {
     display: inline-block;
-    float: left;
-    width: 12px;
-    height: 12px;
-}
-
-.infoHeader > .mainInfo > .status > span {
-    width: calc(100% - 19px);
-}
-
-.infoHeader > .mainInfo > .status[data-okay] > svg { fill: hsla(167, 48%, 49%, 1); }
-.infoHeader > .mainInfo > .status[data-notification] > svg { fill: hsla(212, 22%, 43%, 1); }
-.infoHeader > .mainInfo > .status[data-alert] > svg { fill: hsla(37, 87%, 61%, 1); }
-.infoHeader > .mainInfo > .status[data-warning] > svg { fill: hsla(37, 87%, 61%, 1); }
-
-.infoHeader > .mainInfo > .status > span {
-    font-size: 12px;
-    line-height: 20px;
-    display: inline-block;
+    box-sizing: border-box;
+    height: 30px;
+    width: 15%;
     float: left;
 }
+.infoHeader > .mainInfo { float: left; width: 70% }
+.infoHeader > .tool > svg {
+    box-sizing: border-box;
+    padding: 3px;
+    float: right;
+    height: 100%;
+}
+
+.infoHeader > .tool:first-of-type > * {
+    float: left;
+}
+.infoHeader > .tool:last-of-type > * {
+    float: right;
+}
+
+/*.infoHeader > .mainInfo {*/
+    /*display: none;*/
+    /*width: calc(100% - 260px);*/
+    /*min-width: 260px;*/
+    /*display: inline-block;*/
+    /*float: left;*/
+/*}*/
+
+/*.infoHeader > .mainInfo:only-child {*/
+    /*width: 100%;*/
+/*}*/
+
+/*.infoHeader > .otherInfo {*/
+    /*width: 260px;*/
+    /*max-width: calc(100% - 260px);*/
+    /*display: inline-block;*/
+    /*float: left;*/
+/*}*/
+
+/*.infoHeader > .otherInfo > svg {*/
+    /*width: 100%;*/
+/*}*/
+
+/*.infoHeader > .mainInfo > button {*/
+    /*display: inline-block;*/
+    /*float: left;*/
+    /*margin: 0;*/
+    /*margin-top: 10px;*/
+/*}*/
+
+/*.infoHeader > .mainInfo > .codeField > input {*/
+    /*margin-left: 0;*/
+    /*width: 100%;*/
+    /*box-sizing: border-box;*/
+/*}*/
+
+/*.infoHeader > .mainInfo > .title {*/
+    /*display: block;*/
+    /*text-align: left;*/
+    /*font-size: 16px;*/
+    /*font-weight: bold;*/
+/*}*/
+
+/*.infoHeader > .mainInfo > .extra {*/
+    /*display: block;*/
+    /*text-align: left;*/
+    /*font-size: 14px;*/
+    /*font-weight: bold;*/
+    /*padding-top: 5px;*/
+    /*opacity: 0.5;*/
+/*}*/
+
+/*.infoHeader > .mainInfo > .status {*/
+    /*display: block;*/
+    /*text-align: left;*/
+    /*overflow: auto;*/
+/*}*/
+
+/*.infoHeader > .mainInfo > .status > svg {*/
+    /*padding-top: 4px;*/
+    /*padding-right: 4px;*/
+    /*display: inline-block;*/
+    /*float: left;*/
+    /*width: 12px;*/
+    /*height: 12px;*/
+/*}*/
+
+/*.infoHeader > .mainInfo > .status > span {*/
+    /*width: calc(100% - 19px);*/
+/*}*/
+
+/*.infoHeader > .mainInfo > .status[data-okay] > svg { fill: hsla(167, 48%, 49%, 1); }*/
+/*.infoHeader > .mainInfo > .status[data-notification] > svg { fill: hsla(212, 22%, 43%, 1); }*/
+/*.infoHeader > .mainInfo > .status[data-alert] > svg { fill: hsla(37, 87%, 61%, 1); }*/
+/*.infoHeader > .mainInfo > .status[data-warning] > svg { fill: hsla(37, 87%, 61%, 1); }*/
+
+/*.infoHeader > .mainInfo > .status > span {*/
+    /*font-size: 12px;*/
+    /*line-height: 20px;*/
+    /*display: inline-block;*/
+    /*float: left;*/
+/*}*/
 

@@ -22,13 +22,13 @@ export default class ContractHeader extends Component {
         const work = getContractWork(contract);
         return (
             <div className='infoHeader'>
+                <div className='tool'>
+                </div>
                 <div className='mainInfo'>
                     <span className='title'>{ticket.title}</span>
-                    <ContractStatus contract={contract} role={role} />
-                    <CodeField name='' value={work.clone} />
                 </div>
-                <div className='otherInfo'>
-                    <TicketTimeline role={role} current={'work'} />
+                <div className='tool'>
+                    <CodeField name='' value={work.clone} />
                 </div>
             </div>
         )

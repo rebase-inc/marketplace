@@ -37,27 +37,29 @@ export default class Comment extends Component {
                     <ProfilePicture user={comment.user}/>
                 </div>
                 <div className='content'>
-                    <div className='name'>{comment.user.name}</div>
-                    <svg className='commentType' viewBox='0 0 100 10' height='10px' width='100px'
-                        data-alert={comment.type == 'blockage_comment' || undefined}
-                        data-warning={comment.type == 'mediation_comment' || undefined}
-                        data-notification={comment.type == 'review_comment' || undefined}>
-                        <circle cx='5' cy='5' r='5'/>
-                        <text fontSize='10px' x='12' y='9'>
-                            {
-                                () => {
-                                    switch (comment.type) {
-                                        case 'blockage_comment': return 'Blocked';
-                                        case 'mediation_comment': return 'In Mediation';
-                                        case 'review_comment': return 'Review';
-                                        default: return null;
-                                    }
-                                }()
-                            }
-                        </text>
-                    </svg>
-                    <div className='date'>{humanReadableDate(comment.created ? comment.created : new Date())}</div>
-                    { comment.isFetching ? <PendingIcon /> : null }
+                    <div className='header'>
+                        <div className='name'>{comment.user.name}</div>
+                        <svg className='commentType' viewBox='0 0 100 10' height='10px' width='100px'
+                            data-alert={comment.type == 'blockage_comment' || undefined}
+                            data-warning={comment.type == 'mediation_comment' || undefined}
+                            data-notification={comment.type == 'review_comment' || undefined}>
+                            <circle cx='5' cy='5' r='5'/>
+                            <text fontSize='10px' x='12' y='9'>
+                                {
+                                    () => {
+                                        switch (comment.type) {
+                                            case 'blockage_comment': return 'Blocked';
+                                            case 'mediation_comment': return 'In Mediation';
+                                            case 'review_comment': return 'Review';
+                                            default: return null;
+                                        }
+                                    }()
+                                }
+                            </text>
+                        </svg>
+                        <div className='date'>{humanReadableDate(comment.created ? comment.created : new Date())}</div>
+                        { comment.isFetching ? <PendingIcon /> : null }
+                    </div>
                     <div className='text' dangerouslySetInnerHTML={this.rawMarkup()}/>
                 </div>
                 <div className='status'></div>

@@ -1,10 +1,14 @@
 var path = require('path');
 var webpack = require('webpack');
 
+var HOST=process.env.REBASE_CLIENT_HOST
+var PORT=process.env.REBASE_CLIENT_PORT
+console.log('Webpack: http://'+HOST+':'+PORT);
+
 module.exports = {
     devtool: 'eval',
     entry: [
-        'webpack-dev-server/client?http://localhost:3000',
+        'webpack-dev-server/client?http://'+HOST+':'+PORT,
         'webpack/hot/only-dev-server',
         './index' // entry js file for app
     ],
@@ -13,7 +17,8 @@ module.exports = {
         filename: 'bundle.js',
     },
     plugins: [
-        new webpack.HotModuleReplacementPlugin()
+        new webpack.HotModuleReplacementPlugin(),
+        new webpack.ProgressPlugin(function handler(percentage, msg) { console.log(msg); }),
     ],
     resolve: {
         alias: {

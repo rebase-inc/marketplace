@@ -4,13 +4,7 @@ import Fuse from '../utils/fuse';
 import SearchBar from './SearchBar.react';
 import SortOptions from './SortOptions.react';
 import LoadingAnimation from './LoadingAnimation.react';
-import DatePanel from './DatePanel.react';
-import TitlePanel from './TitlePanel.react';
-import PricePanel from './PricePanel.react';
-import PaidPanel from './PaidPanel.react';
 import NothingHere from './NothingHere.react';
-import ProjectPanel from './ProjectPanel.react';
-import OrganizationPanel from './OrganizationPanel.react';
 import { OFFERED } from '../constants/ViewConstants';
 
 export default class CreditListView extends Component {
@@ -74,12 +68,6 @@ class Credit extends Component {
         const { credit } = this.props;
         return (
             <tr className='credit' >
-                <DatePanel text={'Created'} date={credit.work.review.created} />
-                <TitlePanel title={credit.work.offer.ticket_snapshot.ticket.title} />
-                <ProjectPanel project={credit.work.offer.ticket_snapshot.ticket.project.name} />
-                <OrganizationPanel organization={credit.work.offer.ticket_snapshot.ticket.project.organization.name} />
-                <PricePanel price={credit.price} />
-                <PaidPanel paid={credit.paid} />
             </tr>
         );
     }

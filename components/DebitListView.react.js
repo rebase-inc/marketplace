@@ -5,12 +5,6 @@ import NothingHere from './NothingHere.react';
 import SearchBar from './SearchBar.react';
 import SortOptions from './SortOptions.react';
 import LoadingAnimation from './LoadingAnimation.react';
-import DatePanel from './DatePanel.react';
-import TitlePanel from './TitlePanel.react';
-import PricePanel from './PricePanel.react';
-import PaidPanel from './PaidPanel.react';
-import ProjectPanel from './ProjectPanel.react';
-import OrganizationPanel from './OrganizationPanel.react';
 import { NEW } from '../constants/ViewConstants';
 
 export default class DebitListView extends Component {
@@ -92,12 +86,6 @@ class Debit extends Component {
         const { debit } = this.props;
         return (
             <tr className='debit' >
-                <DatePanel text={'Created'} date={debit.work.review.created} />
-                <TitlePanel title={debit.work.offer.ticket_snapshot.ticket.title} />
-                <ProjectPanel project={debit.work.offer.ticket_snapshot.ticket.project.name} />
-                <OrganizationPanel organization={debit.work.offer.ticket_snapshot.ticket.project.organization.name} />
-                <PricePanel price={debit.price} />
-                <PaidPanel paid={debit.paid} />
             </tr>
         );
     }

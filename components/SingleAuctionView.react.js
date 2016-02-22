@@ -3,8 +3,8 @@ import ReactDOM from 'react-dom';
 
 import AuctionHeader from './AuctionHeader.react';
 import Comment from './Comment.react';
-import Talent from './Talent.react';
 import CommentBox from './CommentBox.react';
+import TalentView from './TalentView.react';
 import { humanReadableDate } from '../utils/date';
 import { getAuctionTicket } from '../utils/getters';
 
@@ -16,51 +16,24 @@ export default class SingleAuctionView extends Component {
         actions: PropTypes.object.isRequired,
     }
 
-    constructor(props, context) {
-        super(props, context);
-        this.state = { detailsOpen: false, showTalent: props.role.type == 'manager' }
-        this.toggleDetails = this.toggleDetails.bind(this);
-    }
-
-    toggleDetails(newState) {
-        if (typeof(newState) == 'boolean') {
-            this.setState({ detailsOpen: newState });
-        } else {
-            this.setState({ detailsOpen: !this.state.detailsOpen });
-        }
-    }
-
-    componentDidUpdate(prevProps) {
-        if (this.props.auction.id != prevProps.auction.id) {
-            const node = ReactDOM.findDOMNode(this);
-            node.scrollTop = 0;
-        }
-    }
-
     render() {
         const { user, role, auction, actions } = this.props;
-        const ticket = getAuctionTicket(auction);
-        const unselect = this.state.showTalent ? () => this.setState({ showTalent: false }) : actions.selectAuction.bind(null, null);
-        const sortedNominations = auction.ticket_set.nominations.sort(sort_nominations);
-        const { showTalent } = this.state;
+        if (!auction) { return <div className='singleView'> { 'No Auction Selected' } </div>; }
         return (
             <div className='singleView'>
-                <AuctionHeader
-                    auction={auction}
-                    role={role}
-                    toggleTalentView={() => this.setState({ showTalent: !showTalent })}
-                    showTalent={showTalent}
-                    openBidModal={actions.openBidModal} />
-                { this.state.showTalent ?
-                    sortedNominations.map(n => <Talent auction={auction} nomination={n} key={n.id} approve={() => actions.approveNomination(auction, n)}/>) : null }
-                { !this.state.showTalent ?
-                    ticket.comments.map( comment => <Comment comment={comment} key={comment.id} /> ) : null }
-                { !this.state.showTalent ? <CommentBox submit={actions.commentOnAuction.bind(null, user, ticket)}/> : null }
+                <AuctionHeader role={role} auction={auction} openBidModal={actions.openBidModal} makeNotification={actions.makeNotification} />
+                <div className='content'>
+                    <div className='scrollable'>
+                        { getAuctionTicket(auction).comments.map( comment => <Comment comment={comment} key={comment.id} /> ) }
+                        <CommentBox submit={actions.commentOnAuction.bind(null, user, auction)}/>
+                    </div>
+                    { role.type == 'manager' ? <TalentView
+                        nominations={auction.ticket_set.nominations}
+                        auction={auction}
+                        approve={actions.approveNomination}
+                        makeNotification={actions.makeNotification} /> : null }
+                </div>
             </div>
         );
     }
 };
-
-function sort_nominations(n1, n2) {
-    return (!!n2.job_fit ? n2.job_fit.score : -1) - (!!n1.job_fit ? n1.job_fit.score : -1)
-}

@@ -12,6 +12,17 @@ let UserActions = keyMirror({
     ADD_SSH_KEY: null,
 });
 
+let NotificationActions = keyMirror({
+    CLEAR_NOTIFICATION: null,
+    MAKE_NOTIFICATION: null,
+});
+
+let WalkthroughActions = keyMirror({
+    NEXT_WALKTHROUGH_STEP: null,
+    PREVIOUS_WALKTHROUGH_STEP: null,
+    EXIT_WALKTHROUGH: null,
+});
+
 let TicketActions = keyMirror({
     GET_TICKETS: null,
     CREATE_TICKET: null,
@@ -91,4 +102,16 @@ let __ActionConstants = keyMirror({
     DELETE_MANAGER: null,
 });
 
-export default Object.assign({}, UserActions, TicketActions, AuctionActions, ContractActions, ReviewActions, GithubAccountActions, MediationActions, CreditActions, DebitActions);
+export default Object.assign({}, 
+     UserActions, 
+     TicketActions, 
+     AuctionActions, 
+     ContractActions, 
+     ReviewActions, 
+     GithubAccountActions, 
+     MediationActions, 
+     CreditActions, 
+     DebitActions,
+     WalkthroughActions,
+     NotificationActions,
+);
