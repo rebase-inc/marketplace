@@ -6,7 +6,6 @@ import ContractStatusHeader from './ContractStatusHeader.react';
 import CommentBox from './CommentBox.react';
 import ContractDetails from './ContractDetails.react';
 import Comment from './Comment.react';
-import DetailsPanel from './DetailsPanel.react';
 import { humanReadableDate } from '../utils/date';
 import { getContractTicket, getContractWork, getContractComments } from '../utils/getters';
 import { FAIL, COMPLETE, RESOLVE } from '../constants/MediationAnswers';

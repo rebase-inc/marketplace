@@ -5,8 +5,6 @@ import TicketHeader from './TicketHeader.react';
 import Comment from './Comment.react';
 import CommentBox from './CommentBox.react';
 import CreateAuctionModal from './CreateAuctionModal.react';
-import DetailsPanel from './DetailsPanel.react';
-
 
 export default class SingleTicketView extends Component {
     static propTypes = {

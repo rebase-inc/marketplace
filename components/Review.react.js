@@ -32,12 +32,6 @@ export default class Review extends Component {
         );
         return (
             <tr className='ticket' onClick={select}>
-                { role.type == 'manager' ? <DebitPanel debit={review.work.debit} /> : null }
-                <ReviewPanel review={review} />
-                <DatePanel text={'Finished'} date={review.created} />
-                <TitlePanel title={ticket.title} />
-                <SkillsRequiredPanel skills={ticket.skill_requirement.skills} />
-                <CommentsPanel comments={ticket.comments} />
             </tr>
         );
     }

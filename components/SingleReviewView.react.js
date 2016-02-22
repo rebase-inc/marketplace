@@ -4,7 +4,6 @@ import ReactDOM from 'react-dom';
 import TicketHeader from './TicketHeader.react';
 import Comment from './Comment.react';
 import CommentBox from './CommentBox.react';
-import DetailsPanel from './DetailsPanel.react';
 import ReviewHeader from './ReviewHeader.react';
 import { getReviewTicket, getReviewComments } from '../utils/getters';
 
