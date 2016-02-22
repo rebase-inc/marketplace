@@ -4,7 +4,7 @@ import ReactDOM from 'react-dom';
 import ContractHeader from './ContractHeader.react';
 import ContractStatusHeader from './ContractStatusHeader.react';
 import CommentBox from './CommentBox.react';
-import WorkDetails from './WorkDetails.react';
+import ContractDetails from './ContractDetails.react';
 import Comment from './Comment.react';
 import DetailsPanel from './DetailsPanel.react';
 import { humanReadableDate } from '../utils/date';
@@ -76,7 +76,7 @@ export default class SingleContractView extends Component {
                             { this.makeCommentButtons(role, work, actions) }
                         </CommentBox>
                     </div>
-                    <WorkDetails work={work} />
+                    <ContractDetails work={work} />
                 </div>
             </div>
         );

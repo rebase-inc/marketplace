@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 
-export default class TalentView extends Component {
+export default class ContractDetails extends Component {
     constructor(props, context) {
         super(props, context);
     }
@@ -8,7 +8,7 @@ export default class TalentView extends Component {
     render() {
         return (
             <div className='scrollable talentList'>
-                <div>Foobar</div>
+                <div>Contract Details</div>
             </div>
         );
     }
