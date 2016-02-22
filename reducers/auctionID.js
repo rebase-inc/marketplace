@@ -12,7 +12,8 @@ function _filter(auction) {
 export default function auctionID(auctionID = initialAuctionID, action) {
     switch (action.type) {
         case ActionConstants.GET_AUCTIONS:
-            const auction = action.response.auctions ? action.response.auctions.filter(_filter)[0] : {};
+            let auction = action.response.auctions ? action.response.auctions.filter(_filter)[0] : {};
+            auction = auction || {};
             return setID(action.status, auctionID, auctionID || auction.id); break;
         case ActionConstants.SELECT_AUCTION: return action.response.auctionId; break;
         case ActionConstants.BID_ON_AUCTION: return removeID(action.status, auctionID, action.response.auction); break;

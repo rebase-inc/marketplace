@@ -36,5 +36,7 @@ export default class TalentView extends Component {
 }
 
 function _sort(n1, n2) {
-    return (!!n2.job_fit ? n2.job_fit.score : -1) - (!!n1.job_fit ? n1.job_fit.score : -1)
+    const score1 = !!n1.job_fit ? n1.job_fit.score : 0;
+    const score2 = !!n2.job_fit ? n2.job_fit.score : 0;
+    return score2 - score1 || n2.contractor.id - n1.contractor.id; // sort by id if the scores are equal
 }
