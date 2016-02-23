@@ -10,7 +10,7 @@
     font-weight: bold;
 }
 
-* { font-family: GothamRounded; font-weight: lighter; }
+* { font-family: 'Lato'; font-weight: 300; }
 
 input:focus, select:focus, textarea:focus, button:focus {
     outline: none;

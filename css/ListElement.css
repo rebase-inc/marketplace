@@ -65,6 +65,7 @@
 .listElement > div.content > div.row > .prefix,
 .listElement > div.content > div.row > .subtitle {
     opacity: 0.6;
+    font-weight: 400;
     line-height: 15px;
 }
 
