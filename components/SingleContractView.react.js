@@ -75,7 +75,7 @@ export default class SingleContractView extends Component {
                             { this.makeCommentButtons(role, work, actions) }
                         </CommentBox>
                     </div>
-                    <ContractDetails work={work} />
+                    <ContractDetails contract={contract} />
                 </div>
             </div>
         );
