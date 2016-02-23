@@ -18,7 +18,7 @@ export function approveNomination(auction, nomination) {
 }
 
 export function bidOnAuction(user, auction, price) {
-    const url = '/auctions/' + auction.id + '/bid_events';
+    const url = '/auctions/' + auction.id + '/bid';
     // TODO: Refactor API so bidding on auction doesn't require user object
     const data = {
         bid: {
