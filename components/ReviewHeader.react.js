@@ -18,14 +18,15 @@ export default class ReviewHeader extends Component {
         const ticket = getReviewTicket(review);
         return (
             <div className='infoHeader'>
-                <div className='mainInfo'>
-                    <span className='title'>{ticket.title}</span>
+                <div className='tool'>
                     <ReviewStatus review={review} role={role} />
                 </div>
-                <div className='otherInfo'>
-                    <TicketTimeline role={role} current={'work'} />
+                <div className='mainInfo'>
+                    <span className='title'>{ticket.title}</span>
+                </div>
+                <div className='tool'>
                 </div>
             </div>
-        )
+        );
     }
 }

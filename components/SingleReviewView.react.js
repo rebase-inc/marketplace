@@ -13,21 +13,10 @@ export default class SingleReviewView extends Component {
         roles: PropTypes.object.isRequired,
         unselect: PropTypes.func.isRequired,
         review: PropTypes.object.isRequired,
-        submitComment: PropTypes.func.isRequired,
     }
 
     constructor(props, context) {
         super(props, context);
-        this.state = { detailsOpen: false }
-        this.toggleDetails = this.toggleDetails.bind(this);
-    }
-
-    toggleDetails(newState) {
-        if (typeof(newState) == 'boolean') {
-            this.setState({ detailsOpen: newState });
-        } else {
-            this.setState({ detailsOpen: !this.state.detailsOpen });
-        }
     }
     
     componentDidUpdate(prevProps) {
@@ -38,14 +27,17 @@ export default class SingleReviewView extends Component {
     }
 
     render() {
-        const { user, role, review, actions, unselect, submitComment } = this.props;
-        const contractor = review.work.offer.contractor;
-        const ticket = review.work.offer.ticket_snapshot.ticket;
+        const { user, role, review, actions } = this.props;
+        if (!review) { return <div className='singleView'> { 'No Review Selected' } </div>; }
         return (
             <div className='singleView'>
                 <ReviewHeader review={review} role={role} />
-                { getReviewComments(review).map( comment => <Comment comment={comment} key={comment.id} /> ) }
-                <CommentBox submit={actions.commentOnReview.bind(null, user, ticket)}/>
+                <div className='content'>
+                    <div className='scrollable'>
+                        { getReviewComments(review).map( comment => <Comment comment={comment} key={comment.id} /> ) }
+                        <CommentBox submit={actions.commentOnReview.bind(null, user, review)}/>
+                    </div>
+                </div>
             </div>
         );
     }

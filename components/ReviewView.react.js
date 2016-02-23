@@ -5,20 +5,27 @@ import { bindActionCreators } from 'redux';
 import * as ReviewActions from '../actions/ReviewActions';
 
 import SingleReviewView from './SingleReviewView.react';
-import ReviewListView from './ReviewListView.react';
+import NoReviewsView from './NoReviewsView.react';
+import ListTitleBar from './ListTitleBar.react';
+import Review from './Review.react';
+import SortIcon from './SortIcon.react';
+import SearchBar from './SearchBar.react';
+
+import { NEWEST, OLDEST } from '../utils/sort';
 
 export default class ReviewView extends Component {
     static propTypes = {
         user: PropTypes.object.isRequired,
         role: PropTypes.object.isRequired,
+        reviews: PropTypes.array.isRequired,
     }
     constructor(props, context) {
         super(props, context);
-
-        this.componentDidMount = this.componentDidMount.bind(this);
+        this.componentWillMount = this.componentWillMount.bind(this);
         this.componentDidUpdate = this.componentDidUpdate.bind(this);
+        this.state = { sort: NEWEST };
     }
-    componentDidMount() {
+    componentWillMount() {
         this.props.actions.getReviews()
     }
     componentDidUpdate(prevProps) {
@@ -27,17 +34,28 @@ export default class ReviewView extends Component {
         }
     }
     render() {
-        const { reviewID, reviews, user, role, actions, selectView } = this.props;
-        const review = reviews.items.size ? (reviews.items.get(reviewID) || reviews.items.first()).toJS() : null;
+        const { review, reviews, searchText, updateSearchText, user, role, actions, selectView } = this.props;
+        if (!reviews.length) { return <NoReviewsView {...this.props} /> }
         return (
             <div className='mainView'>
-                <ReviewListView review={review} role={role} select={actions.selectReview} selectView={selectView} reviews={reviews.items.toList().toJS()} loading={reviews.isFetching} />
-                { review ? <SingleReviewView review={review} actions={actions} role={role} user={user} /> : null }
+                <div className='listView noselect'>
+                    <ListTitleBar title={'All Past Work'}>
+                        <SortIcon onClick={() => this.setState((s) => ({ sort: s.sort == NEWEST ? OLDEST : NEWEST }))}/>
+                    </ListTitleBar>
+                    <div className='scrollable'>
+                        <SearchBar searchText={searchText} onChange={updateSearchText} />
+                        { reviews.sort(this.state.sort).map(r => <Review {...r} handleClick={actions.selectReview.bind(null, r.id)} selected={review ? r.id == review.id : false} />) }
+                    </div>
+                </div>
+                <SingleReviewView review={review} actions={actions} role={role} user={user} />
             </div>
         );
     }
 }
 
-let mapStateToProps = state => ({ reviews: state.reviews, reviewID: state.reviewID });
+let mapStateToProps = state => ({
+    reviews: state.reviews.items.toList().toJS(),
+    review: state.reviews.items.get(state.reviewID) ? state.reviews.items.get(state.reviewID).toJS() : null,
+});
 let mapDispatchToProps = dispatch => ({ actions: bindActionCreators(ReviewActions, dispatch)});
 export default connect(mapStateToProps, mapDispatchToProps)(ReviewView);
