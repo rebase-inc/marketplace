@@ -1,6 +1,5 @@
 import React, { Component, PropTypes } from 'react';
 
-import TicketHeader from './TicketHeader.react';
 import ContractStatus from './ContractStatus.react';
 import TicketTimeline from './TicketTimeline.react';
 import { DISCUSSION, WAITING_FOR_DEV, WAITING_FOR_CLIENT } from '../constants/MediationStates';

@@ -1,7 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import ReactDOM from 'react-dom';
 
-import TicketHeader from './TicketHeader.react';
 import Comment from './Comment.react';
 import CommentBox from './CommentBox.react';
 import ReviewHeader from './ReviewHeader.react';

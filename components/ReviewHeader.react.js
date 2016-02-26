@@ -1,6 +1,5 @@
 import React, { Component, PropTypes } from 'react';
 
-import TicketHeader from './TicketHeader.react';
 import TicketTimeline from './TicketTimeline.react';
 import CodeField from './CodeField.react';
 import ReviewStatus from './ReviewStatus.react';

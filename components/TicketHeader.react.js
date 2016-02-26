@@ -5,9 +5,6 @@ import FindTalentIcon from './FindTalentIcon.react';
 
 export default class TicketHeader extends Component {
     static propTypes = {
-        title: PropTypes.string.isRequired,
-        unselect: PropTypes.func.isRequired,
-        toggleDetails: PropTypes.func.isRequired,
         neutral: PropTypes.bool,
         notification: PropTypes.bool,
         okay: PropTypes.bool,
