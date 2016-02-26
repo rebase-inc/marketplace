@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import ReactDOM from 'react-dom';
+import { uploadPhoto } from '../actions/UserActions';
 
 function _dataURItoBlob(dataURI) {
     var binary = atob(dataURI.split(',')[1]);
@@ -17,7 +18,6 @@ export default class ProfilePicture extends Component {
     static propTypes = {
         dynamic: React.PropTypes.bool,
         user: React.PropTypes.object.isRequired,
-        uploadPhoto: React.PropTypes.func.isRequired,
     };
     static defaultProps = { dynamic: false };
 
@@ -52,7 +52,7 @@ export default class ProfilePicture extends Component {
             ctx.drawImage(img, sourceX, sourceY, size, size, 0, 0, MAX_DIMENSION, MAX_DIMENSION);
             let imgUrl = canvas.toDataURL('image/jpeg');
             this.setState({ photo: imgUrl });
-            this.props.uploadPhoto(_dataURItoBlob(imgUrl));
+            uploadPhoto(_dataURItoBlob(imgUrl));
         }
     }
 

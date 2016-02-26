@@ -6,7 +6,6 @@ import { OFFERED } from '../constants/ViewConstants';
 
 export default class NoContractsHere extends Component {
     static propTypes = {
-        viewNewTickets: PropTypes.func.isRequired,
         role: PropTypes.object.isRequired,
         selectView: PropTypes.func.isRequired,
     }

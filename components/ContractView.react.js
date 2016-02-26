@@ -47,7 +47,7 @@ class ContractView extends Component {
                     </ListTitleBar>
                     <div className='scrollable'>
                         <SearchBar searchText={searchText} onChange={updateSearchText} />
-                        { contracts.sort(this.state.sort).map(c => <Contract {...c} role={role} handleClick={actions.selectContract.bind(null, c.id)} selected={c.id == contract.id} />) }
+                        { contracts.sort(this.state.sort).map(c => <Contract {...c} key={c.id} role={role} handleClick={actions.selectContract.bind(null, c.id)} selected={c.id == contract.id} />) }
                     </div>
                 </div>
                 { contract ? <SingleContractView contract={contract} actions={actions} role={role} user={user} /> : null }
