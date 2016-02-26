@@ -29,7 +29,12 @@ function handleNewAuctions(requestStatus, oldAuctions, newAuctions) {
     switch (requestStatus) {
         case PENDING: return oldAuctions.set('isFetching', true); break;
         case ERROR: return oldAuctions.set('isFetching', false); break;
-        case SUCCESS: return oldAuctions.mergeDeep({ isFetching: false, items: newAuctions.filter(_shouldBeVisible).map(a => [a.id, a]) }); break;
+        case SUCCESS: {
+            return new Immutable.Record({
+                items: Immutable.OrderedMap(newAuctions.filter(_shouldBeVisible).map(a => [a.id, Immutable.fromJS(a)])),
+                isFetching: false
+            })();
+        }
     }
 }
 
