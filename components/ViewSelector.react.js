@@ -22,7 +22,7 @@ export default class ViewSelector extends Component {
         const otherProps = { walkthrough, walkthroughActions };
         return (
             <div id='viewList'>
-                <NewViewSelectoror role={role} select={selectView.bind(null, NEW)} selected={view.type == NEW} {...otherProps} />
+                <NewViewSelector role={role} select={selectView.bind(null, NEW)} selected={view.type == NEW} {...otherProps} />
                 <OfferedViewSelector role={role} select={selectView.bind(null, OFFERED)} selected={view.type == OFFERED} {...otherProps} />
                 <InProgressViewSelector role={role} select={selectView.bind(null, IN_PROGRESS)} selected={view.type == IN_PROGRESS} {...otherProps} />
                 <CompletedViewSelector role={role} select={selectView.bind(null, COMPLETED)} selected={view.type == COMPLETED} {...otherProps} />
@@ -33,11 +33,11 @@ export default class ViewSelector extends Component {
 
 export const ViewSelection = (props) => (<div className='viewSelection' data-selected={props.selected || undefined} onClick={props.select}>{props.name}</div>);
 
-export class NewViewSelectoror extends Component {
+export class NewViewSelector extends Component {
     static propTypes = {
         walkthrough: PropTypes.object.isRequired,
         walkthroughActions: PropTypes.object.isRequired,
-        select: PropTypes.object.isRequired,
+        select: PropTypes.func.isRequired,
         selected: PropTypes.bool.isRequired,
         role: PropTypes.object.isRequired,
     }
@@ -64,7 +64,7 @@ export class OfferedViewSelector extends Component {
     static propTypes = {
         walkthrough: PropTypes.object.isRequired,
         walkthroughActions: PropTypes.object.isRequired,
-        select: PropTypes.object.isRequired,
+        select: PropTypes.func.isRequired,
         selected: PropTypes.bool.isRequired,
         role: PropTypes.object.isRequired,
     }
@@ -88,7 +88,7 @@ export class InProgressViewSelector extends Component {
     static propTypes = {
         walkthrough: PropTypes.object.isRequired,
         walkthroughActions: PropTypes.object.isRequired,
-        select: PropTypes.object.isRequired,
+        select: PropTypes.func.isRequired,
         selected: PropTypes.bool.isRequired,
         role: PropTypes.object.isRequired,
     }
@@ -113,7 +113,7 @@ export class CompletedViewSelector extends Component {
     static propTypes = {
         walkthrough: PropTypes.object.isRequired,
         walkthroughActions: PropTypes.object.isRequired,
-        select: PropTypes.object.isRequired,
+        select: PropTypes.func.isRequired,
         selected: PropTypes.bool.isRequired,
         role: PropTypes.object.isRequired,
     }

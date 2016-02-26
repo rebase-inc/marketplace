@@ -68,7 +68,7 @@ class TicketView extends Component {
                         </ListTitleBar>
                         <div className='scrollable'>
                             <SearchBar searchText={searchText} onChange={updateSearchText} />
-                            { tickets.sort(this.state.sort).map(t => <Ticket {...t} handleClick={actions.selectTicket.bind(null, t.id)} selected={ticket ? t.id == ticket.id : false} />) }
+                            { tickets.sort(this.state.sort).map(t => <Ticket {...t} key={t.id} handleClick={actions.selectTicket.bind(null, t.id)} selected={ticket ? t.id == ticket.id : false} />) }
                         </div>
                     </div>
                 </Tooltip>

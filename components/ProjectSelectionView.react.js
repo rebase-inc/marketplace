@@ -62,7 +62,7 @@ export const ProjectListView = (props) => (
     <div className='content'>
         <div className='title'>{'Select a Project'}</div>
         <div className='projects'>
-            { props.roles.map(role => <Project project={role.project} select={props.select.bind(null, role.id)} />) }
+            { props.roles.map(role => <Project key={role.id} project={role.project} select={props.select.bind(null, role.id)} />) }
         </div>
         <div className='or'>OR</div>
         <button onClick={props.toggleImport}>Create a New Project</button>
