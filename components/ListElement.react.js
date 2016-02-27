@@ -3,7 +3,7 @@ import React, { Component, PropTypes } from 'react';
 
 export default class ListElement extends Component {
     static propTypes = {
-        icon: PropTypes.element.isRequired,
+        icon: PropTypes.element,
         title: PropTypes.oneOfType([ PropTypes.string, PropTypes.element ]).isRequired,
         prefix: PropTypes.oneOfType([ PropTypes.string, PropTypes.element ]).isRequired,
         extra: PropTypes.element,

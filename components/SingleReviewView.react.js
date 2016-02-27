@@ -9,8 +9,6 @@ import { getReviewTicket, getReviewComments } from '../utils/getters';
 export default class SingleReviewView extends Component {
     static propTypes = {
         user: PropTypes.object.isRequired,
-        roles: PropTypes.object.isRequired,
-        unselect: PropTypes.func.isRequired,
         review: PropTypes.object.isRequired,
     }
 

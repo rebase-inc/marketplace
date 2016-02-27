@@ -37,8 +37,8 @@ class ContractView extends Component {
         }
     }
     render() {
-        const { contract, contracts, searchText, updateSearchText, user, role, actions, selectView } = this.props;
-        if (!contracts.length) { return <NoContractsView {...this.props} /> }
+        const { contract, contracts, searchText, updateSearchText, user, role, actions } = this.props;
+        if (!contracts.length) { return <NoContractsView role={role} /> }
         return (
             <div className='mainView'>
                 <div className='listView noselect'>

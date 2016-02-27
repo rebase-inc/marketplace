@@ -9,8 +9,6 @@ export default class ContractHeader extends Component {
     static propTypes = {
         role: PropTypes.object.isRequired,
         contract: PropTypes.object.isRequired,
-        unselect: PropTypes.func.isRequired,
-        toggleDetails: PropTypes.func.isRequired,
         actions: PropTypes.object.isRequired,
     }
 

@@ -34,8 +34,8 @@ export default class ReviewView extends Component {
         }
     }
     render() {
-        const { review, reviews, searchText, updateSearchText, user, role, actions, selectView } = this.props;
-        if (!reviews.length) { return <NoReviewsView {...this.props} /> }
+        const { review, reviews, searchText, updateSearchText, user, role, actions } = this.props;
+        if (!reviews.length) { return <NoReviewsView role={role} /> }
         return (
             <div className='mainView'>
                 <div className='listView noselect'>
@@ -44,7 +44,7 @@ export default class ReviewView extends Component {
                     </ListTitleBar>
                     <div className='scrollable'>
                         <SearchBar searchText={searchText} onChange={updateSearchText} />
-                        { reviews.sort(this.state.sort).map(r => <Review {...r} handleClick={actions.selectReview.bind(null, r.id)} selected={review ? r.id == review.id : false} />) }
+                        { reviews.sort(this.state.sort).map(r => <Review {...r} key={r.id} handleClick={actions.selectReview.bind(null, r.id)} selected={review ? r.id == review.id : false} />) }
                     </div>
                 </div>
                 <SingleReviewView review={review} actions={actions} role={role} user={user} />
