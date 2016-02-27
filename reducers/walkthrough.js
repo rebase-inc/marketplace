@@ -10,7 +10,7 @@ export default function walkthrough(walkthrough = initialWalkthrough, action) {
         case ActionConstants.SELECT_ROLE: return handleNewRole(action.status, walkthrough, action.response.user ? action.response.user.current_role : null); break;
         case ActionConstants.NEXT_WALKTHROUGH_STEP: return nextStep(action.status, walkthrough); break;
         case ActionConstants.PREVIOUS_WALKTHROUGH_STEP: return previousStep(action.status, walkthrough); break;
-        case ActionConstants.EXIT_WALKTHROUGH: return exit(action.status, walkthrough); break;
+        case ActionConstants.EXIT_WALKTHROUGH: return exit(); break;
         default: return walkthrough;
     }
 }
@@ -35,13 +35,10 @@ function previousStep(status, walkthrough) {
     }
 }
 
-function exit(status, walkthrough) {
-    switch (status) {
-        case PENDING: return walkthrough; break;
-        case ERROR: return walkthrough; break;
-        case SUCCESS: return initialWalkthrough; break;
-    }
+function exit() {
+    return initialWalkthrough;
 }
+
 
 function handleNewRole(status, walkthrough, role) {
     switch (status) {

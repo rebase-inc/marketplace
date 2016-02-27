@@ -20,6 +20,7 @@ export default class NoAuctionsView extends Component {
                 'Any tickets that have been offered to you will appear here with information about who offered them to you.';
         const tooltipVisible = walkthrough.steps[walkthrough.current] == WalkthroughConstants.CURRENT_VIEW;
         const walkthroughProps = {
+            role_id: role.id,
             title: 'You don\'t have any offered tickets',
             description: 'You can either check back in a few hours, or try out a sample piece of work for a $20 credit.',
             ...walkthroughActions

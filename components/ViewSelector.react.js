@@ -45,6 +45,7 @@ export class NewViewSelector extends Component {
         const { walkthrough, walkthroughActions, select, selected, role } = this.props
         if ( role.type != 'manager' ) { return null; } // manager only view
         const walkthroughProps = {
+            role_id: role.id,
             title: 'Your Tickets',
             description: 'Review all of the tickets you\'ve created or imported from other sites and find people to work on them.',
             ...walkthroughActions
@@ -53,7 +54,7 @@ export class NewViewSelector extends Component {
         const tooltipVisible = walkthrough.steps[walkthrough.current] == WalkthroughConstants.NEW_TICKETS;
 
         return (
-            <Tooltip visible={tooltipVisible} overlay={<WalkthroughStep {...walkthroughProps} first={true} />} placement='bottomLeft'>
+            <Tooltip visible={tooltipVisible} overlay={<WalkthroughStep {...walkthroughProps} first={true} role_id={role.id} />} placement='bottomLeft'>
                 <ViewSelection {...this.props} name='new'/>
             </Tooltip>
         );
@@ -72,6 +73,7 @@ export class OfferedViewSelector extends Component {
         const { walkthrough, walkthroughActions, select, selected, role } = this.props
         const tooltipVisible = walkthrough.steps[walkthrough.current] == WalkthroughConstants.WORK_OFFERS;
         const walkthroughProps = {
+            role_id: role.id,
             title: 'Your Work Offers',
             description: 'Review and bid on work that has been offered to you.',
             ...walkthroughActions
@@ -96,6 +98,7 @@ export class InProgressViewSelector extends Component {
         const { walkthrough, walkthroughActions, select, selected, role } = this.props;
         const tooltipVisible = walkthrough.steps[walkthrough.current] == WalkthroughConstants.ONGOING_WORK;
         const walkthroughProps = {
+            role_id: role.id,
             title: 'Your Ongoing Work',
             description: 'Review deadlines, budgets, technical details, fix issues, and ask questions about your ongoing work.',
             ...walkthroughActions
@@ -121,6 +124,7 @@ export class CompletedViewSelector extends Component {
         const { walkthrough, walkthroughActions, select, selected, role } = this.props;
         const tooltipVisible = walkthrough.steps[walkthrough.current] == WalkthroughConstants.PAST_WORK;
         const walkthroughProps = {
+            role_id: role.id,
             title: 'Your Completed Work',
             description: 'Review past work and see how much you earned, what you did right, and what projects you worked on.',
             ...walkthroughActions

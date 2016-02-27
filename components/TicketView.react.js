@@ -60,7 +60,7 @@ class TicketView extends Component {
         const { walkthrough, actions, searchText, updateSearchText, ticket, tickets, user, role } = this.props;
         return (
             <div className='mainView'>
-                <Tooltip visible={walkthrough == CURRENT_VIEW} overlay={<TicketViewWalkthrough {...actions} last={true} />} placement='right'>
+                <Tooltip visible={walkthrough == CURRENT_VIEW} overlay={<TicketViewWalkthrough {...actions} role_id={role.id} last={true} />} placement='right'>
                     <div className='listView noselect'>
                         <ListTitleBar title={'All Tickets'}>
                             <SortIcon onClick={() => this.setState((s) => ({ sort: s.sort == NEWEST ? OLDEST : NEWEST }))}/>

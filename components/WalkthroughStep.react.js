@@ -6,7 +6,7 @@ const WalkthroughStep = (props) => (
         <h4>{props.description}</h4>
         <div className='buttons'>
         { props.first ? null : <button data-quiet onClick={props.previousStep}>Back</button> }
-            <button data-notification onClick={props.exit}>Exit</button>
+            <button data-notification onClick={props.exit.bind(null, props.role_id)}>Exit</button>
         { props.last ? null : <button data-okay onClick={props.nextStep}>Next</button> }
         { props.extra ? <button data-okay onClick={props.extra.fn}>{props.extra.name}</button> : null }
         </div>
