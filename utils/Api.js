@@ -32,12 +32,12 @@ function handleStatus(response, redirect) {
     }
 }
 
-export function dispatchedRequest(method, url, actionType, data, json = true) {
+export function dispatchedRequest(method, url, actionType, data, json = true, context) {
     // we dispatch the pending action with some data so that the reducers
     // can know what data we're attempting to operate on, even if that
     // operation isn't yet successful.
     return dispatch => {
-        dispatch({ type: actionType, status: PENDING, response: data || {} });
+        dispatch({ type: actionType, status: PENDING, response: data || {}, context: context });
         return fetch(BASE_URL + url, {
                 method: method,
                 credentials: 'include', // CORS Hack
@@ -46,7 +46,7 @@ export function dispatchedRequest(method, url, actionType, data, json = true) {
             .then(handleStatus)
             .then(response => response.json())
             //.then(json => { console.log(json); return json })
-            .then(json => dispatch({ type: actionType, status: SUCCESS, response: json }))
+            .then(json => dispatch({ type: actionType, status: SUCCESS, response: json, context: context }))
             .catch(error => {
                 const warn = (console.warn || console.log).bind(console);
                 let status = ERROR;
@@ -62,7 +62,7 @@ export function dispatchedRequest(method, url, actionType, data, json = true) {
                         status = ERROR;
                         break;
                 }
-                return dispatch({ type: actionType, status: status, response: Object.assign(data || {}, {message: error.message || {}}) })
+                return dispatch({ type: actionType, status: status, response: Object.assign(data || {}, {message: error.message || {}}), context: context })
             });
     };
 }

@@ -43,18 +43,19 @@ export default class SingleContractView extends Component {
                 return <button data-alert onClick={actions.markWorkUnblocked.bind(null, work)} key='unblockWork'>Unblock</button>;
                 break;
             case IN_MEDIATION:
-                const mediation = work.mediations[work.mediations.length - 1];
+                const mediation_index = work.mediations.length - 1;
+                const mediation = work.mediations[mediation_index];
                 let waitingForResponse = (mediation.state == DISCUSSION);
                 waitingForResponse = waitingForResponse || (role.type == 'contractor' && mediation.state == WAITING_FOR_DEV);
                 waitingForResponse = waitingForResponse || (role.type == 'manager' && mediation.state == WAITING_FOR_CLIENT);
                 return !waitingForResponse ? null : [
-                    <button data-okay onClick={actions.sendMediationAnswer.bind(null, role.type, mediation, RESOLVE)} key='resolve'>{'Fix issues'}</button>,
-                    <button data-alert onClick={actions.sendMediationAnswer.bind(null, role.type, mediation, COMPLETE)} key='complete'>{'Ignore issues'}</button>,
-                    <button data-warning onClick={actions.sendMediationAnswer.bind(null, role.type, mediation, FAIL)} key='fail'>{'Give Up'}</button>
+                    <button data-okay onClick={actions.sendMediationAnswer.bind(null, role.type, work, mediation_index, RESOLVE)} key='resolve'>{'Fix issues'}</button>,
+                    <button data-alert onClick={actions.sendMediationAnswer.bind(null, role.type, work, mediation_index, COMPLETE)} key='complete'>{'Ignore issues'}</button>,
+                    <button data-warning onClick={actions.sendMediationAnswer.bind(null, role.type, work, mediation_index,FAIL)} key='fail'>{'Give Up'}</button>
                 ];
                 break;
             default:
-                (console.warn || console.log).bind(console).warn('Invalid work state: ', work.state);
+                console.warn('Invalid work state: ', work.state);
                 return null;
         }
     }

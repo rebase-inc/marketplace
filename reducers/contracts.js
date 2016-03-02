@@ -22,7 +22,7 @@ export default function contracts(contracts = initialContracts, action) {
         case ActionConstants.MARK_WORK_BLOCKED: return updateWorkOnContract(action.status, contracts, action.response.work);
         case ActionConstants.MARK_WORK_UNBLOCKED: return updateWorkOnContract(action.status, contracts, action.response.work);
         case ActionConstants.ACCEPT_WORK: return removeContractByWork(action.status, contracts, action.response.work);
-        case ActionConstants.MEDIATION_ANSWER: return updateMediationOnContract(action.status, contracts, action.response.mediation);
+        case ActionConstants.MEDIATION_ANSWER: return updateMediationOnContract(action.status, contracts, action);
         case ActionConstants.SELECT_ROLE: return handleNewRole(action.status, contracts, action.response.user); break;
         case ActionConstants.LOGOUT: return initialContracts; break;
         default: return contracts; break;
@@ -33,7 +33,12 @@ function handleNewContracts(requestStatus, contracts, newContracts) {
     switch (requestStatus) {
         case PENDING: return contracts.set('isFetching', true); break;
         case ERROR: return contracts.set('isFetching', false); break;
-        case SUCCESS: return contracts.mergeDeep({ isFetching: false, items: newContracts.filter(_shouldBeVisible).map(c => [c.id, c]) }); break;
+        case SUCCESS: {
+            return new Immutable.Record({
+                items: Immutable.OrderedMap(newContracts.filter(_shouldBeVisible).map(c => [c.id, Immutable.fromJS(c)])),
+                isFetching: false
+            })();
+        }
     }
 }
 
@@ -73,12 +78,17 @@ function updateWorkOnContract(requestStatus, contracts, work) {
     }
 }
 
-function updateMediationOnContract(requestStatus, contracts, mediation) {
-    const contractId = mediation.work.offer.bid.contract.id;
+function updateMediationOnContract(requestStatus, contracts, action) {
+    console.log('updateMediation, action: %o', action)
+    const contractId = action.context.work.offer.bid.contract.id;
     switch (requestStatus) {
         case PENDING: return contracts.setIn(['items', contractId, 'bid', 'work_offers', 0, 'work', 'mediation', 'isFetching'], true);
         case ERROR: return contracts.setIn(['items', contractId, 'bid', 'work_offers', 0, 'work', 'mediation', 'isFetching'], false);
-        case SUCCESS: return contracts.mergeDeepIn(['items', contractId, 'bid', 'work_offers', 0, 'work', 'mediation'], mediation, { isFetching: false });
+        case SUCCESS: return contracts.mergeDeepIn(
+            ['items', contractId, 'bid', 'work_offers', 0, 'work', 'mediations', action.context.mediation_index],
+            mediation,
+            { isFetching: false }
+        );
     }
 }
 
