@@ -7,7 +7,6 @@ import { getAuctionTicket } from '../utils/getters';
 
 export default class AuctionHeader extends Component {
     static propTypes = {
-        title: PropTypes.string.isRequired,
         warning: PropTypes.bool,
     }
 
