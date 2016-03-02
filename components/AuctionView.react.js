@@ -44,7 +44,7 @@ export default class AuctionView extends Component {
                     </ListTitleBar>
                     <div className='scrollable'>
                         <SearchBar searchText={searchText} onChange={updateSearchText} />
-                        { auctions.sort(this.state.sort).map(a => <Auction {...a} role={role} handleClick={actions.selectAuction.bind(null, a.id)} selected={a.id == (auction || {}).id} />) }
+                        { auctions.sort(this.state.sort).map(a => <Auction {...a} key={a.id} role={role} handleClick={actions.selectAuction.bind(null, a.id)} selected={a.id == (auction || {}).id} />) }
                     </div>
                 </div>
                 <SingleAuctionView auction={auction} actions={actions} role={role} user={user} />
