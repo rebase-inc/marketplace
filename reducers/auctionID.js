@@ -16,7 +16,7 @@ export default function auctionID(auctionID = initialAuctionID, action) {
             auction = auction || {};
             return setID(action.status, auctionID, auctionID || auction.id); break;
         case ActionConstants.SELECT_AUCTION: return action.response.auctionId; break;
-        case ActionConstants.BID_ON_AUCTION: return removeID(action.status, auctionID, action.response.auction); break;
+        case ActionConstants.BID_ON_AUCTION: return handleBidOnAuction(auctionID, action);
         case ActionConstants.CREATE_AUCTION: return setID(action.status, auctionID, (action.response.auction || {}).id); break;
         case ActionConstants.SELECT_ROLE: return removeID(action.status, auctionID); break;
         case ActionConstants.LOGOUT: return removeID(action.status, auctionID); break;
@@ -32,6 +32,19 @@ function removeID(requestStatus, oldAuctionID) {
         default: return oldAuctionID; break;
     }
 }
+
+function handleBidOnAuction(oldAuctionId, action) {
+    switch (action.status) {
+        case PENDING: return action.response.bid.auction.id;
+        case ERROR: return action.response.bid.auction.id
+        case SUCCESS: {
+            return action.response.auction.id
+        }
+        default: return oldAuctionID; break;
+    }
+    console.warn('handleBidOnAuction: invalid status: %s', action.status);
+}
+
 
 function setID(requestStatus, oldAuctionID, newAuctionID) {
     switch (requestStatus) {

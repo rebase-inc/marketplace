@@ -84,6 +84,6 @@ function handleBidOnAuction(requestStatus, auctions, auction) {
     switch (requestStatus) {
         case PENDING: return auctions.setIn(['items', auction.id, 'isFetching'], true);
         case ERROR: return auctions.setIn(['items', auction.id, 'isFetching'], false);
-        case SUCCESS: return auctions.mergeDeepIn(['items', auction.id], auction);
+        case SUCCESS: return auctions.setIn(['items', auction.id], Immutable.fromJS(auction));
     }
 }
