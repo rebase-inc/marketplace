@@ -50,7 +50,7 @@ class ContractView extends Component {
                         { contracts.sort(this.state.sort).map(c => <Contract {...c} key={c.id} role={role} handleClick={actions.selectContract.bind(null, c.id)} selected={c.id == contract.id} />) }
                     </div>
                 </div>
-                { contract ? <SingleContractView contract={contract} actions={actions} role={role} user={user} /> : null }
+                { contract ? <SingleContractView contract={contract} contracts={contracts} actions={actions} role={role} user={user} /> : null }
             </div>
         );
     }

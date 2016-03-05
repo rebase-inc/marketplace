@@ -4,4 +4,4 @@ export const BLOCKED = 'blocked';
 export const IN_REVIEW = 'in_review';
 export const IN_MEDIATION = 'in_mediation';
 export const FAILED = 'failed';
-
+export const WAIT_FOR_RATING = 'wait_for_rating';

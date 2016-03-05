@@ -29,10 +29,12 @@ export function disputeWork(work, comment) {
     return dispatchedRequest('POST', url, ActionConstants.DISPUTE_WORK, data);
 }
 
-export function acceptWork(work, comment, rating) {
+export function acceptWork(work, contractId, contracts, comment, rating) {
     const url = '/works/' + work.id + '/complete';
     const data = { comment: comment, work: work, rating: rating };
-    return dispatchedRequest('POST', url, ActionConstants.ACCEPT_WORK, data);
+    const otherContracts = contracts.filter( (c) => c.id != contractId );
+    const context = { nextSelectedContractId: (otherContracts.length > 0) ? otherContracts[0].id : null }
+    return dispatchedRequest('POST', url, ActionConstants.ACCEPT_WORK, data, true, context);
 }
 
 export function markWorkBlocked(work, comment) {
@@ -107,15 +109,14 @@ export function commentOnContract(user, contract, text) {
     return dispatchedRequest('POST', '/comments', ActionConstants.COMMENT_ON_CONTRACT, data);
 }
 
-export function sendMediationAnswer(role_type, work, mediation_index, answer, comment) {
-    const url = '/mediations/' + mediation.id + '/'+ (role_type == 'manager' ? 'client_answer' : 'dev_answer'); 
+export function sendMediationAnswer(roleType, contractId, mediationIndex, mediation, answer, comment) {
+    const url = '/mediations/' + mediation.id + '/'+ (roleType == 'manager' ? 'client_answer' : 'dev_answer'); 
     const data = {
         answer: answer,
         comment: comment
     };
     const context = {
-        work: work,
-        mediation_index: mediation_index,
+        contractId: contractId,
     };
     return dispatchedRequest('POST', url, ActionConstants.MEDIATION_ANSWER, data, true, context);
 };

@@ -80,13 +80,13 @@ function updateWorkOnContract(requestStatus, contracts, work) {
 
 function updateMediationOnContract(requestStatus, contracts, action) {
     console.log('updateMediation, action: %o', action)
-    const contractId = action.context.work.offer.bid.contract.id;
+    const contractId = action.context.contractId;
     switch (requestStatus) {
         case PENDING: return contracts.setIn(['items', contractId, 'bid', 'work_offers', 0, 'work', 'mediation', 'isFetching'], true);
         case ERROR: return contracts.setIn(['items', contractId, 'bid', 'work_offers', 0, 'work', 'mediation', 'isFetching'], false);
-        case SUCCESS: return contracts.mergeDeepIn(
-            ['items', contractId, 'bid', 'work_offers', 0, 'work', 'mediations', action.context.mediation_index],
-            mediation,
+        case SUCCESS: return contracts.setIn(
+            ['items', contractId, 'bid', 'work_offers', 0, 'work'],
+            Immutable.fromJS(action.response.mediation.work),
             { isFetching: false }
         );
     }

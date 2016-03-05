@@ -1,4 +1,4 @@
 export const RESOLVE = 'resolve';
-export const COMPLETE = 'review';
+export const REVIEW = 'review';
 export const FAIL = 'fail';
 

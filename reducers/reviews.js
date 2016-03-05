@@ -13,7 +13,6 @@ export default function reviews(reviews = initialReviews, action) {
         case ActionConstants.GET_REVIEWS: return handleNewReviews(action.status, reviews, action.response.reviews); break;
         case ActionConstants.COMMENT_ON_REVIEW: return handleCommentOnReview(action.status, reviews, action.response.comment || action.response);
         case ActionConstants.ACCEPT_WORK: return makeNewReviewFromWork(action.status, reviews, action.response.work); break;
-        case ActionConstants.MEDIATION_ANSWER: return makeNewReviewFromWork(action.status, reviews, action.response.work); break;
         case ActionConstants.LOGOUT: return initialReviews; break;
         default: return reviews; break;
     }

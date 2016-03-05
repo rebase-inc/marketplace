@@ -10,8 +10,17 @@ export default function contractID(contractID = initialContractID, action) {
         case ActionConstants.SELECT_ROLE: return handleNewRole(action.status, contractID); break;
         case ActionConstants.BID_ON_AUCTION: return handleBidOnAuction(action.status, contractID, action.response.auction); break;
         case ActionConstants.GET_CONTRACTS: return handleNewContracts(action.status, contractID, action.response.contracts); break;
+        case ActionConstants.ACCEPT_WORK: return acceptWork(contractID, action);
         case ActionConstants.LOGOUT: return initialContractID; break;
         default: return contractID; break;
+    }
+}
+
+function acceptWork(oldContractID, action) {
+    switch (action.status) {
+        case PENDING: return oldContractID; break;
+        case ERROR: return oldContractID; break;
+        case SUCCESS: return action.context.nextSelectedContractId;
     }
 }
 

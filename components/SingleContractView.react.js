@@ -8,15 +8,16 @@ import ContractDetails from './ContractDetails.react';
 import Comment from './Comment.react';
 import { humanReadableDate } from '../utils/date';
 import { getContractTicket, getContractWork, getContractComments } from '../utils/getters';
-import { FAIL, COMPLETE, RESOLVE } from '../constants/MediationAnswers';
+import { FAIL, REVIEW, RESOLVE } from '../constants/MediationAnswers';
 import { DISCUSSION, WAITING_FOR_DEV, WAITING_FOR_CLIENT } from '../constants/MediationStates';
-import { BLOCKED, IN_REVIEW, IN_PROGRESS, IN_MEDIATION } from '../constants/WorkStates';
+import { BLOCKED, IN_REVIEW, IN_PROGRESS, IN_MEDIATION, WAIT_FOR_REVIEW } from '../constants/WorkStates';
 
 export default class SingleContractView extends Component {
     static propTypes = {
         user: PropTypes.object.isRequired,
         role: PropTypes.object.isRequired,
         contract: PropTypes.object.isRequired,
+        contracts: PropTypes.array.isRequired,
         actions: PropTypes.object.isRequired,
     }
 
@@ -25,7 +26,7 @@ export default class SingleContractView extends Component {
     }
 
     // There has got to be a better way to do this...
-    makeCommentButtons(role, work, actions) {
+    makeCommentButtons(role, contractId, contracts, work, actions) {
         switch (work.state) {
             case IN_PROGRESS:
                 return role.type == 'manager' ? null : [
@@ -33,9 +34,10 @@ export default class SingleContractView extends Component {
                     <button data-alert onClick={actions.markWorkBlocked.bind(null, work)} data-alert key='blocked'>Mark Blocked</button>
                 ];
                 break;
+            case WAIT_FOR_REVIEW:
             case IN_REVIEW:
                 return role.type == 'contractor' ? null : [
-                    <button data-okay onClick={actions.acceptWork.bind(null, work)} key='accept'>Accept Work</button>,
+                    <button data-okay onClick={actions.acceptWork.bind(null, work, contractId, contracts)} key='accept'>Accept Work</button>,
                     <button data-warning onClick={actions.disputeWork.bind(null, work)} data-alert key='dispute'>Dispute</button>
                 ];
                 break;
@@ -49,9 +51,9 @@ export default class SingleContractView extends Component {
                 waitingForResponse = waitingForResponse || (role.type == 'contractor' && mediation.state == WAITING_FOR_DEV);
                 waitingForResponse = waitingForResponse || (role.type == 'manager' && mediation.state == WAITING_FOR_CLIENT);
                 return !waitingForResponse ? null : [
-                    <button data-okay onClick={actions.sendMediationAnswer.bind(null, role.type, work, mediation_index, RESOLVE)} key='resolve'>{'Fix issues'}</button>,
-                    <button data-alert onClick={actions.sendMediationAnswer.bind(null, role.type, work, mediation_index, COMPLETE)} key='complete'>{'Ignore issues'}</button>,
-                    <button data-warning onClick={actions.sendMediationAnswer.bind(null, role.type, work, mediation_index,FAIL)} key='fail'>{'Give Up'}</button>
+                    <button data-okay onClick={actions.sendMediationAnswer.bind(null, role.type, contractId, mediation_index, mediation, RESOLVE)} key='resolve'>{'Fix issues'}</button>,
+                    <button data-alert onClick={actions.sendMediationAnswer.bind(null, role.type, contractId, mediation_index, mediation, REVIEW)} key='review'>{'Ignore issues'}</button>,
+                    <button data-warning onClick={actions.sendMediationAnswer.bind(null, role.type, contractId, mediation_index, mediation, FAIL)} key='fail'>{'Give Up'}</button>
                 ];
                 break;
             default:
@@ -61,7 +63,7 @@ export default class SingleContractView extends Component {
     }
 
     render() {
-        const { contract, user, role, actions } = this.props;
+        const { contract, contracts, user, role, actions } = this.props;
         if (!contract) { return <div className='singleView'> { 'No Contract Selected' } </div>; }
         const ticket = getContractTicket(contract);
         const work = getContractWork(contract);
@@ -73,7 +75,7 @@ export default class SingleContractView extends Component {
                     <div className='scrollable'>
                         { getContractComments(contract).map(comment => <Comment comment={comment} key={comment.id} /> ) }
                         <CommentBox submit={submitComment}>
-                            { this.makeCommentButtons(role, work, actions) }
+                            { this.makeCommentButtons(role, contract.id, contracts, work, actions) }
                         </CommentBox>
                     </div>
                     <ContractDetails contract={contract} />
