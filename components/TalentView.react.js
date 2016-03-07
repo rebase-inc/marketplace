@@ -25,7 +25,7 @@ export default class TalentView extends Component {
                 { nominations.sort(_sort).filter(matchFilter).map(n => <Talent
                                                                   auction={auction}
                                                                   nomination={n}
-                                                                  key={n.id}
+                                                                  key={n.contractor.id}
                                                                   approve={approve.bind(null, auction, n)}
                                                                   undo={makeNotification.bind(null, 'Not implemented!!')}
                                                                   />) }
