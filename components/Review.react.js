@@ -7,13 +7,15 @@ import { getReviewTicket } from '../utils/getters';
 import { humanReadableDate } from '../utils/date';
 import ListElement from './ListElement.react';
 
-const Review = (props) => (
-    <ListElement {...getReviewTicket(props)} {...props}
+const Review = function(props) {
+    let price = !!props.work.credit ? props.work.credit.price : props.work.debit.price;
+    price = '$'+price.toString();
+    return <ListElement {...getReviewTicket(props)} {...props}
         prefix={'Finished on ' + humanReadableDate(props.created)}
-        info={'$666'}
+        info={price}
         icon={null}
         subtitle={Object.keys(getReviewTicket(props).skill_requirement.skills).join(' ')}
         />
-);
+};
 
 export default Review;
