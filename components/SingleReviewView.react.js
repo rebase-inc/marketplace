@@ -9,7 +9,7 @@ import { getReviewTicket, getReviewComments } from '../utils/getters';
 export default class SingleReviewView extends Component {
     static propTypes = {
         user: PropTypes.object.isRequired,
-        review: PropTypes.object.isRequired,
+        review: PropTypes.object,
     }
 
     constructor(props, context) {
@@ -17,9 +17,11 @@ export default class SingleReviewView extends Component {
     }
     
     componentDidUpdate(prevProps) {
-        if (this.props.review.id != prevProps.review.id) {
-            const node = ReactDOM.findDOMNode(this);
-            node.scrollTop = 0;
+        if (!!this.props.review && !!prevProps.review) {
+            if (this.props.review.id != prevProps.review.id) {
+                const node = ReactDOM.findDOMNode(this);
+                node.scrollTop = 0;
+            }
         }
     }
 

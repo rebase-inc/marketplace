@@ -1,54 +1,64 @@
 import React, { Component, PropTypes } from 'react';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 
+import * as ReviewActions from '../actions/ReviewActions';
 import LoadingAnimation from './LoadingAnimation.react';
 import NoReviewsView from './NoReviewsView.react';
-import SortOptions from './SortOptions.react';
 import SearchBar from './SearchBar.react';
 import Review from './Review.react';
+import { searchReviews } from '../utils/search';
+import { getReviewTicket } from '../utils/getters';
 
 export default class ReviewListView extends Component {
     static propTypes = {
-        select: PropTypes.func.isRequired,
+        actions: PropTypes.object.isRequired,
+        review: PropTypes.object,
         reviews: PropTypes.array.isRequired,
-        loading: PropTypes.bool.isRequired,
         role: PropTypes.object.isRequired,
-        selectView: PropTypes.func.isRequired,
+        search: PropTypes.func.isRequired,
+        sort: PropTypes.func.isRequired,
     }
     constructor(props, context) {
         super(props, context);
-        this.state = { searchText: '', sort: SortFunctions.get('ending soon') };
+        this.state = { searchText: '' };
     }
     render() {
-        const { select, reviews, loading, role, selectView } = this.props;
+        const { actions, loading, review, reviews, role, search, select } = this.props;
         const { searchText, sort } = this.state;
-        const searchResults = !!searchText ? searchReviews(reviews, searchText) : reviews.map(r => r.id);
-        const sortedReviews = reviews.sort(sort).filter(a => searchResults.find(id => id == a.id));
-        if (!sortedReviews.length && loading) { return <LoadingAnimation />; }
-        if (!sortedReviews.length) { return <NoReviewsView role={role} selectView={selectView} /> }
+        const searchResults = !!searchText ? search(searchText) : reviews.map(r => getReviewTicket(r).id);
+        const filteredReviews = reviews.sort(sort).filter(a => searchResults.indexOf(getReviewTicket(a).id) != -1);
+        if (!filteredReviews.length && loading) { return <LoadingAnimation />; }
+        if (!filteredReviews.length) { return <NoReviewsView role={role} selectView={actions.selectReview} /> }
         return (
             <div className='listView'>
-                <SearchBar placeholder='Search finished work' searchText={searchText} onUserInput={(input) => this.setState({ searchText: input })}>
-                    {/*<SortOptions options={SortFunctions} select={(fn) => this.setState({ sort: fn })} sort={sort} />*/}
-                </SearchBar>
-                <div className='info'>
-                    {'All Completed Work'}
-                </div>
+                <SearchBar placeholder='Search finished work' searchText={searchText} onChange={(input) => this.setState({ searchText: input })} />
                 <div className='contentList'>
-                    { sortedReviews.map(r => <Review review={r} role={role} select={() => select(r.id)} key={r.id} />) }
+                    { filteredReviews.map(
+                        function (r) {
+                            return <Review 
+                                {...r}
+                                key={r.id}
+                                handleClick={actions.selectReview.bind(null, r.id)}
+                                selected={review ? r.id == review.id : false}
+                            />;
+                        })
+                    }
                 </div>
             </div>
         );
     }
 }
 
-function searchReviews(reviews, searchText) {
-    var fuseSearch = new Fuse(reviews, {threshold: 0.35, keys: ['ticket.title', 'ticket.project.name', 'ticket.project.organization.name'], id: 'id'});
-    return fuseSearch.search(searchText.substring(0, 32));
+
+let mapStateToProps = function (state) {
+    const _reviews = state.reviews.items.toList().toJS();
+    return {
+        loading: state.reviews.isFetching,
+        reviews: _reviews,
+        search: searchReviews(_reviews),
+    };
 }
 
-const SortFunctions = new Map([
-    ['new', (a, b) => new Date(b.created) - new Date(a.created) ],
-    ['old', (a, b) => new Date(a.created) - new Date(b.created) ],
-    ['good review', (a, b) => parseInt(a.rating) - parseInt(b.rating) ],
-    ['bad review', (a, b) => parseInt(b.rating) - parseInt(a.rating) ],
-]);
+let mapDispatchToProps = dispatch => ({ actions: bindActionCreators(ReviewActions, dispatch)});
+export default connect(mapStateToProps, mapDispatchToProps)(ReviewListView);
