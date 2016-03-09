@@ -9,7 +9,7 @@ import { searchTickets } from '../utils/search';
 import { getTicketTicket } from '../utils/getters';
 
 
-export default class TicketListView extends ListView {
+export class TicketListView extends ListView {
     constructor(props, context) {
         super(props, context);
         this.getTicket = (ticket) => ticket;
