@@ -8,13 +8,13 @@ import { bindActionCreators } from 'redux';
 import Tooltip from 'rc-tooltip';
 
 // Project Component Imports
-import SingleTicketView from './SingleTicketView.react';
-import WalkthroughStep from './WalkthroughStep.react';
 import ListTitleBar from './ListTitleBar.react';
-import SearchBar from './SearchBar.react';
-import Ticket from './Ticket.react';
-import SortIcon from './SortIcon.react';
 import NewTicketIcon from './NewTicketIcon.react';
+import SingleTicketView from './SingleTicketView.react';
+import SortIcon from './SortIcon.react';
+import Ticket from './Ticket.react';
+import TicketListView from './TicketListView.react';
+import WalkthroughStep from './WalkthroughStep.react';
 
 // Project Action Imports
 import * as TicketActions from '../actions/TicketActions';
@@ -27,8 +27,6 @@ import { NEWEST, OLDEST } from '../utils/sort';
 // TODO: Handle ticket lifecycle with a higher order component
 class TicketView extends Component {
     static propTypes = {
-        searchText: PropTypes.string,
-        updateSearchText: PropTypes.func,
         user: PropTypes.object.isRequired,
         tickets: PropTypes.array.isRequired,
     }
@@ -57,7 +55,7 @@ class TicketView extends Component {
         }
     }
     render() {
-        const { walkthrough, actions, searchText, updateSearchText, ticket, tickets, user, role } = this.props;
+        const { actions, role , ticket, tickets, user, walkthrough } = this.props;
         return (
             <div className='mainView'>
                 <Tooltip visible={walkthrough == CURRENT_VIEW} overlay={<TicketViewWalkthrough {...actions} role_id={role.id} last={true} />} placement='right'>
@@ -66,10 +64,11 @@ class TicketView extends Component {
                             <SortIcon onClick={() => this.setState((s) => ({ sort: s.sort == NEWEST ? OLDEST : NEWEST }))}/>
                             <NewTicketIcon onClick={actions.openNewTicketModal} />
                         </ListTitleBar>
-                        <div className='scrollable'>
-                            <SearchBar searchText={searchText} onChange={updateSearchText} />
-                            { tickets.sort(this.state.sort).map(t => <Ticket {...t} key={t.id} handleClick={actions.selectTicket.bind(null, t.id)} selected={ticket ? t.id == ticket.id : false} />) }
-                        </div>
+                        <TicketListView
+                            selectedId={ticket ? ticket.id : 0}
+                            role={role}
+                            sort={this.state.sort}
+                        />
                     </div>
                 </Tooltip>
                 { ticket ? <SingleTicketView ticket={ticket} actions={actions} role={role} user={user} /> : null }

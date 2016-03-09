@@ -9,12 +9,12 @@ import { ENDS_SOON, TIME_LEFT } from '../utils/sort';
 
 // Components
 import Contract from './Contract.react';
-import SearchBar from './SearchBar.react';
-import SortIcon from './SortIcon.react';
+import ContractListView from './ContractListView.react';
+import ListTitleBar from './ListTitleBar.react';
 import NoContractsView from './NoContractsView.react';
 import SingleContractView from './SingleContractView.react';
+import SortIcon from './SortIcon.react';
 import SortOptions from './SortOptions.react';
-import ListTitleBar from './ListTitleBar.react';
 
 class ContractView extends Component {
     static propTypes = {
@@ -45,10 +45,11 @@ class ContractView extends Component {
                     <ListTitleBar title={'All Ongoing Work'}>
                         <SortIcon onClick={() => this.setState((s) => ({ sort: s.sort == ENDS_SOON ? TIME_LEFT : ENDS_SOON }))}/>
                     </ListTitleBar>
-                    <div className='scrollable'>
-                        <SearchBar searchText={searchText} onChange={updateSearchText} />
-                        { contracts.sort(this.state.sort).map(c => <Contract {...c} key={c.id} role={role} handleClick={actions.selectContract.bind(null, c.id)} selected={c.id == contract.id} />) }
-                    </div>
+                    <ContractListView
+                        selectedId={contract ? contract.id : 0}
+                        role={role}
+                        sort={this.state.sort}
+                    />
                 </div>
                 { contract ? <SingleContractView contract={contract} contracts={contracts} actions={actions} role={role} user={user} /> : null }
             </div>

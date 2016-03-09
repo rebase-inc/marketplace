@@ -7,12 +7,12 @@ import * as NotificationActions from '../actions/NotificationActions';
 import { NEW } from '../constants/ViewConstants';
 import { NEWEST, OLDEST } from '../utils/sort';
 
-import SingleAuctionView from './SingleAuctionView.react';
-import SortIcon from './SortIcon.react';
-import SearchBar from './SearchBar.react';
+import Auction from './Auction.react';
+import AuctionListView from './AuctionListView.react';
 import ListTitleBar from './ListTitleBar.react';
 import NoAuctionsView from './NoAuctionsView.react';
-import Auction from './Auction.react';
+import SingleAuctionView from './SingleAuctionView.react';
+import SortIcon from './SortIcon.react';
 
 export default class AuctionView extends Component {
     static propTypes = {
@@ -34,7 +34,7 @@ export default class AuctionView extends Component {
         }
     }
     render() {
-        const { auction, auctions, searchText, updateSearchText, user, role, actions, selectView } = this.props;
+        const { actions, auction, auctions, role, user } = this.props;
         if (!auctions.length) { return <NoAuctionsView {...this.props} /> }
         return (
             <div className='mainView'>
@@ -42,10 +42,11 @@ export default class AuctionView extends Component {
                     <ListTitleBar title={'All Offered Work'}>
                         <SortIcon onClick={() => this.setState((s) => ({ sort: s.sort == NEWEST ? OLDEST : NEWEST }))}/>
                     </ListTitleBar>
-                    <div className='scrollable'>
-                        <SearchBar searchText={searchText} onChange={updateSearchText} />
-                        { auctions.sort(this.state.sort).map(a => <Auction {...a} key={a.id} role={role} handleClick={actions.selectAuction.bind(null, a.id)} selected={a.id == (auction || {}).id} />) }
-                    </div>
+                    <AuctionListView
+                        selectedId={auction ? auction.id : 0}
+                        role={role}
+                        sort={this.state.sort}
+                    />
                 </div>
                 <SingleAuctionView auction={auction} actions={actions} role={role} user={user} />
             </div>

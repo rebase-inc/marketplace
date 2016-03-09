@@ -1,4 +1,4 @@
-import { getContractTicket, getReviewTicket } from '../utils/getters';
+import { getAuctionTicket, getContractTicket, getReviewTicket } from '../utils/getters';
 import Fuse from '../utils/fuse';
 
 const fuseOptions = {
@@ -20,5 +20,6 @@ function search(getTicket, things) {
 }
 
 export const searchTickets = search.bind(null, (ticket) => ticket);
+export const searchAuctions = search.bind(null, getAuctionTicket);
 export const searchContracts = search.bind(null, getContractTicket);
 export const searchReviews = search.bind(null, getReviewTicket);

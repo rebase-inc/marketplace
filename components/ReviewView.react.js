@@ -39,9 +39,8 @@ export default class ReviewView extends Component {
                         <SortIcon onClick={() => this.setState((s) => ({ sort: s.sort == NEWEST_REVIEWS ? OLDEST_REVIEWS : NEWEST_REVIEWS }))}/>
                     </ListTitleBar>
                     <ReviewListView
-                        review={review}
+                        selectedId={review ? review.id : 0}
                         role={role}
-                        selectView={actions.selectReview}
                         sort={this.state.sort}
                     />
                 </div>
