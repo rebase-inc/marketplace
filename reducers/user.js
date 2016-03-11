@@ -22,7 +22,7 @@ function handleNewUserData(requestStatus, oldUser, newUser) {
         case UNAUTHORIZED: return Object.assign({}, oldUser, { error: 'Invalid credentials' }); break;
         case SUCCESS:
             const { id, email, current_role, name, photo, ssh_public_keys, github_accounts } = newUser;
-            const newUserData = { id, email, name, photo, ssh_public_keys, current_role: {id: current_role.id}, github_accounts };
+            const newUserData = { id, email, name, photo, ssh_public_keys, current_role, github_accounts };
             return Object.assign({}, oldUser, { isFetching: false}, newUserData);
             break;
     }

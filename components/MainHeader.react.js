@@ -96,8 +96,8 @@ class ProfileOptions extends Component {
                     { this.state.open ?
                         <DropdownMenu>
                             <div className='option' onClick={() => actions.selectView(PROFILE)}>Profile</div>
-                            <div className='option' onClick={() => actions.selectView(PROJECTS)}>Projects</div>
-                            <div className='option' onClick={() => actions.selectView(DEVELOPER_PROFILE)}>Developer Profile</div>
+                            { user.current_role.type == 'manager' ? <div className='option' onClick={() => actions.selectView(PROJECTS)}>Projects</div> : null }
+                            { user.current_role.type == 'contractor' ? <div className='option' onClick={() => actions.selectView(DEVELOPER_PROFILE)}>Developer Profile</div> : null }
                             <div className='option' onClick={actions.logout}>Sign Out</div>
                         </DropdownMenu> : null }
                 </div>
