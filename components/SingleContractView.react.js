@@ -10,7 +10,7 @@ import { humanReadableDate } from '../utils/date';
 import { getContractTicket, getContractWork, getContractComments } from '../utils/getters';
 import { FAIL, REVIEW, RESOLVE } from '../constants/MediationAnswers';
 import { DISCUSSION, WAITING_FOR_DEV, WAITING_FOR_CLIENT } from '../constants/MediationStates';
-import { BLOCKED, IN_REVIEW, IN_PROGRESS, IN_MEDIATION, WAIT_FOR_REVIEW } from '../constants/WorkStates';
+import { BLOCKED, IN_REVIEW, IN_PROGRESS, IN_MEDIATION, WAIT_FOR_RATING } from '../constants/WorkStates';
 
 export default class SingleContractView extends Component {
     static propTypes = {
@@ -34,7 +34,7 @@ export default class SingleContractView extends Component {
                     <button data-alert onClick={actions.markWorkBlocked.bind(null, work)} data-alert key='blocked'>Mark Blocked</button>
                 ];
                 break;
-            case WAIT_FOR_REVIEW:
+            case WAIT_FOR_RATING:
             case IN_REVIEW:
                 return role.type == 'contractor' ? null : [
                     <button data-okay onClick={actions.acceptWork.bind(null, work, contractId, contracts)} key='accept'>Accept Work</button>,
