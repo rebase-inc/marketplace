@@ -30,7 +30,7 @@ export default class ModalView extends Component {
     render() {
         const { modal, user, role } = this.props;
         const { userActions, ticketActions, auctionActions, contractActions, mediationActions } = this.props;
-        const { ticket, tickets, auction, auctions, contract, contracts } = this.props;
+        const { auction, auctions, contract, contracts, fetchingTickets, ticket, tickets } = this.props;
         const work = contract ? getContractWork(contract) : null;
         switch (modal.type) {
             case null: return null; break;
@@ -42,7 +42,7 @@ export default class ModalView extends Component {
                         close={userActions.closeModal} />;
             case ModalConstants.CREATE_AUCTION_MODAL:
                 const createAuction = ticketActions.createAuction.bind(null, ticket);
-                return <CreateAuctionModal isLoading={ticket.isFetching} close={userActions.closeModal} create={createAuction}/>;
+                return <CreateAuctionModal isLoading={fetchingTickets} close={userActions.closeModal} create={createAuction}/>;
             case ModalConstants.BID_MODAL:
                 const bid = auctionActions.bidOnAuction.bind(null, user, auction);
                 return <BidModal auction={auction} bid={bid} close={userActions.closeModal} actions={auctionActions} role={role}/>;
@@ -83,6 +83,7 @@ export default class ModalView extends Component {
 let mapStateToProps = state => ({
     modal: state.modal,
     ticket: state.tickets.items.get(state.ticketID) ? state.tickets.items.get(state.ticketID).toJS() : null,
+    fetchingTickets: state.tickets.isFetching,
     tickets: state.tickets,
     auction: state.auctions.items.get(state.auctionID) ? state.auctions.items.get(state.auctionID).toJS() : null,
     auctions: state.auctions,
