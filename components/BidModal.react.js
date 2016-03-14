@@ -1,5 +1,4 @@
 import React, { Component, PropTypes } from 'react';
-import ReactDOM from 'react-dom';
 
 import ModalContainer from './ModalContainer.react';
 import LoadingAnimation from './LoadingAnimation.react';
@@ -55,7 +54,7 @@ export default class BidModal extends Component {
     }
 
     render() {
-        const { role, auction, bid, actions, isLoading, minPrice, maxPrice, defaultPrice, sliderWidth, close } = this.props;
+        const { role, auction, bid, actions, minPrice, maxPrice, defaultPrice, sliderWidth, close } = this.props;
         if (!auction.bids.find(b => b.contractor.id == role.id)) {
             return (
                 <ModalContainer close={close}>
