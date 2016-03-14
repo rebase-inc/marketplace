@@ -5,7 +5,6 @@ import ModalContainer from './ModalContainer.react';
 import LoadingAnimation from './LoadingAnimation.react';
 import CodeField from './CodeField.react';
 import Slider from './Slider.react';
-import { OFFERED } from '../constants/ViewConstants';
 import { humanReadableDate } from '../utils/date';
 import { getAuctionWork, getAuctionTicket } from '../utils/getters';
 
