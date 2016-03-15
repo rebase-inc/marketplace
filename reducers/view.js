@@ -28,6 +28,14 @@ export default function view(view = initialView, action) {
                     break;
             }
         }
+        case ActionConstants.SELECT_ROLE: {
+            switch (action.status) {
+                case PENDING: return Object.assign({}, view, { isFetching: true }); break;
+                case SUCCESS:
+                    return Object.assign({}, view, { isFetching: false });
+                    break;
+            }
+        }
         case ActionConstants.BID_ON_AUCTION: {
             switch (action.status) {
                 case PENDING: return Object.assign({}, view, { isFetching: true }); break;

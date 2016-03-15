@@ -38,7 +38,11 @@ export default class MainHeader extends Component {
         return (
             <div id='mainHeader' className='noselect'>
                 <ViewSelector views={Array.from(views.items.values())} selectView={actions.selectView} {...otherProps} />
-                <ProjectSelector user={user} role={user.current_role} selectRole={(role) => actions.selectRole(user, role.id)} roles={filteredRoles}/>
+                <ProjectSelector
+                    openProjectSelectionModal={actions.openProjectSelectionModal}
+                    role={user.current_role}
+                    roles={filteredRoles}
+                />
                 <ProfileOptions actions={actions} user={user} {...otherProps} />
             </div>
         );
@@ -136,38 +140,21 @@ class CurrentProfile extends Component {
 
 export class ProjectSelector extends Component {
     static propTypes = {
+        openProjectSelectionModal: PropTypes.func.isRequired,
         role: PropTypes.object.isRequired,
         roles: PropTypes.array.isRequired,
-        selectRole: PropTypes.func.isRequired,
     }
 
     constructor(props) {
         super(props);
-        this.state = { open: false };
-        this.open = this.open.bind(this);
-        this.close = this.close.bind(this);
-    }
-
-    open() {
-        this.setState({ open: true });
-    }
-
-    close() {
-        this.setState({ open: false });
     }
 
     render() {
-        const { role, roles, selectRole } = this.props;
+        const { openProjectSelectionModal, role, roles } = this.props;
         let selectedRole = roles.find(r => r.id == role.id);
-        let otherRoles = roles.filter(r => r.id != role.id);
         return (
-            <div id='projectSelector' onMouseOver={this.open} onMouseLeave={this.close} data-open={this.state.open}>
+            <div id='projectSelector' onClick={openProjectSelectionModal} >
                 <Role key={selectedRole.id} role={selectedRole} selected={true} />
-                { this.state.open ?
-                    <DropdownMenu>
-                        { otherRoles.map(r => <Role key={r.id} role={r} select={() => selectRole(r)} selected={false} />) }
-                        { otherRoles.length ? null : <div className='role'><span style={{fontSize: '12px'}}>no other projects</span></div> }
-                    </DropdownMenu> : null }
             </div>
         );
     }

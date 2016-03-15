@@ -2,7 +2,7 @@ import ActionConstants from '../constants/ActionConstants';
 
 import { dispatchedRequest } from '../utils/Api';
 import { SUCCESS } from '../constants/RequestConstants';
-import { ADD_SSH_KEY_MODAL } from '../constants/ModalConstants';
+import { ADD_SSH_KEY_MODAL, SELECT_PROJECT } from '../constants/ModalConstants';
 
 export function logout() {
     return dispatchedRequest('DELETE', '/auth', ActionConstants.LOGOUT);
@@ -69,6 +69,14 @@ export function openAddSSHKeyModal() {
     return {
         type: ActionConstants.SELECT_MODAL,
         response: { type: ADD_SSH_KEY_MODAL },
+        status: SUCCESS
+    }
+}
+
+export function openProjectSelectionModal() {
+    return {
+        type: ActionConstants.SELECT_MODAL,
+        response: { type: SELECT_PROJECT },
         status: SUCCESS
     }
 }

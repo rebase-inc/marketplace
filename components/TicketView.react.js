@@ -44,7 +44,7 @@ class TicketView extends Component {
     }
     componentWillUpdate(prevProps) {
         // If the role has changed, we want to make sure to get the new role's tickets
-        if (prevProps.user.current_role.id != this.props.user.current_role.id) {
+        if (this.props.viewIsFetching || (prevProps.user.current_role.id != this.props.user.current_role.id)) {
             this.props.actions.getTickets()
         }
 
@@ -86,6 +86,7 @@ const TicketViewWalkthrough = (props) => (
 let mapStateToProps = state => ({
     tickets: state.tickets.items.toList().toJS(),
     ticket: state.ticketID ? state.tickets.items.get(state.ticketID).toJS() : null,
+    viewIsFetching: state.view.isFetching,
     walkthrough: state.walkthrough.steps[state.walkthrough.current],
 });
 let mapDispatchToProps = dispatch => ({

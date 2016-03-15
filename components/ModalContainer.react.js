@@ -16,7 +16,7 @@ export default class ModalContainer extends Component {
     render() {
         const { close, help, children } = this.props;
         return (
-            <div id='modalView'>
+            <div id='modalView' onKeyPress={(e) => { (e.charCode == 27) ? this.props.close() : alert('SHIT') }} >
                 <div id='modalDialog'>
                     <CloseIcon onClick={close} />
                     { !!help ? <HelpIcon onClick={() => this.setState({ showHelp: true })} /> : null }

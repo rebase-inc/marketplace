@@ -6,13 +6,14 @@ import NewTicketModal from './NewTicketModal.react';
 import CreateAuctionModal from './CreateAuctionModal.react';
 import BidModal from './BidModal.react';
 
+import AcceptWorkModal from './AcceptWorkModal.react';
+import AddSSHKeyModal from './AddSSHKeyModal.react';
+import DisputeWorkModal from './DisputeWorkModal.react';
 import HaltWorkModal from './HaltWorkModal.react';
+import ProjectSelectionModal from './ProjectSelectionModal.react';
+import ResolveMediationModal from './ResolveMediationModal.react';
 import ResumeWorkModal from './ResumeWorkModal.react';
 import SubmitWorkModal from './SubmitWorkModal.react';
-import AcceptWorkModal from './AcceptWorkModal.react';
-import DisputeWorkModal from './DisputeWorkModal.react';
-import ResolveMediationModal from './ResolveMediationModal.react';
-import AddSSHKeyModal from './AddSSHKeyModal.react';
 
 import * as ModalConstants from '../constants/ModalConstants';
 
@@ -28,7 +29,7 @@ import { getContractWork } from '../utils/getters';
 // it's worth looking into.
 export default class ModalView extends Component {
     render() {
-        const { modal, user, role } = this.props;
+        const { modal, user, role, roles } = this.props;
         const { userActions, ticketActions, auctionActions, contractActions, mediationActions } = this.props;
         const { auction, auctions, contract, contracts, fetchingTickets, ticket, tickets } = this.props;
         const work = contract ? getContractWork(contract) : null;
@@ -63,6 +64,12 @@ export default class ModalView extends Component {
                 return <HaltWorkModal close={userActions.closeModal} markWorkBlocked={markWorkBlocked} />; break;
             case ModalConstants.ADD_SSH_KEY_MODAL:
                 return <AddSSHKeyModal addSSHKey={userActions.addSSHKey.bind(null, user)} close={userActions.closeModal} />; break;
+            case ModalConstants.SELECT_PROJECT:
+                return <ProjectSelectionModal
+                    close={userActions.closeModal}
+                    roles={roles}
+                    select={userActions.selectRole.bind(null, user)}
+                />;
             case ModalConstants.RESOLVE_MEDIATION_MODAL: {
                 let mediations = work.mediations;
                 let mediation = mediations[mediations.length-1];
@@ -81,14 +88,15 @@ export default class ModalView extends Component {
 }
 
 let mapStateToProps = state => ({
-    modal: state.modal,
-    ticket: state.tickets.items.get(state.ticketID) ? state.tickets.items.get(state.ticketID).toJS() : null,
-    fetchingTickets: state.tickets.isFetching,
-    tickets: state.tickets,
     auction: state.auctions.items.get(state.auctionID) ? state.auctions.items.get(state.auctionID).toJS() : null,
     auctions: state.auctions,
     contract: state.contracts.items.get(state.contractID) ? state.contracts.items.get(state.contractID).toJS() : null,
     contracts: state.contracts,
+    fetchingTickets: state.tickets.isFetching,
+    modal: state.modal,
+    roles: state.roles,
+    ticket: state.tickets.items.get(state.ticketID) ? state.tickets.items.get(state.ticketID).toJS() : null,
+    tickets: state.tickets,
 });
 let mapActionsToProps = dispatch => ({
     userActions: bindActionCreators(UserActions, dispatch),

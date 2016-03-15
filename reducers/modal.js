@@ -6,15 +6,23 @@ const initialModal = { type: null };
 
 export default function modal(modal = initialModal, action) {
     switch (action.type) {
-        case ActionConstants.SELECT_MODAL: return { type: action.response.type };
         case ActionConstants.ADD_SSH_KEY: return handleAddSSHKey(modal, action);
-        case ActionConstants.SELECT_VIEW: return initialModal; break;
         case ActionConstants.LOGOUT: return initialModal; break;
+        case ActionConstants.SELECT_MODAL: return { type: action.response.type };
+        case ActionConstants.SELECT_ROLE: return handleSelectRole(modal, action);
+        case ActionConstants.SELECT_VIEW: return initialModal; break;
         default: return modal; break;
     }
 }
 
 function handleAddSSHKey(modal, action) {
+    switch (action.status) {
+        case SUCCESS: return initialModal;
+        default: return modal;
+    }
+}
+
+function handleSelectRole(modal, action) {
     switch (action.status) {
         case SUCCESS: return initialModal;
         default: return modal;
