@@ -5,9 +5,10 @@ let initialRoleID = null;
 
 export default function roleID(roleID = initialRoleID, action) {
     switch (action.type) {
-        case ActionConstants.SELECT_ROLE: return setID(action.status, roleID, action.response.user ? action.response.user.current_role.id : null); break;
         case ActionConstants.IMPORT_GITHUB_REPOS: return setID(action.status, roleID, action.response.roles ? action.response.roles[0].id : null); break;
+        case ActionConstants.LOGIN: return action.status == SUCCESS ? action.response.user.current_role.id : roleID;
         case ActionConstants.LOGOUT: return initialRoleID; break;
+        case ActionConstants.SELECT_ROLE: return setID(action.status, roleID, action.response.user ? action.response.user.current_role.id : null); break;
         default: return roleID; break;
     }
 }

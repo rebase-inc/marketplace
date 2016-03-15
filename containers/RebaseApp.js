@@ -24,8 +24,6 @@ class RebaseApp extends Component {
         const { user, roleID, walkthrough, view, views, roles, actions, walkthroughActions, githubAccounts } = this.props;
         if (!user.email) {
             return <LoginDialog isLoading={user.isFetching} onLogin={actions.login} error={user.error} />
-        } else if (!roleID) {
-            return <RoleSelectionView user={user} roles={Array.from(roles.items.values())} select={actions.selectRole.bind(null, user)} githubAccounts={Array.from(githubAccounts.items.values())} />
         } else {
             return (
                 <div id='app'>
