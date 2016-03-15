@@ -17,7 +17,6 @@ function _shouldBeVisible(ticket) {
 export default function tickets(tickets = initialTickets, action) {
     switch (action.type) {
         case ActionConstants.GET_TICKETS: return handleNewTickets(action.status, tickets, action.response.tickets); break;
-        case ActionConstants.SELECT_ROLE: return handleNewRole(action.status, tickets, action.response.user); break;
         case ActionConstants.CREATE_AUCTION: 
             const auctionedTicket = action.response.auction ? getAuctionTicket(action.response.auction) : null;
             return handleCreateAuction(action.status, tickets, auctionedTicket);
@@ -34,14 +33,6 @@ export default function tickets(tickets = initialTickets, action) {
             return handleNewTicket(action.status, tickets, action.response.internal_ticket || action.response.github_ticket); break;
         case ActionConstants.LOGOUT: return initialTickets; break;
         default: return tickets; break;
-    }
-}
-
-function handleNewRole(requestStatus, oldTickets, user) {
-    switch (requestStatus) {
-        case PENDING: return oldTickets.set('isFetching', true);
-        case ERROR: return oldTickets.set('isFetching', false);
-        case SUCCESS: return initialTickets;
     }
 }
 

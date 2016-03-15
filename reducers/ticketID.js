@@ -9,18 +9,9 @@ export default function ticketID(ticketID = initialTicketID, action) {
         case ActionConstants.SELECT_TICKET: return action.response.ticketId; break;
         case ActionConstants.GET_TICKETS: return handleNewTickets(action.status, ticketID, action.response.tickets); break;
         case ActionConstants.CREATE_TICKET: return handleNewTicket(action.status, ticketID, action.response.internal_ticket || action.response.github_ticket); break;
-        case ActionConstants.SELECT_ROLE: return handleNewRole(action.status, ticketID); break;
         case ActionConstants.CREATE_AUCTION: return deleteID(action.status, ticketID); break;
         case ActionConstants.LOGOUT: return initialTicketID; break;
         default: return ticketID; break;
-    }
-}
-
-function handleNewRole(requestStatus, oldTicketID) {
-    switch (requestStatus) {
-        case PENDING: return oldTicketID; break;
-        case ERROR: return oldTicketID; break;
-        case SUCCESS: return initialTicketID; break;
     }
 }
 

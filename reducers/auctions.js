@@ -15,7 +15,6 @@ function _shouldBeVisible(auction) {
 export default function auctions(auctions = initialAuctions, action) {
     switch (action.type) {
         case ActionConstants.GET_AUCTIONS: return handleNewAuctions(action.status, auctions, action.response.auctions); break;
-        case ActionConstants.SELECT_ROLE: return handleNewRole(action.status, auctions, action.response.user); break;
         case ActionConstants.CREATE_AUCTION: return handleNewAuction(action.status, auctions, action.response.auction); break;
         case ActionConstants.BID_ON_AUCTION: return handleBidOnAuction(action.status, auctions, action.response.auction || action.response.bid.auction); break;
         case ActionConstants.APPROVE_NOMINATION: return handleApprovedNomination(action.status, auctions, action.response.auction, action.response.nomination); break;
@@ -61,14 +60,6 @@ function handleCommentOnAuction(requestStatus, auctions, comment) {
             return auctions.updateIn(commentKeyPath, comments => comments.push(comment));
         case ERROR: return auctions.deleteIn(commentKeyPath.concat(commentIndex));
         case SUCCESS: return auctions.mergeIn(commentKeyPath.concat(commentIndex), comment, { isFetching: false });
-    }
-}
-
-function handleNewRole(requestStatus, oldAuctions, user) {
-    switch (requestStatus) {
-        case PENDING: return oldAuctions.set('isFetching', true);
-        case ERROR: return oldAuctions.set('isFetching', false);
-        case SUCCESS: return initialAuctions;
     }
 }
 

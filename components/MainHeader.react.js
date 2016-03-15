@@ -153,7 +153,7 @@ export class ProjectSelector extends Component {
         const { openProjectSelectionModal, role, roles } = this.props;
         let selectedRole = roles.find(r => r.id == role.id);
         return (
-            <div id='projectSelector' onClick={openProjectSelectionModal} >
+            <div id='projectSelector' onClick={selectedRole.type == 'manager' ? openProjectSelectionModal : null} >
                 <Role key={selectedRole.id} role={selectedRole} selected={true} />
             </div>
         );

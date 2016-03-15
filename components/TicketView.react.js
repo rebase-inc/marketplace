@@ -44,7 +44,7 @@ class TicketView extends Component {
     }
     componentWillUpdate(prevProps) {
         // If the role has changed, we want to make sure to get the new role's tickets
-        if (this.props.viewIsFetching || (prevProps.user.current_role.id != this.props.user.current_role.id)) {
+        if (prevProps.user.current_role.id != this.props.user.current_role.id) {
             this.props.actions.getTickets()
         }
 

@@ -23,7 +23,6 @@ export default function contracts(contracts = initialContracts, action) {
         case ActionConstants.MARK_WORK_UNBLOCKED: return updateWorkOnContract(action.status, contracts, action.response.work);
         case ActionConstants.ACCEPT_WORK: return removeContractByWork(action.status, contracts, action.response.work);
         case ActionConstants.MEDIATION_ANSWER: return updateMediationOnContract(action.status, contracts, action);
-        case ActionConstants.SELECT_ROLE: return handleNewRole(action.status, contracts, action.response.user); break;
         case ActionConstants.LOGOUT: return initialContracts; break;
         default: return contracts; break;
     }
@@ -89,14 +88,6 @@ function updateMediationOnContract(requestStatus, contracts, action) {
             Immutable.fromJS(action.response.mediation.work),
             { isFetching: false }
         );
-    }
-}
-
-function handleNewRole(requestStatus, contracts, user) {
-    switch (requestStatus) {
-        case PENDING: return contracts.set('isFetching', true);
-        case ERROR: return contracts.set('isFetching', false);
-        case SUCCESS: return initialContracts;
     }
 }
 

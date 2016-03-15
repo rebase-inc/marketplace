@@ -18,7 +18,6 @@ export default function auctionID(auctionID = initialAuctionID, action) {
         case ActionConstants.SELECT_AUCTION: return action.response.auctionId; break;
         case ActionConstants.BID_ON_AUCTION: return handleBidOnAuction(auctionID, action);
         case ActionConstants.CREATE_AUCTION: return setID(action.status, auctionID, (action.response.auction || {}).id); break;
-        case ActionConstants.SELECT_ROLE: return removeID(action.status, auctionID); break;
         case ActionConstants.LOGOUT: return removeID(action.status, auctionID); break;
         default: return auctionID; break;
     }

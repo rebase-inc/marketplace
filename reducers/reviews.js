@@ -9,7 +9,6 @@ const initialReviews = new Immutable.Record({ items: Immutable.OrderedMap(), isF
 
 export default function reviews(reviews = initialReviews, action) {
     switch (action.type) {
-        case ActionConstants.SELECT_ROLE: return handleNewRole(action.status, reviews); break;
         case ActionConstants.GET_REVIEWS: return handleNewReviews(action.status, reviews, action.response.reviews); break;
         case ActionConstants.COMMENT_ON_REVIEW: return handleCommentOnReview(action.status, reviews, action.response.comment || action.response);
         case ActionConstants.ACCEPT_WORK: return makeNewReviewFromWork(action.status, reviews, action.response.work); break;
@@ -50,13 +49,5 @@ function handleCommentOnReview(requestStatus, reviews, comment) {
             return reviews.updateIn(commentKeyPath, comments => comments.push(comment));
         case ERROR: return reviews.deleteIn(commentKeyPath.concat(commentIndex));
         case SUCCESS: return reviews.mergeIn(commentKeyPath.concat(commentIndex), comment, { isFetching: false });
-    }
-}
-
-function handleNewRole(requestStatus, reviews) {
-    switch (requestStatus) {
-        case PENDING: return reviews.set('isFetching', true);
-        case ERROR: return reviews.set('isFetching', false);
-        case SUCCESS: return initialReviews;
     }
 }
