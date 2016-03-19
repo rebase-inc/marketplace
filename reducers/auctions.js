@@ -18,6 +18,7 @@ export default function auctions(auctions = initialAuctions, action) {
         case ActionConstants.CREATE_AUCTION: return handleNewAuction(action.status, auctions, action.response.auction); break;
         case ActionConstants.BID_ON_AUCTION: return handleBidOnAuction(action.status, auctions, action.response.auction || action.response.bid.auction); break;
         case ActionConstants.APPROVE_NOMINATION: return handleApprovedNomination(action.status, auctions, action.response.auction, action.response.nomination); break;
+        case ActionConstants.HIDE_NOMINATION: return hideNomination(auctions, action); break;
         case ActionConstants.COMMENT_ON_AUCTION: return handleCommentOnAuction(action.status, auctions, action.response.comment || action.response); break;
         case ActionConstants.LOGOUT: return initialAuctions; break;
         default: return auctions; break;
@@ -76,5 +77,17 @@ function handleBidOnAuction(requestStatus, auctions, auction) {
         case PENDING: return auctions.setIn(['items', auction.id, 'isFetching'], true);
         case ERROR: return auctions.setIn(['items', auction.id, 'isFetching'], false);
         case SUCCESS: return auctions.setIn(['items', auction.id], Immutable.fromJS(auction));
+    }
+}
+
+function hideNomination(oldAuctions, action) {
+    let auction_id = action.context.auction_id;
+    switch (action.status) {
+        case PENDING: return oldAuctions.setIn(['items', auction_id, 'isFetching'], true);
+        case ERROR: return oldAuctions.setIn(['items', auction_id, 'isFetching'], false);
+        case SUCCESS: return oldAuctions.updateIn(['items', auction_id, 'ticket_set', 'nominations'], function(nominations) {
+            //Immutable.fromJS(action.response.nomination);
+            return nominations;
+        });
     }
 }

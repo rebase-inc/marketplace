@@ -9,6 +9,8 @@ import './css/ProjectView.css';
 import './css/ProfileView.css';
 import './css/CommentBox.css';
 import './css/DeveloperProfileView.css';
+import './css/DeveloperPublicProfileView.css';
+import './css/DevPubProfileActions.css';
 import './css/GithubAccountTag.css';
 import './css/SSHKeyTag.css';
 import './css/NothingHere.css';

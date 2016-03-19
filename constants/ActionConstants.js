@@ -45,6 +45,7 @@ let AuctionActions = keyMirror({
     COMMENT_ON_AUCTION: null,
     BID_ON_AUCTION: null,
     APPROVE_NOMINATION: null,
+    HIDE_NOMINATION: null,
 });
 
 let ContractActions = keyMirror({

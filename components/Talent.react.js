@@ -21,7 +21,7 @@ function isRejected(auction, nomination) {
 
 export default class Talent extends Component {
     render() {
-        const { nomination, auction, approve, undo } = this.props;
+        const { nomination, auction, approve, select, undo } = this.props;
         let hiddenIcon;
         let statusIcon;
         if (isUnapproved(auction, nomination)) {
@@ -45,6 +45,7 @@ export default class Talent extends Component {
                 prefix={<RatingStars rating={nomination.contractor.rating ? nomination.contractor.rating / 2 : 3.5} />}
                 icon={<ScoredProfilePicture user={nomination.contractor.user} score={nomination.job_fit ? nomination.job_fit.score : null} />}
                 hidden={hiddenIcon}
+                handleClick={select}
                 />
         );
     }

@@ -16,4 +16,5 @@
     height: calc(100% - 64px);
     padding-bottom: 40px;
     box-sizing: border-box;
+    width: auto;
 }

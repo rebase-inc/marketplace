@@ -17,6 +17,15 @@ export function approveNomination(auction, nomination) {
     return dispatchedRequest('PUT', url, ActionConstants.APPROVE_NOMINATION, data);
 }
 
+export function hideNomination(auction, nomination) {
+    const url = '/nominations/' + nomination.contractor.id + '/' + nomination.ticket_set.id;
+    // The nomination object is in the data just for the pending case in the reducer
+    nomination.hide = true;
+    const data = { auction: { id: auction.id }, nomination: nomination };
+    const context = { auction_id: auction.id }
+    return dispatchedRequest('PUT', url, ActionConstants.HIDE_NOMINATION, data, true, context);
+}
+
 export function bidOnAuction(user, auction, price) {
     const url = '/auctions/' + auction.id + '/bid';
     // TODO: Refactor API so bidding on auction doesn't require user object

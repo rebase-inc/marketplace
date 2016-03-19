@@ -6,6 +6,14 @@ const SHOW_POOR_MATCHES = () => true;
 const HIDE_POOR_MATCHES = (nomination) => nomination.job_fit ? (nomination.job_fit.score > 0.6) : false;
 
 export default class TalentView extends Component {
+    static propTypes = {
+        approve:            PropTypes.func.isRequired,
+        auction:            PropTypes.object.isRequired,
+        makeNotification:   PropTypes.func.isRequired,
+        nominations:        PropTypes.array.isRequired,
+        selectNomination:   PropTypes.func.isRequired,
+    }
+
     constructor(props, context) {
         super(props, context);
         this.toggleFilter = this.toggleFilter.bind(this);
@@ -17,7 +25,7 @@ export default class TalentView extends Component {
     }
 
     render() {
-        const { nominations, auction, approve, makeNotification } = this.props;
+        const { approve, auction, makeNotification, nominations, selectNomination } = this.props;
         const { matchFilter } = this.state;
         return (
             <div className='scrollable talentList'>
@@ -28,6 +36,7 @@ export default class TalentView extends Component {
                                                                   key={n.contractor.id}
                                                                   approve={approve.bind(null, auction, n)}
                                                                   undo={makeNotification.bind(null, 'Not implemented!!')}
+                                                                  select={selectNomination.bind(null, n)}
                                                                   />) }
                 <div onClick={this.toggleFilter}>{ matchFilter == HIDE_POOR_MATCHES ?  'Show Poor Matches' : 'Hide Poor Matches'}</div>
             </div>
