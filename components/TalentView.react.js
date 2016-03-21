@@ -2,8 +2,8 @@ import React, { Component, PropTypes } from 'react';
 
 import Talent from './Talent.react';
 
-const SHOW_POOR_MATCHES = () => true;
-const HIDE_POOR_MATCHES = (nomination) => nomination.job_fit ? (nomination.job_fit.score > 0.6) : false;
+const SHOW_POOR_MATCHES = (nomination) => !nomination.hide;
+const HIDE_POOR_MATCHES = (nomination) => ((!nomination.hide) && nomination.job_fit) ? (nomination.job_fit.score > 0.6) : false;
 
 export default class TalentView extends Component {
     static propTypes = {
@@ -30,10 +30,10 @@ export default class TalentView extends Component {
         return (
             <div className='scrollable talentList'>
                 <div>Suggested Developers</div>
-                { nominations.sort(_sort).filter(matchFilter).map(n => <Talent
+                { nominations.filter(matchFilter).sort(_sort).map(n => <Talent
                                                                   auction={auction}
                                                                   nomination={n}
-                                                                  key={n.contractor.id}
+                                                                  key={n.contractor.id.toString()+'/'+n.ticket_set.id.toString()}
                                                                   approve={approve.bind(null, auction, n)}
                                                                   undo={makeNotification.bind(null, 'Not implemented!!')}
                                                                   select={selectNomination.bind(null, n)}

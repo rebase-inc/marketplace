@@ -86,8 +86,11 @@ function hideNomination(oldAuctions, action) {
         case PENDING: return oldAuctions.setIn(['items', auction_id, 'isFetching'], true);
         case ERROR: return oldAuctions.setIn(['items', auction_id, 'isFetching'], false);
         case SUCCESS: return oldAuctions.updateIn(['items', auction_id, 'ticket_set', 'nominations'], function(nominations) {
-            //Immutable.fromJS(action.response.nomination);
-            return nominations;
+            let nomination = action.response.nomination;
+            let nom = Immutable.fromJS(nomination);
+            let ticket_set_id = nomination.ticket_set_id;
+            let contractor_id = nomination.contractor_id;
+            return nominations.map((n) => ((n.get('ticket_set').get('id')==ticket_set_id) && (n.get('contractor').get('id')==contractor_id)) ? nom : n );
         });
     }
 }

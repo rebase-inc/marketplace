@@ -19,9 +19,7 @@ export function approveNomination(auction, nomination) {
 
 export function hideNomination(auction, nomination) {
     const url = '/nominations/' + nomination.contractor.id + '/' + nomination.ticket_set.id;
-    // The nomination object is in the data just for the pending case in the reducer
-    nomination.hide = true;
-    const data = { auction: { id: auction.id }, nomination: nomination };
+    const data = { hide: true };
     const context = { auction_id: auction.id }
     return dispatchedRequest('PUT', url, ActionConstants.HIDE_NOMINATION, data, true, context);
 }
