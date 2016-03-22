@@ -26,7 +26,6 @@ export default class NominationView extends Component {
     }
 
     _makeNomination(props, nomination) {
-        console.log('props are ', props);
         props = {
             key: nomination.contractor.id,
             nomination: nomination,
