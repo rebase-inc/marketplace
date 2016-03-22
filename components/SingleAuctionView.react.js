@@ -41,8 +41,7 @@ export default class SingleAuctionView extends Component {
                         makeNotification={actions.makeNotification}
                         selectNomination={ (nomination) => this.setState({ selectedNomination: nomination }) }
                     /> : <DeveloperPublicProfileView
-                        approve={actions.approveNomination.bind(null, auction, this.state.selectedNomination)}
-                        hide={actions.hideNomination.bind(null, auction, this.state.selectedNomination)}
+                        auction={auction}
                         nomination={this.state.selectedNomination}
                         closeView={ () => this.setState({ selectedNomination: null }) }
                     /> }

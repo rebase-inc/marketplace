@@ -90,7 +90,7 @@ function hideNomination(oldAuctions, action) {
             let nom = Immutable.fromJS(nomination);
             let ticket_set_id = nomination.ticket_set_id;
             let contractor_id = nomination.contractor_id;
-            return nominations.map((n) => ((n.get('ticket_set').get('id')==ticket_set_id) && (n.get('contractor').get('id')==contractor_id)) ? nom : n );
+            return nominations.map(n => (n.getIn(['ticket_set', 'id'])==ticket_set_id) && (n.getIn(['contractor', 'id'])==contractor_id) ? nom : n);
         });
     }
 }

@@ -1,23 +1,13 @@
 import React, { Component, PropTypes } from 'react';
 
-import ListElement from './ListElement.react';
-import ScoredProfilePicture from './ScoredProfilePicture.react';
-import RatingStars from './RatingStars.react';
 import ApproveIcon from './ApproveIcon.react';
+import ListElement from './ListElement.react';
+import RatingStars from './RatingStars.react';
+import ScoredProfilePicture from './ScoredProfilePicture.react';
 import UndoIcon from './UndoIcon.react';
 import WaitingIcon from './WaitingIcon.react';
+import { isUnapproved, isWaitingForResponse, isRejected } from '../utils/nomination';
 
-function isUnapproved(auction, nomination) {
-    return (auction.approved_talents.every(t => t.contractor.id != nomination.contractor.id));
-}
-
-function isWaitingForResponse(auction, nomination) {
-    return (auction.bids.every(bid => bid.contractor.id != nomination.contractor.id));
-}
-
-function isRejected(auction, nomination) {
-    return (auction.bids.some(bid => bid.contractor.id == nomination.contractor.id && bid.contract));
-}
 
 export default class Talent extends Component {
     render() {

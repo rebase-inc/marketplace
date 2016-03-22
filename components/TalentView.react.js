@@ -3,7 +3,7 @@ import React, { Component, PropTypes } from 'react';
 import Talent from './Talent.react';
 
 const SHOW_POOR_MATCHES = (nomination) => !nomination.hide;
-const HIDE_POOR_MATCHES = (nomination) => ((!nomination.hide) && nomination.job_fit) ? (nomination.job_fit.score > 0.6) : false;
+const HIDE_POOR_MATCHES = (nomination) => ((!nomination.hide) && nomination.job_fit) ? (nomination.job_fit.score > 0.6) || (!!nomination.auction) : false;
 
 export default class TalentView extends Component {
     static propTypes = {
