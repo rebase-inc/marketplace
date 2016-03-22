@@ -60,7 +60,7 @@ export class NominationProfileButtons extends Component {
         } else if (isWaitingForResponse(auction, nomination)) {
             return (
                 <div className='actions'>
-                    <button onClick={makeNotification.bind(null, 'Undo approval not yet implemented!')}> {'Revoke Approval'} </button>
+                    <button data-warning onClick={makeNotification.bind(null, 'Undo approval not yet implemented!')}> {'Revoke Approval'} </button>
                 </div>
             );
         } else if (isRejected(auction, nomination)) {

@@ -4,10 +4,11 @@ export function isUnapproved(auction, nomination) {
 }
 
 export function isWaitingForResponse(auction, nomination) {
-    let contractor_id = nomination.contractor.id;
-    let ticket_set_id = nomination.ticket_set.id;
-    let _nomination = auction.ticket_set.nominations.find((n) => (n.contractor.id==contractor_id) && (n.ticket_set.id==ticket_set_id));
-    return !!_nomination && _nomination.isFetching;
+    //let contractor_id = nomination.contractor.id;
+    //let ticket_set_id = nomination.ticket_set.id;
+    //let _nomination = auction.ticket_set.nominations.find((n) => (n.contractor.id==contractor_id) && (n.ticket_set.id==ticket_set_id));
+    //return !!_nomination && _nomination.isFetching;
+    return (auction.bids.every(bid => bid.contractor.id != nomination.contractor.id));
 }
 
 export function isRejected(auction, nomination) {
