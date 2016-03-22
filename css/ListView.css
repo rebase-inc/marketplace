@@ -5,6 +5,12 @@
     width: 320px;
 }
 
+.listView .spinningGears {
+    width: 40%;
+    display: block;
+    margin: 20% auto;
+}
+
 .listView > .info > *:not(.sortOptions) {
     vertical-align: middle;
     display: inline;

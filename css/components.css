@@ -279,8 +279,25 @@ svg.loadingAnimation rect:nth-child(5) { animation-delay: 0.5s; }
     100% { height: 120px; transform: translateY(0); }
 }
 
+.rotate-gear-one {
+    animation: rotate 9000ms linear infinite;
+    transform-origin: 50% 50%;
+}
+
+.rotate-gear-two {
+    animation: rotate 6000ms linear infinite;
+    animation-direction: reverse;
+    transform-origin: 50% 50%;
+}
+
+.rotate-gear-three {
+    animation: rotate 4000ms linear infinite;
+    transform-origin: 50% 50%;
+}
+
 .rotate {
     animation: rotate 800ms linear infinite;
+    transform-origin: 50% 50%;
 }
 @-webkit-keyframes rotate {
     0% {

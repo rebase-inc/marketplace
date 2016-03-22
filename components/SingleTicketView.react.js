@@ -28,6 +28,7 @@ export default class SingleTicketView extends Component {
 
     render() {
         const { ticket, actions, role, user } = this.props;
+        if (!ticket) { return <div className='singleView'> { 'No Ticket Selected' } </div>; }
         return (
             <div className='singleView'>
                 <TicketHeader openNewAuctionModal={actions.openNewAuctionModal} ticket={ticket} role={role} />

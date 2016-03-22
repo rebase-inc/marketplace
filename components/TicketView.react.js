@@ -71,7 +71,7 @@ class TicketView extends Component {
                         />
                     </div>
                 </Tooltip>
-                { ticket ? <SingleTicketView ticket={ticket} actions={actions} role={role} user={user} /> : null }
+                <SingleTicketView ticket={ticket} actions={actions} role={role} user={user} />
             </div>
        );
     }
