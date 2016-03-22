@@ -34,7 +34,7 @@ export default class DevPubProfileActions extends Component {
         return (
             <div className='devPubProfileActions' id='devActions'>
                 <button className={className} id='devActionApprove' onClick={_onClick} >{label}</button>
-                <button className='devPubProfileAction' id='devActionHide' onClick={actions.hideNomination.bind(null, auction, nomination)} >hide</button>
+                { !!(nomination.auction) ? null : <button className='devPubProfileAction' id='devActionHide' onClick={actions.hideNomination.bind(null, auction, nomination)} >hide</button> }
             </div>
         );
     }
