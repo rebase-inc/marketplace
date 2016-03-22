@@ -14,11 +14,11 @@ export default class ListElement extends Component {
     render() {
         const { icon, prefix, title, className, hidden, subtitle, info, expires, extra, handleClick, selected } = this.props;
         return (
-            <div className={'listElement ' + (className || '')} onClick={handleClick} data-selected={selected || undefined}>
+            <div className={'listElement ' + (className || '')} data-selected={selected || undefined}>
                 <div className={'icon' + (hidden ? ' sliding' : '')}>
                     { icon }
                 </div>
-                <div className={'content' + (hidden ? ' sliding' : '')}>
+                <div className={'content' + (hidden ? ' sliding' : '')} onClick={handleClick}>
                     <div className='row'>
                         <div className='prefix'>{ prefix }</div>
                         <div className='info'>{ info }</div>
