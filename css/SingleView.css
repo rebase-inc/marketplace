@@ -21,7 +21,7 @@
     height: calc(100% - 50px);
 }
 
-.singleView div.scrollable {
+.singleView > .content > div {
     -webkit-transform: translate3d(0,0,0); /*force hardware acceleration to get around chrome rendering bug*/
     height: 100%;
     overflow-y: auto;
@@ -31,6 +31,6 @@
     border-right: 1px solid #D3E0E6;
 }
 
-.singleView div.scrollable:first-child { width: calc(100% - 260px); }
-.singleView div.scrollable:last-child { width: 260px; }
-.singleView div.scrollable:only-child { width: 100%; }
+.singleView > .content > div:first-child { width: calc(100% - 260px); }
+.singleView > .content > div:last-child { width: 260px; }
+.singleView > .content > div:only-child { width: 100%; }

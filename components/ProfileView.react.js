@@ -34,7 +34,6 @@ export default class ProfileView extends Component {
 
     render() {
         const { user, roles, uploadPhoto, openAddSSHKeyModal } = this.props;
-        console.log('keys are ', user.ssh_public_keys.map(k => k));
         return (
             <div className='contentView' id='profileView'>
                 <div className='profileSettings' onKeyUp={this.restartTypingTimer}>

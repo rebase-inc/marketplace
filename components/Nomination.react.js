@@ -9,7 +9,7 @@ import WaitingIcon from './WaitingIcon.react';
 import { isUnapproved, isWaitingForResponse, isRejected } from '../utils/nomination';
 
 
-export default class Talent extends Component {
+export default class Nomination extends Component {
     render() {
         const { nomination, auction, approve, select, undo } = this.props;
         let hiddenIcon;

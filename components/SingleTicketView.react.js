@@ -19,13 +19,6 @@ export default class SingleTicketView extends Component {
         this.state = { detailsOpen: false }
     }
 
-    componentDidUpdate(prevProps) {
-        if (this.props.ticket.id != prevProps.ticket.id) {
-            const node = ReactDOM.findDOMNode(this);
-            node.scrollTop = 0;
-        }
-    }
-
     render() {
         const { ticket, actions, role, user } = this.props;
         if (!ticket) { return <div className='singleView'> { 'No Ticket Selected' } </div>; }

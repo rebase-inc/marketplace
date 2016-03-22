@@ -1,0 +1,42 @@
+#nominationProfile { }
+
+#nominationProfile .profilePicture {
+    height: 60px;
+    padding-top: 30px;
+    display: block;
+    margin: 0 auto;
+}
+
+#nominationProfile .ratingStars {
+    height: 14px;
+    padding-top: 10px;
+    display: block;
+    margin: 0 auto;
+}
+
+#nominationProfile .name {
+    font-size: 20px;
+    text-align: center;
+}
+
+#nominationProfile .actions {
+    padding: 10px;
+    text-align: center;
+}
+
+#nominationProfile .actions button {
+    display: inline-block;
+    margin: 5px;
+}
+
+#nominationProfile .closeIcon {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    height: 20px;
+    opacity: 0.5;
+} 
+
+#nominationProfile .closeIcon:hover {
+    opacity: 1;
+}

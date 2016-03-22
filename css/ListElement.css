@@ -2,7 +2,7 @@
     width: 100%;
     box-sizing: border-box;
     overflow: hidden;
-    font-size: 12px;
+    font-size: 14px;
     padding: 15px;
     cursor: default;
     height: 100px;
@@ -59,7 +59,7 @@
 
 .listElement > div.content > div.row:first-child,
 .listElement > div.content > div.row:last-child {
-    font-size: 11px;
+    font-size: 13px;
 }
 
 .listElement > div.content > div.row > .prefix,
@@ -83,7 +83,7 @@
 .listElement > div.content > div.row > .info span { display: inline-block; float: right; height: 13px; width: 13px; }
 
 .listElement > div.content > div.row > .title {
-    font-weight: bold;
+    font-weight: 400;
     height: 15px;
     line-height: 15px;
     white-space: nowrap;
@@ -97,7 +97,7 @@
 .listElement > div.content > div.row > div.title svg.approve g { fill: #40B89E; }
 .listElement > div.content > div.row > div.title svg.waiting g { fill: #F2B046; }
 .listElement > div.content > div.row > div.title span {
-    font-weight: bold;
+    font-weight: 400;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;

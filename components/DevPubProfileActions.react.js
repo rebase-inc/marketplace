@@ -16,7 +16,7 @@ export default class DevPubProfileActions extends Component {
         const undo =    (event) => actions.makeNotification('Not implemented yet') && event.stopPropagation();
         let className = null;
         let label = null;
-        let _onClick=null;
+        let _onClick = null;
         if (isUnapproved(auction, nomination)) {
             className='approvalButtonUnapproved';
             label = 'approve';

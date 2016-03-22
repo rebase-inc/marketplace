@@ -4,8 +4,7 @@ import ReactDOM from 'react-dom';
 import AuctionHeader from './AuctionHeader.react';
 import Comment from './Comment.react';
 import CommentBox from './CommentBox.react';
-import DeveloperPublicProfileView from './DeveloperPublicProfile.react';
-import TalentView from './TalentView.react';
+import NominationView from './NominationView.react';
 import { humanReadableDate } from '../utils/date';
 import { getAuctionTicket } from '../utils/getters';
 
@@ -19,12 +18,10 @@ export default class SingleAuctionView extends Component {
 
     constructor(props, context) {
         super(props, context);
-        this.state = { selectedNomination: null };
     }
 
     render() {
         const { user, role, auction, actions } = this.props;
-        const selectedNomination = this.state.selectedNomination;
         if (!auction) { return <div className='singleView'> { 'No Auction Selected' } </div>; }
         return (
             <div className='singleView'>
@@ -34,17 +31,8 @@ export default class SingleAuctionView extends Component {
                         { getAuctionTicket(auction).comments.map( comment => <Comment comment={comment} key={comment.id} /> ) }
                         <CommentBox submit={actions.commentOnAuction.bind(null, user, auction)}/>
                     </div>
-                    { (!selectedNomination && role.type == 'manager') ? <TalentView
-                        nominations={auction.ticket_set.nominations}
-                        auction={auction}
-                        approve={actions.approveNomination}
-                        makeNotification={actions.makeNotification}
-                        selectNomination={ (nomination) => this.setState({ selectedNomination: nomination }) }
-                    /> : <DeveloperPublicProfileView
-                        auction={auction}
-                        nomination={this.state.selectedNomination}
-                        closeView={ () => this.setState({ selectedNomination: null }) }
-                    /> }
+                    { role.type == 'manager' ? <NominationView auction={auction} {...actions} /> : null }
+                    { role.type == 'developer' ? null : null }
                 </div>
             </div>
         );
