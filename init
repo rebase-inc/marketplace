@@ -1,9 +1,8 @@
-#!/bin/bash
+#!/bin/sh
 
 cp -f /code/index.html /www
 cp -rf /code/font /www
 
-npm install
 npm run-script compile
 
 cp -f /code/bundle.js /www
