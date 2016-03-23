@@ -46,5 +46,7 @@ import './css/Auction.css';
 import './css/Ticket.css';
 import './css/NotificationView.css';
 import './css/NominationProfile.css';
+import './css/input.css';
+import './css/textarea.css';
 
 ReactDOM.render(<Root />, document.getElementById('react-app'));

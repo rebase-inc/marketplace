@@ -12,7 +12,7 @@
 
 .comment .text code {
     display: block;
-    background-color: #EBF0F2;
+    background-color: hsla(210, 30%, 93%, 1);
     box-sizing: border-box;
     width: calc(100% - 20px);
     overflow-x: scroll;

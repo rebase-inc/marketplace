@@ -5,8 +5,8 @@ import ProfilePicture from './ProfilePicture.react';
 import {humanReadableDate} from '../utils/date.js';
 
 import marked from 'marked';
-//import highlight from 'highlight.js';
-//import 'highlight.js/styles/solarized_dark.css';
+import highlight from 'highlight.js';
+import 'highlight.js/styles/atelier-savanna-light.css';
 
 marked.setOptions({
     renderer: new marked.Renderer(),
@@ -17,7 +17,7 @@ marked.setOptions({
     sanitize: true,
     smartLists: true,
     smartypants: false,
-    //highlight: code => highlight.highlightAuto(code).value,
+    highlight: code => highlight.highlightAuto(code).value,
 });
 
 export default class Comment extends Component {

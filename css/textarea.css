@@ -1,0 +1,23 @@
+textarea {
+    resize: none;
+    box-sizing: border-box;
+    padding: 10px;
+    text-align: left;
+    height: 100%;
+    box-sizing: border-box;
+    font-size: 14px;
+    border: 1px solid #D3E0E6;
+    background-color: transparent;
+    border: none;
+    background-color: hsla(212, 30%, 96%, 1);
+    border-radius: 4px;
+    display: inline;
+    width: 100%;
+    vertical-align: top;
+}
+
+textarea.error {
+    border: 1px solid hsla(351, 51%, 59%, 1);
+    transition: border 0.5s;
+}
+

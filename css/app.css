@@ -138,7 +138,6 @@ input[type=range]::-ms-track {
     color: transparent;
 }
 
-
 textarea {
     resize: none;
     box-sizing: border-box;

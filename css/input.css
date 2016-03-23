@@ -1,0 +1,7 @@
+input[type='text'] {
+    box-sizing: border-box;
+    padding: 5px;
+    border: none;
+    background-color: hsla(212, 30%, 96%, 1);
+    border-radius: 4px;
+}
