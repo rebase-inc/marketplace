@@ -3,6 +3,9 @@
 cp -f /code/index.html /www
 cp -rf /code/font /www
 
+if [ ! -e "/code/node_modules" ]; then
+    cp -r /deps/node_modules /code/. 
+fi
 npm run-script compile
 
 cp -f /code/bundle.js /www
