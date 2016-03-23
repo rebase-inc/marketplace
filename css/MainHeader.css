@@ -15,34 +15,34 @@
 
 #mainHeader > #viewList {
     height: 100%;
-    float: left;
+    position: absolute; 
+    left: 50%;
+    transform: translateX(-50%);
 }
 
 #mainHeader > #viewList > * {
    opacity: 0.5;
    text-transform: uppercase;
    height: 100%;
-   line-height: 50px;
    float: left;
-   font-size: 12px;
-   padding-left: 10px;
-   padding-right: 10px;
+   font-size: 14px;
+   box-sizing: border-box;
+   padding-top: 20px;
+   margin-left: 14px;
+   margin-right: 14px;
    cursor: pointer;
 }
 
 #mainHeader > #viewList > *[data-selected='true'],
 #mainHeader > #viewList > *:hover {
    opacity: 1;
+   border-bottom: 3px solid #40B89E;
 }
 
 #projectSelector {
-    position: absolute;
-    cursor: pointer;
-    z-index: 999;
+    float: left;
     height: auto;
     overflow: auto;
-    left: 50%;
-    transform: translateX(-50%);
 }
 
 #profileOptions {
@@ -53,13 +53,6 @@
     height: auto;
     overflow: auto;
 }
-
-/*#projectSelector[data-open='true'],*/
-/*#profileOptions[data-open='true'] {*/
-    /*background-color: #546C8A;*/
-    /*height: auto;*/
-    /*overflow: auto;*/
-/*}*/
 
 #projectSelector .role,
 #profileOptions .option {

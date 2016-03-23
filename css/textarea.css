@@ -7,8 +7,6 @@ textarea {
     box-sizing: border-box;
     font-size: 14px;
     border: 1px solid #D3E0E6;
-    background-color: transparent;
-    border: none;
     background-color: hsla(212, 30%, 96%, 1);
     border-radius: 4px;
     display: inline;
