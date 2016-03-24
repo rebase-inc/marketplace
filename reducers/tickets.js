@@ -17,6 +17,7 @@ function _shouldBeVisible(ticket) {
 export default function tickets(tickets = initialTickets, action) {
     switch (action.type) {
         case ActionConstants.GET_TICKETS: return handleNewTickets(action.status, tickets, action.response.tickets); break;
+        case ActionConstants.SELECT_ROLE: return (action.status == SUCCESS) ? initialTickets : tickets; break;
         case ActionConstants.CREATE_AUCTION: 
             const auctionedTicket = action.response.auction ? getAuctionTicket(action.response.auction) : null;
             return handleCreateAuction(action.status, tickets, auctionedTicket);

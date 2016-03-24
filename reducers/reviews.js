@@ -10,6 +10,7 @@ const initialReviews = new Immutable.Record({ items: Immutable.OrderedMap(), isF
 export default function reviews(reviews = initialReviews, action) {
     switch (action.type) {
         case ActionConstants.GET_REVIEWS: return handleNewReviews(action.status, reviews, action.response.reviews); break;
+        case ActionConstants.SELECT_ROLE: return (action.status == SUCCESS) ? initialReviews : reviews; break;
         case ActionConstants.COMMENT_ON_REVIEW: return handleCommentOnReview(action.status, reviews, action.response.comment || action.response);
         case ActionConstants.ACCEPT_WORK: return makeNewReviewFromWork(action.status, reviews, action.response.work); break;
         case ActionConstants.LOGOUT: return initialReviews; break;

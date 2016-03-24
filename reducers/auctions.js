@@ -15,6 +15,7 @@ function _shouldBeVisible(auction) {
 export default function auctions(auctions = initialAuctions, action) {
     switch (action.type) {
         case ActionConstants.GET_AUCTIONS: return handleNewAuctions(action.status, auctions, action.response.auctions); break;
+        case ActionConstants.SELECT_ROLE: return (action.status == SUCCESS) ? initialAuctions : auctions; break;
         case ActionConstants.CREATE_AUCTION: return handleNewAuction(action.status, auctions, action.response.auction); break;
         case ActionConstants.BID_ON_AUCTION: return handleBidOnAuction(action.status, auctions, action.response.auction || action.response.bid.auction); break;
         case ActionConstants.APPROVE_NOMINATION: return handleApprovedNomination(action.status, auctions, action.response.auction, action.response.nomination); break;

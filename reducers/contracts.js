@@ -15,6 +15,7 @@ function _shouldBeVisible(contract) {
 export default function contracts(contracts = initialContracts, action) {
     switch (action.type) {
         case ActionConstants.GET_CONTRACTS: return handleNewContracts(action.status, contracts, action.response.contracts); break;
+        case ActionConstants.SELECT_ROLE: return (action.status == SUCCESS) ? initialContracts : contracts; break;
         case ActionConstants.COMMENT_ON_CONTRACT: return handleCommentOnContract(action.status, contracts, action.response.comment || action.response);
         case ActionConstants.BID_ON_AUCTION: return handleBidOnAuction(action.status, contracts, action.response.auction);
         case ActionConstants.SUBMIT_WORK: return updateWorkOnContract(action.status, contracts, action.response.work);
