@@ -18,11 +18,11 @@
 #profileInfo .profilePictureContainer {
     float: right;
     height: 50px;
-    width: 35px;
+    width: 40px;
     box-sizing: border-box;
     padding: 10px;
+    padding-right: 5px;
     padding-left: 5px;
-    padding-right: 0px;
 } 
 
 #profileInfo .profilePicture {

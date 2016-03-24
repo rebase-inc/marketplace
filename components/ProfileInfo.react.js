@@ -29,9 +29,9 @@ export default class ProfileInfo extends Component {
         return (
             <Tooltip visible={tooltipVisible} overlay={<WalkthroughStep {...walkthroughProps} />} placement='bottomLeft'>
                 <div id='profileInfo'>
-                    <SettingsIcon onClick={actions.selectView.bind(null, PROFILE)} />
-                    <div className='name'>{user.name}</div>
                     <ProfilePicture user={user} />
+                    <div className='name'>{user.name}</div>
+                    <SettingsIcon onClick={actions.selectView.bind(null, PROFILE)} />
                 </div>
             </Tooltip>
        );
