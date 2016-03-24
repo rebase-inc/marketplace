@@ -181,23 +181,6 @@ export class ProjectGraph extends Component {
     }
 };
 
-export class Logo extends Component {
-    render() {
-        return (
-            <svg className='logo' width="59px" height="49px" viewBox="0 0 59 49">
-                <g stroke="none" strokeWidth="1" fill="none">
-                    <path d="M39.4328849,0.332707025 L39.4328849,14.0498069 L19.9125,25.9848489 L19.9125,11.8787876 L39.4328849,0.332707025 Z" fill="#8499B1"></path>
-                    <path d="M19.9125,11.8787879 L19.9125,25.9848485 L0,38.0924593 L0,24.3753594 L19.9125,11.8787879 Z" fill="#8499B1"></path>
-                    <path d="M39.0875,37.1212121 L39.0875,23.7575765 L19.9125,11.8787868 L19.9585938,25.4726274 L39.0875,37.1212121 Z" fill="#A1BAD6"></path>
-                    <path d="M39.4328849,0.332707025 L39.4328849,14.0498069 L59,25.9848489 L59,11.8787876 L39.4328849,0.332707025 Z" fill="#8499B1"></path>
-                    <path d="M59,11.8787868 C59,11.8787868 39.0874996,22.960683 39.0874996,23.0151504 L39.0874996,37.1212121 L58.9999996,25.2424228" fill="#A1BAD6"></path>
-                    <path d="M58.7421396,49 L58.7421396,35.2829001 L39.0875,23.7575758 L39.0875,37.1212118 L58.7421396,49 Z" fill="#A1BAD6"></path>
-                </g>
-            </svg>
-        );
-    }
-};
-
 export class Dropdown extends Component {
     render() {
         return (

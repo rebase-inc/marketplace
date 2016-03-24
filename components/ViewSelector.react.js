@@ -18,7 +18,7 @@ export default class ViewSelector extends Component {
         selectView: PropTypes.func.isRequired,
     }
     render() {
-        const { role, view, views, selectView, walkthrough, walkthroughActions } = this.props;
+        const { role, view, selectView, walkthrough, walkthroughActions } = this.props;
         const otherProps = { walkthrough, walkthroughActions };
         return (
             <div id='viewList'>

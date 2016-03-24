@@ -51,5 +51,6 @@ import './css/textarea.css';
 import './css/ProjectInfo.css';
 import './css/ProfileInfo.css';
 import './css/ProjectSelectionList.css';
+import './css/LoginBox.css';
 
 ReactDOM.render(<Root />, document.getElementById('react-app'));
