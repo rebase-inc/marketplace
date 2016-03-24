@@ -71,7 +71,7 @@ export default class ProfilePicture extends Component {
             const initials = user.name.match(/\b(\w)/g).join('');
             const color = Colors[(user.id - 1) % Colors.length];
             return (
-                <div>
+                <div className='profilePictureContainer'>
                     <svg onClick={dynamic ? this.openFileDialog : null} className='profilePicture' width="140px" height="140px" viewBox="0 0 140 140" version="1.1">
                         <g id="UI" stroke="none" strokeWidth="1" fill="none" fill-rule="evenodd">
                             <circle id="Oval-276" fill={color} cx="70" cy="70" r="70"></circle>
