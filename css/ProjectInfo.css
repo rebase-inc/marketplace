@@ -38,7 +38,8 @@
 }
 
 #projectInfo > .switchProjects:hover > g > circle {
-    opacity: 0.9;
+    opacity: 1;
+    fill: #3ABA9F;
 }
 
 #projectInfo > .name > span {
