@@ -28,6 +28,10 @@ export default class LoginDialog extends Component {
 };
 
 export class LoginBox extends Component {
+    constructor(props, context) {
+        super(props, context);
+        this.login = this.login.bind(this);
+    }
     login() {
         var email = this.refs.email.value.trim();
         var password = this.refs.password.value.trim();
