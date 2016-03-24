@@ -49,5 +49,6 @@ import './css/NominationProfile.css';
 import './css/input.css';
 import './css/textarea.css';
 import './css/ProjectInfo.css';
+import './css/ProjectSelectionList.css';
 
 ReactDOM.render(<Root />, document.getElementById('react-app'));

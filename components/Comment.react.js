@@ -6,7 +6,7 @@ import {humanReadableDate} from '../utils/date.js';
 
 import marked from 'marked';
 import highlight from 'highlight.js';
-import 'highlight.js/styles/atelier-savanna.light.css';
+import 'highlight.js/styles/atelier-savanna-light.css';
 
 marked.setOptions({
     renderer: new marked.Renderer(),

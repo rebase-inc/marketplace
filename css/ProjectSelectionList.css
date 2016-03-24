@@ -1,0 +1,35 @@
+#modalDialog > .projectSelectionList {
+    width: 100%;
+    text-align: center;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.projectSelectionList > .projectSelection {
+    display: inline-block;
+    cursor: default;
+    opacity: 0.6;
+}
+
+.projectSelectionList > .projectSelection:hover,
+.projectSelectionList > .projectSelection[selected] {
+    opacity: 1;
+}
+
+.projectSelectionList > .projectSelection > .profilePicture {
+    height: 34px;
+    width: 34px;
+    display: block;
+    margin: 2px auto;
+}
+
+.projectSelectionList > .projectSelection > .project {
+    display: block;
+    font-size: 20px;
+}
+
+.projectSelectionList > .projectSelection > .organization {
+    display: block;
+    font-size: 14px;
+    opacity: 0.6;
+}

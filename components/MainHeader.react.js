@@ -18,7 +18,7 @@ export default class MainHeader extends Component {
 
     render() {
         const { user, walkthrough, roles, view, views, actions, walkthroughActions } = this.props;
-        const role = roles.items.get(user.current_role.id); 
+        const role = roles.items.get(user.current_role.id);
         const otherProps = { walkthrough, walkthroughActions, role, view };
         return (
             <div id='mainHeader' className='noselect'>
