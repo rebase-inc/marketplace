@@ -7,14 +7,10 @@
 #login-background > .spinningGears {
     position: absolute;
     display: inline-block;
-    top: 40%;
+    top: 50%;
     left: 50%;
-    transform: translate(-50%, -40%);
-    -webkit-transform: translate(-50%, -40%);
-}
-
-#login-background > .spinningGears .rotate-gear-three {
-    stroke: #536B8B;
+    transform: translate(-50%, -50%);
+    -webkit-transform: translate(-50%, -50%);
 }
 
 #login-box {
