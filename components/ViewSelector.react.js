@@ -55,7 +55,7 @@ export class NewViewSelector extends Component {
 
         return (
             <Tooltip visible={tooltipVisible} overlay={<WalkthroughStep {...walkthroughProps} first={true} role_id={role.id} />} placement='bottomLeft'>
-                <ViewSelection {...this.props} name='new'/>
+                <ViewSelection {...this.props} name='tasks'/>
             </Tooltip>
         );
     }

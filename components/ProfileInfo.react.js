@@ -18,9 +18,9 @@ export default class ProfileInfo extends Component {
 
     render() {
         const { user, actions, walkthrough, walkthroughActions } = this.props;
-        const walkthroughProps = { 
+        const walkthroughProps = {
             role_id: user.current_role.id,
-            title: 'Your Profile', 
+            title: 'Your Profile',
             description: 'Manage all of your personal settings, including personal details, integrations, and banking information.',
             walkthrough,
             ...walkthroughActions,

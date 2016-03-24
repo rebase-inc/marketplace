@@ -3,14 +3,14 @@ import { PENDING, SUCCESS, ERROR } from '../constants/RequestConstants';
 import { NEW, OFFERED, IN_PROGRESS, COMPLETED } from '../constants/ViewConstants';
 
 let ManagerViews = new Map([
-    { name: 'Tickets', type: NEW },
+    { name: 'Tasks', type: NEW },
     { name: 'Auctions', type: OFFERED },
     { name: 'Work', type: IN_PROGRESS },
     { name: 'Completed', type: COMPLETED },
 ].map(view => [ view.type, view ]));
 
 let ContractorViews = new Map([
-    { name: 'Offers', type: OFFERED },
+    { name: 'Auctions', type: OFFERED },
     { name: 'Work', type: IN_PROGRESS },
     { name: 'Reviews', type: COMPLETED },
 ].map(view => [ view.type, view ]));

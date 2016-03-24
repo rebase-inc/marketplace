@@ -22,7 +22,7 @@ export default class MainHeader extends Component {
         const otherProps = { walkthrough, walkthroughActions, role, view };
         return (
             <div id='mainHeader' className='noselect'>
-                <ViewSelector views={Array.from(views.items.values())} selectView={actions.selectView} {...otherProps} />
+                <ViewSelector selectView={actions.selectView} {...otherProps} />
                 { role.type == 'manager' ? <ProjectInfo switchProject={actions.openProjectSelectionModal} project={role.project} /> : null }
                 <ProfileInfo actions={actions} user={user} {...otherProps} />
             </div>
