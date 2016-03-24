@@ -5,6 +5,7 @@
 
 .searchBar input {
     box-sizing: border-box;
+    font-size: 12px;
     width: calc(100% - 30px);
     height: 24px;
     margin: 15px;

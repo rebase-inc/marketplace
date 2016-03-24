@@ -12,9 +12,7 @@
     width: 100%;
     box-sizing: border-box;
     resize: none;
-    border-radius: 4px;
     display: block;
-    box-sizing: border-box;
 }
 
 #commentBox > .buttons > svg {

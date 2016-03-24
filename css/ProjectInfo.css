@@ -1,0 +1,61 @@
+#projectInfo {
+    float: left;
+    height: auto;
+    overflow-x: auto;
+    cursor: default;
+}
+
+#projectInfo > .name {
+    padding: 5px;
+    box-sizing: border-box;
+    height: 50px;
+    display: inline-block;
+    float: left;
+}
+
+#projectInfo > .profilePicture {
+    float: left;
+    height: 50px;
+    width: 35px;
+    box-sizing: border-box;
+    padding: 10px;
+    padding-left: 5px;
+    padding-right: 0px;
+} 
+
+#projectInfo > .switchProjects {
+    float: left;
+    height: 50px;
+    width: 30px;
+    box-sizing: border-box;
+    padding-top: 14px;
+    padding-bottom: 14px;
+    padding-left: 6px;
+}
+
+#projectInfo > .switchProjects > g > circle {
+    opacity: 0.4;
+}
+
+#projectInfo > .switchProjects:hover > g > circle {
+    opacity: 0.9;
+}
+
+#projectInfo > .name > span {
+    display: block;
+    box-sizing: border-box;
+    width: 100%;
+}
+
+#projectInfo > .name > .project {
+    padding-top: 4px;
+    line-height: 20px;
+    font-size: 16px;
+    opacity: 1;
+}
+
+#projectInfo > .name > .organization {
+    line-height: 10px;
+    font-size: 10px;
+    opacity: 0.6;
+}

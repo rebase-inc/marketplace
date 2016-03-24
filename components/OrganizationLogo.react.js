@@ -33,16 +33,14 @@ export default class OrganizationLogo extends Component {
         }
         else {
             return (
-                <div>
-                    <svg className='profilePicture' width='100px' height='100px' viewBox='0 0 100 100'>
-                        <g className='picture' stroke='none' strokeWidth='1' fill='none'>
-                            <circle fill={color} cx='50' cy='50' r='46'></circle>
-                            <text id='name' x='50' y='50' fontFamily='Gotham Rounded' fontSize='50px' dy='16px' fill='#F5F7FA' textAnchor='middle'>
-                                { organization.name[0].toUpperCase() }
-                            </text>
-                        </g>
-                    </svg>
-                </div>
+                <svg className='profilePicture' width='100px' height='100px' viewBox='0 0 100 100'>
+                    <g className='picture' stroke='none' strokeWidth='1' fill='none'>
+                        <circle fill={color} cx='50' cy='50' r='46'></circle>
+                        <text id='name' x='50' y='50' fontFamily='Gotham Rounded' fontSize='50px' dy='16px' fill='#F5F7FA' textAnchor='middle'>
+                            { organization.name[0].toUpperCase() }
+                        </text>
+                    </g>
+                </svg>
             );
         }
     }

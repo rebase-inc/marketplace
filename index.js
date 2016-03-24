@@ -48,5 +48,6 @@ import './css/NotificationView.css';
 import './css/NominationProfile.css';
 import './css/input.css';
 import './css/textarea.css';
+import './css/ProjectInfo.css';
 
 ReactDOM.render(<Root />, document.getElementById('react-app'));
