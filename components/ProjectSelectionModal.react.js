@@ -12,12 +12,12 @@ export default class ProjectSelectionModal extends Component {
     }
 
     render() {
-        const { project, projects, select, close } = this.props;
+        const { project, roles, select, close } = this.props;
         return (
             <ModalContainer close={close}>
                 <h3>{'Select a Project'}</h3>
                 <div className='projectSelectionList'>
-                    { projects.map(p => <ProjectSelection project={p} selected={p.id == project.id} />) }
+                    { roles.map(r => <ProjectSelection project={r.project} select={select.bind(null, r.id)} selected={r.project.id == project.id} />) }
                 </div>
                 <h5>{'Or, create a new project'}</h5>
             </ModalContainer>
@@ -26,7 +26,7 @@ export default class ProjectSelectionModal extends Component {
 };
 
 const ProjectSelection = (props) => (
-    <div className='projectSelection' selected={props.selected}>
+    <div className='projectSelection' selected={props.selected} onClick={props.select}>
         <OrganizationLogo organization={props.project.organization} />
         <span className='project'>{props.project.name}</span>
         <span className='organization'>{props.project.organization.name}</span>

@@ -68,7 +68,7 @@ export default class ModalView extends Component {
                 return <ProjectSelectionModal
                     close={userActions.closeModal}
                     project={role.project}
-                    projects={Array.from(roles.items.values()).filter(r => r.type == 'manager').map(r => r.project)}
+                    roles={Array.from(roles.items.values()).filter(r => r.type == 'manager')}
                     select={userActions.selectRole.bind(null, user)}
                 />;
             case ModalConstants.RESOLVE_MEDIATION_MODAL: {

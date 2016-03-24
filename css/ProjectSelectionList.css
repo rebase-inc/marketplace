@@ -7,8 +7,11 @@
 
 .projectSelectionList > .projectSelection {
     display: inline-block;
+    width: 100px;
     cursor: default;
     opacity: 0.6;
+    margin-left: 10px;
+    margin-right: 10px;
 }
 
 .projectSelectionList > .projectSelection:hover,
@@ -26,10 +29,16 @@
 .projectSelectionList > .projectSelection > .project {
     display: block;
     font-size: 20px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .projectSelectionList > .projectSelection > .organization {
     display: block;
     font-size: 14px;
     opacity: 0.6;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
