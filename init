@@ -3,9 +3,7 @@
 cp -f /code/index.html /www
 cp -rf /code/font /www
 
-if [ ! -e "/code/node_modules" ]; then
-    cp -r /deps/node_modules /code/. 
-fi
+rsync -rlt /deps/node_modules/ /code/node_modules/
 npm run-script compile
 
 cp -f /code/bundle.js /www
