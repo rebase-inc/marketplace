@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 
 import NothingHere from './NothingHere.react';
+import WorldMap from './WorldMap.react';
 
 import Tooltip from 'rc-tooltip';
 
@@ -29,14 +30,17 @@ export default class NoAuctionsView extends Component {
         const extraButton = { name: 'Try Sample Work', fn: alert.bind(null, 'Not yet implemented') };
 
         return (
-            <NothingHere>
-                <h3>{ role.type == 'manager' ? 'Your Auctions' : 'Your Offers' }</h3>
-                <Tooltip visible={tooltipVisible} overlay={<WalkthroughStep {...walkthroughProps} last={true} extra={extraButton} />} placement='top'>
-                    <h4>{ nothingHereString }</h4>
-                </Tooltip>
-                { role.type == 'manager' ? <button onClick={selectView.bind(null, NEW)}>View New Tickets</button> :
-                    <button>See Sample Offer</button> }
-            </NothingHere>
+            <div className='contentView' id='nothingHere'>
+                <WorldMap />
+                <div id='content'>
+                    <h3>{ role.type == 'manager' ? 'Your Auctions' : 'Your Offers' }</h3>
+                    <Tooltip visible={tooltipVisible} overlay={<WalkthroughStep {...walkthroughProps} last={true} extra={extraButton} />} placement='top'>
+                        <h4>{ nothingHereString }</h4>
+                    </Tooltip>
+                    { role.type == 'manager' ? <button onClick={selectView.bind(null, NEW)}>View New Tickets</button> :
+                        <button>See Sample Offer</button> }
+                </div>
+            </div>
         );
     }
 }

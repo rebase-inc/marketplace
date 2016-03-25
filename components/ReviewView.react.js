@@ -8,6 +8,7 @@ import ListTitleBar from './ListTitleBar.react';
 import ReviewListView from './ReviewListView.react';
 import SingleReviewView from './SingleReviewView.react';
 import SortIcon from './SortIcon.react';
+import NoReviewsView from './NoReviewsView.react';
 
 import { NEWEST_REVIEWS, OLDEST_REVIEWS } from '../utils/sort';
 
@@ -31,7 +32,8 @@ export default class ReviewView extends Component {
         }
     }
     render() {
-        const { actions, review, role, user } = this.props;
+        const { actions, reviews, review, role, user } = this.props;
+        if (!reviews.length) { return <NoReviewsView {...this.props} /> }
         return (
             <div className='mainView'>
                 <div className='listView noselect'>
@@ -51,6 +53,7 @@ export default class ReviewView extends Component {
 }
 
 let mapStateToProps = state => ({
+    reviews: state.reviews.items.toList().toJS(),
     review: state.reviews.items.get(state.reviewID) ? state.reviews.items.get(state.reviewID).toJS() : null,
 });
 let mapDispatchToProps = dispatch => ({ actions: bindActionCreators(ReviewActions, dispatch)});

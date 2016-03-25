@@ -27,8 +27,21 @@
     opacity: 0.5;
 }
 
-#nothingHere svg {
-    opacity: 0.45;
+#nothingHere svg.worldMap,
+#nothingHere svg.reviews {
+    position: absolute;
+    display: inline-block;
+    top: 0;
+    left: 0;
+    right: 0;
+    margin: 0 auto;
+    height: 100%;
+    width: 100%;
+    opacity: 0.6;
+}
+
+#nothingHere svg.reviews {
+    opacity: 0.4;
 }
 
 #nothingHere svg.desktop {
@@ -36,6 +49,7 @@
     top: 6%;
     left: 14%;
     width: 45%;
+    opacity: 0.20;
 }
 
 #nothingHere svg.keyboard {
@@ -43,6 +57,7 @@
     top: 60%;
     left: 12%;
     width: 38%;
+    opacity: 0.20;
 }
 
 #nothingHere svg.headphones {
@@ -50,4 +65,5 @@
     top: 50%;
     left: 62%;
     width: 20%;
+    opacity: 0.20;
 }
