@@ -34,6 +34,11 @@
     margin: 15px auto;
 }
 
+#modalDialog .rc-slider {
+    width: 60%;
+    margin: 25px auto;
+}
+
 #modalDialog textarea {
     width: 90%;
     display: block;

@@ -53,6 +53,7 @@ import './css/ProfileInfo.css';
 import './css/ProjectSelectionList.css';
 import './css/LoginBox.css';
 import './css/ReactSlider.css';
+import './css/RcSlider.css';
 import './css/TalentGrid.css';
 
 ReactDOM.render(<Root />, document.getElementById('react-app'));

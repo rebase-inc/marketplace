@@ -1,0 +1,28 @@
+.rc-slider {
+    height: 10px;
+    cursor: default;
+}
+.rc-slider-track {
+    background-color: hsla(167, 48%, 49%, 1);
+    height: 10px;
+    border-radius: 6px;
+}
+.rc-slider-dot {
+    top: 0px;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    border: 2px solid #E6E9EB;
+}
+.rc-slider-dot-active {
+    border: 2px solid hsla(167, 48%, 49%, 1);
+    top: -1px;
+    width: 12px;
+    height: 12px;
+}
+.rc-slider-handle {
+    border: 2px solid hsla(167, 48%, 49%, 1);
+    width: 16px;
+    height: 16px;
+    top: 2px;
+}
