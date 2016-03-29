@@ -78,7 +78,7 @@ export default class BidModal extends Component {
                     <h4>{'Your current rate is ' + rate + 'USD/day'}</h4>
                     <RcSlider defaultValue={duration} onChange={(value) => this.setState({ duration: value })} min={1} max={56} marks={marks} step={null} />
                     <h3>{this.state.duration * rate / 8 + ' USD'}</h3>
-                    <button onClick={() => { this.setState({submitted: true}); bid(this.state.duration * rate)}}>
+                    <button onClick={() => { this.setState({submitted: true}); bid(this.state.duration * rate / 8)}}>
                         { auction.isFetching ? <LoadingAnimation /> : 'Submit Bid' }
                     </button>
                 </ModalContainer>
