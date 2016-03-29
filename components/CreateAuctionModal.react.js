@@ -26,7 +26,7 @@ export default class CreateAuctionModal extends Component {
 
     render() {
         const { create, isLoading, close } = this.props;
-        const guessRate = (skill) => 24.1 * Math.pow(skill, 2) - 50.2 * skill + 235;
+        const guessRate = (skill) => 602.7 * Math.pow(skill, 2) - 9.8 * skill + 209;
         return (
             <ModalContainer close={close} help={HelpString}>
                 <h3>Set your budget</h3>
