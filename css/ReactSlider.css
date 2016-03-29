@@ -1,0 +1,25 @@
+.reactSlider {
+    width: 100%;
+    background-color: #E6E9EB;
+    height: 10px;
+    border-radius: 6px;
+    margin: 20px auto;
+}
+.reactSlider .handle {
+    height: 16px;
+    width: 16px;
+    border-radius: 50%;
+    background-color: hsla(167, 48%, 49%, 1);
+    top: -3px;
+}
+.reactSlider .handle.active {
+    background-color: hsla(167, 48%, 65%, 1);
+}
+.reactSlider .bar {
+    position: relative;
+    height: 10px;
+}
+.reactSlider .bar {
+    top: 20px;
+    height: 10px;
+}

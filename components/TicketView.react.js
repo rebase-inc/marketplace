@@ -10,6 +10,7 @@ import Tooltip from 'rc-tooltip';
 // Project Component Imports
 import ListTitleBar from './ListTitleBar.react';
 import NewTicketIcon from './NewTicketIcon.react';
+import NoTicketsView from './NoTicketsView.react';
 import SingleTicketView from './SingleTicketView.react';
 import SortIcon from './SortIcon.react';
 import Ticket from './Ticket.react';
@@ -55,7 +56,8 @@ class TicketView extends Component {
         }
     }
     render() {
-        const { actions, role , ticket, tickets, user, walkthrough } = this.props;
+        const { actions, role, loading, ticket, tickets, user, walkthrough } = this.props;
+        if (!loading && !tickets.length) { return <NoTicketsView {...this.props} /> }
         return (
             <div className='mainView'>
                 <Tooltip visible={walkthrough == CURRENT_VIEW} overlay={<TicketViewWalkthrough {...actions} role_id={role.id} last={true} />} placement='right'>
@@ -84,6 +86,7 @@ const TicketViewWalkthrough = (props) => (
 );
 
 let mapStateToProps = state => ({
+    loading: state.tickets.isFetching,
     tickets: state.tickets.items.toList().toJS(),
     ticket: state.ticketID ? state.tickets.items.get(state.ticketID).toJS() : null,
     viewIsFetching: state.view.isFetching,

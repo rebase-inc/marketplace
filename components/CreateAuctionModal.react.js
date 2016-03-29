@@ -1,11 +1,11 @@
 import React, { Component, PropTypes } from 'react';
 import ReactDOM from 'react-dom';
 
-import Slider from './Slider.react';
+import ReactSlider from 'react-slider';
+
+import TalentGrid from './TalentGrid.react';
 import ModalContainer from './ModalContainer.react';
 import LoadingAnimation from './LoadingAnimation.react';
-
-import { BellCurve } from '../utils/Graph';
 
 const HelpString = 'Setting a budget here puts a ceiling on what you will pay. ' +
     'Developers won\'t ever see this number. They submit a price that they\'re willing ' +
@@ -26,48 +26,16 @@ export default class CreateAuctionModal extends Component {
 
     render() {
         const { create, isLoading, close } = this.props;
-
+        const guessRate = (skill) => 24.1 * Math.pow(skill, 2) - 50.2 * skill + 235;
         return (
             <ModalContainer close={close} help={HelpString}>
                 <h3>Set your budget</h3>
                 <h4>to see recommended developers</h4>
-                <DevBellCurve width={300} min={100} max={2000} value={this.state.price} onChange={(value) => this.setState({ price: value })} />
+                <TalentGrid willAccept={(skill, days) => this.state.price > days * guessRate(skill)}/>
+                <h3>{this.state.price + ' USD'}</h3>
+                <ReactSlider className='reactSlider' min={50} max={6000} step={50} defaultValue={this.state.price} onChange={(value) => this.setState({ price: value })} />
                 <button onClick={() => {create(this.state.price); close()}}>{ isLoading ? <LoadingAnimation /> : 'Submit Budget'}</button>
             </ModalContainer>
         );
     }
 };
-
-export class DevBellCurve extends Component {
-    static propTypes = {
-        width: PropTypes.number.isRequired,
-        min: PropTypes.number.isRequired,
-        max: PropTypes.number.isRequired,
-        value: PropTypes.number.isRequired,
-        onChange: PropTypes.func.isRequired,
-    }
-
-    constructor(props, context) {
-        super(props, context);
-    }
-
-    componentDidUpdate() {
-        this._bellCurve.update(this.props.value);
-    }
-
-    componentDidMount() {
-        var element = ReactDOM.findDOMNode(this);
-        this._bellCurve = new BellCurve(element, {width: this.props.width - 20, min: this.props.min, max: this.props.max}, this.props.value);
-    }
-
-    render() {
-        const { width, min, max, value, onChange } = this.props;
-        return (
-            <div className='devBellCurve'>
-                <Slider width={width} min={min} max={max} value={value} onChange={onChange} />
-                <h3>{value + ' USD'}</h3>
-            </div>
-        );
-    }
-}
-

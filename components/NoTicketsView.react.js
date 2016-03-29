@@ -8,7 +8,7 @@ export default class NoTicketsView extends Component {
         return (
             <NothingHere>
                 <h3>Your Tickets</h3>
-                <h4>If you have unassigned tickets, they'll appear here. Tickets can be created on Rebase or imported from GitHub</h4>
+                <h4>If you have unassigned tasks, they'll appear here. Tasks can be created on Rebase or imported from GitHub</h4>
                 <div>
                     <button onClick={this.props.openNewTicketModal}>Add New Ticket</button>
                     <button data-notification>Import Project</button>

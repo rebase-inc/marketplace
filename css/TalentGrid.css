@@ -1,0 +1,21 @@
+.talentGrid { 
+    margin: 20px;
+}
+
+.talentGrid circle {
+    fill: #29384D;
+    r: 10px;
+    transition: 300ms r;
+}
+
+.talentGrid text {
+    opacity: 0.3;
+}
+
+.talentGrid circle.inactive {
+    r: 4px;
+}
+
+.talentGrid circle.highlight {
+    fill: #3ABA9F;
+}
