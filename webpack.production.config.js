@@ -25,6 +25,9 @@ module.exports = {
         'fallback': path.join(__dirname, 'node_modules')
     },
     module: {
+        module: {
+            noParse: [/autoit.js/],
+        },
         loaders: [{
             test: /\.js$/,
             loaders: ['babel'],
