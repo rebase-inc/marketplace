@@ -37,10 +37,10 @@ export function commentOnTicket(user, ticket, text) {
     return dispatchedRequest('POST', '/comments', ActionConstants.COMMENT_ON_TICKET, data);
 }
 
-export function createInternalTicket(project, title) {
+export function createInternalTicket(title, comment) {
     const data = {
-        project: { id: project.id },
-        title: title
+        title: title,
+        first_comment: comment
     }
     return dispatchedRequest('POST', '/internal_tickets', ActionConstants.CREATE_TICKET, data);
 }

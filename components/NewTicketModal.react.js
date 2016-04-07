@@ -22,10 +22,11 @@ export default class NewTicketModal extends Component {
     }
     createTicket() {
         const title = ReactDOM.findDOMNode(this.refs.title).value;
+        const comment = ReactDOM.findDOMNode(this.refs.comment).value;
         if (this.state.syncWithGithub) {
             this.props.createGithubTicket(this.props.project, title);
         } else {
-            this.props.createInternalTicket(this.props.project, title);
+            this.props.createInternalTicket(title, comment);
         }
         this.props.close(); // hack. TODO: Use the markAsClosed functionality like in ImportProjectModal
     }
