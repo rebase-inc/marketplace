@@ -19,7 +19,7 @@ function handleNewUserData(requestStatus, oldUser, newUser) {
     switch (requestStatus) {
         case PENDING: return Object.assign({}, oldUser, { isFetching: true }); break;
         case ERROR: return Object.assign({}, oldUser, { isFetching: false }); break;
-        case UNAUTHORIZED: return Object.assign({}, oldUser, { error: 'Invalid credentials' }); break;
+        case UNAUTHORIZED: return Object.assign({}, oldUser, { isFetching: false, error: 'Invalid credentials' }); break;
         case SUCCESS:
             const { id, email, current_role, name, photo, ssh_public_keys, github_accounts } = newUser;
             const newUserData = { id, email, name, photo, ssh_public_keys, current_role, github_accounts };
