@@ -41,11 +41,11 @@ export default class ProfileView extends Component {
                     <InputField value={this.state.name} onChange={(e) => this.setState({ name: e.target.value })} loading={user.name != this.state.name}/>
                     <InputField value={this.state.email} onChange={(e) => this.setState({ email: e.target.value })} loading={user.email != this.state.email}/>
                     <div id='githubAccounts'>
-                        { user.github_accounts.map(ga => <GithubAccountTag account={ga} />) }
+                        { user.github_accounts.map(ga => <GithubAccountTag account={ga} key={ga.id} />) }
                         <span onClick={() => window.location.replace('/api/v1/github')}>{ 'Add Github Account' }</span>
                     </div>
                     <div id='sshKeys'>
-                        { user.ssh_public_keys.map(key => <SSHKeyTag ssh_key={key} />) }
+                        { user.ssh_public_keys.map(key => <SSHKeyTag ssh_key={key} key={key.id} />) }
                         <span onClick={openAddSSHKeyModal}>{ 'Add SSH Key' }</span>
                     </div>
                 </div>
