@@ -60,7 +60,7 @@ export default class ProfilePicture extends Component {
         const { user, dynamic } = this.props;
         if (!!user.photo) {
             return (
-                <div>
+                <div className='profilePictureContainer'>
                     <img ref='imgNode' className='profilePicture' onClick={dynamic ? this.openFileDialog : null} src={user.photo}/>
                     { !!dynamic ? <h5 onClick={this.openFileDialog}>Change profile picture</h5> : null }
                     <input type='file' ref='fileInput' style={{ display: 'none' }} onChange={this.handleFile} />
