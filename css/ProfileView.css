@@ -50,6 +50,10 @@
     padding: 5px;
 }
 
+#logout {
+    background-color: red;
+}
+
 #profileView .profilePicture {
     display: block;
     margin: 4px auto;

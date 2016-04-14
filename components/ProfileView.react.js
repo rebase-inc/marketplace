@@ -33,7 +33,7 @@ export default class ProfileView extends Component {
     }
 
     render() {
-        const { user, roles, uploadPhoto, openAddSSHKeyModal } = this.props;
+        const { logout, user, roles, uploadPhoto, openAddSSHKeyModal } = this.props;
         return (
             <div className='contentView' id='profileView'>
                 <div className='profileSettings' onKeyUp={this.restartTypingTimer}>
@@ -48,6 +48,7 @@ export default class ProfileView extends Component {
                         { user.ssh_public_keys.map(key => <SSHKeyTag ssh_key={key} key={key.id} />) }
                         <span onClick={openAddSSHKeyModal}>{ 'Add SSH Key' }</span>
                     </div>
+                    <button id='logout' onClick={logout}>{ 'LOGOUT' }</button>
                 </div>
             </div>
         );
