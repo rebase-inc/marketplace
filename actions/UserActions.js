@@ -17,6 +17,12 @@ export function login(email, password) {
     return dispatchedRequest('POST', '/auth', ActionConstants.LOGIN, data);
 }
 
+
+export function c2rLogin() {
+    return dispatchedRequest('GET', '/c2r_auth', ActionConstants.C2R_LOGIN);
+}
+
+
 export function selectView(viewType) {
     return {
         type: ActionConstants.SELECT_VIEW,

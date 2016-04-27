@@ -23,7 +23,7 @@ class RebaseApp extends Component {
     render() {
         const { user, roleID, walkthrough, view, views, roles, actions, walkthroughActions, githubAccounts } = this.props;
         if (!user.email) {
-            return <LoginDialog isLoading={user.isFetching} onLogin={actions.login} error={user.error} />
+            return <LoginDialog isLoading={user.isFetching} onLogin={actions.login} c2rLogin={actions.c2rLogin} error={user.error} />
         } else {
             return (
                 <div id='app'>

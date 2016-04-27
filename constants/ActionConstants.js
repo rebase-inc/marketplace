@@ -2,6 +2,7 @@ var keyMirror = require('keymirror');
 
 let UserActions = keyMirror({
     LOGIN: null,
+    C2R_LOGIN: null,
     LOGOUT: null,
     SELECT_MODAL: null,
     SELECT_VIEW: null,
