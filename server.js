@@ -1,3 +1,4 @@
+var path = require('path');
 var webpack = require('webpack');
 var WebpackDevServer = require('webpack-dev-server');
 
@@ -6,10 +7,14 @@ var WebpackDevServer = require('webpack-dev-server');
 const TARGET='http://web_1:5000' || 'http://localhost:5000'
 const PORT=process.env.REBASE_CLIENT_PORT || 3000;
 
-var config = require('./webpack.config');
+var config=require('./webpack.config');
+var client=process.env.CLIENT
+contentBasePath = path.join(__dirname, 'assets', client)
 
 new WebpackDevServer(
     webpack(config), {
+        contentBase: contentBasePath,
+        compress: true,
         publicPath: config.output.publicPath,
         hot: true,
         proxy: { '/api/*': { target:TARGET, secure: true } },

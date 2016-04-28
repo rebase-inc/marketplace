@@ -7,6 +7,8 @@ var client=process.env.CLIENT
 
 console.log('Webpack: http://'+HOST+':'+PORT);
 
+contentBasePath = path.join(__dirname, 'assets', client)
+
 module.exports = {
     devtool: 'eval',
     entry: [
@@ -15,7 +17,7 @@ module.exports = {
         './'+client+'.index' // entry js file for app
     ],
     output: {
-        path: path.join(__dirname, 'dist'),
+        path: contentBasePath,
         filename: client+'.js',
     },
     plugins: [

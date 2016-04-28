@@ -14,7 +14,6 @@ import * as UserActions from '../actions/UserActions';
 export default class LoginDialog extends Component {
     static propTypes = {
         onLogin: React.PropTypes.func.isRequired,
-        c2rLogin: React.PropTypes.func.isRequired,
         isLoading: React.PropTypes.bool.isRequired,
     }
 
@@ -39,7 +38,7 @@ export class LoginBox extends Component {
         this.props.onLogin(email, password);
     }
     render() {
-        const { c2rLogin, error } = this.props;
+        const { error } = this.props;
         return (
             <div id='login-box' onKeyPress={(e) => { (e.charCode == 13) ? this.login() : null }}>
                 <RebaseLogo />
@@ -47,7 +46,6 @@ export class LoginBox extends Component {
                 <input data-warning={!!error || undefined} id='password' type='password' ref='password' placeholder='Password' />
                 <button id='log-in' onClick={this.login}>{'Log in'}</button>
                 <span data-warning>{error}</span>
-                <button id='c2r-login-in' onClick={c2rLogin}>{'Code2Resume'}</button>
             </div>
         );
     }
