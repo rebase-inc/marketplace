@@ -44,7 +44,8 @@
   },
   "main": "server.js",
   "scripts": {
-    "start": "node server.js",
+    "app": "CLIENT='app' node server.js",
+    "code2resume": "CLIENT='code2resume' node server.js",
     "compile": "NODE_ENV=production webpack --progress -p --config webpack.production.config.js"
   }
 }

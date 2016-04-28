@@ -12,16 +12,14 @@ export function restoreSession() {
     return dispatchedRequest('GET', '/auth', ActionConstants.LOGIN);
 }
 
+export function restoreC2RSession() {
+    return dispatchedRequest('GET', '/c2r_auth', ActionConstants.C2R_LOGIN);
+}
+
 export function login(email, password) {
     let data = { user: { email: email }, password: password, };
     return dispatchedRequest('POST', '/auth', ActionConstants.LOGIN, data);
 }
-
-
-export function c2rLogin() {
-    return dispatchedRequest('GET', '/c2r_auth', ActionConstants.C2R_LOGIN);
-}
-
 
 export function selectView(viewType) {
     return {

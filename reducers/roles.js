@@ -6,6 +6,7 @@ const initialRoles = { isFetching: false, items: [] };
 export default function roles(roles = initialRoles, action) {
     switch (action.type) {
         case ActionConstants.LOGIN: return handleLogin(action.status, roles, action.response.user); break;
+        case ActionConstants.C2R_LOGIN: return handleLogin(action.status, roles, action.response.user); break;
         case ActionConstants.IMPORT_GITHUB_REPOS: return handleNewRoles(action.status, roles, action.response.roles); break;
         case ActionConstants.LOGOUT: return initialRoles; break;
         default: return roles; break;

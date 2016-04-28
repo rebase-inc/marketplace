@@ -6,4 +6,4 @@ WORKDIR /deps
 RUN npm install npm@2 -g && \
     npm install
 WORKDIR /code
-CMD rsync -rlt /deps/node_modules/ /code/node_modules/ && npm start
+CMD ["/code/start", "app"]

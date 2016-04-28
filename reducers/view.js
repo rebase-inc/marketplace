@@ -1,6 +1,6 @@
 import ActionConstants from '../constants/ActionConstants';
 import { PENDING, SUCCESS, ERROR } from '../constants/RequestConstants';
-import { NEW, OFFERED, IN_PROGRESS, COMPLETED } from '../constants/ViewConstants';
+import { NEW, OFFERED, IN_PROGRESS, COMPLETED, DEVELOPER_PROFILE } from '../constants/ViewConstants';
 import { FAILED } from '../constants/WorkStates';
 
 const initialView = { isFetching: false, type: OFFERED };
@@ -15,6 +15,18 @@ export default function view(view = initialView, action) {
                     switch (action.response.user.current_role.type) {
                         case 'manager': newView.type = NEW; break;
                         case 'contractor': newView.type = OFFERED; break;
+                    }
+                    return Object.assign({}, view, { isFetching: false }, newView);
+                    break;
+            }
+        }
+        case ActionConstants.C2R_LOGIN: {
+            switch (action.status) {
+                case PENDING: return Object.assign({}, view, { isFetching: true }); break;
+                case SUCCESS:
+                    let newView = {};
+                    switch (action.response.user.current_role.type) {
+                        case 'contractor': newView.type = DEVELOPER_PROFILE; break;
                     }
                     return Object.assign({}, view, { isFetching: false }, newView);
                     break;

@@ -3,6 +3,8 @@ var webpack = require('webpack');
 
 var HOST=process.env.REBASE_CLIENT_HOST
 var PORT=process.env.REBASE_CLIENT_PORT
+var client=process.env.CLIENT
+
 console.log('Webpack: http://'+HOST+':'+PORT);
 
 module.exports = {
@@ -10,11 +12,11 @@ module.exports = {
     entry: [
         'webpack-dev-server/client?http://'+HOST+':'+PORT,
         'webpack/hot/only-dev-server',
-        './index' // entry js file for app
+        './'+client+'.index' // entry js file for app
     ],
     output: {
         path: path.join(__dirname, 'dist'),
-        filename: 'bundle.js',
+        filename: client+'.js',
     },
     plugins: [
         new webpack.HotModuleReplacementPlugin(),
