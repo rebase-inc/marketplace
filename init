@@ -1,9 +1,9 @@
 #!/bin/sh
 
-cp -f /code/index.html /www
+cp -f /code/assets/$1/index.html /www
 cp -rf /code/font /www
 
 rsync -rlt /deps/node_modules/ /code/node_modules/
-npm run-script compile
+npm run-script compile_$1
 
-cp -f /code/bundle.js /www
+cp -f /code/assets/$1/$1.js /www

@@ -46,6 +46,7 @@
   "scripts": {
     "app": "CLIENT='app' node server.js",
     "code2resume": "CLIENT='code2resume' node server.js",
-    "compile": "NODE_ENV=production webpack --progress -p --config webpack.production.config.js"
+    "compile_app": "NODE_ENV=production CLIENT='app' webpack --progress -p --config webpack.production.config.js"
+    "compile_code2resume": "NODE_ENV=production CLIENT='code2resume' webpack --progress -p --config webpack.production.config.js"
   }
 }

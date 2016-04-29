@@ -1,12 +1,14 @@
 var path = require('path');
 var webpack = require('webpack');
+var client=process.env.CLIENT
 
 module.exports = {
     entry: [
         './index' // entry js file for app
     ],
     output: {
-        filename: 'bundle.js',
+        path: path.join(__dirname, 'assets', client),
+        filename: client+'.js',
     },
     plugins: [
         new webpack.DefinePlugin({
