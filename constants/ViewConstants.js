@@ -5,4 +5,5 @@ export const COMPLETED = 'COMPLETED';
 export const PROFILE = 'PROFILE';
 export const PROJECTS = 'PROJECTS';
 export const DEVELOPER_PROFILE = 'DEVELOPER_PROFILE';
+export const C2R_DEV_PROFILE = 'C2R_DEV_PROFILE';
 export const BILLING_AND_PAYMENTS = 'BILLING_AND_PAYMENTS';
