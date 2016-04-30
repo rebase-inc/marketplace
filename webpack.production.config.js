@@ -27,22 +27,24 @@ module.exports = {
         'fallback': path.join(__dirname, 'node_modules')
     },
     module: {
-        module: {
-            noParse: [/autoit.js/],
-        },
-        loaders: [{
-            test: /\.js$/,
-            loaders: ['babel'],
-            exclude: /node_modules/,
-            include: __dirname
-        }, {
-            test: /\.js$/,
-            loaders: ['babel'],
-            include: path.join(__dirname, '..', '..', 'src')
-        }, {
-            test: /\.css?$/,
-            loaders: ['style', 'raw'],
-            include: __dirname
-        }]
+        noParse: [/autoit.js/],
+        loaders: [
+            {
+                test: /\.js$/,
+                loaders: ['babel'],
+                exclude: /node_modules/,
+                include: __dirname
+            },
+            {
+                test: /\.js$/,
+                loaders: ['babel'],
+                include: path.join(__dirname, '..', '..', 'src')
+            },
+            {
+                test: /\.css?$/,
+                loaders: ['style', 'raw'],
+                include: __dirname
+            }
+        ]
     }
 };
