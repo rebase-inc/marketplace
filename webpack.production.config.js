@@ -4,10 +4,10 @@ var client=process.env.CLIENT
 
 module.exports = {
     entry: [
-        './index' // entry js file for app
+        './'+client+'.index' // entry js file for app
     ],
     output: {
-        path: path.join(__dirname, 'assets', client),
+        path: path.join('/www', 'assets', client),
         filename: client+'.js',
     },
     plugins: [
