@@ -20,7 +20,7 @@ export default class C2RDevProfileView extends Component {
 
         return (
             <div className='contentView' id='developerProfileView'>
-                <button onClick={() => window.location.replace('/api/v1/github/code2resume_login')}>{ 'Add Github Account' }</button>
+                <button onClick={() => window.location.replace('/api/v1/github')}>{ 'Add Github Account' }</button>
                 <div className='skillsRadarChart'>
                     <SkillsRadar skills={skills} />
                 </div>
