@@ -23,7 +23,10 @@ class Code2ResumeApp extends Component {
     }
     render() {
         const { user, roleID, walkthrough, view, views, roles, actions, walkthroughActions, githubAccounts } = this.props;
-        if (user.isFetching || !user.email) {
+        if (!user.email) {
+            if (!user.isFetching) {
+                actions.restoreC2RSession();
+            }
             return (
                 <div id='app'>
                     <SpinningGears />
