@@ -19,7 +19,7 @@ export default function user(user = initialUser, action) {
 function handleNewUserData(requestStatus, oldUser, newUser) {
     switch (requestStatus) {
         case PENDING: return Object.assign({}, oldUser, { isFetching: true }); break;
-        case ERROR: return Object.assign({}, oldUser, { isFetching: false }); break;
+        case ERROR: return Object.assign({}, oldUser, { isFetching: false, error: true }); break;
         case UNAUTHORIZED: return Object.assign({}, oldUser, { isFetching: false, error: 'Invalid credentials' }); break;
         case SUCCESS:
             const { id, email, current_role, name, photo, ssh_public_keys, github_accounts } = newUser;
