@@ -5,12 +5,14 @@ let initialUser = { email: null, isFetching: false, error: null };
 
 export default function user(user = initialUser, action) {
     switch (action.type) {
-        case ActionConstants.LOGIN: return handleNewUserData(action.status, user, action.response.user); break;
-        case ActionConstants.C2R_LOGIN: return handleNewUserData(action.status, user, action.response.user); break;
-        case ActionConstants.UPDATE_PROFILE: return handleNewUserData(action.status, user, action.response.user); break;
+        case ActionConstants.LOGIN:
+        case ActionConstants.C2R_LOGIN:
+        case ActionConstants.UPDATE_PROFILE:
+        case ActionConstants.UPLOAD_PHOTO:
+        case ActionConstants.SELECT_ROLE: {
+            return handleNewUserData(action.status, user, action.response.user);
+        }
         case ActionConstants.ADD_SSH_KEY: return handleNewSSHKey(action.status, user, action.response.ssh_key); break;
-        case ActionConstants.UPLOAD_PHOTO: return handleNewUserData(action.status, user, action.response.user); break;
-        case ActionConstants.SELECT_ROLE: return handleNewUserData(action.status, user, action.response.user); break;
         case ActionConstants.LOGOUT: return initialUser; break; // we should probably handle pending and success cases
         default: return user; break;
     }

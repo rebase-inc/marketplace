@@ -10,6 +10,7 @@ export default class ProfileView extends Component {
     static propTypes = {
         user: PropTypes.object.isRequired,
         roles: PropTypes.object.isRequired,
+        selectRole: PropTypes.func.isRequired,
         updateProfile: PropTypes.func.isRequired,
         uploadPhoto: PropTypes.func.isRequired,
     }
@@ -33,7 +34,12 @@ export default class ProfileView extends Component {
     }
 
     render() {
-        const { logout, user, roles, uploadPhoto, openAddSSHKeyModal } = this.props;
+        const { logout, user, roles, uploadPhoto, openAddSSHKeyModal, selectRole } = this.props;
+        const other_role_type = user.current_role.type=='contractor' ? 'manager' : 'contractor';
+        const _roles = Array.from(roles.items.values());
+        const other_role = _roles.find(role => role.type==other_role_type);
+        const other_role_label = 'Switch to '+other_role_type.charAt(0).toUpperCase()+other_role_type.slice(1)+' Role';
+
         return (
             <div className='contentView' id='profileView'>
                 <div className='profileSettings' onKeyUp={this.restartTypingTimer}>
@@ -48,6 +54,7 @@ export default class ProfileView extends Component {
                         { user.ssh_public_keys.map(key => <SSHKeyTag ssh_key={key} key={key.id} />) }
                         <span onClick={openAddSSHKeyModal}>{ 'Add SSH Key' }</span>
                     </div>
+                    { other_role != undefined ? <button id={other_role.id} onClick={()=> selectRole(user, other_role.id)}>{other_role_label}</button> : null }
                     <button id='logout' onClick={logout}>{ 'LOGOUT' }</button>
                 </div>
             </div>

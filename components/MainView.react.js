@@ -43,6 +43,7 @@ export default class MainView extends Component {
                     roles={roles}
                     logout={actions.logout}
                     openAddSSHKeyModal={actions.openAddSSHKeyModal}
+                    selectRole={actions.selectRole}
                     updateProfile={actions.updateProfile.bind(null, user)}
                     uploadPhoto={actions.uploadProfilePhoto} />;
                     break;
