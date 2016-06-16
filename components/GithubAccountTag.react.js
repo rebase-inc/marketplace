@@ -4,7 +4,7 @@ import ReactDOM from 'react-dom';
 export default class GithubAccountTag extends Component {
     render() {
         let { account, analyzeSkills } = this.props;
-        let authorize = account ? () => window.open('http://github.com/' + account.login) : () => window.location.replace('/api/v1/github');
+        let authorize = account ? () => window.open('http://github.com/' + account.github_user.login) : () => window.location.replace('/api/v1/github');
         return (
             <div className='githubAccountTag' onClick={authorize}>
                 <svg width='21px' height='21px' className='githubLogo'>
