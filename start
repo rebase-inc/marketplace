@@ -1,3 +1,15 @@
 #!/bin/sh
 
-rsync -rlt /deps/node_modules/ /code/node_modules/ && npm run-script $1
+rsync -rlt /deps/node_modules/ /code/node_modules/ 
+npm run-script $1 &
+pid=`pgrep npm`
+echo "Launched npm with pid: $pid"
+
+trap "kill -15 $pid; echo \"Killed npm $pid, exiting.\"; exit 0" TERM
+
+echo "Now waiting for npm[$pid] to exit or for signal SIGTERM to be sent to me process[$$]"
+\wait $pid
+
+echo "npm exited."
+echo "start exiting"
+exit 0
