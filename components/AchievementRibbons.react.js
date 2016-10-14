@@ -45,6 +45,7 @@ export default class AchievementRibbons extends Component {
 
     render() {
         let { skills } = this.props;
+        if (skills.length == 0) return ( <div>No Achievement Ribbons yet! Please click on 'Github Account'.</div> );
         // 1 let's rename the technologies
         // 2 extract Overall, so we can list it first
         // 3 sort the remainder of the skills by technologies name
@@ -58,7 +59,6 @@ export default class AchievementRibbons extends Component {
 
         // 3
         let remainder = renamed_skills.filter(isNotOverall).sort(byTech);
-        console.log('remainder: %o', remainder);
 
         // 4
         let result = [ overall, ...remainder ];
@@ -66,7 +66,7 @@ export default class AchievementRibbons extends Component {
         return (
             <div className='achievement-ribbons'>
                 {
-                    result.map( entry => <Ribbon tech={entry[0]} ranking={entry[1]} /> )
+                    result.map( (entry, index) => <Ribbon key={index} tech={entry[0]} ranking={entry[1]} /> )
                 }
             </div>
         );
