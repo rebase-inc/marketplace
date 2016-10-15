@@ -13,6 +13,10 @@ const table = [
 ];
 
 
+function is3rdPartyLibrary(skill) {
+    return skill[0].indexOf(".__third_party__.") != -1;
+}
+
 function replace(str) {
     return table.reduce( (before, sub) => before.replace(sub[0], sub[1]), str);
 }
@@ -46,13 +50,18 @@ export default class AchievementRibbons extends Component {
     render() {
         let { skills } = this.props;
         if (skills.length == 0) return ( <div>No Achievement Ribbons yet! Please click on 'Github Account'.</div> );
+        // 0 remove 3rd-party library details, just keep the overall 3rd-party summary
         // 1 let's rename the technologies
         // 2 extract Overall, so we can list it first
         // 3 sort the remainder of the skills by technologies name
         // 4 prepend Overall to the remainer
 
+
+        // 0
+        let summary_skills = skills.filter(is3rdPartyLibrary);
+
         // 1
-        let renamed_skills = skills.map(renameSkill);
+        let renamed_skills = summary_skills.map(renameSkill);
 
         // 2
         let overall = renamed_skills.find(isOverall);
