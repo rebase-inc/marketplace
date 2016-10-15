@@ -14,7 +14,7 @@ const table = [
 
 
 function is3rdPartyLibrary(skill) {
-    return skill[0].indexOf(".__third_party__.") != -1;
+    return skill[0].indexOf(".__third_party__.") == -1;
 }
 
 function replace(str) {
