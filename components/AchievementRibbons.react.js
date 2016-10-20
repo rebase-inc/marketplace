@@ -5,11 +5,9 @@ import Ribbon from './Ribbon.react';
 
 
 const table = [
-    ["_overall",                "Overall"],
-    [".__language__",           "/Language"],
-    [".__standard_library__",   "/Standard Library"],
-    [".__third_party__.",       "/"],
-    [".__third_party__",        "/3rd Party"]
+    ["_overall",        "Overall"],
+    [".__language__",   "/Language"],
+    [".__3rd_party__.", "/"],
 ];
 
 
