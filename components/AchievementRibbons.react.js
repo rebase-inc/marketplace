@@ -6,8 +6,8 @@ import Ribbon from './Ribbon.react';
 
 const table = [
     ["_overall",        "Overall"],
-    [".__language__",   "/Language"],
-    [".__3rd_party__.", "/"],
+    [".language",   "/Language"],
+    [".3rd-party.", "/"],
 ];
 
 
