@@ -2,7 +2,7 @@
 
 mkdir -p /www/assets
 rsync -rlt /deps/node_modules/ /code/node_modules/
-rsync -rlt /code/assets/$1/ /www/assets/$1/
+rsync -rLt /code/assets/$1/ /www/assets/$1/
 
 npm run-script compile_$1
 
